@@ -24,7 +24,9 @@ https://github.com/Bluetrae/WProxyRules
 
 ## 项目目标
 
-建立一个自动聚合、转换、去重、合并 custom 补丁并发布 Surge Rule-Set 的个人仓库，让 Surge 只引用稳定的自己仓库 URL，上游变动时只改仓库 source 定义而不用改 Surge 主配置。
+建立一个自动聚合、转换、去重、合并 supplement 补充规则并发布 Surge Rule-Set 的个人仓库，让 Surge 只引用稳定的自己仓库 URL，上游变动时只改仓库 source 定义而不用改 Surge 主配置。
+
+`supplement` 只存放上游规则未覆盖、且通过 Surge 日志或实际使用确认需要补充的规则。不得重复放入上游已存在的规则；每次补充前须先与选定上游比较。`Surge/*.list` 为 generated files，不允许手工修改。补充文件按需创建，没有补充规则的 App 不需要空文件。
 
 ## 第一批计划纳入
 
@@ -32,6 +34,8 @@ https://github.com/Bluetrae/WProxyRules
 - WhatsApp
 - LINE
 - GitHub
+
+这四个 App 只是 build pipeline 的验证样本，不代表仓库只面向它们；仓库设计上应支持当前计划中的全部 App。
 
 ## 后续计划纳入
 
@@ -58,9 +62,11 @@ https://github.com/Bluetrae/WProxyRules
 - PayPal：blackmatrix7 当前仍可作为合理上游。
 - Netflix：blackmatrix7 现有列表的 IP 覆盖仍有价值，不要盲目替换成纯域名源。
 
-## Finance custom 当前已知
+## Finance supplement 候选与当前已知
 
 ### ZABank
+
+以下域名为待核对候选，尚未与选定上游比较，不应直接写入 `sources/supplement/`：
 
 ```text
 wbs.za.group
@@ -87,7 +93,7 @@ README.md
 AGENTS.md
 CODEX_HANDOFF.md
 sources/apps.yaml
-sources/custom/
+sources/supplement/
 scripts/build.py
 Surge/
 .github/workflows/update.yml
@@ -99,7 +105,7 @@ Surge/
 上游更新
 → GitHub Actions
 → build.py
-→ 解析/转换/合并 custom
+→ 解析/转换/合并 supplement
 → 去重/规范化
 → Surge/*.list
 → Surge 使用自己仓库的稳定 raw URL
@@ -110,7 +116,8 @@ Surge/
 ```text
 Surge 日志出现漏网
 → 日志确认归属
-→ sources/custom/<App>.list
+→ 与选定上游比较，确认缺失
+→ sources/supplement/<App>.list
 → 重新构建
 → 以后永久保留
 ```
