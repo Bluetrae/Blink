@@ -1,0 +1,75 @@
+# Primary source is selected per application.
+# Source preference is Repcz > SukkaW > proven maintainers > v2fly/MetaCubeX,
+# but evidence overrides preference.
+# supplement is optional and only contains verified upstream gaps.
+# Generated Surge files must never be manually edited.
+
+version: 1
+
+apps:
+  OKX:
+    enabled: true
+    output: Surge/OKX.list
+    sources:
+      - name: v2fly-domain-list-community
+        author: v2fly
+        role: primary
+        format: v2fly-domain-list
+        url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx
+    supplement: sources/supplement/OKX.list
+    exclude: []
+    note: >-
+      Repcz/SukkaW currently have no preferred maintained dedicated OKX source.
+      v2fly is used because its current OKX dataset is materially more complete
+      and actively maintained than the old blackmatrix7 Surge list.
+
+  WhatsApp:
+    enabled: true
+    output: Surge/WhatsApp.list
+    sources:
+      - name: v2fly-domain-list-community
+        author: v2fly
+        role: primary
+        format: v2fly-domain-list
+        url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp
+    supplement: sources/supplement/WhatsApp.list
+    exclude: []
+    note: >-
+      v2fly is preferred over the older blackmatrix7 list because its current
+      WhatsApp domain coverage is more modern and avoids relying on stale IP
+      ranges or overly broad shared Meta endpoints.
+
+  LINE:
+    enabled: true
+    output: Surge/LINE.list
+    sources:
+      - name: v2fly-domain-list-community
+        author: v2fly
+        role: primary
+        format: v2fly-domain-list
+        url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/line
+    supplement: sources/supplement/LINE.list
+    exclude: []
+    note: >-
+      v2fly currently provides more precise LINE coverage than the old
+      blackmatrix7 list. Broad shared domains must be reviewed rather than
+      inherited blindly. nhncorp.jp should remain under review but should not
+      be excluded without evidence.
+
+  GitHub:
+    enabled: true
+    output: Surge/GitHub.list
+    sources:
+      - name: v2fly-domain-list-community
+        author: v2fly
+        role: primary
+        format: v2fly-domain-list
+        url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/github
+    supplement: sources/supplement/GitHub.list
+    exclude: []
+    note: >-
+      v2fly is selected because the GitHub dataset is actively maintained and
+      includes modern GitHub assets and related services. build.py must resolve
+      v2fly include directives deliberately and must not import unrelated npm,
+      Microsoft, Amazon, Azure, or other shared infrastructure merely because
+      it is reachable through an include.
