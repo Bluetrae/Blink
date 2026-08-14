@@ -11,10 +11,27 @@
 - 不允许将上游已存在的规则重复放进 `supplement`；应先与选定上游比较，只加入真正缺失的规则。
 - `supplement` 文件按需创建；没有补充规则的 App 不需要空文件。
 - Generated `Surge/*.list` 不允许手工维护或修改。
-- 每个 App 默认使用 1 个主源，最多 1 个补充源，除非有明确理由。
+- 每个 App 默认使用 1 个 primary source，最多 1 个 supplemental source，除非有明确理由。
 - 不追求规则数量最大化，避免无意义吞入共享 CDN。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施规则不纳入本仓库，继续直接引用成熟上游。
 - 输出规则不带策略名，由 Surge 主配置通过 `RULE-SET` 指定策略。
+
+## Upstream Source Selection Policy
+
+- 用户的长期信任优先偏好为：Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX。
+- 此排序是优先偏好，而非绝对规则。每个 App 的最终主源必须基于 freshness（更新活跃度）、completeness（覆盖完整度）、scope（是否精准属于该 App）、format suitability（是否适合 Surge 或能稳定转换）及 maintenance quality（维护质量）综合决定。
+- 如果 Repcz 或 SukkaW 有对应且维护良好的专项规则，优先使用。
+- 如果 Repcz 或 SukkaW 没有对应规则，或规则明显长期未更新、覆盖不足，则可以选择 v2fly / MetaCubeX 等更活跃的数据源。
+- 不允许仅因作者偏好而继续使用明显过时或不完整的规则。
+- 每个 App 默认使用 1 个 primary source，最多 1 个 supplemental source；`sources/supplement/<App>.list` 仅用于上游仍缺失、且通过 Surge 日志或实际使用确认的补充规则。
+- 不追求“合并越多越好”，避免不同规则源叠加后吞入无关共享 CDN 域名。
+- 后续 `apps.yaml` 应为每个 App 保留 `note` 或 `reason` 字段，记录主源的选择理由，避免决策依据遗失。
+- 真正创建 `apps.yaml` 前，必须先完成 source audit。
+
+### Source audit 范围与记录项
+
+- Source audit 至少覆盖当前计划中的 YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、Live、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub。
+- 每个 App 的 audit 必须记录：候选来源、作者、URL、最近维护情况、规则规模或覆盖特点、是否 Surge 原生、是否需要转换、是否存在明显过宽规则、推荐 primary、是否需要 supplemental，以及选择理由。
 
 ## 安全规范
 
@@ -29,6 +46,6 @@
 
 ## 开发顺序
 
-- 首批开发顺序：OKX、WhatsApp、LINE、GitHub；它们只是 build pipeline 的验证样本，不代表仓库只面向这四个 App。仓库设计上应支持当前计划中的全部 App。
+- 首批开发顺序：OKX、WhatsApp、LINE、GitHub；它们只是 source → build → supplement → Surge output 整个 pipeline 的验证样本，不代表它们优先于其他 App，也不代表仓库只面向这四个 App。仓库设计上应支持当前计划中的全部 App。
 - OKX 此前列出的 10 个域名仅是待核对候选；必须先与选定上游比较，只把真正缺失项加入 `sources/supplement/`。
 - Apple Music 暂缓，因为当前 Apple 分流依赖 Repcz、Sukka、extended-matching 和手工 CDN 修复。
