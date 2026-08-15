@@ -17,10 +17,14 @@ https://github.com/Bluetrae/WProxyRules
 - `main` 跟踪 `origin/main`
 - working tree clean
 - `safe.directory` 已配置完成
-- 当前仓库只有 `README.md`
-- 尚未编写 `build.py`
-- 尚未创建 GitHub Actions
-- 尚未生成任何 Surge 规则
+- `sources/apps.yaml` 已定义 OKX、WhatsApp、LINE、GitHub 四个 App 的 v2fly primary source 与显式 parser policy
+- `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
+- `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`
+- `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、错误策略及实际 manifest 校验
+- `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 02:17 的定时运行
+- GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
+- 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`
+- 目前没有任何 `sources/supplement/<App>.list` 文件；这是预期状态
 
 ## 项目目标
 
@@ -46,7 +50,7 @@ Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX
 
 ### Source audit 前置要求
 
-在真正创建 `apps.yaml` 前，必须先完成一轮 source audit。至少覆盖：YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、Live、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub。
+新增 App 或更换既有 App 的 primary source 前，必须先完成一轮 source audit。至少覆盖：YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、Live、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub。
 
 每个 App 的 audit 应记录：
 
@@ -62,7 +66,7 @@ Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX
 - 是否需要 supplemental
 - 选择理由
 
-## 第一批计划纳入
+## 第一批验证样本
 
 - OKX
 - WhatsApp
@@ -89,10 +93,14 @@ Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX
 
 ## 已确定的规则源结论
 
-- OKX：旧 blackmatrix7 规则过少，优先采用活跃 geosite/domain-list 类来源 + custom。
-- WhatsApp：v2fly/MetaCubeX 现有域名覆盖比旧 blackmatrix7 更完整。
-- LINE：v2fly 当前规则明显更完整，避免因为 LINE 引入整个 `naver.jp` 这类过宽域名。
-- GitHub：应优先采用活跃维护源，避免冻结旧 blackmatrix7 列表。
+四个验证样本当前均只使用 1 个 v2fly primary source，不配置 supplemental source，不创建 supplement 文件；所有 App 均采用 `format: v2fly-domain-list`，由 `build.py` 解析真实语义，而非按行粗暴转换。
+
+- OKX：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx`。旧 blackmatrix7 规则过少；当前保留无 attribute 条目，`oklink.com @cn` 未启用。
+- WhatsApp：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp`。比旧 blackmatrix7 覆盖更现代；`@ads` graph 条目未启用。
+- LINE：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/line`。当前比旧 blackmatrix7 更完整；避免引入整个 `naver.jp`，但 `line.naver.jp` 与 `nhncorp.jp` 暂不凭猜测排除，等待实际日志证据。
+- GitHub：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/github`。显式允许 `github-copilot` include，显式拒绝 `npmjs` include；精确 GitHub Azure/S3 生产主机可保留，但不得扩展为整个 Microsoft、Amazon 或 Azure 公共基础设施；`@ads` telemetry 条目未启用。
+
+属性语义固定为：输出所有无 attribute 条目，加上至少具有一个 `attributes.include` 中属性的条目。当前四个 App 均为 `attributes.include: []`；v1 遇到 `@!name` 否定属性会失败，不会静默误解析。
 - PayPal：blackmatrix7 当前仍可作为合理上游。
 - Netflix：blackmatrix7 现有列表的 IP 覆盖仍有价值，不要盲目替换成纯域名源。
 
@@ -120,7 +128,7 @@ integrate-appgw.zajourney.com
 isafepal.com
 ```
 
-## 仓库未来目标结构
+## 当前仓库结构
 
 ```text
 README.md
@@ -133,15 +141,27 @@ Surge/
 .github/workflows/update.yml
 ```
 
+## 已验证的生成结果
+
+首次成功的 GitHub Actions 运行 #2 在 2026-08-15 生成并提交以下文件：
+
+- `Surge/OKX.list`：9 条规则
+- `Surge/WhatsApp.list`：11 条规则
+- `Surge/LINE.list`：20 条规则
+- `Surge/GitHub.list`：58 条规则
+
+生成文件仅可由 `python scripts/build.py --write` 或 GitHub Actions 更新，绝不手工编辑。Surge 主配置应引用本仓库稳定 raw URL，并通过 `RULE-SET` 自行指定策略。
+
 ## 构建闭环
 
 ```text
-上游更新
-→ GitHub Actions
-→ build.py
+上游更新或手动触发
+→ GitHub Actions（或本地 `build.py --write`）
+→ 解析 v2fly / 展开经显式批准的 include
 → 解析/转换/合并 supplement
 → 去重/规范化
 → Surge/*.list
+→ 仅当 `Surge/` 有变化时由 Actions bot 提交
 → Surge 使用自己仓库的稳定 raw URL
 ```
 
