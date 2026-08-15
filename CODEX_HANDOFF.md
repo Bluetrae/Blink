@@ -17,7 +17,7 @@ https://github.com/Bluetrae/WProxyRules
 - `main` 跟踪 `origin/main`
 - working tree clean
 - `safe.directory` 已配置完成
-- `sources/apps.yaml` 已定义七个 App：OKX、WhatsApp、LINE、GitHub、SafePal 使用 v2fly primary source；PayPal 使用 Repcz 原生 Surge primary source，Netflix 使用 blackmatrix7 原生 Surge primary source；均保留显式 parser policy
+- `sources/apps.yaml` 已定义十二个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；均保留显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
 - `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式
 - `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、错误策略及实际 manifest 校验
@@ -25,7 +25,8 @@ https://github.com/Bluetrae/WProxyRules
 - GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
 - GitHub Actions 第 3 次手动运行成功，生成 commit 为 `498ca27 chore: update generated Surge rule-sets`
 - GitHub Actions 第 4 次手动运行成功，生成 commit 为 `d69291a chore: update generated Surge rule-sets`
-- 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`、`Surge/SafePal.list`、`Surge/PayPal.list`、`Surge/Netflix.list`
+- 最近一次手动运行成功，生成 commit 为 `4f2535c chore: update generated Surge rule-sets`
+- 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`、`Surge/SafePal.list`、`Surge/PayPal.list`、`Surge/Netflix.list`、`Surge/YouTube.list`、`Surge/X.list`、`Surge/Instagram.list`、`Surge/Telegram.list`、`Surge/Threads.list`
 - 目前没有任何 `sources/supplement/<App>.list` 文件；这是预期状态
 
 ## 项目目标
@@ -81,21 +82,15 @@ Repcz 与 SukkaW 是一梯队可信上游：每个 App audit 先审 Repcz 的专
 
 ## 后续计划纳入
 
-- YouTube
-- X
-- Instagram
-- Threads
-- Telegram
 - AI
 - TikTok
 - Spotify
-- Netflix
 - Live
 - ZABank
 
 ## 已确定的规则源结论
 
-四个初始验证样本及已纳入的 SafePal 当前均只使用 1 个 v2fly primary source；PayPal、Netflix 各使用 1 个 blackmatrix7 原生 Surge primary source。所有 App 均不配置 supplemental source，也不创建 supplement 文件；`build.py` 会根据 `format` 解析真实语义，而非按行粗暴转换。
+四个初始验证样本及 SafePal、Threads 当前均只使用 1 个 v2fly primary source；PayPal、YouTube、X、Instagram 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source。所有 App 均不配置 supplemental source，也不创建 supplement 文件；`build.py` 会根据 `format` 解析真实语义，而非按行粗暴转换。
 
 - OKX：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx`。旧 blackmatrix7 规则过少；当前保留无 attribute 条目，`oklink.com @cn` 未启用。
 - WhatsApp：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp`。比旧 blackmatrix7 覆盖更现代；`@ads` graph 条目未启用。
@@ -104,6 +99,11 @@ Repcz 与 SukkaW 是一梯队可信上游：每个 App audit 先审 Repcz 的专
 - SafePal：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/safepal`。当前无可用的 Repcz、SukkaW、blackmatrix7 或 MetaCubeX 专项规则；v2fly 的窄范围列表覆盖 `isafepal.com` 与 `safepal.com`，没有 include 或 attribute 条目。
 - PayPal：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/PayPal.list`。与 blackmatrix7 当前 PayPal 产物规范化后同为 248 条、差集为零，因此按长期作者优先偏好选择 Repcz；保留原生 `DOMAIN-SUFFIX`、`DOMAIN-KEYWORD` 与 `USER-AGENT` 语义。
 - Netflix：`https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Netflix/Netflix.list`。保留其相较纯域名来源更有价值的 IPv4/IPv6 覆盖与 `no-resolve` 语义；第 4 次 Actions 生成 1,158 条原生 Surge 规则。
+- YouTube：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/YouTube.list`。Repcz 的 14 条原生 Surge 规则覆盖核心 YouTube、video、image、API 和关联域名；紧凑的专项范围优先于没有确证价值的大型聚合列表。
+- X：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Twitter.list`。Repcz 的 34 条原生规则覆盖 X、Twitter、Grok、媒体域名和聚焦 IP 段；相比 v2fly 的当前有效域名输出覆盖更完整，无需格式转换。
+- Instagram：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Instagram.list`。保留 `instagram.com`、`cdninstagram.com`、`instagr.am` 三个核心 suffix；显式排除过宽的 `DOMAIN-KEYWORD,instagram`，不采用含大量第三方增长、营销、拼写变体与 SEO 域名的 v2fly 集合。
+- Telegram：`https://raw.githubusercontent.com/SukkaW/Surge/master/Source/non_ip/telegram.conf`。SukkaW 的 14 条原生规则仅覆盖核心 Telegram 域名；Repcz 当前含 v1 不支持的 `IP-ASN` 以及第三方客户端、遥测范围，v2fly 的 TON 生态条目不作为保守默认输出。
+- Threads：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/threads`。Repcz 与 SukkaW 没有专项规则；v2fly 只有 `threads.com` 和 `threads.net`，无 attribute、无 include，可安全转换。
 
 属性语义固定为：输出所有无 attribute 条目，加上至少具有一个 `attributes.include` 中属性的条目。当前 manifest 的 `attributes.include` 均为 `[]`；该属性选择仅适用于 v2fly 条目，v1 遇到 `@!name` 否定属性会失败，不会静默误解析。
 
@@ -159,6 +159,14 @@ GitHub Actions 第 4 次手动运行在同日新增：
 
 - `Surge/PayPal.list`：248 条规则
 - `Surge/Netflix.list`：1,158 条规则
+
+最近一次手动运行新增：
+
+- `Surge/YouTube.list`：14 条规则
+- `Surge/X.list`：34 条规则
+- `Surge/Instagram.list`：3 条规则
+- `Surge/Telegram.list`：14 条规则
+- `Surge/Threads.list`：2 条规则
 
 生成文件仅可由 `python scripts/build.py --write` 或 GitHub Actions 更新，绝不手工编辑。Surge 主配置应引用本仓库稳定 raw URL，并通过 `RULE-SET` 自行指定策略。
 

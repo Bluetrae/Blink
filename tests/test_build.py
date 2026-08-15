@@ -42,7 +42,23 @@ class BuildTests(unittest.TestCase):
     def test_loads_and_validates_project_manifest(self) -> None:
         root = Path(__file__).resolve().parents[1]
         manifest = build.load_manifest(root / "sources" / "apps.yaml")
-        self.assertEqual(set(manifest["apps"]), {"OKX", "WhatsApp", "LINE", "GitHub", "SafePal", "PayPal", "Netflix"})
+        self.assertEqual(
+            set(manifest["apps"]),
+            {
+                "OKX",
+                "WhatsApp",
+                "LINE",
+                "GitHub",
+                "SafePal",
+                "PayPal",
+                "Netflix",
+                "YouTube",
+                "X",
+                "Instagram",
+                "Telegram",
+                "Threads",
+            },
+        )
         for app_name, app in manifest["apps"].items():
             build.validate_app_config(app_name, app)
 

@@ -59,7 +59,12 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netfl
 | 💳 Finance | [SafePal](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/SafePal.list) | `Surge/SafePal.list` | 域名 |
 | 💬 Communication | [WhatsApp](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list) | `Surge/WhatsApp.list` | 域名 |
 | 💬 Communication | [LINE](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list) | `Surge/LINE.list` | 域名 |
+| 💬 Communication | [Telegram](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Telegram.list) | `Surge/Telegram.list` | 域名 |
 | 💻 Development | [GitHub](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list) | `Surge/GitHub.list` | 域名 |
+| 🌐 Social | [X](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/X.list) | `Surge/X.list` | 域名、IP |
+| 🌐 Social | [Instagram](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Instagram.list) | `Surge/Instagram.list` | 域名 |
+| 🌐 Social | [Threads](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Threads.list) | `Surge/Threads.list` | 域名 |
+| 🎬 Media | [YouTube](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/YouTube.list) | `Surge/YouTube.list` | 域名 |
 | 🎬 Media | [Netflix](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netflix.list) | `Surge/Netflix.list` | 域名、IP、User-Agent、Process |
 
 所有输出文件均不携带策略名；`RULE-SET` 的最后一个字段始终由你的 Surge 主配置决定。
