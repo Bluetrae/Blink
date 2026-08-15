@@ -69,14 +69,18 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.li
 | 💳 Finance | [OKX](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list) | `Surge/OKX.list` | 域名 |
 | 💳 Finance | [PayPal](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/PayPal.list) | `Surge/PayPal.list` | 域名、User-Agent |
 | 💳 Finance | [SafePal](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list) | `Surge/SafePal.list` | 域名 |
+| 💳 Finance | [ZABank](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/ZABank.list) | `Surge/ZABank.list` | 域名 |
 | 💬 Communication | [WhatsApp](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/WhatsApp.list) | `Surge/WhatsApp.list` | 域名 |
 | 💬 Communication | [LINE](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/LINE.list) | `Surge/LINE.list` | 域名 |
 | 💬 Communication | [Telegram](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Telegram.list) | `Surge/Telegram.list` | 域名 |
 | 💻 Development | [GitHub](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list) | `Surge/GitHub.list` | 域名 |
+| 🧠 AI | [AI](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list) | `Surge/AI.list` | 域名 |
 | 🌐 Social | [X](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list) | `Surge/X.list` | 域名、IP |
 | 🌐 Social | [Instagram](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list) | `Surge/Instagram.list` | 域名 |
 | 🌐 Social | [Threads](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Threads.list) | `Surge/Threads.list` | 域名 |
+| 🌐 Social | [TikTok](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/TikTok.list) | `Surge/TikTok.list` | 域名、IP |
 | 🎬 Media | [YouTube](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list) | `Surge/YouTube.list` | 域名 |
+| 🎬 Media | [Spotify](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list) | `Surge/Spotify.list` | 域名、IP、User-Agent、Process |
 | 🎬 Media | [Netflix](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list) | `Surge/Netflix.list` | 域名、IP、User-Agent、Process |
 
 所有输出文件均不携带策略名；`RULE-SET` 的最后一个字段始终由你的 Surge 主配置决定。
@@ -121,9 +125,9 @@ Reject、Domestic、China IP、CDN、LAN 等基础设施规则不在这里复制
 | Format | 构建行为 |
 | --- | --- |
 | `v2fly-domain-list` | 解析普通 domain、`full:`、`keyword:` 与 manifest 明确允许的 `include`。regexp、未声明 include、否定 attribute 会直接失败。 |
-| `surge-rule-set` | 只接受无策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR`、`IP-CIDR6`；IP 仅允许额外携带 `no-resolve`。 |
+| `surge-rule-set` | 只接受无策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR`、`IP-CIDR6`；IP 仅允许额外携带 `no-resolve`。`exclude` 支持类型级条目（`ip-asn:*`、`url-regex:*`）显式丢弃 v1 不输出的规则类型。 |
 
-支持一种输入格式，不代表自动接纳任何来源。新增或替换 source 前，必须先完成 source audit 并审查 manifest 改动。
+支持一种输入格式，不代表自动接纳任何来源。新增或替换 source 前，必须先完成 source audit 并审查 manifest 改动。上游完全缺失的 App（如 ZABank）可以声明 `sources: []`，仅由 `sources/supplement/<App>.list` 提供规则。
 
 ---
 
@@ -131,6 +135,7 @@ Reject、Domestic、China IP、CDN、LAN 等基础设施规则不在这里复制
 
 ```text
 sources/apps.yaml          # 长期 source manifest：来源、范围控制与选源理由
+SOURCE_AUDITS.md           # 完整 source audit 档案：候选、证据与结论
 sources/supplement/        # 仅限已证实的上游缺口；按需创建
 scripts/build.py           # 保守、显式失败的构建器
 Surge/                     # Generated files：仅由构建器或 Actions 写入

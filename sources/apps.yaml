@@ -297,3 +297,106 @@ apps:
       Repcz and SukkaW currently provide no dedicated Threads Rule-Set. v2fly is
       selected because its small data file contains only threads.com and
       threads.net, needs no include expansion, and converts safely to Surge.
+
+  TikTok:
+    enabled: true
+    output: Surge/TikTok.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/TikTok.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/TikTok.list
+    exclude:
+      - ip-asn:*
+    note: >-
+      Repcz is selected because its native TikTok list is actively refreshed
+      and covers TikTok domains, ByteDance CDNs, keywords, and IP ranges more
+      completely than every compared candidate. Its two IP-ASN entries are
+      dropped through an explicit type-level exclude because build.py v1 does
+      not emit ASN rules. blackmatrix7 is stale and drifts into ByteDance AI
+      IDE domains; v2fly's TikTok entries all carry negative attributes that
+      v1 refuses to interpret.
+
+  Spotify:
+    enabled: true
+    output: Surge/Spotify.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Spotify.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/Spotify.list
+    exclude: []
+    note: >-
+      Repcz is selected because it publishes a compact, actively refreshed,
+      native Surge Spotify list that stays entirely inside the build.py v1
+      whitelist. SukkaW only embeds Spotify rules inside stream.ts (last
+      changed 2025-11) and publishes them merged with other services;
+      blackmatrix7 is about 14 months stale, and v2fly would import the
+      third-party conductrics.com experiment host.
+
+  AI:
+    enabled: true
+    output: Surge/AI.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AI.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/AI.list
+    exclude:
+      - url-regex:*
+    note: >-
+      Repcz AI.list is the aggregated mainstream-AI Rule-Set: it is an actively
+      refreshed derivative of SukkaW's ai.conf plus the OpenAI file CDN
+      oaiusercontent.com. The single URL-REGEX entry (the google.com/sorry
+      Gemini continuation fix that requires MitM of www.google.com) is dropped
+      through an explicit type-level exclude because build.py v1 does not emit
+      URL-REGEX rules. DeepSeek is intentionally absent (domestic service,
+      direct by default); it may only enter via a log-confirmed supplement.
+
+  ZABank:
+    enabled: true
+    output: Surge/ZABank.list
+    sources: []
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/ZABank.list
+    exclude: []
+    note: >-
+      The 2026-08-15 source audit verified that Repcz, SukkaW, v2fly,
+      blackmatrix7, and MetaCubeX provide no ZABank rules, so this app is
+      supplement-only: the output is built exclusively from the repo-maintained
+      supplement, whose three root domains (za.group, zainvest.group,
+      zajourney.com) cover all nine candidate domains recorded from actual
+      usage. build.py v1 allows an empty sources list for exactly this case.

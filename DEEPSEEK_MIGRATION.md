@@ -91,6 +91,8 @@ Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指�
 - v2fly include 采用显式 allow/deny policy：未在 allow 或 deny 中声明的 include 必须导致构建失败；同一 include 同时允许和拒绝也必须失败。
 - attribute 语义固定为“无 attribute 条目 + 至少带一个显式允许 attribute 的条目”。当前所有 App 的 `attributes.include` 均为空，因此只输出无 attribute 条目；`@!name` 否定属性在 v1 不支持，必须失败而非静默处理。
 - exclude 是 manifest 的显式、可审计决策，不能用猜测替代 source audit。
+- surge-rule-set 来源可通过类型级 exclude（`ip-asn:*`、`url-regex:*`）显式丢弃 v1 不输出的规则类型；被丢弃的行数出现在构建报告的 `skipped_excluded` 字段。
+- 上游完全缺失的 App 可声明 `sources: []`（supplement-only），全部规则来自 `sources/supplement/<App>.list`；最终输出仍必须非空。
 - 构建必须保守、可读、错误显式；不能为了成功生成而扩大规则范围或篡改规则语义。
 
 ## 已启用的 App 与 primary source
@@ -109,6 +111,10 @@ Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指�
 | Instagram | Repcz | `surge-rule-set` | 排除过宽的 `DOMAIN-KEYWORD,instagram`。 |
 | Telegram | SukkaW | `surge-rule-set` | 只保留核心 Telegram 范围；不默认包含 TON 与第三方客户端生态。 |
 | Threads | v2fly | `v2fly-domain-list` | 当前为 `threads.com` 与 `threads.net` 的窄范围集合。 |
+| TikTok | Repcz | `surge-rule-set` | 2 条 `IP-ASN` 通过 `exclude: ["ip-asn:*"]` 类型级丢弃。 |
+| Spotify | Repcz | `surge-rule-set` | 21 条全白名单兼容，零转换风险。 |
+| AI | Repcz | `surge-rule-set` | 1 条 `URL-REGEX` 通过 `exclude: ["url-regex:*"]` 类型级丢弃；DeepSeek 未纳入。 |
+| ZABank | 无上游 | supplement-only | `sources: []`，仅 `sources/supplement/ZABank.list` 三条根域名。 |
 
 实际 URL、exclude、include policy、attribute policy 和完整选源理由均以 `sources/apps.yaml` 为准。
 
@@ -124,10 +130,10 @@ Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指�
 
 ## 已知待办与谨慎项
 
-- 后续计划：AI、TikTok、Spotify、Live、ZABank；每个都需要先完成 source audit。
+- 后续计划中的 AI、TikTok、Spotify、ZABank 已于 2026-08-15 完成 source audit 并全部落地；完整档案见 `SOURCE_AUDITS.md`。原清单中的 Live 已确认是用户个人直播源，不纳入本仓库。
 - Apple Music 暂缓：当前 Apple 分流仍依赖 Repcz、SukkaW、extended-matching 与手工 CDN 修复，暂不纳入此 pipeline。
-- ZABank 的已知域名仅是候选，尚未完成上游比较，禁止直接写入 supplement。
-- 当前没有任何 `sources/supplement/<App>.list` 文件；这是正确的空状态，不是缺失文件。
+- ZABank 的 9 个候选域名已经 2026-08-15 审计确认上游全部缺失，并以三条根域名（`za.group`、`zainvest.group`、`zajourney.com`）写入 `sources/supplement/ZABank.list`；如有日志发现新的 ZA Bank 域名，按漏网处理流程追加。
+- `sources/supplement/` 目前仅含 `ZABank.list`；其他 App 无 supplement 文件是正确的空状态，不是缺失文件。
 - 若 Surge 日志出现漏网：先确认 App 归属，再与上游比较，确认真正缺失后才加入对应 supplement、重新构建并验证。
 
 ## 原始聊天档案

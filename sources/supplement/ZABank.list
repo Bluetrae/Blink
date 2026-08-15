@@ -1,0 +1,6 @@
+# ZABank 补充规则：2026-08-15 source audit 确认 Repcz、SukkaW、v2fly、
+# blackmatrix7、MetaCubeX 均无 ZABank 规则，因此本 App 仅由 supplement 提供规则。
+# 三条根域名覆盖此前记录的全部 9 个候选域名（来自实际使用）。
+DOMAIN-SUFFIX,za.group
+DOMAIN-SUFFIX,zainvest.group
+DOMAIN-SUFFIX,zajourney.com

@@ -81,6 +81,7 @@ class Compilation:
     skipped_attributes: list[ParsedEntry]
     denied_includes: list[tuple[str, SourceLocation]]
     provenance: dict[tuple[str, str, tuple[str, ...]], list[SourceLocation]]
+    skipped_excluded: list[str] = dataclasses.field(default_factory=list)
 
 
 FetchText = Callable[[str], str]
@@ -119,8 +120,8 @@ def validate_app_config(app_name: str, app: object) -> None:
         raise BuildError(f"{app_name}: exclude must be a list")
 
     sources = app["sources"]
-    if not isinstance(sources, list) or not sources:
-        raise BuildError(f"{app_name}: sources must be a non-empty list")
+    if not isinstance(sources, list):
+        raise BuildError(f"{app_name}: sources must be a list")
     primaries = 0
     supplementals = 0
     for source in sources:
@@ -136,8 +137,11 @@ def validate_app_config(app_name: str, app: object) -> None:
             supplementals += 1
         else:
             raise BuildError(f"{app_name}: source role must be primary or supplemental")
-    if primaries != 1 or supplementals > 1:
+    if sources and (primaries != 1 or supplementals > 1):
         raise BuildError(f"{app_name}: require exactly one primary and at most one supplemental source")
+    # An empty sources list is a supplement-only app: every rule must come from
+    # the local supplement file. It is reserved for apps where the source audit
+    # proved that no upstream provides a usable rule set.
 
     include_policy = app["include_policy"]
     if not isinstance(include_policy, dict) or include_policy.get("mode") != "explicit":
@@ -282,12 +286,23 @@ def normalize_surge_rule(
     return SurgeRule(kind, str(network), options, location)
 
 
-def parse_surge_rule_set_text(text: str, source: str, chain: tuple[str, ...]) -> list[SurgeRule]:
+def parse_surge_rule_set_text(
+    text: str,
+    source: str,
+    chain: tuple[str, ...],
+    skip_kinds: set[str] | None = None,
+    skipped: list[str] | None = None,
+) -> list[SurgeRule]:
     """Parse a deliberately small, policy-free subset of native Surge syntax.
 
     A source rule must be one of the explicitly supported output types.  It
     cannot carry a policy name: domain, keyword, user-agent, and process rules
     have exactly two fields; IP rules may additionally use ``no-resolve``.
+
+    ``skip_kinds`` drops rule kinds that the manifest explicitly excluded at
+    the type level (for example ``IP-ASN`` or ``URL-REGEX``) instead of failing
+    the build.  Dropped lines are recorded in ``skipped`` so the decision stays
+    auditable in the build report.
     """
     rules: list[SurgeRule] = []
     for line_number, original in enumerate(text.splitlines(), start=1):
@@ -299,23 +314,40 @@ def parse_surge_rule_set_text(text: str, source: str, chain: tuple[str, ...]) ->
         if len(parts) < 2 or any(not part for part in parts):
             raise BuildError(f"malformed Surge rule at {location.describe()}: {original}")
         kind, value, *option_parts = parts
+        if skip_kinds and kind in skip_kinds:
+            if skipped is not None:
+                skipped.append(f"{kind},{value}")
+            continue
         rules.append(normalize_surge_rule(kind, value, tuple(option_parts), location))
     return rules
 
 
-def parse_excludes(items: Iterable[object], app_name: str) -> list[tuple[str, str]]:
+def parse_excludes(items: Iterable[object], app_name: str) -> tuple[list[tuple[str, str]], set[str]]:
+    """Return concrete domain excludes plus rule kinds to skip at parse time.
+
+    Domain entries use ``type:value`` syntax.  ``ip-asn:*`` and ``url-regex:*``
+    are type-level exclusions: those kinds are dropped from native Surge sources
+    because v1 does not emit them, and the manifest decision stays explicit.
+    """
     excludes: list[tuple[str, str]] = []
+    skipped_kinds: set[str] = set()
     mappings = {"domain": "DOMAIN", "domain-suffix": "DOMAIN-SUFFIX", "domain-keyword": "DOMAIN-KEYWORD"}
+    type_only = {"ip-asn": "IP-ASN", "url-regex": "URL-REGEX"}
     for item in items:
         if not isinstance(item, str) or ":" not in item:
             raise BuildError(f"{app_name}: exclude entries must use type:value syntax")
         kind, value = item.split(":", 1)
+        if kind in type_only:
+            if value != "*":
+                raise BuildError(f"{app_name}: type-level exclude {kind!r} must use '*' as its value")
+            skipped_kinds.add(type_only[kind])
+            continue
         if kind not in mappings or not value:
             raise BuildError(f"{app_name}: unsupported exclude {item!r}")
         location = SourceLocation(f"manifest:{app_name}", 0, (app_name,))
         normalized = value.lower() if kind == "domain-keyword" else normalize_domain(value, location)
         excludes.append((mappings[kind], normalized))
-    return excludes
+    return excludes, skipped_kinds
 
 
 def is_excluded(rule: SurgeRule, excludes: Iterable[tuple[str, str]]) -> bool:
@@ -353,6 +385,8 @@ def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = de
     rules: list[SurgeRule] = []
     skipped_attributes: list[ParsedEntry] = []
     denied_includes: list[tuple[str, SourceLocation]] = []
+    skipped_excluded: list[str] = []
+    excludes, skip_kinds = parse_excludes(app["exclude"], app_name)
 
     def resolve(url: str, list_name: str, chain: tuple[str, ...]) -> None:
         if list_name in stack:
@@ -387,12 +421,11 @@ def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = de
             source_url = source["url"]
             if source_url not in cached_surge_rules:
                 cached_surge_rules[source_url] = parse_surge_rule_set_text(
-                    fetch_text(source_url), source_url, (source_name,)
+                    fetch_text(source_url), source_url, (source_name,), skip_kinds, skipped_excluded
                 )
             rules.extend(cached_surge_rules[source_url])
 
     rules.extend(parse_supplement(root / app["supplement"], app_name))
-    excludes = parse_excludes(app["exclude"], app_name)
     provenance: dict[tuple[str, str, tuple[str, ...]], list[SourceLocation]] = defaultdict(list)
     unique: dict[tuple[str, str, tuple[str, ...]], SurgeRule] = {}
     for rule in rules:
@@ -403,7 +436,7 @@ def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = de
     ordered = sorted(unique.values(), key=lambda rule: (SORT_ORDER[rule.kind], rule.value))
     if not ordered:
         raise BuildError(f"{app_name}: final output is empty")
-    return Compilation(app_name, ordered, skipped_attributes, denied_includes, dict(provenance))
+    return Compilation(app_name, ordered, skipped_attributes, denied_includes, dict(provenance), skipped_excluded)
 
 
 def write_outputs(compilations: Iterable[Compilation], manifest: dict, root: Path) -> None:
@@ -450,6 +483,7 @@ def main(argv: list[str] | None = None) -> int:
                     "name": item.app_name,
                     "rules": len(item.rules),
                     "skipped_attributes": len(item.skipped_attributes),
+                    "skipped_excluded": len(item.skipped_excluded),
                     "denied_includes": [name for name, _ in item.denied_includes],
                 }
                 for item in compilations

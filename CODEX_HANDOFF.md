@@ -18,17 +18,19 @@ https://github.com/Bluetrae/Rulink
 - working tree clean
 - `safe.directory` 已配置完成
 - 根目录刻意不设置覆盖整个仓库的统一许可证：原创构建代码/文档与第三方上游及 generated Rule-Set 分开处理；`THIRD_PARTY_NOTICES.md` 记录来源和已知许可，`DISCLAIMER.md` 记录个人使用、无担保与责任边界
-- `sources/apps.yaml` 已定义十二个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；均保留显式 parser policy
+- `sources/apps.yaml` 已定义十六个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；ZABank 无可用上游，为 supplement-only App（`sources: []`）；均保留显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
-- `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式
-- `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、错误策略及实际 manifest 校验
+- `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式，并支持类型级 exclude（`ip-asn:*`、`url-regex:*`）与 supplement-only App（`sources: []`）
+- `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、类型级 exclude、supplement-only App、错误策略及实际 manifest 校验（14 个用例全过）
 - `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 02:17 的定时运行
 - GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
 - GitHub Actions 第 3 次手动运行成功，生成 commit 为 `498ca27 chore: update generated Surge rule-sets`
 - GitHub Actions 第 4 次手动运行成功，生成 commit 为 `d69291a chore: update generated Surge rule-sets`
 - 最近一次手动运行成功，生成 commit 为 `4f2535c chore: update generated Surge rule-sets`
-- 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`、`Surge/SafePal.list`、`Surge/PayPal.list`、`Surge/Netflix.list`、`Surge/YouTube.list`、`Surge/X.list`、`Surge/Instagram.list`、`Surge/Telegram.list`、`Surge/Threads.list`
-- 目前没有任何 `sources/supplement/<App>.list` 文件；这是预期状态
+- 随后一次 GitHub Actions 运行生成 commit `832541c chore: update generated Surge rule-sets`：为全部 12 个生成文件写入 `# 规则名称` 与 `# 规则统计` 头部（构建器实现于 `76cdb63 feat: add metadata headers to generated rule-sets`）
+- `DEEPSEEK_MIGRATION.md` 已加入仓库，供新 Agent 无会话接手；2026-08-15 之后的最新提交以 `git log` 为准
+- 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`、`Surge/SafePal.list`、`Surge/PayPal.list`、`Surge/Netflix.list`、`Surge/YouTube.list`、`Surge/X.list`、`Surge/Instagram.list`、`Surge/Telegram.list`、`Surge/Threads.list`、`Surge/TikTok.list`、`Surge/Spotify.list`、`Surge/AI.list`、`Surge/ZABank.list`
+- `sources/supplement/` 目前仅含 `ZABank.list`（3 条根域名，supplement-only）；其他 App 无 supplement 文件，这是预期状态
 
 ## 项目目标
 
@@ -83,15 +85,13 @@ Repcz 与 SukkaW 是一梯队可信上游：每个 App audit 先审 Repcz 的专
 
 ## 后续计划纳入
 
-- AI
-- TikTok
-- Spotify
-- Live
-- ZABank
+原计划中的 AI、TikTok、Spotify、ZABank 已于 2026-08-15 完成 source audit 并全部落地（见 `SOURCE_AUDITS.md` 与下文结论）。
+
+原清单中的 Live 已确认是用户个人直播源，不纳入本仓库。
 
 ## 已确定的规则源结论
 
-四个初始验证样本及 SafePal、Threads 当前均只使用 1 个 v2fly primary source；PayPal、YouTube、X、Instagram 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source。所有 App 均不配置 supplemental source，也不创建 supplement 文件；`build.py` 会根据 `format` 解析真实语义，而非按行粗暴转换。
+四个初始验证样本及 SafePal、Threads 当前均只使用 1 个 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；ZABank 无可用上游，仅由 `sources/supplement/ZABank.list` 提供规则。所有 App 均不配置 supplemental source；`build.py` 会根据 `format` 解析真实语义，而非按行粗暴转换。
 
 - OKX：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx`。旧 blackmatrix7 规则过少；当前保留无 attribute 条目，`oklink.com @cn` 未启用。
 - WhatsApp：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp`。比旧 blackmatrix7 覆盖更现代；`@ads` graph 条目未启用。
@@ -105,26 +105,26 @@ Repcz 与 SukkaW 是一梯队可信上游：每个 App audit 先审 Repcz 的专
 - Instagram：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Instagram.list`。保留 `instagram.com`、`cdninstagram.com`、`instagr.am` 三个核心 suffix；显式排除过宽的 `DOMAIN-KEYWORD,instagram`，不采用含大量第三方增长、营销、拼写变体与 SEO 域名的 v2fly 集合。
 - Telegram：`https://raw.githubusercontent.com/SukkaW/Surge/master/Source/non_ip/telegram.conf`。SukkaW 的 14 条原生规则仅覆盖核心 Telegram 域名；Repcz 当前含 v1 不支持的 `IP-ASN` 以及第三方客户端、遥测范围，v2fly 的 TON 生态条目不作为保守默认输出。
 - Threads：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/threads`。Repcz 与 SukkaW 没有专项规则；v2fly 只有 `threads.com` 和 `threads.net`，无 attribute、无 include，可安全转换。
+- TikTok：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/TikTok.list`。Repcz 的 83 条原生规则覆盖最完整且每日更新；2 条 `IP-ASN` 通过 `exclude: ["ip-asn:*"]` 类型级显式丢弃；blackmatrix7 陈旧且混入字节 AI IDE 域名，v2fly 条目全部带 `@!cn` 否定属性不可用。
+- Spotify：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Spotify.list`。21 条原生规则全部在 v1 白名单内，零转换风险；SukkaW 仅内嵌于 stream.ts（2025-11 后未更新），blackmatrix7 约 14 个月未更新，v2fly 会混入第三方 conductrics.com。
+- AI：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AI.list`。51 条聚合覆盖主流 AI 服务，为 SukkaW ai.conf 的派生（多 `file.oaiusercontent.com`）；1 条 `URL-REGEX` 通过 `exclude: ["url-regex:*"]` 类型级显式丢弃；DeepSeek 未纳入（国内直连默认，须日志确认缺口后才可进 supplement）。
+- ZABank：无任何上游提供 ZABank 规则（2026-08-15 审计验证 Repcz/SukkaW/v2fly/blackmatrix7/MetaCubeX 全部缺失）。采用 supplement-only：`sources: []` + `sources/supplement/ZABank.list`（`za.group`、`zainvest.group`、`zajourney.com` 三条根域名），覆盖此前记录的 9 个候选域名。
 
-属性语义固定为：输出所有无 attribute 条目，加上至少具有一个 `attributes.include` 中属性的条目。当前 manifest 的 `attributes.include` 均为 `[]`；该属性选择仅适用于 v2fly 条目，v1 遇到 `@!name` 否定属性会失败，不会静默误解析。
+属性语义固定为：输出所有无 attribute 条目，加上至少具有一个 `attributes.include` 中属性的条目。当前 manifest 的 `attributes.include` 均为 `[]`；该属性选择仅适用于 v2fly 条目，v1 遇到 `@!name` 否定属性会失败，不会静默误解析。surge-rule-set 来源中的 `IP-ASN`、`URL-REGEX` 可通过 `exclude: ["ip-asn:*"]`、`exclude: ["url-regex:*"]` 类型级显式丢弃（TikTok、AI 使用）；无上游的 App 可声明 `sources: []` 仅由 supplement 提供规则（ZABank 使用）。
 
 ## Finance supplement 候选与当前已知
 
 ### ZABank
 
-以下域名为待核对候选，尚未与选定上游比较，不应直接写入 `sources/supplement/`：
+2026-08-15 source audit 确认 Repcz、SukkaW、v2fly（全树 1536 个 data 文件）、blackmatrix7、MetaCubeX 均无 ZABank 规则，因此 ZABank 采用 supplement-only 方案：`sources: []`，全部规则来自 `sources/supplement/ZABank.list`。此前记录的 9 个候选域名全部落在三条根域名之下，已由三条根域名完整覆盖：
 
 ```text
-wbs.za.group
-i18n.za.group
-offlineapp.za.group
-bankappgw.za.group
-bank-stock.zainvest.group
-aim-abtesting-sdk.za.group
-appmon-prd.zajourney.com
-bank-sbsmarket.zainvest.group
-integrate-appgw.zajourney.com
+za.group          → wbs、i18n、offlineapp、bankappgw、aim-abtesting-sdk
+zainvest.group    → bank-stock、bank-sbsmarket
+zajourney.com     → appmon-prd、integrate-appgw
 ```
+
+supplement 内容为 `DOMAIN-SUFFIX,za.group`、`DOMAIN-SUFFIX,zainvest.group`、`DOMAIN-SUFFIX,zajourney.com`，共 3 条。
 
 ### SafePal
 
@@ -136,6 +136,8 @@ SafePal 已采用 v2fly primary source；`isafepal.com` 与 `safepal.com` 均由
 README.md
 AGENTS.md
 CODEX_HANDOFF.md
+DEEPSEEK_MIGRATION.md
+SOURCE_AUDITS.md
 sources/apps.yaml
 sources/supplement/
 scripts/build.py
@@ -168,6 +170,13 @@ GitHub Actions 第 4 次手动运行在同日新增：
 - `Surge/Instagram.list`：3 条规则
 - `Surge/Telegram.list`：14 条规则
 - `Surge/Threads.list`：2 条规则
+
+2026-08-15 本地全量生成新增：
+
+- `Surge/TikTok.list`：81 条规则（2 条 IP-ASN 类型级排除）
+- `Surge/Spotify.list`：21 条规则
+- `Surge/AI.list`：50 条规则（1 条 URL-REGEX 类型级排除）
+- `Surge/ZABank.list`：3 条规则（supplement-only）
 
 生成文件仅可由 `python scripts/build.py --write` 或 GitHub Actions 更新，绝不手工编辑。Surge 主配置应引用本仓库稳定 raw URL，并通过 `RULE-SET` 自行指定策略。
 

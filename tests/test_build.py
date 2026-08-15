@@ -57,6 +57,10 @@ class BuildTests(unittest.TestCase):
                 "Instagram",
                 "Telegram",
                 "Threads",
+                "TikTok",
+                "Spotify",
+                "AI",
+                "ZABank",
             },
         )
         for app_name, app in manifest["apps"].items():
@@ -156,6 +160,47 @@ class BuildTests(unittest.TestCase):
             supplement.write_text("DOMAIN-KEYWORD,\n", encoding="utf-8")
             with self.assertRaisesRegex(build.BuildError, "invalid supplement rule"):
                 build.parse_supplement(supplement, "Demo")
+
+    def test_type_level_exclude_skips_ip_asn_and_url_regex(self) -> None:
+        source_url = "https://example.invalid/Surge/Test.list"
+        config = app_config(source_format="surge-rule-set", url=source_url)
+        config["exclude"] = ["ip-asn:*", "url-regex:*"]
+        result = self.compile(
+            config,
+            {
+                source_url: (
+                    "DOMAIN-SUFFIX,example.com\n"
+                    "IP-ASN,11983,no-resolve\n"
+                    "URL-REGEX,^https://example\\.com\n"
+                )
+            },
+        )
+        self.assertEqual([rule.render() for rule in result.rules], ["DOMAIN-SUFFIX,example.com"])
+        self.assertEqual(result.skipped_excluded, ["IP-ASN,11983", "URL-REGEX,^https://example\\.com"])
+
+    def test_type_level_exclude_requires_wildcard_value(self) -> None:
+        config = app_config(source_format="surge-rule-set", url="https://example.invalid/Surge/Test.list")
+        config["exclude"] = ["ip-asn:11983"]
+        with self.assertRaisesRegex(build.BuildError, "must use '\\*'"):
+            self.compile(config, {"https://example.invalid/Surge/Test.list": "DOMAIN-SUFFIX,example.com\n"})
+
+    def test_supplement_only_app_builds_from_supplement(self) -> None:
+        config = app_config()
+        config["sources"] = []
+        with TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            supplement_dir = root / "sources" / "supplement"
+            supplement_dir.mkdir(parents=True)
+            (supplement_dir / "Test.list").write_text("DOMAIN-SUFFIX,example.com\n", encoding="utf-8")
+            result = build.compile_app("Test", config, root, lambda url: "")
+            self.assertEqual([rule.render() for rule in result.rules], ["DOMAIN-SUFFIX,example.com"])
+
+    def test_supplement_only_app_without_rules_fails(self) -> None:
+        config = app_config()
+        config["sources"] = []
+        with TemporaryDirectory() as temporary_directory:
+            with self.assertRaisesRegex(build.BuildError, "empty"):
+                build.compile_app("Test", config, Path(temporary_directory), lambda url: "")
 
 
 if __name__ == "__main__":

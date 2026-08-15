@@ -30,6 +30,10 @@ those available from the applicable upstream authors and licenses.
 | `Surge/Instagram.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/Telegram.list` | SukkaW/Surge | https://github.com/SukkaW/Surge | AGPL-3.0 for this non-IP rule source; see upstream README for exceptions |
 | `Surge/Netflix.list` | blackmatrix7/ios_rule_script | https://github.com/blackmatrix7/ios_rule_script | GPL-2.0 |
+| `Surge/TikTok.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/Spotify.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/AI.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/ZABank.list` | Rulink repo-maintained supplement | `sources/supplement/ZABank.list` | No upstream source; original repo-maintained rules |
 
 The exact source URL, format, and selection rationale for each App are kept in
 [`sources/apps.yaml`](sources/apps.yaml). Upstream projects may change their

@@ -32,7 +32,7 @@
 
 ### Source audit 范围与记录项
 
-- Source audit 至少覆盖当前计划中的 YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、Live、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub。
+- Source audit 至少覆盖当前计划中的 YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub；原清单中的 Live 已确认是用户个人直播源，不纳入本仓库。
 - 每个 App 的 audit 必须记录：候选来源、作者、URL、最近维护情况、规则规模或覆盖特点、是否 Surge 原生、是否需要转换、是否存在明显过宽规则、推荐 primary、是否需要 supplemental，以及选择理由。
 
 ## 安全规范
