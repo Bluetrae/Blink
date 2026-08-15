@@ -56,6 +56,7 @@ this notice must be reviewed whenever a source is added or replaced.
 | Asset | Origin | Notice |
 | --- | --- | --- |
 | `portal/public/favicon.svg` | https://www.deepseek.com/harness/favicon.svg | DeepSeek official logo asset; DeepSeek trademark, all rights reserved by DeepSeek. Used for browser-tab identification only and is not covered by this repository's terms. Replace with your own icon for any broader use. |
+| `docs/images/avatar.png` | https://github.com/Bluetrae.png | Personal GitHub avatar of the repository owner, circular-cropped for the README title. Owned by the repository owner; not covered by any third-party license. |
 
 ## License handling principles
 
