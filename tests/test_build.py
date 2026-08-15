@@ -39,6 +39,13 @@ class BuildTests(unittest.TestCase):
             ["DOMAIN,api.example.com", "DOMAIN-SUFFIX,example.com", "DOMAIN-KEYWORD,github"],
         )
 
+    def test_loads_and_validates_project_manifest(self) -> None:
+        root = Path(__file__).resolve().parents[1]
+        manifest = build.load_manifest(root / "sources" / "apps.yaml")
+        self.assertEqual(set(manifest["apps"]), {"OKX", "WhatsApp", "LINE", "GitHub"})
+        for app_name, app in manifest["apps"].items():
+            build.validate_app_config(app_name, app)
+
     def test_explicit_include_allows_and_denies(self) -> None:
         result = self.compile(
             app_config(allow=["child"], deny=["other"]),
