@@ -32,13 +32,20 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHu
 GitHub Actions 工作流位于 [`.github/workflows/update.yml`](.github/workflows/update.yml)。它可手动运行，并会在每日北京时间约 02:17 定时运行：
 
 1. 读取 `sources/apps.yaml` 中启用的 App 与上游来源；
-2. 以保守语义解析 v2fly domain-list；
+2. 以保守语义解析 v2fly domain-list 或经审计的原生 Surge Rule-Set；
 3. 只展开 manifest 明确允许的 include，拒绝明确禁止的 include；
 4. 合并存在且经验证的 supplement；
 5. 规范化、去重、排序并生成 `Surge/*.list`；
 6. 仅当 `Surge/` 实际变化时，由 `github-actions[bot]` 提交生成结果。
 
 上游格式异常、未声明 include、include 循环、无法安全转换的规则或无效 supplement 都会使构建失败，而不是静默改变分流语义。
+
+### 已支持的上游格式
+
+- `v2fly-domain-list`：解析普通 domain、`full:`、`keyword:` 与经 manifest 显式允许的 `include`；不支持的 regexp、未声明 include 或否定 attribute 会失败。
+- `surge-rule-set`：只接受不带策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR` 与 `IP-CIDR6`；IP 规则仅可额外携带 `no-resolve`。未知规则类型、策略字段或其他参数会失败。
+
+支持某种输入格式不等于自动接纳某个 App；新增或更换 source 仍必须先完成 source audit，并单独审查 manifest 变更。
 
 ## 规则与来源原则
 

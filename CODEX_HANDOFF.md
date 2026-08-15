@@ -19,8 +19,8 @@ https://github.com/Bluetrae/WProxyRules
 - `safe.directory` 已配置完成
 - `sources/apps.yaml` 已定义 OKX、WhatsApp、LINE、GitHub、SafePal 五个 App 的 v2fly primary source 与显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
-- `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`
-- `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、错误策略及实际 manifest 校验
+- `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式
+- `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、错误策略及实际 manifest 校验
 - `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 02:17 的定时运行
 - GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
 - GitHub Actions 第 3 次手动运行成功，生成 commit 为 `498ca27 chore: update generated Surge rule-sets`
@@ -160,7 +160,7 @@ GitHub Actions 第 3 次手动运行在同日新增：
 ```text
 上游更新或手动触发
 → GitHub Actions（或本地 `build.py --write`）
-→ 解析 v2fly / 展开经显式批准的 include
+→ 解析 v2fly / 展开经显式批准的 include，或解析经审计的原生 Surge Rule-Set
 → 解析/转换/合并 supplement
 → 去重/规范化
 → Surge/*.list
