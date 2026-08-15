@@ -2,81 +2,97 @@
 
 个人使用的 Surge App Rule-Set 自动分发仓库。
 
-仓库将经过审计的上游规则转换为 Surge 可用格式，并把稳定的输出发布在自己的 raw URL。Surge 主配置只需要引用这里的 URL；当上游来源需要调整时，修改 manifest 与构建逻辑即可，无需逐个改动 Surge 主配置。
+WProxyRules 将经过审计的上游规则保守地转换为 Surge 可用的 Rule-Set，并通过本仓库稳定的 raw URL 发布。Surge 主配置只需引用这些 URL；以后上游发生变化时，只调整 source manifest 与构建逻辑，无需逐条修改主配置。
+
+> 这是一个 **Surge App Rule-Set 仓库**，不是完整 Surge 配置模板。策略组、DNS、国内分流、CDN、LAN 与 FINAL 规则继续由你的主配置和成熟上游负责。
 
 ## 当前可用 Rule-Sets
 
-| App | Surge Rule-Set URL |
-| --- | --- |
-| OKX | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/OKX.list` |
-| WhatsApp | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list` |
-| LINE | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list` |
-| GitHub | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list` |
-| SafePal | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/SafePal.list` |
+| App | Rule-Set URL | 规则类型概览 |
+| --- | --- | --- |
+| OKX | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/OKX.list` | 域名 |
+| PayPal | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/PayPal.list` | 域名、User-Agent |
+| SafePal | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/SafePal.list` | 域名 |
+| WhatsApp | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list` | 域名 |
+| LINE | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list` | 域名 |
+| GitHub | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list` | 域名 |
+| Netflix | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netflix.list` | 域名、IP、User-Agent、Process |
 
-示例：在 Surge 主配置的 `[Rule]` 中以 `RULE-SET,<URL>,<策略>` 形式为每个 Rule-Set 指定策略名称。
+所有输出均不携带策略名；策略始终由你的 Surge 主配置决定。
+
+## 在 Surge 中使用
+
+将 Rule-Set 放在 `[Rule]` 段中、`FINAL` 之前，并按你自己的策略组命名。格式固定为：
 
 ```ini
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/OKX.list,Finance
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list,Proxy
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list,Proxy
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list,GitHub
+RULE-SET,<URL>,<策略>
 ```
 
-生成的 list 不包含策略名；策略始终由你的 Surge 主配置决定。
+下面是与当前个人配置相符的示例：
 
-若你此前直接引用 blackmatrix7 的 WhatsApp、LINE、GitHub Rule-Set，切换时请用本仓库对应 URL **替换**原有的同类 Rule-Set，不要同时叠加两份来源。OKX 当前输出已覆盖原来单独维护的 `okx.ac`、`okx.cab`、`okx.com.cdn.cloudflare.net` 与 `xlayer.tech`，切换后同样不需要保留这四条手工规则。
+```ini
+# Finance
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/OKX.list,Finance
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/PayPal.list,Finance
+
+# Communication
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list,Proxy
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list,Proxy
+
+# Development
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list,GitHub
+
+# Choose your own policies for these two sets
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/SafePal.list,<你的金融策略>
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netflix.list,<你的媒体策略>
+```
+
+### 迁移提示
+
+- 已直接引用 blackmatrix7 的 WhatsApp、LINE、GitHub 或 PayPal Rule-Set 时，用本仓库对应 URL **替换**原有 Rule-Set，不要叠加两份同类规则。
+- PayPal 可继续指定为 `Finance`；Netflix 的策略由你自己的媒体分组决定。
+- OKX 当前输出已覆盖此前单独维护的 `okx.ac`、`okx.cab`、`okx.com.cdn.cloudflare.net` 与 `xlayer.tech`；切换后不需要继续保留这四条手工规则。
 
 ## 自动更新
 
-GitHub Actions 工作流位于 [`.github/workflows/update.yml`](.github/workflows/update.yml)。它可手动运行，并会在每日北京时间约 02:17 定时运行：
-
-1. 读取 `sources/apps.yaml` 中启用的 App 与上游来源；
-2. 以保守语义解析 v2fly domain-list 或经审计的原生 Surge Rule-Set；
-3. 只展开 manifest 明确允许的 include，拒绝明确禁止的 include；
-4. 合并存在且经验证的 supplement；
-5. 规范化、去重、排序并生成 `Surge/*.list`；
-6. 仅当 `Surge/` 实际变化时，由 `github-actions[bot]` 提交生成结果。
-
-上游格式异常、未声明 include、include 循环、无法安全转换的规则或无效 supplement 都会使构建失败，而不是静默改变分流语义。
-
-### 已支持的上游格式
-
-- `v2fly-domain-list`：解析普通 domain、`full:`、`keyword:` 与经 manifest 显式允许的 `include`；不支持的 regexp、未声明 include 或否定 attribute 会失败。
-- `surge-rule-set`：只接受不带策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR` 与 `IP-CIDR6`；IP 规则仅可额外携带 `no-resolve`。未知规则类型、策略字段或其他参数会失败。
-
-支持某种输入格式不等于自动接纳某个 App；新增或更换 source 仍必须先完成 source audit，并单独审查 manifest 变更。
-
-## 规则与来源原则
-
-- `Surge/*.list` 是 generated files，绝不手工修改。
-- 每个 App 默认 1 个 primary source，最多 1 个 supplemental source；不追求为了数量而合并多个来源。
-- source 的长期偏好是 Repcz > SukkaW > 其他长期验证作者 > v2fly / MetaCubeX，但 freshness、覆盖、范围精准性、格式适配性和维护质量优先于作者排序。
-- 当前 OKX、WhatsApp、LINE、GitHub 是 pipeline 验证样本，不限制仓库将来支持的 App 范围。
-- Reject、Domestic、China IP、CDN、LAN 等基础设施规则继续引用成熟上游，不纳入本仓库。
-
-详细规范与来源决策记录见 [AGENTS.md](AGENTS.md) 和 [CODEX_HANDOFF.md](CODEX_HANDOFF.md)。
-
-## supplement 的使用
-
-`sources/supplement/<App>.list` 只用于：已通过 Surge 日志或实际使用确认、且选定上游确实缺失的 App 规则。
-
-没有补充规则时不创建空文件。不要把上游已有条目、机场订阅 URL、token、密码、证书或其他敏感信息放入仓库。
-
-推荐流程：
+GitHub Actions 工作流位于 [`.github/workflows/update.yml`](.github/workflows/update.yml)，可手动运行，并会在每日北京时间约 02:17 自动检查上游。
 
 ```text
-Surge 日志发现漏网
-→ 确认属于哪个 App
-→ 与选定上游比较并确认缺失
-→ sources/supplement/<App>.list
-→ 重新构建
-→ 由 Actions 发布更新
+审计后的 sources/apps.yaml
+→ build.py 解析、转换、规范化与去重
+→ 合并已验证的 supplement（如存在）
+→ 生成 Surge/*.list
+→ 仅在输出实际变化时由 github-actions[bot] 提交
 ```
 
-## 本地验证与构建
+构建会在以下情况明确失败，而不是静默改变分流语义：上游 404 / 超时 / HTML 响应、未知规则类型、未声明 include、include 循环、无法安全转换的规则或无效 supplement。
 
-Python 仅依赖 [requirements.txt](requirements.txt) 中锁定的 PyYAML；其余使用标准库。
+## 规则边界
+
+- `Surge/*.list` 是 generated files，绝不手工编辑。
+- 每个 App 默认只使用 1 个 primary source，最多 1 个 supplemental source；规则数量不是目标，范围准确才是。
+- 上游选择优先参考 Repcz、SukkaW 与成熟维护者，但 freshness、完整度、范围、格式适配性和维护质量优先于作者偏好。
+- Reject、Domestic、China IP、CDN、LAN 等基础设施规则不纳入本仓库，继续直接引用成熟上游。
+- `sources/supplement/<App>.list` 仅放置已由 Surge 日志或实际使用证实、且上游确实缺失的规则；没有缺口就不创建文件。
+
+## 支持的输入格式
+
+| Format | 行为 |
+| --- | --- |
+| `v2fly-domain-list` | 解析普通 domain、`full:`、`keyword:` 与 manifest 明确允许的 `include`；regexp、未声明 include、否定 attribute 会失败。 |
+| `surge-rule-set` | 只接受无策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR`、`IP-CIDR6`；IP 仅允许额外携带 `no-resolve`。 |
+
+支持一种格式不代表自动接纳任何 App。新增或更换 source 前必须先完成 source audit，并单独审查 manifest 变更。
+
+## 仓库结构与本地验证
+
+```text
+sources/apps.yaml          # 长期 source manifest
+sources/supplement/        # 仅限已证实的上游缺口
+scripts/build.py           # 保守构建器
+Surge/                     # 仅由构建器或 Actions 生成
+.github/workflows/update.yml
+```
 
 ```powershell
 python -m pip install -r requirements.txt
@@ -84,10 +100,12 @@ python scripts/build.py
 python -m unittest discover -s tests -v
 ```
 
-`python scripts/build.py` 是只读预检。只有在明确需要本地写入生成文件时才运行：
+`python scripts/build.py` 是只读预检。只有明确需要在本地生成文件时才使用：
 
 ```powershell
 python scripts/build.py --write
 ```
 
-提交前请检查生成差异，不要手工编辑 `Surge/*.list`。
+提交前请检查生成差异；不要手工修改 `Surge/*.list`，也不要提交订阅 URL、token、密码、证书或其他敏感信息。
+
+更完整的项目规范、source audit 结论与交接状态见 [AGENTS.md](AGENTS.md) 和 [CODEX_HANDOFF.md](CODEX_HANDOFF.md)。
