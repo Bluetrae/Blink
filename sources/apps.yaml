@@ -175,3 +175,125 @@ apps:
       broader IPv4 and IPv6 coverage than the smaller domain-oriented v2fly
       dataset. build.py preserves its policy-free IP-CIDR no-resolve semantics;
       no supplement is justified without a confirmed upstream gap.
+
+  YouTube:
+    enabled: true
+    output: Surge/YouTube.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/YouTube.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/YouTube.list
+    exclude: []
+    note: >-
+      Repcz is selected because its actively refreshed native Surge list keeps
+      a compact set of core YouTube, video, image, API, and country-domain
+      coverage. Its focused scope is preferred over larger lists whose extra
+      entries do not provide confirmed value for this personal Rule-Set.
+
+  X:
+    enabled: true
+    output: Surge/X.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Twitter.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/X.list
+    exclude: []
+    note: >-
+      Repcz is selected because its native X/Twitter list is actively refreshed,
+      includes current X, Twitter, Grok, media, and focused IP coverage, and is
+      a strict practical superset of the compared v2fly domain output without
+      requiring format conversion.
+
+  Instagram:
+    enabled: true
+    output: Surge/Instagram.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Instagram.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/Instagram.list
+    exclude:
+      - domain-keyword:instagram
+    note: >-
+      Repcz is selected for its compact first-party Instagram scope. The native
+      DOMAIN-KEYWORD,instagram rule is excluded because it could route unrelated
+      third-party domains; the remaining suffix rules cover instagram.com,
+      cdninstagram.com, and instagr.am. v2fly is not selected because its larger
+      dataset includes many unrelated follower, marketing, typo, and SEO domains.
+
+  Telegram:
+    enabled: true
+    output: Surge/Telegram.list
+    sources:
+      - name: SukkaW-Surge
+        author: SukkaW
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/SukkaW/Surge/master/Source/non_ip/telegram.conf
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/Telegram.list
+    exclude: []
+    note: >-
+      SukkaW is selected because its actively maintained native Surge source is
+      limited to core Telegram domains and fits the preferred source tier. Repcz
+      currently includes unsupported IP-ASN rules plus third-party client and
+      telemetry scope; v2fly adds TON and related ecosystem domains that are not
+      required for a conservative Telegram default.
+
+  Threads:
+    enabled: true
+    output: Surge/Threads.list
+    sources:
+      - name: v2fly-domain-list-community
+        author: v2fly
+        role: primary
+        format: v2fly-domain-list
+        url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/threads
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/Threads.list
+    exclude: []
+    note: >-
+      Repcz and SukkaW currently provide no dedicated Threads Rule-Set. v2fly is
+      selected because its small data file contains only threads.com and
+      threads.net, needs no include expansion, and converts safely to Surge.
