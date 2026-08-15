@@ -95,15 +95,24 @@ Surge/                     # 仅由构建器或 Actions 生成
 ```
 
 ```powershell
-python -m pip install -r requirements.txt
-python scripts/build.py
-python -m unittest discover -s tests -v
+# First time only: create a local environment ignored by Git
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# For a new or changed App: fast, targeted read-only validation
+.\.venv\Scripts\python.exe scripts\build.py --app PayPal
+
+# Full local health check when needed
+.\.venv\Scripts\python.exe scripts\build.py
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
-`python scripts/build.py` 是只读预检。只有明确需要在本地生成文件时才使用：
+新增 App 的日常审计优先使用 `--app <App>`，避免不相关上游的临时网络问题阻塞定向验证。全量检查仍由 GitHub Actions、每日更新和发布前验证负责。`.venv/` 已被 Git 忽略，绝不提交。
+
+`build.py` 默认是只读预检。只有明确需要在本地生成文件时才使用：
 
 ```powershell
-python scripts/build.py --write
+.\.venv\Scripts\python.exe scripts\build.py --write
 ```
 
 提交前请检查生成差异；不要手工修改 `Surge/*.list`，也不要提交订阅 URL、token、密码、证书或其他敏感信息。

@@ -49,3 +49,12 @@
 - 首批开发顺序：OKX、WhatsApp、LINE、GitHub；它们只是 source → build → supplement → Surge output 整个 pipeline 的验证样本，不代表它们优先于其他 App，也不代表仓库只面向这四个 App。仓库设计上应支持当前计划中的全部 App。
 - OKX 此前列出的 10 个域名仅是待核对候选；必须先与选定上游比较，只把真正缺失项加入 `sources/supplement/`。
 - Apple Music 暂缓，因为当前 Apple 分流依赖 Repcz、Sukka、extended-matching 和手工 CDN 修复。
+
+## 高效且保守的新增 App 流程
+
+- 新 App 的 source audit 可以按产品类别批量开展，但每个 App 必须保留独立的候选、证据和 primary 结论。
+- 审计时先检查 Repcz 专项规则；只有不存在、长期缺乏维护、范围不准或格式不适合时，才按证据比较 SukkaW、其他成熟作者、v2fly 或 MetaCubeX。若候选规则规范化后等价，作者优先偏好作为 tie-breaker。
+- 新 App 在 manifest 提交前，优先执行定向只读预检：`build.py --app <App>`。不要因为一个新增 App 而在本地重复阻塞于所有既有上游的网络状态。
+- 全量预检仍是必要的健康检查，但应放在 GitHub Actions、每日更新、发布前检查或明确的全仓库验证中；生成动作必须继续保持“所有选定 App 都成功后才写输出”的原子性。
+- 本地验证优先复用被 `.gitignore` 排除的 `.venv` 与锁定的 `requirements.txt`，避免重复下载依赖；`.venv` 绝不提交。
+- 不默认缓存上游规则文本。任何未来的缓存必须具有显式 TTL、内容指纹、失效策略，并确保 GitHub Actions 的发布构建仍从上游重新获取，避免缓存掩盖真实上游变化。
