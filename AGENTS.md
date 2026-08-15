@@ -1,4 +1,4 @@
-# WProxyRules 项目规范
+# Rulink 项目规范
 
 ## 项目目标
 

@@ -1,16 +1,16 @@
-# WProxyRules 项目交接状态
+# Rulink 项目交接状态
 
 ## 项目名称
 
-WProxyRules
+Rulink
 
 ## GitHub
 
-https://github.com/Bluetrae/WProxyRules
+https://github.com/Bluetrae/Rulink
 
 ## 本地路径
 
-`C:\Users\Jennie\Projects\WProxyRules`
+`C:\Users\Jennie\Projects\Rulink`
 
 ## 当前状态
 

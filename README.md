@@ -1,20 +1,20 @@
 <div align="center">
 
-# 🧭 WProxyRules
+# 🧭 Rulink
 
 > Surge App Rule-Set · 自动构建 · 稳定分发
 
-[![Update Surge Rule-Sets](https://github.com/Bluetrae/WProxyRules/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/WProxyRules/actions/workflows/update.yml)
-[![Surge Rule-Sets](https://img.shields.io/badge/Surge-Rule--Sets-2f81f7?style=flat-square)](https://github.com/Bluetrae/WProxyRules/tree/main/Surge)
-[![Updated](https://img.shields.io/github/last-commit/Bluetrae/WProxyRules/main?label=updated&style=flat-square)](https://github.com/Bluetrae/WProxyRules/commits/main)
-[![Stars](https://img.shields.io/github/stars/Bluetrae/WProxyRules?label=stars&style=flat-square)](https://github.com/Bluetrae/WProxyRules/stargazers)
-[![Forks](https://img.shields.io/github/forks/Bluetrae/WProxyRules?label=forks&style=flat-square)](https://github.com/Bluetrae/WProxyRules/forks)
+[![Update Surge Rule-Sets](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml)
+[![Surge Rule-Sets](https://img.shields.io/badge/Surge-Rule--Sets-2f81f7?style=flat-square)](https://github.com/Bluetrae/Rulink/tree/main/Surge)
+[![Updated](https://img.shields.io/github/last-commit/Bluetrae/Rulink/main?label=updated&style=flat-square)](https://github.com/Bluetrae/Rulink/commits/main)
+[![Stars](https://img.shields.io/github/stars/Bluetrae/Rulink?label=stars&style=flat-square)](https://github.com/Bluetrae/Rulink/stargazers)
+[![Forks](https://img.shields.io/github/forks/Bluetrae/Rulink?label=forks&style=flat-square)](https://github.com/Bluetrae/Rulink/forks)
 
 </div>
 
 个人使用的 Surge App Rule-Set 自动构建与分发仓库。
 
-WProxyRules 把经过审计的上游 App 规则保守地转换为 Surge Rule-Set，并通过本仓库稳定的 raw URL 发布。Surge 主配置只需引用这些 URL；当上游发生变动时，维护 source manifest 和构建器即可，不必反复修改主配置。
+Rulink 把经过审计的上游 App 规则保守地转换为 Surge Rule-Set，并通过本仓库稳定的 raw URL 发布。Surge 主配置只需引用这些 URL；当上游发生变动时，维护 source manifest 和构建器即可，不必反复修改主配置。
 
 > [!NOTE]
 > 这是 **App Rule-Set 仓库**，不是完整的 Surge 配置模板。策略组、DNS、国内分流、CDN、LAN 与 `FINAL` 应继续由主配置和成熟上游负责。
@@ -23,7 +23,7 @@ WProxyRules 把经过审计的上游 App 规则保守地转换为 Surge Rule-Set
 
 ## ✨ 使用原则
 
-- **入口稳定**：Surge 只引用 `Bluetrae/WProxyRules` 的 raw URL，不直接依赖各个上游的文件路径。
+- **入口稳定**：Surge 只引用 `Bluetrae/Rulink` 的 raw URL，不直接依赖各个上游的文件路径。
 - **范围优先**：规则准确性比规则数量更重要；不会为“覆盖更多”而混入共享 CDN 或无关基础设施。
 - **生成即产物**：`Surge/*.list` 只能由构建器或 GitHub Actions 生成，绝不手工维护。
 - **证据驱动**：新增来源必须先做 source audit；补充规则必须由 Surge 日志或实际使用证明为上游缺口。
@@ -42,19 +42,19 @@ RULE-SET,<URL>,<策略>
 
 ```ini
 # 💳 Finance
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/OKX.list,Finance
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/PayPal.list,Finance
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list,Finance
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/PayPal.list,Finance
 
 # 💬 Communication
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list,Proxy
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list,Proxy
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/WhatsApp.list,Proxy
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/LINE.list,Proxy
 
 # 💻 Development
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list,GitHub
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list,GitHub
 
 # 🧩 Choose policies in your own configuration
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/SafePal.list,<你的金融策略>
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netflix.list,<你的媒体策略>
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list,<你的金融策略>
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list,<你的媒体策略>
 ```
 
 > [!TIP]
@@ -66,18 +66,18 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netfl
 
 | 分类 | App | Surge Rule-Set | 规则类型概览 |
 | --- | --- | --- | --- |
-| 💳 Finance | [OKX](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/OKX.list) | `Surge/OKX.list` | 域名 |
-| 💳 Finance | [PayPal](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/PayPal.list) | `Surge/PayPal.list` | 域名、User-Agent |
-| 💳 Finance | [SafePal](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/SafePal.list) | `Surge/SafePal.list` | 域名 |
-| 💬 Communication | [WhatsApp](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list) | `Surge/WhatsApp.list` | 域名 |
-| 💬 Communication | [LINE](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list) | `Surge/LINE.list` | 域名 |
-| 💬 Communication | [Telegram](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Telegram.list) | `Surge/Telegram.list` | 域名 |
-| 💻 Development | [GitHub](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list) | `Surge/GitHub.list` | 域名 |
-| 🌐 Social | [X](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/X.list) | `Surge/X.list` | 域名、IP |
-| 🌐 Social | [Instagram](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Instagram.list) | `Surge/Instagram.list` | 域名 |
-| 🌐 Social | [Threads](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Threads.list) | `Surge/Threads.list` | 域名 |
-| 🎬 Media | [YouTube](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/YouTube.list) | `Surge/YouTube.list` | 域名 |
-| 🎬 Media | [Netflix](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netflix.list) | `Surge/Netflix.list` | 域名、IP、User-Agent、Process |
+| 💳 Finance | [OKX](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list) | `Surge/OKX.list` | 域名 |
+| 💳 Finance | [PayPal](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/PayPal.list) | `Surge/PayPal.list` | 域名、User-Agent |
+| 💳 Finance | [SafePal](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list) | `Surge/SafePal.list` | 域名 |
+| 💬 Communication | [WhatsApp](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/WhatsApp.list) | `Surge/WhatsApp.list` | 域名 |
+| 💬 Communication | [LINE](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/LINE.list) | `Surge/LINE.list` | 域名 |
+| 💬 Communication | [Telegram](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Telegram.list) | `Surge/Telegram.list` | 域名 |
+| 💻 Development | [GitHub](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list) | `Surge/GitHub.list` | 域名 |
+| 🌐 Social | [X](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list) | `Surge/X.list` | 域名、IP |
+| 🌐 Social | [Instagram](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list) | `Surge/Instagram.list` | 域名 |
+| 🌐 Social | [Threads](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Threads.list) | `Surge/Threads.list` | 域名 |
+| 🎬 Media | [YouTube](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list) | `Surge/YouTube.list` | 域名 |
+| 🎬 Media | [Netflix](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list) | `Surge/Netflix.list` | 域名、IP、User-Agent、Process |
 
 所有输出文件均不携带策略名；`RULE-SET` 的最后一个字段始终由你的 Surge 主配置决定。
 每个文件开头均由构建器自动写入 `# 规则名称` 与 `# 规则统计`，方便直接查看其用途与当前有效规则数。
@@ -173,7 +173,7 @@ python -m venv .venv
 ## ⚖️ 许可、来源与责任边界
 
 本仓库当前**不设置覆盖全部内容的根目录许可证**。构建代码与文档是
-WProxyRules 的原创内容；`Surge/*.list` 则是由多个上游规则源生成的产物，
+Rulink 的原创内容；`Surge/*.list` 则是由多个上游规则源生成的产物，
 不得被统一重新标记为 MIT 或其他单一许可证。
 
 - [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 记录每个生成 Rule-Set 的上游、URL 与已知许可或项目声明。

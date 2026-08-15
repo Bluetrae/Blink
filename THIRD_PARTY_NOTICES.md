@@ -2,7 +2,7 @@
 
 ## Scope
 
-WProxyRules contains original build code, tests, workflow configuration, and
+Rulink contains original build code, tests, workflow configuration, and
 documentation, together with generated Surge Rule-Sets derived from publicly
 available upstream rule sources.
 
@@ -10,7 +10,7 @@ This file records the known upstream provenance and license or project notice
 for each generated Rule-Set. It is an attribution and compliance reference,
 not legal advice and not a replacement for the full upstream terms.
 
-`Surge/*.list` files are generated artifacts. WProxyRules does not claim to
+`Surge/*.list` files are generated artifacts. Rulink does not claim to
 relicense upstream rules, nor does this repository grant permissions beyond
 those available from the applicable upstream authors and licenses.
 
@@ -46,7 +46,7 @@ this notice must be reviewed whenever a source is added or replaced.
   personal use, review the full terms of every applicable upstream source.
 - The Apache, MIT, GPL, AGPL, or other terms of one source do not automatically
   apply to files derived from another source.
-- A future license for WProxyRules original code and documentation must clearly
+- A future license for Rulink original code and documentation must clearly
   exclude upstream material and generated Rule-Sets unless a separate license
   audit establishes that broader licensing is appropriate.
 

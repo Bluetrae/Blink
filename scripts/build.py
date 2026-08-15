@@ -159,7 +159,7 @@ def validate_app_config(app_name: str, app: object) -> None:
 
 
 def default_fetch_text(url: str) -> str:
-    request = urllib.request.Request(url, headers={"User-Agent": "WProxyRules/1"})
+    request = urllib.request.Request(url, headers={"User-Agent": "Rulink/1"})
     try:
         with urllib.request.urlopen(request, timeout=20) as response:
             content_type = response.headers.get_content_type()
