@@ -27,9 +27,7 @@ export default function Nav({ repo }: NavProps) {
     <header className="fixed inset-x-0 top-0 z-50 px-6 pt-3">
       <div
         className={`mx-auto flex h-14 max-w-5xl items-center gap-4 rounded-full px-5 transition-all duration-300 ease-out ${
-          scrolled
-            ? "border border-line bg-card/80 shadow-lg shadow-black/5 backdrop-blur-md backdrop-saturate-150"
-            : "border border-transparent bg-transparent"
+          scrolled ? "nav-scrolled" : "border border-transparent bg-transparent"
         }`}
       >
         <a href="#top" className="flex items-center gap-2 text-[17px] font-bold tracking-tight text-ink">
