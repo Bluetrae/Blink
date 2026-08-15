@@ -13,16 +13,18 @@
 | LINE | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list` |
 | GitHub | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list` |
 
-示例：在 Surge 主配置的 `[Rule]` 中为每个 Rule-Set 指定你的策略名称。
+示例：在 Surge 主配置的 `[Rule]` 中以 `RULE-SET,<URL>,<策略>` 形式为每个 Rule-Set 指定策略名称。
 
 ```ini
-RULE-SET,你的策略名,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/OKX.list
-RULE-SET,你的策略名,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list
-RULE-SET,你的策略名,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list
-RULE-SET,你的策略名,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/OKX.list,Finance
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list,Proxy
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list,Proxy
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list,GitHub
 ```
 
 生成的 list 不包含策略名；策略始终由你的 Surge 主配置决定。
+
+若你此前直接引用 blackmatrix7 的 WhatsApp、LINE、GitHub Rule-Set，切换时请用本仓库对应 URL **替换**原有的同类 Rule-Set，不要同时叠加两份来源。OKX 当前输出已覆盖原来单独维护的 `okx.ac`、`okx.cab`、`okx.com.cdn.cloudflare.net` 与 `xlayer.tech`，切换后同样不需要保留这四条手工规则。
 
 ## 自动更新
 
