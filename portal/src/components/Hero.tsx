@@ -10,7 +10,7 @@ const EXAMPLE_LINE =
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <li className="flex min-w-36 max-w-52 flex-1 flex-col gap-0.5 rounded-2xl border border-line bg-paper px-5 py-4">
+    <li className="flex flex-col gap-0.5 rounded-2xl border border-line bg-paper px-5 py-4 sm:max-w-52 sm:flex-1">
       <strong className="text-lg font-bold tracking-tight">{value}</strong>
       <span className="text-[13px] text-mute">{label}</span>
     </li>
@@ -27,7 +27,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         Surge App Rule-Set · 自动构建 · 稳定分发
       </p>
       <h1
-        className="hero-enter mx-auto max-w-3xl text-[32px] font-bold leading-[1.2] tracking-tight sm:text-5xl"
+        className="hero-enter mx-auto max-w-3xl text-[clamp(2rem,5.2vw,3.25rem)] font-bold leading-[1.2] tracking-tight"
         style={{ animationDelay: "70ms" }}
       >
         经过审计的 App 规则，
@@ -69,7 +69,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         </CodeBlock>
       </div>
       <ul
-        className="hero-enter mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-3"
+        className="hero-enter mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:justify-center"
         style={{ animationDelay: "350ms" }}
       >
         <Stat value={String(appsCount)} label="Rule-Sets" />
