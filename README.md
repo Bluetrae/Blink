@@ -13,15 +13,15 @@
 
 <br>
 
-个人使用的 Surge **App Rule-Set** 仓库：**审计上游 → 保守转换 → 稳定 raw URL 发布**。Surge 主配置只需引用本仓库 URL；上游变动时只更新本仓库，不必反复改主配置。
+个人使用的 Surge **App Rule-Set** 仓库：把经过审计的上游 App 规则，保守转换为可长期引用的稳定规则集。
 
 > [!NOTE]
-> 这是 **App Rule-Set 仓库**，不是完整的 Surge 配置模板。策略组、DNS、国内分流、CDN、LAN 与 `FINAL` 仍由主配置和成熟上游负责。
+> 这是 **App Rule-Set 仓库**，不是完整的 Surge 配置模板；策略组与 `FINAL` 由你的主配置负责。
 
 ## ✨ 特点
 
-- **入口稳定** —— 只引用 `Bluetrae/Rulink` 的 raw URL，不依赖上游文件路径。
-- **范围优先** —— 准确性高于数量，不吞入共享 CDN 与无关基础设施。
+- **入口稳定** —— 主配置只引用本仓库 raw URL，上游变动无需改主配置。
+- **范围优先** —— 准确性高于数量，宁少勿滥。
 - **生成即产物** —— `Surge/*.list` 仅由构建器 / Actions 生成，绝不手工维护。
 - **证据驱动** —— 新来源先过 source audit；补充规则须经 Surge 日志确认。
 
@@ -104,9 +104,7 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,
 
 ## ⚙️ 更新机制
 
-`审计后的 apps.yaml → build.py 解析 / 转换 / 去重 → 合并 supplement → Surge/*.list → 主配置引用 raw URL`
-
-GitHub Actions（[`update.yml`](.github/workflows/update.yml)）每天北京时间约 **02:17** 先跑单测、再全量构建，**只有 `Surge/` 发生变化**时才会由 `github-actions[bot]` 提交；遇到上游 404、超时、HTML 响应、未知规则类型、未声明 include、include 循环或空输出等，构建**显式失败**，绝不静默改变语义。
+`apps.yaml → build.py 解析 / 转换 / 去重 → 合并 supplement → Surge/*.list`，由 GitHub Actions（[`update.yml`](.github/workflows/update.yml)）每天北京时间约 **02:17** 先跑单测再全量构建，**只有 `Surge/` 变化**才由 `github-actions[bot]` 提交；上游 404、超时、未知规则类型、未声明 include 等一律**显式失败**，绝不静默改变语义。
 
 ## 🧩 来源政策
 
@@ -123,10 +121,14 @@ GitHub Actions（[`update.yml`](.github/workflows/update.yml)）每天北京时�
 ## 🗂️ 仓库结构
 
 ```text
+AGENTS.md                  # 长期项目规范与上游选择政策
+HANDOFF.md                 # 项目交接状态档案
+SOURCE_AUDITS.md           # source audit 档案与主配置对照
+THIRD_PARTY_NOTICES.md     # 上游许可记录；DISCLAIMER.md 责任边界
 sources/apps.yaml          # source manifest：来源、范围控制与选源理由
 sources/supplement/        # 仅限日志确认的上游缺口，按需创建
-SOURCE_AUDITS.md           # 完整 source audit 档案与主配置对照
 scripts/build.py           # 保守、显式失败的构建器
+tests/                     # 单元测试
 Surge/                     # Generated files：仅由构建器 / Actions 写入
 .github/workflows/update.yml
 ```
@@ -149,13 +151,6 @@ python -m venv .venv
 ```
 
 <sub>`.venv/` 已被 Git 忽略，绝不提交。提交前请检查生成差异；不要手工修改 `Surge/*.list`，也不要提交订阅 URL、token、密码、证书或其他敏感信息。</sub>
-
-## 📚 文档索引
-
-- [AGENTS.md](AGENTS.md) —— 长期项目规范与上游选择政策
-- [SOURCE_AUDITS.md](SOURCE_AUDITS.md) —— 每个 App 的候选、证据与选源结论
-- [HANDOFF.md](HANDOFF.md) —— 项目交接状态档案
-- [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) / [DISCLAIMER.md](DISCLAIMER.md) —— 上游许可与责任边界
 
 ## ⚖️ 使用与许可
 
