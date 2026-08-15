@@ -6,6 +6,7 @@
 
 [![Update Surge Rule-Sets](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml)
 [![Surge Rule-Sets](https://img.shields.io/badge/Surge-Rule--Sets-2f81f7?style=flat-square)](https://github.com/Bluetrae/Rulink/tree/main/Surge)
+[![Portal](https://img.shields.io/badge/Portal-可视化门户-4d6bfe?style=flat-square)](https://bluetrae.github.io/Rulink/)
 [![Updated](https://img.shields.io/github/last-commit/Bluetrae/Rulink/main?label=updated&style=flat-square)](https://github.com/Bluetrae/Rulink/commits/main)
 [![Stars](https://img.shields.io/github/stars/Bluetrae/Rulink?label=stars&style=flat-square)](https://github.com/Bluetrae/Rulink/stargazers)
 
@@ -65,9 +66,20 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,
 > [!TIP]
 > 若主配置已直接引用 blackmatrix7、Repcz、v2fly 的同类列表，请**替换**为本仓库 URL，而非叠加两份。OKX 输出已覆盖此前手工维护的 `okx.ac`、`okx.cab`、`okx.com.cdn.cloudflare.net`、`xlayer.tech`；ZA Bank 的 9 条手工域名亦可删除。
 
+## 🌐 可视化门户
+
+无需域名即可访问的规则浏览门户：[`https://bluetrae.github.io/Rulink/`](https://bluetrae.github.io/Rulink/)。一览全部 Rule-Set 的规则数、规则类型与来源，一键复制 `RULE-SET` 接入行。
+
+- 技术栈：Vite + React + TypeScript + Tailwind CSS，源码在 [`portal/`](portal/)。
+- 部署：GitHub Actions（[`pages.yml`](.github/workflows/pages.yml)）在 `main` 推送时自动构建并部署到 GitHub Pages，无需提交构建产物。
+- 数据：页面数据由 [`scripts/gen_portal_stats.py`](scripts/gen_portal_stats.py) 从 `Surge/*.list` 与 `sources/apps.yaml` 生成到 `portal/public/data/stats.json`，随每日构建一起刷新。
+
+> [!NOTE]
+> 首次使用需在仓库 Settings → Pages → Build and deployment 将 Source 选为 **GitHub Actions**，此后 `pages.yml` 自动完成部署。以后购买域名后，在 Pages 设置里填写自定义域名即可，无需改代码。
+
 ## ⚙️ 更新机制
 
-`apps.yaml → build.py 解析 / 转换 / 去重 → 合并 supplement → Surge/*.list`，由 GitHub Actions（[`update.yml`](.github/workflows/update.yml)）每天北京时间约 **00:01**（定时任务不保证准点）先跑单测再全量构建，**只有 `Surge/` 变化**才由 `github-actions[bot]` 提交；上游 404、超时、未知规则类型、未声明 include 等一律**显式失败**，绝不静默改变语义。
+`apps.yaml → build.py 解析 / 转换 / 去重 → 合并 supplement → Surge/*.list`，由 GitHub Actions（[`update.yml`](.github/workflows/update.yml)）每天北京时间约 **00:01**（定时任务不保证准点）先跑单测再全量构建，**只有 `Surge/` 或门户数据变化**才由 `github-actions[bot]` 提交；上游 404、超时、未知规则类型、未声明 include 等一律**显式失败**，绝不静默改变语义。门户数据（`portal/public/data/stats.json`）由同一工作流生成，只在内容实际变化时随 `Surge/` 一起提交。
 
 <sub>每日运行全自动、无人值守：有实质变化才提交，无变化零提交；构建失败时保留旧输出并等待人工处理，不阻塞日常使用。新 App 与 supplement 永远由人工审计添加，CI 不会自动引入。</sub>
 
@@ -93,9 +105,12 @@ THIRD_PARTY_NOTICES.md     # 上游许可记录；DISCLAIMER.md 责任边界
 sources/apps.yaml          # source manifest：来源、范围控制与选源理由
 sources/supplement/        # 仅限日志确认的上游缺口，按需创建
 scripts/build.py           # 保守、显式失败的构建器
+scripts/gen_portal_stats.py # 从 Surge 输出与 manifest 生成门户数据
 tests/                     # 单元测试
 Surge/                     # Generated files：仅由构建器 / Actions 写入
+portal/                    # 可视化门户（Vite + React + TS + Tailwind CSS）
 .github/workflows/update.yml
+.github/workflows/pages.yml # 门户构建与 GitHub Pages 部署
 ```
 
 ## 🔎 本地验证

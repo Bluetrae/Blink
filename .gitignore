@@ -3,3 +3,6 @@ __pycache__/
 .pytest_cache/
 .venv/
 Surge/*.tmp
+portal/node_modules/
+portal/dist/
+portal/.npm-cache/

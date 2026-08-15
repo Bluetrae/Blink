@@ -40,11 +40,14 @@ jobs:
       - name: Build all enabled Rule-Sets
         run: python scripts/build.py --write
 
+      - name: Refresh portal data
+        run: python scripts/gen_portal_stats.py
+
       - name: Detect generated changes
         id: generated
         shell: bash
         run: |
-          if [ -n "$(git status --porcelain -- Surge)" ]; then
+          if [ -n "$(git status --porcelain -- Surge portal/public/data)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -56,7 +59,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- Surge
-          git commit -m "chore: update generated Surge rule-sets · $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          git add -- Surge portal/public/data
+          git commit -m "chore: update generated Surge rule-sets and portal data · $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
           git pull --rebase origin main
           git push

@@ -1,0 +1,334 @@
+{
+  "repo": "https://github.com/Bluetrae/Rulink",
+  "raw_base": "https://raw.githubusercontent.com/Bluetrae/Rulink/main",
+  "apps": [
+    {
+      "name": "OKX",
+      "category": "Finance",
+      "emoji": "💠",
+      "policy": "Finance",
+      "file": "Surge/OKX.list",
+      "rules": 9,
+      "types": {
+        "DOMAIN-SUFFIX": 9
+      },
+      "source": {
+        "author": "v2fly",
+        "name": "v2fly-domain-list-community",
+        "format": "v2fly-domain-list"
+      },
+      "note": "Repcz/SukkaW currently have no preferred maintained dedicated OKX source. v2fly is used because its current OKX dataset is materially more complete and actively maintained than the old blackmatrix7 Surge list."
+    },
+    {
+      "name": "WhatsApp",
+      "category": "Communication",
+      "emoji": "💬",
+      "policy": "Proxy",
+      "file": "Surge/WhatsApp.list",
+      "rules": 11,
+      "types": {
+        "DOMAIN-SUFFIX": 11
+      },
+      "source": {
+        "author": "v2fly",
+        "name": "v2fly-domain-list-community",
+        "format": "v2fly-domain-list"
+      },
+      "note": "v2fly is preferred over the older blackmatrix7 list because its current WhatsApp domain coverage is more modern and avoids relying on stale IP ranges or overly broad shared Meta endpoints."
+    },
+    {
+      "name": "LINE",
+      "category": "Communication",
+      "emoji": "💬",
+      "policy": "Proxy",
+      "file": "Surge/LINE.list",
+      "rules": 20,
+      "types": {
+        "DOMAIN-SUFFIX": 20
+      },
+      "source": {
+        "author": "v2fly",
+        "name": "v2fly-domain-list-community",
+        "format": "v2fly-domain-list"
+      },
+      "note": "v2fly currently provides more precise LINE coverage than the old blackmatrix7 list. Broad shared domains must be reviewed rather than inherited blindly. nhncorp.jp should remain under review but should not be excluded without evidence."
+    },
+    {
+      "name": "GitHub",
+      "category": "Development",
+      "emoji": "🐙",
+      "policy": "GitHub",
+      "file": "Surge/GitHub.list",
+      "rules": 58,
+      "types": {
+        "DOMAIN": 30,
+        "DOMAIN-SUFFIX": 28
+      },
+      "source": {
+        "author": "v2fly",
+        "name": "v2fly-domain-list-community",
+        "format": "v2fly-domain-list"
+      },
+      "note": "v2fly is selected because the GitHub dataset is actively maintained and includes modern GitHub assets and related services. build.py must resolve v2fly include directives deliberately and must not import unrelated npm, Microsoft, Amazon, Azure, or other shared infrastructure merely because it is reachable through an include."
+    },
+    {
+      "name": "SafePal",
+      "category": "Finance",
+      "emoji": "🔐",
+      "policy": "Finance",
+      "file": "Surge/SafePal.list",
+      "rules": 2,
+      "types": {
+        "DOMAIN-SUFFIX": 2
+      },
+      "source": {
+        "author": "v2fly",
+        "name": "v2fly-domain-list-community",
+        "format": "v2fly-domain-list"
+      },
+      "note": "Repcz, SukkaW, blackmatrix7, and MetaCubeX currently have no dedicated SafePal dataset. v2fly is selected because its actively maintained, narrowly scoped list contains both isafepal.com and safepal.com without include directives or attribute-qualified entries."
+    },
+    {
+      "name": "PayPal",
+      "category": "Finance",
+      "emoji": "💸",
+      "policy": "Finance",
+      "file": "Surge/PayPal.list",
+      "rules": 248,
+      "types": {
+        "DOMAIN-SUFFIX": 246,
+        "DOMAIN-KEYWORD": 1,
+        "USER-AGENT": 1
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected by the long-term source preference because its native Surge PayPal list currently normalizes to the same output as blackmatrix7. It is parsed as a policy-free native Surge source; no supplement is justified without a confirmed upstream gap."
+    },
+    {
+      "name": "Netflix",
+      "category": "Media",
+      "emoji": "🎬",
+      "policy": "Media",
+      "file": "Surge/Netflix.list",
+      "rules": 1158,
+      "types": {
+        "DOMAIN": 3,
+        "DOMAIN-SUFFIX": 30,
+        "DOMAIN-KEYWORD": 4,
+        "USER-AGENT": 1,
+        "PROCESS-NAME": 1,
+        "IP-CIDR": 1115,
+        "IP-CIDR6": 4
+      },
+      "source": {
+        "author": "blackmatrix7",
+        "name": "blackmatrix7-ios_rule_script",
+        "format": "surge-rule-set"
+      },
+      "note": "blackmatrix7 is selected because its native Surge list retains materially broader IPv4 and IPv6 coverage than the smaller domain-oriented v2fly dataset. build.py preserves its policy-free IP-CIDR no-resolve semantics; no supplement is justified without a confirmed upstream gap."
+    },
+    {
+      "name": "YouTube",
+      "category": "Media",
+      "emoji": "▶️",
+      "policy": "Media",
+      "file": "Surge/YouTube.list",
+      "rules": 14,
+      "types": {
+        "DOMAIN": 2,
+        "DOMAIN-SUFFIX": 11,
+        "DOMAIN-KEYWORD": 1
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its actively refreshed native Surge list keeps a compact set of core YouTube, video, image, API, and country-domain coverage. Its focused scope is preferred over larger lists whose extra entries do not provide confirmed value for this personal Rule-Set."
+    },
+    {
+      "name": "X",
+      "category": "Social",
+      "emoji": "𝕏",
+      "policy": "Proxy",
+      "file": "Surge/X.list",
+      "rules": 34,
+      "types": {
+        "DOMAIN-SUFFIX": 26,
+        "IP-CIDR": 8
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its native X/Twitter list is actively refreshed, includes current X, Twitter, Grok, media, and focused IP coverage, and is a strict practical superset of the compared v2fly domain output without requiring format conversion."
+    },
+    {
+      "name": "Instagram",
+      "category": "Social",
+      "emoji": "📷",
+      "policy": "Proxy",
+      "file": "Surge/Instagram.list",
+      "rules": 3,
+      "types": {
+        "DOMAIN-SUFFIX": 3
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected for its compact first-party Instagram scope. The native DOMAIN-KEYWORD,instagram rule is excluded because it could route unrelated third-party domains; the remaining suffix rules cover instagram.com, cdninstagram.com, and instagr.am. v2fly is not selected because its larger dataset includes many unrelated follower, marketing, typo, and SEO domains."
+    },
+    {
+      "name": "Telegram",
+      "category": "Communication",
+      "emoji": "✈️",
+      "policy": "Proxy",
+      "file": "Surge/Telegram.list",
+      "rules": 14,
+      "types": {
+        "DOMAIN-SUFFIX": 14
+      },
+      "source": {
+        "author": "SukkaW",
+        "name": "SukkaW-Surge",
+        "format": "surge-rule-set"
+      },
+      "note": "SukkaW is selected because its actively maintained native Surge source is limited to core Telegram domains and fits the preferred source tier. Repcz currently includes unsupported IP-ASN rules plus third-party client and telemetry scope; v2fly adds TON and related ecosystem domains that are not required for a conservative Telegram default."
+    },
+    {
+      "name": "Threads",
+      "category": "Social",
+      "emoji": "🧵",
+      "policy": "Proxy",
+      "file": "Surge/Threads.list",
+      "rules": 2,
+      "types": {
+        "DOMAIN-SUFFIX": 2
+      },
+      "source": {
+        "author": "v2fly",
+        "name": "v2fly-domain-list-community",
+        "format": "v2fly-domain-list"
+      },
+      "note": "Repcz and SukkaW currently provide no dedicated Threads Rule-Set. v2fly is selected because its small data file contains only threads.com and threads.net, needs no include expansion, and converts safely to Surge."
+    },
+    {
+      "name": "TikTok",
+      "category": "Media",
+      "emoji": "🎵",
+      "policy": "Proxy",
+      "file": "Surge/TikTok.list",
+      "rules": 81,
+      "types": {
+        "DOMAIN": 19,
+        "DOMAIN-SUFFIX": 55,
+        "DOMAIN-KEYWORD": 7
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its native TikTok list is actively refreshed and covers TikTok domains, ByteDance CDNs, keywords, and IP ranges more completely than every compared candidate. Its two IP-ASN entries are dropped through an explicit type-level exclude because build.py v1 does not emit ASN rules. blackmatrix7 is stale and drifts into ByteDance AI IDE domains; v2fly's TikTok entries all carry negative attributes that v1 refuses to interpret."
+    },
+    {
+      "name": "Spotify",
+      "category": "Media",
+      "emoji": "🎧",
+      "policy": "Proxy",
+      "file": "Surge/Spotify.list",
+      "rules": 21,
+      "types": {
+        "DOMAIN-SUFFIX": 17,
+        "DOMAIN-KEYWORD": 1,
+        "USER-AGENT": 1,
+        "PROCESS-NAME": 1,
+        "IP-CIDR": 1
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because it publishes a compact, actively refreshed, native Surge Spotify list that stays entirely inside the build.py v1 whitelist. SukkaW only embeds Spotify rules inside stream.ts (last changed 2025-11) and publishes them merged with other services; blackmatrix7 is about 14 months stale, and v2fly would import the third-party conductrics.com experiment host."
+    },
+    {
+      "name": "AI",
+      "category": "AI",
+      "emoji": "🤖",
+      "policy": "Proxy",
+      "file": "Surge/AI.list",
+      "rules": 50,
+      "types": {
+        "DOMAIN": 14,
+        "DOMAIN-SUFFIX": 34,
+        "DOMAIN-KEYWORD": 2
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz AI.list is the aggregated mainstream-AI Rule-Set: it is an actively refreshed derivative of SukkaW's ai.conf plus the OpenAI file CDN oaiusercontent.com. The single URL-REGEX entry (the google.com/sorry Gemini continuation fix that requires MitM of www.google.com) is dropped through an explicit type-level exclude because build.py v1 does not emit URL-REGEX rules. DeepSeek is intentionally absent (domestic service, direct by default); it may only enter via a log-confirmed supplement."
+    },
+    {
+      "name": "ZABank",
+      "category": "Finance",
+      "emoji": "🏦",
+      "policy": "Finance",
+      "file": "Surge/ZABank.list",
+      "rules": 3,
+      "types": {
+        "DOMAIN-SUFFIX": 3
+      },
+      "source": {
+        "author": "",
+        "name": "",
+        "format": ""
+      },
+      "note": "The 2026-08-15 source audit verified that Repcz, SukkaW, v2fly, blackmatrix7, and MetaCubeX provide no ZABank rules, so this app is supplement-only: the output is built exclusively from the repo-maintained supplement, whose three root domains (za.group, zainvest.group, zajourney.com) cover all nine candidate domains recorded from actual usage. build.py v1 allows an empty sources list for exactly this case."
+    },
+    {
+      "name": "Steam",
+      "category": "Gaming",
+      "emoji": "🎮",
+      "policy": "Proxy",
+      "file": "Surge/Steam.list",
+      "rules": 20,
+      "types": {
+        "DOMAIN-SUFFIX": 20
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its native, actively refreshed Steam list keeps a compact set of core Steam domains (store, community, chat, content, steamdeck) without CDN-specific or China-specific hosts, so it builds with zero conversion and no type-level excludes. SukkaW has no dedicated Steam rules. v2fly's dataset adds legacy regional CDNs and China entries; blackmatrix7 is stale and even includes the unrelated steamunlocked.net domain."
+    },
+    {
+      "name": "APTV",
+      "category": "Media",
+      "emoji": "📺",
+      "policy": "Media",
+      "file": "Surge/APTV.list",
+      "rules": 26,
+      "types": {
+        "DOMAIN": 17,
+        "DOMAIN-SUFFIX": 4,
+        "IP-CIDR": 5
+      },
+      "source": {
+        "author": "",
+        "name": "",
+        "format": ""
+      },
+      "note": "APTV (planned as \"Live\") is the user's personal live-streaming source, watched through the APTV frontend app. It is supplement-only by design: the rules (self-use, annotated in the supplement file) were migrated from the user's private Bluetrae/Bridge repository on 2026-08-15, contain no subscription URLs or tokens, and are not upstream-audited. Others reusing this repository should replace or remove these rules."
+    }
+  ]
+}
