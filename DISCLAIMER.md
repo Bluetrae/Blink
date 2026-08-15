@@ -2,13 +2,14 @@
 
 ## Purpose and scope
 
-Rulink is a personal-use repository for building and distributing Surge
-App Rule-Sets from reviewed public sources. It is provided for learning,
-personal configuration maintenance, and rule-format automation.
+Rulink is a personal-use repository for building and distributing multi-client
+App Rule-Sets (Surge, Shadowrocket, Loon, Stash, Egern) from reviewed public
+sources. It is provided for learning, personal configuration maintenance, and
+rule-format automation.
 
 The repository is not an official product, service, endorsement, or
-representation of Surge, any application named by a Rule-Set, or any upstream
-rule author.
+representation of Surge, Shadowrocket, Loon, Stash, Egern, any application
+named by a Rule-Set, or any upstream rule author.
 
 ## No warranty
 
@@ -16,8 +17,8 @@ To the maximum extent permitted by applicable law, the repository, its build
 logic, source selections, generated Rule-Sets, and documentation are provided
 on an "as is" and "as available" basis. No warranty is made that any rule is
 accurate, complete, current, suitable for a particular purpose, available in a
-given region, compatible with a given Surge version, or effective for a given
-network, account, service, or policy configuration.
+given region, compatible with a given client or client version, or effective
+for a given network, account, service, or policy configuration.
 
 Upstream sources, DNS behavior, application endpoints, network conditions, and
 service policies can change at any time. A successful build does not guarantee
@@ -29,10 +30,10 @@ Anyone who uses, copies, modifies, or redistributes this repository or its
 outputs is responsible for:
 
 - reviewing the generated rules and source changes before relying on them;
-- selecting and testing their own Surge policies, DNS settings, and network
-  configuration;
-- checking Surge logs and correcting app-specific gaps through the documented
-  `sources/supplement/` process;
+- selecting and testing their own policies, DNS settings, and network
+  configuration for each client they use;
+- checking proxy client logs (currently verified through Surge) and correcting
+  app-specific gaps through the documented `sources/supplement/` process;
 - complying with applicable laws, service terms, and all relevant upstream
   licenses, notices, and attribution requirements;
 - not redistributing, republishing, or mirroring repository content to

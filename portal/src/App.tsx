@@ -44,11 +44,11 @@ export default function App() {
               {error} · 请直接查看{" "}
               <a
                 className="text-accent underline underline-offset-2"
-                href="https://github.com/Bluetrae/Rulink/tree/main/Surge"
+                href="https://github.com/Bluetrae/Rulink"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                GitHub 上的 Surge 目录
+                GitHub 上的生成目录
               </a>
             </p>
           </section>

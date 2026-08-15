@@ -5,7 +5,7 @@
 **多客户端 App Rule-Set · 自动构建 · 稳定分发**
 
 [![Update Rule-Sets](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml)
-[![Surge Rule-Sets](https://img.shields.io/badge/Surge-Rule--Sets-2f81f7?style=flat-square)](https://github.com/Bluetrae/Rulink/tree/main/Surge)
+[![Rule-Sets](https://img.shields.io/badge/Rule--Sets-5_clients-2f81f7?style=flat-square)](https://github.com/Bluetrae/Rulink/tree/main/Surge)
 [![Portal](https://img.shields.io/badge/Portal-网页入口-4d6bfe?style=flat-square)](https://bluetrae.github.io/Rulink/)
 [![Updated](https://img.shields.io/github/last-commit/Bluetrae/Rulink/main?label=updated&style=flat-square)](https://github.com/Bluetrae/Rulink/commits/main)
 [![Stars](https://img.shields.io/github/stars/Bluetrae/Rulink?label=stars&style=flat-square)](https://github.com/Bluetrae/Rulink/stargazers)
@@ -14,7 +14,7 @@
 
 <br>
 
-个人使用的 **App Rule-Set** 仓库：把经过审计的上游 App 规则，保守转换为可长期引用的稳定规则集。一份 Canonical Rule Model 渲染为多个客户端格式，覆盖 **Surge / Shadowrocket / Loon / Stash / Egern**，而不是为每个客户端维护一套独立规则。
+个人使用的**多客户端 App Rule-Set** 仓库：把经过审计的上游 App 规则，保守转换为可长期引用的稳定规则集。一份 Canonical Rule Model 渲染为多个客户端格式，覆盖 **Surge / Shadowrocket / Loon / Stash / Egern**，而不是为每个客户端维护一套独立规则。
 
 > [!NOTE]
 > 这是 **App Rule-Set 仓库**，不是完整的代理客户端配置模板；策略组与 `FINAL` 由你的主配置负责。
@@ -28,7 +28,7 @@
 - **范围优先** —— 准确性高于数量，宁少勿滥。
 - **生成即产物** —— `Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Egern/` 仅由构建器 / Actions 生成，绝不手工维护。
 - **一次定义，五端分发** —— 每个 App 只有一份 source manifest 与 canonical 规则；Surge / Shadowrocket / Loon / Stash 共享逐字节相同的 classical `.list`，Egern 由同一 canonical 集合渲染为自有 YAML schema。格式事实依据见 [docs/MULTI_CLIENT_AUDIT.md](docs/MULTI_CLIENT_AUDIT.md)。
-- **证据驱动** —— 新来源先过 source audit；补充规则须经 Surge 日志确认。
+- **证据驱动** —— 新来源先过 source audit；补充规则须经客户端日志（当前以 Surge 为准）确认。
 
 ## 🚀 快速开始
 
@@ -159,7 +159,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe scripts\build.py --write
 ```
 
-<sub>`.venv/` 已被 Git 忽略，绝不提交。提交前请检查生成差异；不要手工修改 `Surge/*.list`，也不要提交订阅 URL、token、密码、证书或其他敏感信息。</sub>
+<sub>`.venv/` 已被 Git 忽略，绝不提交。提交前请检查生成差异；不要手工修改 `Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Egern/` 中任何生成文件，也不要提交订阅 URL、token、密码、证书或其他敏感信息。</sub>
 
 ## ⚖️ 使用与许可
 

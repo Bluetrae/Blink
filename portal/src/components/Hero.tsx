@@ -75,7 +75,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
       >
         <Stat value={String(appsCount)} label="Rule-Sets" />
         <Stat value={String(totalRules)} label="有效规则" />
-        <Stat value="5 客户端" label="Surge · Loon · Stash · Egern" />
+        <Stat value="5 客户端" label="Surge · Shadowrocket · Loon · Stash · Egern" />
         <Stat value="每日 00:01" label="自动检查上游" />
         <Stat value="审计准入" label="Repcz · SukkaW 优先" />
       </ul>

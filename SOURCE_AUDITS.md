@@ -10,7 +10,8 @@
 - 构建器 v1 格式边界（下文各 App 的“格式风险”据此标注）：
   - `v2fly-domain-list`：`domain`/`full`/`keyword` 映射为 Surge `DOMAIN-SUFFIX`/`DOMAIN`/`DOMAIN-KEYWORD`；regexp 与 `@!` 否定属性直接构建失败；带 `@attribute` 的条目默认被跳过（除非 manifest 显式 include）；`include` 必须在 include_policy 显式 allow/deny，否则构建失败。
   - `surge-rule-set`（严格白名单）：仅接受无策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR`、`IP-CIDR6`；IP 仅允许额外 `no-resolve`。`IP-ASN`、`URL-REGEX`、带策略名等会导致构建失败。
-- `sources/supplement/<App>.list` 仅存放上游未覆盖、且由 Surge 日志或实际使用确认的缺口。
+  - 多客户端输出边界（v1.1，见 `docs/MULTI_CLIENT_AUDIT.md`）：canonical 规则渲染为 classical（Surge / Loon / Shadowrocket / Stash 逐字节相同）与 egern-yaml（Egern）；`PROCESS-NAME` 对 Loon / Shadowrocket / Egern 显式丢弃并计入构建报告，禁止静默转换。
+- `sources/supplement/<App>.list` 仅存放上游未覆盖、且由客户端日志（当前以 Surge 为准）或实际使用确认的缺口。
 
 ## 审计状态
 
