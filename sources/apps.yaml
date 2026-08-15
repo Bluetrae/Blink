@@ -400,3 +400,30 @@ apps:
       supplement, whose three root domains (za.group, zainvest.group,
       zajourney.com) cover all nine candidate domains recorded from actual
       usage. build.py v1 allows an empty sources list for exactly this case.
+
+  Steam:
+    enabled: true
+    output: Surge/Steam.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Steam.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/Steam.list
+    exclude: []
+    note: >-
+      Repcz is selected because its native, actively refreshed Steam list keeps
+      a compact set of core Steam domains (store, community, chat, content,
+      steamdeck) without CDN-specific or China-specific hosts, so it builds
+      with zero conversion and no type-level excludes. SukkaW has no dedicated
+      Steam rules. v2fly's dataset adds legacy regional CDNs and China
+      entries; blackmatrix7 is stale and even includes the unrelated
+      steamunlocked.net domain.

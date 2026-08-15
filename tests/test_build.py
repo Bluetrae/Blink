@@ -61,6 +61,7 @@ class BuildTests(unittest.TestCase):
                 "Spotify",
                 "AI",
                 "ZABank",
+                "Steam",
             },
         )
         for app_name, app in manifest["apps"].items():

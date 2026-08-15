@@ -58,6 +58,9 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.lis
 # 🧠 AI
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list,<你的 AI 策略>
 
+# 🎮 Game
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Steam.list,<你的游戏策略>
+
 # 🌐 Social
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list,<你的社交策略>
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list,<你的社交策略>
@@ -88,6 +91,7 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.li
 | 💬 Communication | [Telegram](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Telegram.list) | `Surge/Telegram.list` | 域名 |
 | 💻 Development | [GitHub](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list) | `Surge/GitHub.list` | 域名 |
 | 🧠 AI | [AI](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list) | `Surge/AI.list` | 域名 |
+| 🎮 Game | [Steam](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Steam.list) | `Surge/Steam.list` | 域名 |
 | 🌐 Social | [X](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list) | `Surge/X.list` | 域名、IP |
 | 🌐 Social | [Instagram](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list) | `Surge/Instagram.list` | 域名 |
 | 🌐 Social | [Threads](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Threads.list) | `Surge/Threads.list` | 域名 |

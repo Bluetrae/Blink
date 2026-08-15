@@ -22,6 +22,7 @@
 | TikTok | 已落地 | Repcz `TikTok.list`（81 条输出；2 条 IP-ASN 已类型级排除） |
 | Spotify | 已落地 | Repcz `Spotify.list`（21 条），零转换风险，无需 supplemental |
 | ZABank | 已落地 | supplement-only（`sources: []` + 3 条根域名），上游 5+ 家全部缺失 |
+| Steam | 已落地 | Repcz `Steam.list`（20 条核心域名），零转换风险，无需 supplemental |
 | Live | 不纳入 | 用户个人直播源，不进入本仓库（2026-08 确认） |
 
 ## 各 App 审计记录
@@ -113,5 +114,32 @@ supplemental：**不需要**。
 推荐方案：无成熟上游可作 primary。以 3 条根域名 `DOMAIN-SUFFIX,za.group` / `DOMAIN-SUFFIX,zainvest.group` / `DOMAIN-SUFFIX,zajourney.com` 建立最小规则集，即可覆盖全部 9 个候选域名；纯 DOMAIN-SUFFIX，零转换风险，兼容 build.py 两种格式。
 
 决议（2026-08-15）：采用方案 (a) —— build.py 允许 `sources: []`（supplement-only），manifest 已落地：`sources/supplement/ZABank.list` 写入三条根域名，输出 3 条规则。9 个候选域名来自用户实际使用记录（此前交接文档中的候选清单），若与实际使用不符请告知，可随时移除。
+
+### Steam
+
+审计日期：2026-08-15。触发原因：用户 Surge 主配置仍引用 blackmatrix7 Steam，是当时唯一未被 Rulink 覆盖的非国内 App。以下 URL 与正文均为当日直接抓取验证（Node.js fetch；GitHub API 本轮被限流，维护时间沿用同日对同仓库的实测）。
+
+| 候选 | 作者 | URL | 格式 | Surge 原生 | 规模/覆盖 | 维护证据 | 过宽/无关条目 | 格式风险 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Repcz（一梯队） | Repcz | `https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Steam.list`（200） | surge-rule-set | 是 | 20 条 DOMAIN-SUFFIX：核心 Steam（store/community/chat/content/steamdeck/steamstatic 等）+ fanatical、humblebundle（游戏商店） | 仓库每日自动更新（2026-08-15 分支 head，同日实测） | 无 CDN 专属/中国区主机；fanatical/humblebundle 属游戏生态，可接受 | 无：全白名单兼容，零转换风险 |
+| SukkaW（一梯队） | SukkaW | 无 Steam 专项（`Source/non_ip/steam.conf` 404；当日树查询被 API 限流，结合前次全树审计无 steam 相关文件） | — | — | — | — | — | 无专项规则 |
+| v2fly | v2fly | `.../master/data/steam`（200） | v2fly-domain-list | 否 | 非 @cn 有效条目约 35 条：17 裸后缀 + 12 条 akamai `full:` + 网宿/highwinds/地区 CDN + dota2/valve.net；另有约 14 条 `@cn`（完美/蒸汽中国 CDN，默认跳过） | 活跃（2026-08 系列提交，同日实测） | 地区性 CDN（internode NZ/orcon/webra RU/comcast edgecast/hwcdn）价值存疑，偏宽 | 无 regexp/include/否定属性；可转换但需甄别 CDN 条目 |
+| blackmatrix7 | blackmatrix7 | `.../rule/Surge/Steam/Steam.list`（200） | surge-rule-set | 是 | 54 条：51 SUFFIX + 3 KEYWORD | 文件头 UPDATED 2025-06-06（约 14 个月陈旧） | **含盗版站 `steamunlocked.net`**；3 条宽关键字（steambroadcast/steamstore/steamuserimages）；大量中国区 CDN 主机 | 格式干净但陈旧且范围不干净 |
+| MetaCubeX | MetaCubeX | 无文本 Steam 产物（`meta/Steam.list` 404） | — | — | — | — | — | 不适合直接作源 |
+
+推荐 primary：**Repcz Steam.list**。理由：一梯队、Surge 原生、20 条核心域名零转换风险、每日更新；v2fly 偏宽（地区 CDN），blackmatrix7 陈旧且含无关域名。无需 supplemental、无需任何构建器改动。
+
+## 用户 Surge 主配置对照（2026-08-15）
+
+对用户 iOS 端主配置 `[Rule]` 段与仓库输出做了一次完整对照。本记录已脱敏，不含主配置中的个人域名与订阅相关条目。
+
+- **ZA Bank**：主配置有 9 条手工 `DOMAIN`（za.group / zainvest.group / zajourney.com 子域）。Rulink `ZABank.list` 的三条根域名完整覆盖，可删除 9 条手工行。
+- **SafePal**：主配置只有 `isafepal.com`；Rulink `SafePal.list` 额外补上 `safepal.com`，替换更完整。
+- **OKX**：主配置为 blackmatrix7 OKX + 7 条手工补充（okx-dns/dns1/dns2、okx.ac、okx.cab、okx.com.cdn.cloudflare.net、xlayer.tech）。Rulink `OKX.list` 全部覆盖，可整体替换并删除手工行。
+- **Telegram**：主配置为 `PROTOCOL,MTProto` + Repcz Telegram/Telegram_NoIP 双列表（含 IP 覆盖）。Rulink `Telegram.list` 仅为 SukkaW 核心域名，覆盖较窄 → 主配置**保持现状**；Rulink Telegram.list 供需要最小域名集的场景使用。
+- **Steam**：主配置引用 blackmatrix7 Steam；本次审计后 Rulink 已新增 `Steam.list`（Repcz），可替换。
+- **Apple Music / Apple 全套**：主配置直引 Repcz AppleMusic + SukkaW apple_cn/apple_cdn + 手工 Apple 补充；按既定政策暂缓，保持现状。
+- **Google/Gmail、WeChat、DouYin、Emby、Live、sub-store 等**：属基础设施、国内 App 或个人直播/影音项，不在 Rulink 范围，保持现状。
+- **Reject / LAN / domestic / CDN / China IP 等基础设施**：继续直接引用成熟上游，不纳入本仓库。
 
 supplemental：不适用（本身即无 primary 上游）。

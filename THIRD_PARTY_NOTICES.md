@@ -33,6 +33,7 @@ those available from the applicable upstream authors and licenses.
 | `Surge/TikTok.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/Spotify.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/AI.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/Steam.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/ZABank.list` | Rulink repo-maintained supplement | `sources/supplement/ZABank.list` | No upstream source; original repo-maintained rules |
 
 The exact source URL, format, and selection rationale for each App are kept in

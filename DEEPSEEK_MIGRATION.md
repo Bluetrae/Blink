@@ -115,6 +115,7 @@ Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指�
 | Spotify | Repcz | `surge-rule-set` | 21 条全白名单兼容，零转换风险。 |
 | AI | Repcz | `surge-rule-set` | 1 条 `URL-REGEX` 通过 `exclude: ["url-regex:*"]` 类型级丢弃；DeepSeek 未纳入。 |
 | ZABank | 无上游 | supplement-only | `sources: []`，仅 `sources/supplement/ZABank.list` 三条根域名。 |
+| Steam | Repcz | `surge-rule-set` | 20 条核心域名，零转换风险；blackmatrix7 陈旧且含无关域名。 |
 
 实际 URL、exclude、include policy、attribute policy 和完整选源理由均以 `sources/apps.yaml` 为准。
 
