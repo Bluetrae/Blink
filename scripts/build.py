@@ -411,7 +411,13 @@ def write_outputs(compilations: Iterable[Compilation], manifest: dict, root: Pat
         output = root / manifest["apps"][compilation.app_name]["output"]
         output.parent.mkdir(parents=True, exist_ok=True)
         temporary = output.with_suffix(output.suffix + ".tmp")
-        temporary.write_text("\n".join(rule.render() for rule in compilation.rules) + "\n", encoding="utf-8", newline="\n")
+        lines = [
+            f"# 规则名称: {compilation.app_name}",
+            f"# 规则统计: {len(compilation.rules)}",
+            "",
+            *(rule.render() for rule in compilation.rules),
+        ]
+        temporary.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
         temporary.replace(output)
 
 

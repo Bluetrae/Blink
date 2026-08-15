@@ -68,6 +68,7 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netfl
 | 🎬 Media | [Netflix](https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/Netflix.list) | `Surge/Netflix.list` | 域名、IP、User-Agent、Process |
 
 所有输出文件均不携带策略名；`RULE-SET` 的最后一个字段始终由你的 Surge 主配置决定。
+每个文件开头均由构建器自动写入 `# 规则名称` 与 `# 规则统计`，方便直接查看其用途与当前有效规则数。
 
 ---
 

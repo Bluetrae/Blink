@@ -62,6 +62,23 @@ class BuildTests(unittest.TestCase):
         for app_name, app in manifest["apps"].items():
             build.validate_app_config(app_name, app)
 
+    def test_write_outputs_adds_name_and_rule_count_header(self) -> None:
+        with TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            config = app_config()
+            rule = build.SurgeRule(
+                "DOMAIN-SUFFIX",
+                "example.com",
+                (),
+                build.SourceLocation("test", 1, ("Test",)),
+            )
+            compilation = build.Compilation("Test", [rule], [], [], {})
+            build.write_outputs([compilation], {"apps": {"Test": config}}, root)
+            self.assertEqual(
+                (root / "Surge" / "Test.list").read_text(encoding="utf-8"),
+                "# 规则名称: Test\n# 规则统计: 1\n\nDOMAIN-SUFFIX,example.com\n",
+            )
+
     def test_explicit_include_allows_and_denies(self) -> None:
         result = self.compile(
             app_config(allow=["child"], deny=["other"]),
