@@ -3,8 +3,8 @@ name: Update Surge Rule-Sets
 on:
   workflow_dispatch:
   schedule:
-    # GitHub Actions cron uses UTC. This is 02:17 in China Standard Time (UTC+8).
-    - cron: "17 18 * * *"
+    # GitHub Actions cron uses UTC. This is 00:01 in China Standard Time (UTC+8).
+    - cron: "1 16 * * *"
 
 permissions:
   contents: write

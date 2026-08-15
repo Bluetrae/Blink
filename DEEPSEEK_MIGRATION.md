@@ -126,7 +126,7 @@ Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指�
 - 单元测试入口：`.\.venv\Scripts\python.exe -m unittest discover -s tests -v`
 - 单 App 只读预检优先使用：`.\.venv\Scripts\python.exe scripts\build.py --app <App>`。
 - 全量写入仅使用：`.\.venv\Scripts\python.exe scripts\build.py --write`，并应在确认范围后执行。
-- GitHub Actions workflow 名称为 `Update Surge Rule-Sets`，支持手动运行和每日北京时间约 02:17 运行。只有 `Surge/` 发生变化时，workflow 才会以 `github-actions[bot]` 创建生成提交。
+- GitHub Actions workflow 名称为 `Update Surge Rule-Sets`，支持手动运行和每日北京时间约 00:01 运行（GitHub 定时任务不保证准点，实际执行可能延后）。只有 `Surge/` 发生变化时，workflow 才会以 `github-actions[bot]` 创建生成提交。
 - 每日运行全自动、无人值守：有实质变化才提交、无变化零提交；构建失败（上游 404/超时/格式不合 v1）时保留旧输出、暂停更新，等待人工处理且无时限；新 App 与 supplement 永远由人工审计添加。
 
 对新增 App，优先做定向预检；全量构建放在 GitHub Actions、每日更新、发布前健康检查或用户明确要求的全仓库验证中。构建写入必须保持原子性：所有选定 App 都成功后才更新输出。

@@ -112,7 +112,7 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,
 
 ## ⚙️ 更新机制
 
-`apps.yaml → build.py 解析 / 转换 / 去重 → 合并 supplement → Surge/*.list`，由 GitHub Actions（[`update.yml`](.github/workflows/update.yml)）每天北京时间约 **02:17** 先跑单测再全量构建，**只有 `Surge/` 变化**才由 `github-actions[bot]` 提交；上游 404、超时、未知规则类型、未声明 include 等一律**显式失败**，绝不静默改变语义。
+`apps.yaml → build.py 解析 / 转换 / 去重 → 合并 supplement → Surge/*.list`，由 GitHub Actions（[`update.yml`](.github/workflows/update.yml)）每天北京时间约 **00:01**（定时任务不保证准点）先跑单测再全量构建，**只有 `Surge/` 变化**才由 `github-actions[bot]` 提交；上游 404、超时、未知规则类型、未声明 include 等一律**显式失败**，绝不静默改变语义。
 
 <sub>每日运行全自动、无人值守：有实质变化才提交，无变化零提交；构建失败时保留旧输出并等待人工处理，不阻塞日常使用。新 App 与 supplement 永远由人工审计添加，CI 不会自动引入。</sub>
 

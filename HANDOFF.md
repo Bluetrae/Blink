@@ -22,7 +22,7 @@ https://github.com/Bluetrae/Rulink
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
 - `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式，并支持类型级 exclude（`ip-asn:*`、`url-regex:*`）与 supplement-only App（`sources: []`）
 - `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、类型级 exclude、supplement-only App、抓取重试、CLI 端到端、错误策略及实际 manifest 校验（19 个用例全过）
-- `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 02:17 的定时运行
+- `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 00:01 的定时运行（GitHub 定时任务不保证准点）
 - GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
 - GitHub Actions 第 3 次手动运行成功，生成 commit 为 `498ca27 chore: update generated Surge rule-sets`
 - GitHub Actions 第 4 次手动运行成功，生成 commit 为 `d69291a chore: update generated Surge rule-sets`
@@ -200,7 +200,7 @@ GitHub Actions 第 4 次手动运行在同日新增：
 
 ## 无人值守与人工介入时机
 
-- **每日 02:17 的 GitHub Actions 全自动、无人值守**：拉取上游 → 单测 → 全量重建 → 仅 `Surge/` 有实质变化时由 bot 提交；无变化零提交。维护者无需每天登录。
+- **每日 00:01（北京时间）的 GitHub Actions 全自动、无人值守**：拉取上游 → 单测 → 全量重建 → 仅 `Surge/` 有实质变化时由 bot 提交；无变化零提交。维护者无需每天登录。GitHub 定时任务不保证准点，实际执行可能延后。
 - **构建失败 = 暂停更新，不是故障**：上游 404/超时/格式不合 v1 时，构建显式失败且不写任何文件，旧输出继续可用；无处理时限，下次维护时修复 manifest 或等待上游恢复即可。
 - **需要人工介入的时机（全部事件驱动、无时限）**：
   1. Actions 出现红色失败（上游格式变化、404、超时）→ 查日志，修复 source/manifest 或等上游恢复。
