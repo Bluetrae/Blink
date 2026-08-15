@@ -1,6 +1,6 @@
 # 自用直播源规则（APTV）—— 仅个人使用，未经上游审计。
 # 配合 APTV 前端 App 观看直播使用；2026-08-15 自用户私有仓库
-# Bluetrae/Bridge 的 LiveStreaming.list 迁入（garyshare 直播源，原文件版本 2026-02-22，26 条）。
+# 用户私有仓库的 LiveStreaming.list 迁入（garyshare 直播源，原文件版本 2026-02-22，26 条）。
 # 内容仅含域名与 IP，不含订阅 URL 或 token；他人复用本仓库请自行移除本文件相关规则。
 
 # ==== APTV: entry =====

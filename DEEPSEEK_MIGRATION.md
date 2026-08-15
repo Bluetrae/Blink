@@ -21,7 +21,7 @@
 
 - 项目名称：Rulink
 - GitHub：<https://github.com/Bluetrae/Rulink>
-- 本地工作区：`C:\Users\Jennie\Projects\Rulink`
+- 本地工作区：`C:\Users\<用户名>\Projects\Rulink`
 - Raw Rule-Set 基础地址（v1.1 起）：
   - Surge：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/`（自 v1 起不变，用户主配置依赖此路径）
   - Shadowrocket：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Shadowrocket/`
@@ -115,7 +115,7 @@ origin: https://github.com/Bluetrae/Rulink.git
 完整对话若需要保留，应存放在仓库外的私密本地目录，例如：
 
 ```text
-C:\Users\Jennie\Documents\AI-Archives\Rulink\
+C:\Users\<用户名>\Documents\AI-Archives\Rulink\
 ```
 
 不要将完整聊天记录提交到公开仓库，也不要在每次新 session 自动交给模型。只有在需要追溯某项决策时，才提供经过筛选和脱敏的相关片段。

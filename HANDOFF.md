@@ -10,7 +10,7 @@ https://github.com/Bluetrae/Rulink
 
 ## 本地路径
 
-`C:\Users\Jennie\Projects\Rulink`
+`C:\Users\<用户名>\Projects\Rulink`
 
 ## 当前状态
 
@@ -52,7 +52,7 @@ https://github.com/Bluetrae/Rulink
 
 原计划中的 AI、TikTok、Spotify、ZABank 已于 2026-08-15 完成 source audit 并全部落地（见 `SOURCE_AUDITS.md` 与下文结论）。
 
-原清单中的 Live（现命名 APTV）是用户自用直播源，已于 2026-08-15 以 supplement-only 形式迁入本仓库（26 条，注释自用，迁自 Bluetrae/Bridge）。
+原清单中的 Live（现命名 APTV）是用户自用直播源，已于 2026-08-15 以 supplement-only 形式迁入本仓库（26 条，注释自用，迁自用户私有仓库）。
 
 ## 已确定的规则源结论
 
@@ -75,7 +75,7 @@ https://github.com/Bluetrae/Rulink
 - AI：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AI.list`。51 条聚合覆盖主流 AI 服务，为 SukkaW ai.conf 的派生（多 `file.oaiusercontent.com`）；1 条 `URL-REGEX` 通过 `exclude: ["url-regex:*"]` 类型级显式丢弃；DeepSeek 未纳入（国内直连默认，须日志确认缺口后才可进 supplement）。
 - ZABank：无任何上游提供 ZABank 规则（2026-08-15 审计验证 Repcz/SukkaW/v2fly/blackmatrix7/MetaCubeX 全部缺失）。采用 supplement-only：`sources: []` + `sources/supplement/ZABank.list`（`za.group`、`zainvest.group`、`zajourney.com` 三条根域名），覆盖此前记录的 9 个候选域名。
 - Steam：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Steam.list`。Repcz 的 20 条核心 Steam 域名零转换风险、每日更新；SukkaW 无专项；v2fly 偏宽（地区性 CDN）；blackmatrix7 陈旧（2025-06）且混入盗版站 `steamunlocked.net`。2026-08-15 新增，替代用户主配置中的 blackmatrix7 Steam。
-- APTV（原计划名 Live）：无上游，用户自用直播源（经 APTV 前端 App 观看）。2026-08-15 自用户私有仓库 `Bluetrae/Bridge` 迁入（garyshare 直播源 2026-02-22 版，26 条：17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），supplement-only（`sources: []`），文件头部与 manifest note 均已注明自用；不含订阅 URL 或 token。
+- APTV（原计划名 Live）：无上游，用户自用直播源（经 APTV 前端 App 观看）。2026-08-15 自用户私有仓库迁入（garyshare 直播源 2026-02-22 版，26 条：17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），supplement-only（`sources: []`），文件头部与 manifest note 均已注明自用；不含订阅 URL 或 token。
 
 ## Finance supplement 候选与当前已知
 

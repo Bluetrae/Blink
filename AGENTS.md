@@ -37,6 +37,7 @@
 ## 安全规范
 
 - 禁止提交机场订阅 URL、token、GitHub PAT、密码、2FA、MTProto secret、证书等敏感信息。
+- 提交前对变更文件做敏感模式自检：GitHub PAT（`ghp_`/`github_pat_`）、AWS Key（`AKIA…`）、私钥/证书块（`-----BEGIN … PRIVATE KEY-----`）、机场订阅 URL 与代理协议链接（`vmess://`/`vless://`/`ss://`/`trojan://` 等）、URL 内嵌凭据（`?token=`/`user:pass@`）、本地绝对路径（如 `C:\Users\<用户名>`）一律不得进入提交；发现仓库既有的敏感痕迹先报告再处理，不自行删除或改写历史。
 
 ## 可用工具与 Git 规范
 
