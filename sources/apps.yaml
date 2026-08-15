@@ -16,6 +16,13 @@ apps:
         role: primary
         format: v2fly-domain-list
         url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
     supplement: sources/supplement/OKX.list
     exclude: []
     note: >-
@@ -32,6 +39,13 @@ apps:
         role: primary
         format: v2fly-domain-list
         url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
     supplement: sources/supplement/WhatsApp.list
     exclude: []
     note: >-
@@ -48,6 +62,13 @@ apps:
         role: primary
         format: v2fly-domain-list
         url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/line
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
     supplement: sources/supplement/LINE.list
     exclude: []
     note: >-
@@ -65,6 +86,15 @@ apps:
         role: primary
         format: v2fly-domain-list
         url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/github
+    include_policy:
+      mode: explicit
+      allow:
+        - github-copilot
+      deny:
+        - npmjs
+    attributes:
+      mode: explicit
+      include: []
     supplement: sources/supplement/GitHub.list
     exclude: []
     note: >-
