@@ -1,3 +1,6 @@
+# 规则名称: OKX
+# 规则统计: 9
+
 DOMAIN-SUFFIX,okex.com
 DOMAIN-SUFFIX,okx-dns.com
 DOMAIN-SUFFIX,okx-dns1.com

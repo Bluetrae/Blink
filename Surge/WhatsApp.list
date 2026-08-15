@@ -1,3 +1,6 @@
+# 规则名称: WhatsApp
+# 规则统计: 11
+
 DOMAIN-SUFFIX,wa.me
 DOMAIN-SUFFIX,whatsapp-plus.info
 DOMAIN-SUFFIX,whatsapp-plus.me

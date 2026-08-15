@@ -1,3 +1,6 @@
+# 规则名称: Telegram
+# 规则统计: 14
+
 DOMAIN-SUFFIX,cdn-telegram.org
 DOMAIN-SUFFIX,graph.org
 DOMAIN-SUFFIX,legra.ph

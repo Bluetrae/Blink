@@ -1,3 +1,6 @@
+# 规则名称: GitHub
+# 规则统计: 58
+
 DOMAIN,copilot-proxy.githubusercontent.com
 DOMAIN,copilot-workspace.githubnext.com
 DOMAIN,copilotprodattachments.blob.core.windows.net
