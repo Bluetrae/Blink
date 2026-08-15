@@ -32,6 +32,7 @@ https://github.com/Bluetrae/Rulink
 - 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`、`Surge/SafePal.list`、`Surge/PayPal.list`、`Surge/Netflix.list`、`Surge/YouTube.list`、`Surge/X.list`、`Surge/Instagram.list`、`Surge/Telegram.list`、`Surge/Threads.list`、`Surge/TikTok.list`、`Surge/Spotify.list`、`Surge/AI.list`、`Surge/ZABank.list`、`Surge/Steam.list`、`Surge/APTV.list`
 - `sources/supplement/` 目前含 `ZABank.list`（3 条根域名，supplement-only）与 `APTV.list`（26 条自用直播源，supplement-only，已注释自用）；其他 App 无 supplement 文件，这是预期状态
 - 2026-08-15：完成用户 Surge 主配置与仓库输出的完整对照；脱敏结论见 `SOURCE_AUDITS.md`「用户 Surge 主配置对照」一节（要点：ZA Bank 9 条手工行、OKX 7 条手工行可删；Telegram 主配置保持现状；Steam 已新增纳入；APTV 已迁入为自用 supplement）
+- `portal/` 与 `scripts/gen_portal_stats.py` 是用户在**另一个工作流窗口**开发中的仓库门户网站内容，属授权内容：不要删除、不要改动、不要纳入自己的提交；本地提交一律使用显式路径暂存（如 `git add README.md`），避免与门户开发互相干扰
 
 ## 项目目标
 
