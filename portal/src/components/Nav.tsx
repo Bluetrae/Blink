@@ -7,7 +7,14 @@ export default function Nav({ repo }: NavProps) {
     <header className="sticky top-0 z-50 border-b border-line bg-white/80 backdrop-blur-md backdrop-saturate-150">
       <div className="mx-auto flex h-15 max-w-5xl items-center gap-7 px-6">
         <a href="#top" className="flex items-center gap-2 text-[17px] font-bold tracking-tight text-ink">
-          <span className="text-lg">🧭</span> Rulink
+          <img
+            src="https://github.com/Bluetrae.png"
+            alt=""
+            width={24}
+            height={24}
+            className="h-6 w-6 rounded-full border border-line"
+          />
+          Rulink
         </a>
         <nav className="ml-auto hidden gap-5 sm:flex" aria-label="主导航">
           <a href="#rulesets" className="text-sm text-mute transition hover:text-ink">规则集</a>
