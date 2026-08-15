@@ -14,7 +14,7 @@ const PIPELINE = [
 
 export default function About({ repo }: AboutProps) {
   return (
-    <section id="about" className="scroll-mt-16 px-6 py-16 sm:py-20">
+    <section id="about" className="scroll-mt-24 px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <div className="mx-auto mb-10 max-w-xl text-center">

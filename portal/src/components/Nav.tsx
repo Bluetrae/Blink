@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useTheme, type Theme } from "../hooks";
 
 interface NavProps {
@@ -13,9 +14,24 @@ const THEME_META: Record<Theme, { icon: string; label: string }> = {
 export default function Nav({ repo }: NavProps) {
   const { theme, cycle } = useTheme();
   const meta = THEME_META[theme];
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-card/80 backdrop-blur-md backdrop-saturate-150">
-      <div className="mx-auto flex h-15 max-w-5xl items-center gap-4 px-6">
+    <header className="fixed inset-x-0 top-0 z-50 px-6 pt-3">
+      <div
+        className={`mx-auto flex h-14 max-w-5xl items-center gap-4 rounded-full px-5 transition-all duration-300 ease-out ${
+          scrolled
+            ? "border border-line bg-card/80 shadow-lg shadow-black/5 backdrop-blur-md backdrop-saturate-150"
+            : "border border-transparent bg-transparent"
+        }`}
+      >
         <a href="#top" className="flex items-center gap-2 text-[17px] font-bold tracking-tight text-ink">
           <img
             src="https://github.com/Bluetrae.png"
@@ -36,7 +52,7 @@ export default function Nav({ repo }: NavProps) {
           onClick={cycle}
           title={meta.label}
           aria-label={meta.label}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-card text-[15px] leading-none transition hover:bg-paper"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-card text-[15px] leading-none transition hover:bg-paper"
         >
           {meta.icon}
         </button>
@@ -44,7 +60,7 @@ export default function Nav({ repo }: NavProps) {
           href={repo}
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-lg border border-line bg-card px-3.5 py-2 text-[13.5px] text-ink transition hover:bg-paper"
+          className="rounded-full border border-line bg-card px-3.5 py-2 text-[13.5px] text-ink transition hover:bg-paper"
         >
           GitHub
         </a>

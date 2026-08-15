@@ -57,9 +57,12 @@ function AppCard({ app, rawBase, index }: { app: AppEntry; rawBase: string; inde
             href={`${rawBase}/${app.file}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 rounded-lg border border-line bg-card px-3 py-2 text-center text-sm text-ink transition hover:bg-paper"
+            className="group flex-1 rounded-lg border border-line bg-card px-3 py-2 text-center text-sm text-ink transition hover:bg-paper"
           >
-            查看 ↗
+            查看{" "}
+            <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+              ↗
+            </span>
           </a>
         </div>
       </article>
@@ -75,7 +78,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
   const visible = filter === "all" ? apps : apps.filter((app) => app.category === filter);
 
   return (
-    <section id="rulesets" className="scroll-mt-16 border-y border-line bg-paper px-6 py-16 sm:py-20">
+    <section id="rulesets" className="scroll-mt-24 border-y border-line bg-paper px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <div className="mx-auto mb-10 max-w-xl text-center">

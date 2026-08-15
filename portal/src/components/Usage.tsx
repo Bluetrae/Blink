@@ -24,7 +24,7 @@ export default function Usage({ data }: { data: PortalData }) {
   }, [data]);
 
   return (
-    <section id="usage" className="scroll-mt-16 px-6 py-16 sm:py-20">
+    <section id="usage" className="scroll-mt-24 px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-4xl">
         <Reveal>
           <div className="mx-auto mb-10 max-w-xl text-center">
