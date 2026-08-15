@@ -35,6 +35,7 @@ those available from the applicable upstream authors and licenses.
 | `Surge/AI.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/Steam.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/ZABank.list` | Rulink repo-maintained supplement | `sources/supplement/ZABank.list` | No upstream source; original repo-maintained rules |
+| `Surge/APTV.list` | Rulink repo-maintained supplement (self-use) | `sources/supplement/APTV.list` | Personal rules migrated from Bluetrae/Bridge; no third-party license |
 
 The exact source URL, format, and selection rationale for each App are kept in
 [`sources/apps.yaml`](sources/apps.yaml). Upstream projects may change their

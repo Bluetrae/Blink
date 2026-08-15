@@ -23,7 +23,7 @@
 | Spotify | 已落地 | Repcz `Spotify.list`（21 条），零转换风险，无需 supplemental |
 | ZABank | 已落地 | supplement-only（`sources: []` + 3 条根域名），上游 5+ 家全部缺失 |
 | Steam | 已落地 | Repcz `Steam.list`（20 条核心域名），零转换风险，无需 supplemental |
-| Live | 不纳入 | 用户个人直播源，不进入本仓库（2026-08 确认） |
+| APTV | 已落地 | supplement-only 自用直播源（26 条，迁自 Bluetrae/Bridge，已注释自用；原计划名 Live） |
 
 ## 早期 12 个 App 的审计结论索引
 
@@ -148,6 +148,15 @@ supplemental：**不需要**。
 
 推荐 primary：**Repcz Steam.list**。理由：一梯队、Surge 原生、20 条核心域名零转换风险、每日更新；v2fly 偏宽（地区 CDN），blackmatrix7 陈旧且含无关域名。无需 supplemental、无需任何构建器改动。
 
+### APTV（自用直播源）
+
+审计日期：2026-08-15。原计划名“Live”，因用户实际通过 APTV 前端 App 观看直播而命名 APTV；此前决定“不纳入”，用户随后要求迁入本仓库。
+
+- **来源**：用户私有仓库 `Bluetrae/Bridge` 的 `Surge/Rules/LiveStreaming.list`（garyshare 直播源，原文件版本 2026-02-22），26 条（17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），全部 policy-free 且在 build.py v1 白名单内，无需转换。
+- **落地方式**：supplement-only（`sources: []` + `sources/supplement/APTV.list`），与 ZABank 同一模式；supplement 文件头部注明“自用”，manifest note 记录迁移来源与免责说明。
+- **安全**：内容仅含域名与 IP，不含订阅 URL 或 token；若他人复用本仓库需自行移除。
+- **主配置**：由 Bridge 仓库 URL 改为引用 `Surge/APTV.list`，策略（US）仍由主配置指定。
+
 ## 用户 Surge 主配置对照（2026-08-15）
 
 对用户 iOS 端主配置 `[Rule]` 段与仓库输出做了一次完整对照。本记录已脱敏，不含主配置中的个人域名与订阅相关条目。
@@ -158,7 +167,8 @@ supplemental：**不需要**。
 - **Telegram**：主配置为 `PROTOCOL,MTProto` + Repcz Telegram/Telegram_NoIP 双列表（含 IP 覆盖）。Rulink `Telegram.list` 仅为 SukkaW 核心域名，覆盖较窄 → 主配置**保持现状**；Rulink Telegram.list 供需要最小域名集的场景使用。
 - **Steam**：主配置引用 blackmatrix7 Steam；本次审计后 Rulink 已新增 `Steam.list`（Repcz），可替换。
 - **Apple Music / Apple 全套**：主配置直引 Repcz AppleMusic + SukkaW apple_cn/apple_cdn + 手工 Apple 补充；按既定政策暂缓，保持现状。
-- **Google/Gmail、WeChat、DouYin、Emby、Live、sub-store 等**：属基础设施、国内 App 或个人直播/影音项，不在 Rulink 范围，保持现状。
+- **Google/Gmail、WeChat、DouYin、Emby、sub-store 等**：属基础设施、国内 App 或个人影音项，不在 Rulink 范围，保持现状。
+- **APTV（自用直播源，原计划名 Live）**：2026-08-15 已迁入 Rulink（supplement-only，26 条，注释自用，迁自 Bluetrae/Bridge）；主配置可改为引用 `Surge/APTV.list`，策略仍由主配置指定。
 - **Reject / LAN / domestic / CDN / China IP 等基础设施**：继续直接引用成熟上游，不纳入本仓库。
 
 supplemental：不适用（本身即无 primary 上游）。

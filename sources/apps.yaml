@@ -427,3 +427,24 @@ apps:
       Steam rules. v2fly's dataset adds legacy regional CDNs and China
       entries; blackmatrix7 is stale and even includes the unrelated
       steamunlocked.net domain.
+
+  APTV:
+    enabled: true
+    output: Surge/APTV.list
+    sources: []
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/APTV.list
+    exclude: []
+    note: >-
+      APTV (planned as "Live") is the user's personal live-streaming source,
+      watched through the APTV frontend app. It is supplement-only by design:
+      the rules (self-use, annotated in the supplement file) were migrated
+      from the user's private Bluetrae/Bridge repository on 2026-08-15,
+      contain no subscription URLs or tokens, and are not upstream-audited.
+      Others reusing this repository should replace or remove these rules.

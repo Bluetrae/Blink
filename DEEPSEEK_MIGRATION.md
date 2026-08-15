@@ -116,6 +116,7 @@ Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指�
 | AI | Repcz | `surge-rule-set` | 1 条 `URL-REGEX` 通过 `exclude: ["url-regex:*"]` 类型级丢弃；DeepSeek 未纳入。 |
 | ZABank | 无上游 | supplement-only | `sources: []`，仅 `sources/supplement/ZABank.list` 三条根域名。 |
 | Steam | Repcz | `surge-rule-set` | 20 条核心域名，零转换风险；blackmatrix7 陈旧且含无关域名。 |
+| APTV | 无上游 | supplement-only | 用户自用直播源（26 条，注释自用，迁自 Bluetrae/Bridge；原计划名 Live）。 |
 
 实际 URL、exclude、include policy、attribute policy 和完整选源理由均以 `sources/apps.yaml` 为准。
 
@@ -131,10 +132,10 @@ Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指�
 
 ## 已知待办与谨慎项
 
-- 后续计划中的 AI、TikTok、Spotify、ZABank 已于 2026-08-15 完成 source audit 并全部落地；完整档案见 `SOURCE_AUDITS.md`。原清单中的 Live 已确认是用户个人直播源，不纳入本仓库。
+- 后续计划中的 AI、TikTok、Spotify、ZABank 已于 2026-08-15 完成 source audit 并全部落地；完整档案见 `SOURCE_AUDITS.md`。原清单中的 Live（现命名 APTV）是用户自用直播源，同日以 supplement-only 形式迁入（26 条，注释自用）。
 - Apple Music 暂缓：当前 Apple 分流仍依赖 Repcz、SukkaW、extended-matching 与手工 CDN 修复，暂不纳入此 pipeline。
 - ZABank 的 9 个候选域名已经 2026-08-15 审计确认上游全部缺失，并以三条根域名（`za.group`、`zainvest.group`、`zajourney.com`）写入 `sources/supplement/ZABank.list`；如有日志发现新的 ZA Bank 域名，按漏网处理流程追加。
-- `sources/supplement/` 目前仅含 `ZABank.list`；其他 App 无 supplement 文件是正确的空状态，不是缺失文件。
+- `sources/supplement/` 目前含 `ZABank.list`（3 条根域名）与 `APTV.list`（26 条自用直播源）；其他 App 无 supplement 文件是正确的空状态，不是缺失文件。
 - 若 Surge 日志出现漏网：先确认 App 归属，再与上游比较，确认真正缺失后才加入对应 supplement、重新构建并验证。
 
 ## 原始聊天档案

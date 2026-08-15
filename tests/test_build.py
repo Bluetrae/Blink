@@ -62,6 +62,7 @@ class BuildTests(unittest.TestCase):
                 "Spotify",
                 "AI",
                 "ZABank",
+                "APTV",
                 "Steam",
             },
         )

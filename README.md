@@ -34,7 +34,7 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/<App>.list
 ```
 
 <details>
-<summary>📋 点击展开全部 17 个 App 的引用示例</summary>
+<summary>📋 点击展开全部 18 个 App 的引用示例</summary>
 
 ```ini
 # 💳 Finance
@@ -67,6 +67,9 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/TikTok.lis
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list,<你的媒体策略>
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list,<你的媒体策略>
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list,<你的媒体策略>
+
+# 📺 APTV（自用）
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,<你的直播策略>
 ```
 
 </details>
@@ -95,6 +98,7 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.li
 | 🎬 Media | [YouTube](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list) | `Surge/YouTube.list` | 域名 |
 | 🎬 Media | [Spotify](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list) | `Surge/Spotify.list` | 域名、IP、User-Agent、Process |
 | 🎬 Media | [Netflix](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list) | `Surge/Netflix.list` | 域名、IP、User-Agent、Process |
+| 📺 APTV | [APTV](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list) | `Surge/APTV.list` | 域名、IP（自用） |
 
 <sub>输出不带策略名：`RULE-SET` 的最后一个字段始终由你的主配置决定。规则数量每天随上游变化，实时数字见各文件开头的 `# 规则统计` 头，本表不固化数字以免过时。</sub>
 
