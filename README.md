@@ -58,42 +58,12 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.li
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,<你的直播策略>
 ```
 
-<sub>其余 App 格式相同；完整清单见下方「Rule-Sets 清单」。</sub>
+<sub>其余 App 格式相同；全部规则集文件见 [Surge/](https://github.com/Bluetrae/Rulink/tree/main/Surge)。输出不带策略名，`RULE-SET` 的最后一个字段始终由你的主配置决定；规则数量每天随上游变化，实时数字见各文件开头的 `# 规则统计` 头。</sub>
 
 </details>
 
 > [!TIP]
 > 若主配置已直接引用 blackmatrix7、Repcz、v2fly 的同类列表，请**替换**为本仓库 URL，而非叠加两份。OKX 输出已覆盖此前手工维护的 `okx.ac`、`okx.cab`、`okx.com.cdn.cloudflare.net`、`xlayer.tech`；ZA Bank 的 9 条手工域名亦可删除。
-
-## 📦 Rule-Sets 清单
-
-<details>
-<summary>📋 点击展开全部 18 个 Rule-Sets 清单</summary>
-
-| 分类 | App | 文件 | 规则类型 |
-| --- | --- | --- | --- |
-| 💳 Finance | [OKX](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list) | `Surge/OKX.list` | 域名 |
-| 💳 Finance | [PayPal](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/PayPal.list) | `Surge/PayPal.list` | 域名、User-Agent |
-| 💳 Finance | [SafePal](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list) | `Surge/SafePal.list` | 域名 |
-| 💳 Finance | [ZABank](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/ZABank.list) | `Surge/ZABank.list` | 域名 |
-| 💬 Communication | [WhatsApp](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/WhatsApp.list) | `Surge/WhatsApp.list` | 域名 |
-| 💬 Communication | [LINE](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/LINE.list) | `Surge/LINE.list` | 域名 |
-| 💬 Communication | [Telegram](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Telegram.list) | `Surge/Telegram.list` | 域名 |
-| 💻 Development | [GitHub](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list) | `Surge/GitHub.list` | 域名 |
-| 🧠 AI | [AI](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list) | `Surge/AI.list` | 域名 |
-| 🎮 Game | [Steam](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Steam.list) | `Surge/Steam.list` | 域名 |
-| 🌐 Social | [X](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list) | `Surge/X.list` | 域名、IP |
-| 🌐 Social | [Instagram](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list) | `Surge/Instagram.list` | 域名 |
-| 🌐 Social | [Threads](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Threads.list) | `Surge/Threads.list` | 域名 |
-| 🌐 Social | [TikTok](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/TikTok.list) | `Surge/TikTok.list` | 域名、IP |
-| 🎬 Media | [YouTube](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list) | `Surge/YouTube.list` | 域名 |
-| 🎬 Media | [Spotify](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list) | `Surge/Spotify.list` | 域名、IP、User-Agent、Process |
-| 🎬 Media | [Netflix](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list) | `Surge/Netflix.list` | 域名、IP、User-Agent、Process |
-| 📺 APTV | [APTV](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list) | `Surge/APTV.list` | 域名、IP（自用） |
-
-</details>
-
-<sub>输出不带策略名：`RULE-SET` 的最后一个字段始终由你的主配置决定。规则数量每天随上游变化，实时数字见各文件开头的 `# 规则统计` 头，本表不固化数字以免过时。</sub>
 
 ## ⚙️ 更新机制
 
