@@ -127,3 +127,51 @@ apps:
       SafePal dataset. v2fly is selected because its actively maintained,
       narrowly scoped list contains both isafepal.com and safepal.com without
       include directives or attribute-qualified entries.
+
+  PayPal:
+    enabled: true
+    output: Surge/PayPal.list
+    sources:
+      - name: blackmatrix7-ios_rule_script
+        author: blackmatrix7
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/PayPal/PayPal.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/PayPal.list
+    exclude: []
+    note: >-
+      blackmatrix7 is selected because its native Surge PayPal list currently
+      matches Repcz's normalized PayPal output, so author preference provides
+      no material coverage advantage. It is parsed as a policy-free native
+      Surge source; no supplement is justified without a confirmed upstream gap.
+
+  Netflix:
+    enabled: true
+    output: Surge/Netflix.list
+    sources:
+      - name: blackmatrix7-ios_rule_script
+        author: blackmatrix7
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Netflix/Netflix.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/Netflix.list
+    exclude: []
+    note: >-
+      blackmatrix7 is selected because its native Surge list retains materially
+      broader IPv4 and IPv6 coverage than the smaller domain-oriented v2fly
+      dataset. build.py preserves its policy-free IP-CIDR no-resolve semantics;
+      no supplement is justified without a confirmed upstream gap.
