@@ -17,7 +17,7 @@ function AppCard({ app, rawBase, index }: { app: AppEntry; rawBase: string; inde
     <Reveal className="h-full" delay={Math.min(index, 6) * 40}>
       <article
         title={app.note || app.name}
-        className="flex h-full flex-col gap-3 rounded-2xl border border-line bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#d4d9e6] hover:shadow-lg hover:shadow-ink/5"
+        className="flex h-full flex-col gap-3 rounded-2xl border border-line bg-card p-5 transition duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-lg"
       >
         <div className="flex items-center gap-2.5">
           <span className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-line bg-paper text-xl">
@@ -57,7 +57,7 @@ function AppCard({ app, rawBase, index }: { app: AppEntry; rawBase: string; inde
             href={`${rawBase}/${app.file}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 rounded-lg border border-line bg-white px-3 py-2 text-center text-sm text-ink transition hover:bg-paper"
+            className="flex-1 rounded-lg border border-line bg-card px-3 py-2 text-center text-sm text-ink transition hover:bg-paper"
           >
             查看 ↗
           </a>
@@ -94,7 +94,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
               className={`rounded-full border px-4 py-1.5 text-[13.5px] transition ${
                 filter === key
                   ? "border-accent bg-accent text-white"
-                  : "border-line bg-white text-mute hover:border-[#c9cedb] hover:text-ink"
+                  : "border-line bg-card text-mute hover:border-line-strong hover:text-ink"
               }`}
             >
               {key === "all" ? "全部" : CATEGORY_LABELS[key]}

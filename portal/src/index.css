@@ -4,10 +4,13 @@
   --color-accent: #4d6bfe;
   --color-accent-strong: #3b57e8;
   --color-accent-soft: #eef1ff;
+  --color-bg: #ffffff;
+  --color-card: #ffffff;
+  --color-paper: #f6f7fb;
   --color-ink: #1a1d27;
   --color-mute: #667085;
   --color-line: #e7e9f0;
-  --color-paper: #f6f7fb;
+  --color-line-strong: #d4d9e6;
   --color-codebg: #0f1117;
   --font-sans:
     -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
@@ -18,6 +21,24 @@
     "Liberation Mono", monospace;
 }
 
+:root {
+  color-scheme: light;
+}
+
+/* Dark theme: only semantic tokens flip, every utility follows them */
+.dark {
+  color-scheme: dark;
+  --color-accent-strong: #6b85ff;
+  --color-accent-soft: #1c2440;
+  --color-bg: #0b0e14;
+  --color-card: #161b27;
+  --color-paper: #10141d;
+  --color-ink: #e6e9f0;
+  --color-mute: #98a2b3;
+  --color-line: #232a3a;
+  --color-line-strong: #303950;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -25,7 +46,7 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background: #fff;
+  background: var(--color-bg);
   color: var(--color-ink);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
@@ -54,5 +75,15 @@ code:not(pre code) {
       rgba(77, 107, 254, 0.1),
       transparent 70%
     ),
-    #fff;
+    var(--color-bg);
+}
+
+.dark .hero-bg {
+  background:
+    radial-gradient(
+      640px 300px at 50% -80px,
+      rgba(107, 133, 255, 0.14),
+      transparent 70%
+    ),
+    var(--color-bg);
 }

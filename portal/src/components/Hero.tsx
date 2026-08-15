@@ -20,7 +20,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 export default function Hero({ appsCount, totalRules }: HeroProps) {
   return (
     <section id="top" className="hero-bg px-6 pb-16 pt-20 text-center sm:pt-24">
-      <p className="mx-auto mb-5 inline-block rounded-full border border-[#dfe5ff] bg-accent-soft px-3.5 py-1 text-[13px] font-semibold tracking-wide text-accent">
+      <p className="mx-auto mb-5 inline-block rounded-full border border-accent-soft bg-accent-soft px-3.5 py-1 text-[13px] font-semibold tracking-wide text-accent">
         Surge App Rule-Set · 自动构建 · 稳定分发
       </p>
       <h1 className="mx-auto max-w-3xl text-[32px] font-bold leading-[1.2] tracking-tight sm:text-5xl">
@@ -44,7 +44,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         </a>
         <a
           href="#rulesets"
-          className="rounded-[9px] border border-line bg-white px-5 py-2.5 text-[15px] font-medium text-ink transition hover:bg-paper"
+          className="rounded-[9px] border border-line bg-card px-5 py-2.5 text-[15px] font-medium text-ink transition hover:bg-paper"
         >
           查看规则集
         </a>

@@ -32,7 +32,7 @@ export default function About({ repo }: AboutProps) {
                 {PIPELINE.map((step, index) => (
                   <li
                     key={step.title}
-                    className="flex flex-1 basis-40 flex-col gap-1 rounded-xl border border-line bg-white p-3"
+                    className="flex flex-1 basis-40 flex-col gap-1 rounded-xl border border-line bg-card p-3"
                   >
                     <span className="text-[11px] font-semibold tracking-wide text-accent">
                       STEP {index + 1}

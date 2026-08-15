@@ -18,7 +18,7 @@ export default function CodeBlock({
 }: CodeBlockProps) {
   const { copied, copy } = useCopy(copyText);
   return (
-    <div className="overflow-hidden rounded-2xl bg-codebg text-left shadow-lg shadow-ink/10">
+    <div className="overflow-hidden rounded-2xl bg-codebg text-left shadow-lg">
       <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
         <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
         <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />

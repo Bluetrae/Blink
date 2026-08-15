@@ -46,3 +46,55 @@ export function useCopy(
 
   return { copied, copy };
 }
+
+export type Theme = "system" | "light" | "dark";
+
+const THEME_STORAGE_KEY = "rulink-theme";
+
+function resolveTheme(theme: Theme): "light" | "dark" {
+  if (theme === "system") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return theme;
+}
+
+export function useTheme(): {
+  theme: Theme;
+  resolved: "light" | "dark";
+  cycle: () => void;
+} {
+  const [theme, setTheme] = useState<Theme>(() => {
+    try {
+      const saved = localStorage.getItem(THEME_STORAGE_KEY);
+      if (saved === "light" || saved === "dark" || saved === "system") return saved;
+    } catch {
+      /* ignore */
+    }
+    return "system";
+  });
+
+  useEffect(() => {
+    const apply = () => {
+      document.documentElement.classList.toggle("dark", resolveTheme(theme) === "dark");
+    };
+    apply();
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      /* ignore */
+    }
+    if (theme === "system") {
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+      media.addEventListener("change", apply);
+      return () => media.removeEventListener("change", apply);
+    }
+  }, [theme]);
+
+  const cycle = useCallback(() => {
+    setTheme((current) =>
+      current === "system" ? "light" : current === "light" ? "dark" : "system",
+    );
+  }, []);
+
+  return { theme, resolved: resolveTheme(theme), cycle };
+}

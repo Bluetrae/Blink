@@ -8,8 +8,22 @@
       name="description"
       content="Rulink 把经过审计的上游 App 规则保守转换为 Surge Rule-Set，通过稳定 URL 分发。集中展示全部规则集，一键复制接入。"
     />
-    <meta name="color-scheme" content="light" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      (function () {
+        var saved = null;
+        try {
+          saved = localStorage.getItem("rulink-theme");
+        } catch (e) {
+          /* ignore */
+        }
+        var dark =
+          saved === "dark" ||
+          ((saved === null || saved === "system") &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        if (dark) document.documentElement.classList.add("dark");
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
