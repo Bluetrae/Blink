@@ -1,6 +1,18 @@
+<div align="center">
+
 # 🧭 WProxyRules
 
-> 个人使用的 Surge App Rule-Set 自动构建与分发仓库。
+> Surge App Rule-Set · 自动构建 · 稳定分发
+
+[![Update Surge Rule-Sets](https://github.com/Bluetrae/WProxyRules/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/WProxyRules/actions/workflows/update.yml)
+[![Surge Rule-Sets](https://img.shields.io/badge/Surge-Rule--Sets-2f81f7?style=flat-square)](https://github.com/Bluetrae/WProxyRules/tree/main/Surge)
+[![Updated](https://img.shields.io/github/last-commit/Bluetrae/WProxyRules/main?label=updated&style=flat-square)](https://github.com/Bluetrae/WProxyRules/commits/main)
+[![Stars](https://img.shields.io/github/stars/Bluetrae/WProxyRules?label=stars&style=flat-square)](https://github.com/Bluetrae/WProxyRules/stargazers)
+[![Forks](https://img.shields.io/github/forks/Bluetrae/WProxyRules?label=forks&style=flat-square)](https://github.com/Bluetrae/WProxyRules/forks)
+
+</div>
+
+个人使用的 Surge App Rule-Set 自动构建与分发仓库。
 
 WProxyRules 把经过审计的上游 App 规则保守地转换为 Surge Rule-Set，并通过本仓库稳定的 raw URL 发布。Surge 主配置只需引用这些 URL；当上游发生变动时，维护 source manifest 和构建器即可，不必反复修改主配置。
 
