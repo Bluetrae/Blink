@@ -8,7 +8,7 @@ const PIPELINE = [
   { title: "Source audit", text: "每个 App 记录候选、证据与结论" },
   { title: "build.py", text: "解析 / 转换 / 规范化 / 去重，异常即中止" },
   { title: "supplement", text: "只合并经 Surge 日志证实的上游缺口" },
-  { title: "Surge/*.list", text: "全部 App 成功后才原子写入" },
+  { title: "多客户端渲染", text: "classical ×4 + Egern YAML；无法表达的类型显式丢弃并计数" },
   { title: "稳定 raw URL", text: "主配置引用一次，自动保持更新" },
 ];
 

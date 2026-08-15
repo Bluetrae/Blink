@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """Generate portal/public/data/stats.json for the portal.
 
-Reads the generated Surge/*.list headers plus the source manifest and writes a
+Reads the generated client outputs plus the source manifest and writes a
 small JSON document consumed by the Vite + React portal.  The output contains
 only data derived from those inputs — no timestamps — so it changes exactly
-when the Surge outputs or the manifest change, and the daily workflow commits
-it together with the generated rules.
+when the generated outputs or the manifest change, and the daily workflow
+commits it together with the generated rules.
+
+Surge/*.list stays the canonical count and type source; the classical
+clients (Surge / Loon / Shadowrocket / Stash) share byte-identical files,
+while Egern/*.yaml is rendered from the same canonical rules and may
+explicitly drop PROCESS-NAME lines (recorded as ``dropped``).
 """
 
 from __future__ import annotations
@@ -24,7 +29,7 @@ RAW_BASE = "https://raw.githubusercontent.com/Bluetrae/Rulink/main"
 
 # Display-only portal metadata.  Source logic lives in the manifest; this
 # mapping only groups apps for the portal and suggests a policy label for the
-# copyable RULE-SET line.  The last field is always the user's own choice.
+# copyable reference line.  The last field is always the user's own choice.
 PORTAL_META = {
     "OKX": {"category": "Finance", "emoji": "💠", "policy": "Finance"},
     "PayPal": {"category": "Finance", "emoji": "💸", "policy": "Finance"},
@@ -45,6 +50,14 @@ PORTAL_META = {
     "APTV": {"category": "Media", "emoji": "📺", "policy": "Media"},
     "AI": {"category": "AI", "emoji": "🤖", "policy": "Proxy"},
 }
+
+CLIENTS = (
+    ("surge", "Surge", ".list"),
+    ("loon", "Loon", ".list"),
+    ("shadowrocket", "Shadowrocket", ".list"),
+    ("stash", "Stash", ".list"),
+    ("egern", "Egern", ".yaml"),
+)
 
 HEADER_NAME = re.compile(r"^# 规则名称:\s*(.+?)\s*$")
 HEADER_COUNT = re.compile(r"^# 规则统计:\s*(\d+)\s*$")
@@ -78,6 +91,18 @@ def parse_list(path: Path) -> tuple[str | None, int | None, dict[str, int]]:
     return name, count, dict(types)
 
 
+def parse_header_count(path: Path) -> int:
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except OSError as error:
+        raise PortalError(f"cannot read {path}: {error}") from error
+    for line in lines:
+        match = HEADER_COUNT.match(line)
+        if match:
+            return int(match.group(1))
+    raise PortalError(f"{path}: missing 规则统计 header")
+
+
 def build(root: Path) -> dict:
     manifest_path = root / "sources" / "apps.yaml"
     try:
@@ -103,6 +128,19 @@ def build(root: Path) -> dict:
             raise PortalError(
                 f"{output}: header count {header_count} does not match body rules {sum(type_counts.values())}"
             )
+        stem = output.stem
+        clients = {}
+        for key, directory, suffix in CLIENTS:
+            entry = {"file": f"{directory}/{stem}{suffix}", "rules": header_count}
+            if key == "egern":
+                egern_count = parse_header_count(root / entry["file"])
+                if egern_count > header_count:
+                    raise PortalError(
+                        f"{app_name}: egern count {egern_count} exceeds canonical {header_count}"
+                    )
+                entry["rules"] = egern_count
+                entry["dropped"] = header_count - egern_count
+            clients[key] = entry
         sources = app.get("sources") or []
         primary = next((item for item in sources if item.get("role") == "primary"), sources[0] if sources else {})
         apps_out.append(
@@ -114,6 +152,7 @@ def build(root: Path) -> dict:
                 "file": app["output"],
                 "rules": header_count,
                 "types": type_counts,
+                "clients": clients,
                 "source": {
                     "author": primary.get("author", ""),
                     "name": primary.get("name", ""),

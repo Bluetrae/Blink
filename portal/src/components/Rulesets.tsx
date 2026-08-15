@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react";
-import type { AppEntry, PortalData } from "../types";
+import type { AppEntry, ClientKey, PortalData } from "../types";
 import {
   CATEGORY_LABELS,
   CATEGORY_ORDER,
-  ruleSetLine,
+  CLIENT_TABS,
+  clientFileUrl,
+  clientSnippet,
   sortedApps,
   sourceLine,
   typeChips,
@@ -11,8 +13,21 @@ import {
 import { useCopy } from "../hooks";
 import Reveal from "./Reveal";
 
-function AppCard({ app, rawBase, index }: { app: AppEntry; rawBase: string; index: number }) {
-  const { copied, copy } = useCopy(ruleSetLine(rawBase, app));
+function AppCard({
+  app,
+  client,
+  rawBase,
+  index,
+}: {
+  app: AppEntry;
+  client: ClientKey;
+  rawBase: string;
+  index: number;
+}) {
+  const snippet = clientSnippet(rawBase, app, client);
+  const { copied, copy } = useCopy(snippet);
+  const stat = app.clients[client];
+  const dropped = client === "egern" ? (stat.dropped ?? 0) : 0;
   return (
     <Reveal className="h-full" delay={Math.min(index, 6) * 40}>
       <article
@@ -29,11 +44,11 @@ function AppCard({ app, rawBase, index }: { app: AppEntry; rawBase: string; inde
           </div>
         </div>
         <div className="flex items-baseline gap-1.5">
-          <strong className="text-2xl font-bold tracking-tight text-accent">{app.rules}</strong>
+          <strong className="text-2xl font-bold tracking-tight text-accent">{stat.rules}</strong>
           <span className="text-xs text-mute">条规则</span>
         </div>
         <div className="flex flex-wrap gap-1.5">
-          {typeChips(app).map((chip) => (
+          {typeChips(app, client).map((chip) => (
             <span
               key={chip.label}
               className="rounded-full border border-line bg-paper px-2 py-0.5 text-xs text-mute"
@@ -42,6 +57,11 @@ function AppCard({ app, rawBase, index }: { app: AppEntry; rawBase: string; inde
             </span>
           ))}
         </div>
+        {dropped > 0 && (
+          <p className="rounded-lg border border-line bg-paper px-2 py-1 text-[11px] leading-relaxed text-mute">
+            ⚠️ {dropped} 条 PROCESS-NAME 无法在 Egern 无损表达，构建器已显式丢弃。
+          </p>
+        )}
         <p className="truncate text-xs text-mute" title={app.source.name || undefined}>
           {sourceLine(app)}
         </p>
@@ -54,7 +74,7 @@ function AppCard({ app, rawBase, index }: { app: AppEntry; rawBase: string; inde
             {copied ? "已复制 ✓" : "复制接入"}
           </button>
           <a
-            href={`${rawBase}/${app.file}`}
+            href={clientFileUrl(rawBase, app, client)}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex-1 rounded-lg border border-line bg-card px-3 py-2 text-center text-sm text-ink transition hover:bg-paper"
@@ -71,22 +91,44 @@ function AppCard({ app, rawBase, index }: { app: AppEntry; rawBase: string; inde
 }
 
 export default function Rulesets({ data }: { data: PortalData }) {
+  const [client, setClient] = useState<ClientKey>("surge");
   const [filter, setFilter] = useState("all");
   const apps = useMemo(() => sortedApps(data.apps), [data.apps]);
   const present = useMemo(() => new Set(apps.map((app) => app.category)), [apps]);
   const filters = ["all", ...CATEGORY_ORDER.filter((category) => present.has(category))];
   const visible = filter === "all" ? apps : apps.filter((app) => app.category === filter);
+  const activeNote = CLIENT_TABS.find((tab) => tab.key === client)?.note ?? "";
 
   return (
     <section id="rulesets" className="scroll-mt-24 border-y border-line bg-paper px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-5xl">
         <Reveal>
-          <div className="mx-auto mb-10 max-w-xl text-center">
+          <div className="mx-auto mb-8 max-w-xl text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">规则集</h2>
             <p className="mt-2.5 text-mute">
               全部由构建器生成，绝不手工维护；范围优先于数量，不为覆盖而吞入无关 CDN。
             </p>
           </div>
+        </Reveal>
+        <Reveal>
+          <div className="mb-4 flex flex-wrap justify-center gap-2">
+            {CLIENT_TABS.map((tab) => (
+              <button
+                key={tab.key}
+                type="button"
+                onClick={() => setClient(tab.key)}
+                title={tab.badge}
+                className={`rounded-full border px-4 py-1.5 text-[13.5px] transition ${
+                  client === tab.key
+                    ? "border-accent bg-accent text-white"
+                    : "border-line bg-card text-mute hover:border-line-strong hover:text-ink"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          <p className="mx-auto mb-7 max-w-2xl text-center text-[13px] text-mute">{activeNote}</p>
         </Reveal>
         <div className="mb-7 flex flex-wrap justify-center gap-2">
           {filters.map((key) => (
@@ -106,7 +148,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4">
           {visible.map((app, index) => (
-            <AppCard key={app.name} app={app} rawBase={data.raw_base} index={index} />
+            <AppCard key={app.name} app={app} client={client} rawBase={data.raw_base} index={index} />
           ))}
         </div>
       </div>

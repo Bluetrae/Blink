@@ -94,7 +94,7 @@ rules:
 
 - 技术栈：Vite + React + TypeScript + Tailwind CSS，源码在 [`portal/`](portal/)。
 - 部署：GitHub Actions（[`pages.yml`](.github/workflows/pages.yml)）在 `main` 推送时自动构建并部署到 GitHub Pages，无需提交构建产物。
-- 数据：页面数据由 [`scripts/gen_portal_stats.py`](scripts/gen_portal_stats.py) 从 `Surge/*.list` 与 `sources/apps.yaml` 生成到 `portal/public/data/stats.json`，随每日构建一起刷新。
+- 数据：页面数据由 [`scripts/gen_portal_stats.py`](scripts/gen_portal_stats.py) 从五客户端生成目录（canonical 计数取自 `Surge/*.list`，Egern 计数取自 `Egern/*.yaml` 头部）与 `sources/apps.yaml` 生成到 `portal/public/data/stats.json`，随每日构建一起刷新。页面提供五客户端切换：每个 App 卡片按所选客户端给出对应的引用片段（`RULE-SET` / `[Remote Rule]` / `rule-providers` / `rule_set`）。
 
 > [!NOTE]
 > 首次使用需在仓库 Settings → Pages → Build and deployment 将 Source 选为 **GitHub Actions**，此后 `pages.yml` 自动完成部署。以后购买域名后，在 Pages 设置里填写自定义域名即可，无需改代码。

@@ -12,6 +12,29 @@
       "types": {
         "DOMAIN-SUFFIX": 9
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/OKX.list",
+          "rules": 9
+        },
+        "loon": {
+          "file": "Loon/OKX.list",
+          "rules": 9
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/OKX.list",
+          "rules": 9
+        },
+        "stash": {
+          "file": "Stash/OKX.list",
+          "rules": 9
+        },
+        "egern": {
+          "file": "Egern/OKX.yaml",
+          "rules": 9,
+          "dropped": 0
+        }
+      },
       "source": {
         "author": "v2fly",
         "name": "v2fly-domain-list-community",
@@ -29,6 +52,29 @@
       "types": {
         "DOMAIN-SUFFIX": 11
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/WhatsApp.list",
+          "rules": 11
+        },
+        "loon": {
+          "file": "Loon/WhatsApp.list",
+          "rules": 11
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/WhatsApp.list",
+          "rules": 11
+        },
+        "stash": {
+          "file": "Stash/WhatsApp.list",
+          "rules": 11
+        },
+        "egern": {
+          "file": "Egern/WhatsApp.yaml",
+          "rules": 11,
+          "dropped": 0
+        }
+      },
       "source": {
         "author": "v2fly",
         "name": "v2fly-domain-list-community",
@@ -45,6 +91,29 @@
       "rules": 20,
       "types": {
         "DOMAIN-SUFFIX": 20
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/LINE.list",
+          "rules": 20
+        },
+        "loon": {
+          "file": "Loon/LINE.list",
+          "rules": 20
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/LINE.list",
+          "rules": 20
+        },
+        "stash": {
+          "file": "Stash/LINE.list",
+          "rules": 20
+        },
+        "egern": {
+          "file": "Egern/LINE.yaml",
+          "rules": 20,
+          "dropped": 0
+        }
       },
       "source": {
         "author": "v2fly",
@@ -64,6 +133,29 @@
         "DOMAIN": 30,
         "DOMAIN-SUFFIX": 28
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/GitHub.list",
+          "rules": 58
+        },
+        "loon": {
+          "file": "Loon/GitHub.list",
+          "rules": 58
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/GitHub.list",
+          "rules": 58
+        },
+        "stash": {
+          "file": "Stash/GitHub.list",
+          "rules": 58
+        },
+        "egern": {
+          "file": "Egern/GitHub.yaml",
+          "rules": 58,
+          "dropped": 0
+        }
+      },
       "source": {
         "author": "v2fly",
         "name": "v2fly-domain-list-community",
@@ -80,6 +172,29 @@
       "rules": 2,
       "types": {
         "DOMAIN-SUFFIX": 2
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/SafePal.list",
+          "rules": 2
+        },
+        "loon": {
+          "file": "Loon/SafePal.list",
+          "rules": 2
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/SafePal.list",
+          "rules": 2
+        },
+        "stash": {
+          "file": "Stash/SafePal.list",
+          "rules": 2
+        },
+        "egern": {
+          "file": "Egern/SafePal.yaml",
+          "rules": 2,
+          "dropped": 0
+        }
       },
       "source": {
         "author": "v2fly",
@@ -99,6 +214,29 @@
         "DOMAIN-SUFFIX": 246,
         "DOMAIN-KEYWORD": 1,
         "USER-AGENT": 1
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/PayPal.list",
+          "rules": 248
+        },
+        "loon": {
+          "file": "Loon/PayPal.list",
+          "rules": 248
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/PayPal.list",
+          "rules": 248
+        },
+        "stash": {
+          "file": "Stash/PayPal.list",
+          "rules": 248
+        },
+        "egern": {
+          "file": "Egern/PayPal.yaml",
+          "rules": 248,
+          "dropped": 0
+        }
       },
       "source": {
         "author": "Repcz",
@@ -123,6 +261,29 @@
         "IP-CIDR": 1115,
         "IP-CIDR6": 4
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/Netflix.list",
+          "rules": 1158
+        },
+        "loon": {
+          "file": "Loon/Netflix.list",
+          "rules": 1158
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Netflix.list",
+          "rules": 1158
+        },
+        "stash": {
+          "file": "Stash/Netflix.list",
+          "rules": 1158
+        },
+        "egern": {
+          "file": "Egern/Netflix.yaml",
+          "rules": 1157,
+          "dropped": 1
+        }
+      },
       "source": {
         "author": "blackmatrix7",
         "name": "blackmatrix7-ios_rule_script",
@@ -142,6 +303,29 @@
         "DOMAIN-SUFFIX": 11,
         "DOMAIN-KEYWORD": 1
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/YouTube.list",
+          "rules": 14
+        },
+        "loon": {
+          "file": "Loon/YouTube.list",
+          "rules": 14
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/YouTube.list",
+          "rules": 14
+        },
+        "stash": {
+          "file": "Stash/YouTube.list",
+          "rules": 14
+        },
+        "egern": {
+          "file": "Egern/YouTube.yaml",
+          "rules": 14,
+          "dropped": 0
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -160,6 +344,29 @@
         "DOMAIN-SUFFIX": 26,
         "IP-CIDR": 8
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/X.list",
+          "rules": 34
+        },
+        "loon": {
+          "file": "Loon/X.list",
+          "rules": 34
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/X.list",
+          "rules": 34
+        },
+        "stash": {
+          "file": "Stash/X.list",
+          "rules": 34
+        },
+        "egern": {
+          "file": "Egern/X.yaml",
+          "rules": 34,
+          "dropped": 0
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -176,6 +383,29 @@
       "rules": 3,
       "types": {
         "DOMAIN-SUFFIX": 3
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Instagram.list",
+          "rules": 3
+        },
+        "loon": {
+          "file": "Loon/Instagram.list",
+          "rules": 3
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Instagram.list",
+          "rules": 3
+        },
+        "stash": {
+          "file": "Stash/Instagram.list",
+          "rules": 3
+        },
+        "egern": {
+          "file": "Egern/Instagram.yaml",
+          "rules": 3,
+          "dropped": 0
+        }
       },
       "source": {
         "author": "Repcz",
@@ -194,6 +424,29 @@
       "types": {
         "DOMAIN-SUFFIX": 14
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/Telegram.list",
+          "rules": 14
+        },
+        "loon": {
+          "file": "Loon/Telegram.list",
+          "rules": 14
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Telegram.list",
+          "rules": 14
+        },
+        "stash": {
+          "file": "Stash/Telegram.list",
+          "rules": 14
+        },
+        "egern": {
+          "file": "Egern/Telegram.yaml",
+          "rules": 14,
+          "dropped": 0
+        }
+      },
       "source": {
         "author": "SukkaW",
         "name": "SukkaW-Surge",
@@ -210,6 +463,29 @@
       "rules": 2,
       "types": {
         "DOMAIN-SUFFIX": 2
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Threads.list",
+          "rules": 2
+        },
+        "loon": {
+          "file": "Loon/Threads.list",
+          "rules": 2
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Threads.list",
+          "rules": 2
+        },
+        "stash": {
+          "file": "Stash/Threads.list",
+          "rules": 2
+        },
+        "egern": {
+          "file": "Egern/Threads.yaml",
+          "rules": 2,
+          "dropped": 0
+        }
       },
       "source": {
         "author": "v2fly",
@@ -229,6 +505,29 @@
         "DOMAIN": 19,
         "DOMAIN-SUFFIX": 55,
         "DOMAIN-KEYWORD": 7
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/TikTok.list",
+          "rules": 81
+        },
+        "loon": {
+          "file": "Loon/TikTok.list",
+          "rules": 81
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/TikTok.list",
+          "rules": 81
+        },
+        "stash": {
+          "file": "Stash/TikTok.list",
+          "rules": 81
+        },
+        "egern": {
+          "file": "Egern/TikTok.yaml",
+          "rules": 81,
+          "dropped": 0
+        }
       },
       "source": {
         "author": "Repcz",
@@ -251,6 +550,29 @@
         "PROCESS-NAME": 1,
         "IP-CIDR": 1
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/Spotify.list",
+          "rules": 21
+        },
+        "loon": {
+          "file": "Loon/Spotify.list",
+          "rules": 21
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Spotify.list",
+          "rules": 21
+        },
+        "stash": {
+          "file": "Stash/Spotify.list",
+          "rules": 21
+        },
+        "egern": {
+          "file": "Egern/Spotify.yaml",
+          "rules": 20,
+          "dropped": 1
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -270,6 +592,29 @@
         "DOMAIN-SUFFIX": 34,
         "DOMAIN-KEYWORD": 2
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/AI.list",
+          "rules": 50
+        },
+        "loon": {
+          "file": "Loon/AI.list",
+          "rules": 50
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/AI.list",
+          "rules": 50
+        },
+        "stash": {
+          "file": "Stash/AI.list",
+          "rules": 50
+        },
+        "egern": {
+          "file": "Egern/AI.yaml",
+          "rules": 50,
+          "dropped": 0
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -287,6 +632,29 @@
       "types": {
         "DOMAIN-SUFFIX": 3
       },
+      "clients": {
+        "surge": {
+          "file": "Surge/ZABank.list",
+          "rules": 3
+        },
+        "loon": {
+          "file": "Loon/ZABank.list",
+          "rules": 3
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/ZABank.list",
+          "rules": 3
+        },
+        "stash": {
+          "file": "Stash/ZABank.list",
+          "rules": 3
+        },
+        "egern": {
+          "file": "Egern/ZABank.yaml",
+          "rules": 3,
+          "dropped": 0
+        }
+      },
       "source": {
         "author": "",
         "name": "",
@@ -303,6 +671,29 @@
       "rules": 20,
       "types": {
         "DOMAIN-SUFFIX": 20
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Steam.list",
+          "rules": 20
+        },
+        "loon": {
+          "file": "Loon/Steam.list",
+          "rules": 20
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Steam.list",
+          "rules": 20
+        },
+        "stash": {
+          "file": "Stash/Steam.list",
+          "rules": 20
+        },
+        "egern": {
+          "file": "Egern/Steam.yaml",
+          "rules": 20,
+          "dropped": 0
+        }
       },
       "source": {
         "author": "Repcz",
@@ -322,6 +713,29 @@
         "DOMAIN": 17,
         "DOMAIN-SUFFIX": 4,
         "IP-CIDR": 5
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/APTV.list",
+          "rules": 26
+        },
+        "loon": {
+          "file": "Loon/APTV.list",
+          "rules": 26
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/APTV.list",
+          "rules": 26
+        },
+        "stash": {
+          "file": "Stash/APTV.list",
+          "rules": 26
+        },
+        "egern": {
+          "file": "Egern/APTV.yaml",
+          "rules": 26,
+          "dropped": 0
+        }
       },
       "source": {
         "author": "",

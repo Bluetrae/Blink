@@ -24,7 +24,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         className="hero-enter mx-auto mb-5 inline-block rounded-full border border-accent-soft bg-accent-soft px-3.5 py-1 text-[13px] font-semibold tracking-wide text-accent"
         style={{ animationDelay: "0ms" }}
       >
-        Surge App Rule-Set · 自动构建 · 稳定分发
+        多客户端 App Rule-Set · 自动构建 · 稳定分发
       </p>
       <h1
         className="hero-enter mx-auto max-w-3xl text-[clamp(2rem,5.2vw,3.25rem)] font-bold leading-[1.2] tracking-tight"
@@ -33,16 +33,17 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         经过审计的 App 规则，
         <br className="hidden sm:block" />
         <span className="bg-gradient-to-r from-accent to-[#8b5cf6] bg-clip-text text-transparent">
-          一个稳定入口
+          一套规则
         </span>
-        接入 Surge
+        ，五个客户端
       </h1>
       <p
         className="hero-enter mx-auto mt-5 max-w-xl text-base text-mute"
         style={{ animationDelay: "140ms" }}
       >
-        Rulink 每日从可信上游保守转换 App 专用规则，通过本仓库的固定 URL
-        发布。主配置只需引用一次，之后由这里自动保持更新。
+        Rulink 每日从可信上游保守转换 App 专用规则，一份 canonical 规则渲染为
+        Surge / Shadowrocket / Loon / Stash / Egern 五种输出。主配置只需引用一次，
+        之后由这里自动保持更新。
       </p>
       <div className="hero-enter mt-7 flex justify-center gap-3" style={{ animationDelay: "210ms" }}>
         <span className="rotating-border inline-block rounded-full p-[1.5px]">
@@ -74,6 +75,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
       >
         <Stat value={String(appsCount)} label="Rule-Sets" />
         <Stat value={String(totalRules)} label="有效规则" />
+        <Stat value="5 客户端" label="Surge · Loon · Stash · Egern" />
         <Stat value="每日 00:01" label="自动检查上游" />
         <Stat value="审计准入" label="Repcz · SukkaW 优先" />
       </ul>

@@ -1,40 +1,72 @@
-import { useMemo, type ReactNode } from "react";
-import type { PortalData } from "../types";
-import { CATEGORY_LABELS, CATEGORY_ORDER, ruleSetLine, sortedApps } from "../data";
+import { useMemo, useState, type ReactNode } from "react";
+import type { ClientKey, PortalData } from "../types";
+import { allSnippets, CLIENT_TABS, clientTab } from "../data";
 import CodeBlock from "./CodeBlock";
 import Reveal from "./Reveal";
 
-const STEPS: ReactNode[] = [
-  <>打开 Surge 主配置，找到 <code>[Rule]</code> 段。</>,
-  <>复制下面的规则行，放在 <code>FINAL</code> 之前。</>,
-  <>把策略名换成你自己的，保存并重载配置。</>,
-];
+const STEPS: Record<ClientKey, ReactNode[]> = {
+  surge: [
+    <>打开 Surge 主配置，找到 <code>[Rule]</code> 段。</>,
+    <>复制下面的规则行，放在 <code>FINAL</code> 之前。</>,
+    <>把策略名换成你自己的，保存并重载配置。</>,
+  ],
+  shadowrocket: [
+    <>打开 Shadowrocket 配置的 <code>[Rule]</code> 段（语法与 Surge 相同）。</>,
+    <>复制下面的规则行，放在 <code>FINAL</code> 之前。</>,
+    <>把策略名换成你自己的，保存并使用配置。</>,
+  ],
+  loon: [
+    <>打开 Loon 配置，找到 <code>[Remote Rule]</code> 段。</>,
+    <>复制下面的规则行，一行一个 App。</>,
+    <>把 <code>policy</code> 换成你自己的策略组，保存并重载配置。</>,
+  ],
+  stash: [
+    <>打开 Stash 配置，把下面整段复制进 <code>rule-providers</code> 与 <code>rules</code>。</>,
+    <>把每个 <code>RULE-SET</code> 行放在 <code>MATCH</code>/<code>FINAL</code> 之前合适的位置。</>,
+    <>策略名换成你自己的；<code>interval: 86400</code> 控制规则集更新周期。</>,
+  ],
+  egern: [
+    <>打开 Egern 配置，把下面整段复制进 <code>rules</code> 列表。</>,
+    <>按你的匹配顺序放置 <code>rule_set</code> 条目，<code>default</code> 之前。</>,
+    <>把 <code>policy</code> 换成你自己的策略组。</>,
+  ],
+};
 
 export default function Usage({ data }: { data: PortalData }) {
-  const lines = useMemo(() => {
-    const out: string[] = [];
-    for (const category of CATEGORY_ORDER) {
-      const group = sortedApps(data.apps).filter((app) => app.category === category);
-      if (group.length === 0) continue;
-      out.push(`# ${CATEGORY_LABELS[category] ?? category}`);
-      for (const app of group) out.push(ruleSetLine(data.raw_base, app));
-      out.push("");
-    }
-    return out.join("\n").replace(/\n+$/, "");
-  }, [data]);
+  const [client, setClient] = useState<ClientKey>("surge");
+  const tab = clientTab(client);
+  const lines = useMemo(() => allSnippets(data, client), [data, client]);
 
   return (
     <section id="usage" className="scroll-mt-24 px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-4xl">
         <Reveal>
           <div className="mx-auto mb-10 max-w-xl text-center">
-            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">在 Surge 中使用</h2>
-            <p className="mt-2.5 text-mute">三步接入，之后无需再改主配置。</p>
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">接入你的客户端</h2>
+            <p className="mt-2.5 text-mute">同一套规则，五种客户端各自的最小引用方式。</p>
+          </div>
+        </Reveal>
+        <Reveal>
+          <div className="mb-6 flex flex-wrap justify-center gap-2">
+            {CLIENT_TABS.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                onClick={() => setClient(item.key)}
+                className={`rounded-full border px-4 py-1.5 text-[13.5px] transition ${
+                  client === item.key
+                    ? "border-accent bg-accent text-white"
+                    : "border-line bg-card text-mute hover:border-line-strong hover:text-ink"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
           </div>
         </Reveal>
         <Reveal>
           <ol className="mx-auto mb-8 flex max-w-4xl flex-wrap justify-center gap-3">
-            {STEPS.map((step, index) => (
+            {STEPS[client].map((step, index) => (
               <li
                 key={index}
                 className="relative flex-1 basis-56 max-w-80 rounded-2xl border border-line bg-paper py-4 pl-13 pr-4 text-sm"
@@ -48,13 +80,15 @@ export default function Usage({ data }: { data: PortalData }) {
           </ol>
         </Reveal>
         <Reveal>
-          <CodeBlock file="全部 Rule-Sets · 按分类分组" copyText={lines} copyLabel="复制全部" maxHeight>
+          <CodeBlock
+            file={tab.fileLabel}
+            copyText={lines}
+            copyLabel="复制全部"
+            maxHeight
+          >
             {lines}
           </CodeBlock>
-          <p className="mt-4 text-center text-[13.5px] text-mute">
-            规则文件不携带策略名：<code>RULE-SET</code> 的最后一个字段始终由你的 Surge
-            主配置决定。
-          </p>
+          <p className="mt-4 text-center text-[13.5px] text-mute">{tab.note}</p>
         </Reveal>
       </div>
     </section>

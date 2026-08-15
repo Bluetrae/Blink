@@ -12,7 +12,7 @@ export default function Footer({ repo }: FooterProps) {
   return (
     <footer className="border-t border-line px-6 py-9">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 text-center">
-        <p className="text-sm font-semibold">🧭 Rulink · 个人使用的 Surge App Rule-Set 分发仓库</p>
+        <p className="text-sm font-semibold">🧭 Rulink · 个人使用的多客户端 App Rule-Set 分发仓库</p>
         <nav className="flex flex-wrap justify-center gap-4 text-[13.5px]" aria-label="页脚链接">
           {links.map((link) => (
             <a
@@ -26,7 +26,7 @@ export default function Footer({ repo }: FooterProps) {
             </a>
           ))}
         </nav>
-        <p className="text-xs text-mute">本页数据随每日构建自动刷新 · 使用前请结合自己的 Surge 日志自行验证</p>
+        <p className="text-xs text-mute">本页数据随每日构建自动刷新 · 使用前请结合自己的客户端日志自行验证</p>
       </div>
     </footer>
   );
