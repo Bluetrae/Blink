@@ -42,6 +42,8 @@ Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX
 
 该排序是优先偏好，不是绝对规则。每个 App 的最终 primary source 必须综合评估：freshness（更新活跃度）、completeness（覆盖完整度）、scope（是否精准属于该 App）、format suitability（是否适合 Surge 或能稳定转换）、maintenance quality（维护质量）。
 
+Repcz 与 SukkaW 是一梯队可信上游：每个 App audit 先审 Repcz 的专项规则，再审 SukkaW 的专项或可直接适用的窄范围规则；不能把 SukkaW 在执行中降为普通 fallback。SukkaW 的通用基础设施规则与配置方法继续直接引用，不复制进本仓库，也不误归类为 App 专项规则。
+
 - 如果 Repcz 或 SukkaW 有对应且维护良好的专项规则，优先使用。
 - 如果 Repcz 或 SukkaW 没有对应规则，或规则明显长期未更新、覆盖不足，可以选择 v2fly / MetaCubeX 等更活跃的数据源。
 - 不允许仅因作者偏好而继续使用明显过时或不完整的规则。

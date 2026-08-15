@@ -19,6 +19,8 @@
 ## Upstream Source Selection Policy
 
 - 用户的长期信任优先偏好为：Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX。
+- Repcz 与 SukkaW 均属于一梯队可信上游。Repcz 的 App 专项规则先审；SukkaW 的专项或可直接适用的窄范围规则随后必审，不能在执行中被降为普通 fallback。
+- SukkaW 的基础设施规则和配置方法本身具有长期价值；但 Reject / Domestic / China IP / CDN / LAN 等通用基础设施仍应直接引用成熟上游，不能为了 App 覆盖把通用规则集复制或误归类为 App 专项规则。
 - 此排序是优先偏好，而非绝对规则。每个 App 的最终主源必须基于 freshness（更新活跃度）、completeness（覆盖完整度）、scope（是否精准属于该 App）、format suitability（是否适合 Surge 或能稳定转换）及 maintenance quality（维护质量）综合决定。
 - 如果 Repcz 或 SukkaW 有对应且维护良好的专项规则，优先使用。
 - 如果 Repcz 或 SukkaW 没有对应规则，或规则明显长期未更新、覆盖不足，则可以选择 v2fly / MetaCubeX 等更活跃的数据源。
@@ -53,7 +55,7 @@
 ## 高效且保守的新增 App 流程
 
 - 新 App 的 source audit 可以按产品类别批量开展，但每个 App 必须保留独立的候选、证据和 primary 结论。
-- 审计时先检查 Repcz 专项规则；只有不存在、长期缺乏维护、范围不准或格式不适合时，才按证据比较 SukkaW、其他成熟作者、v2fly 或 MetaCubeX。若候选规则规范化后等价，作者优先偏好作为 tie-breaker。
+- 审计时按一梯队顺序检查 Repcz 专项规则与 SukkaW 专项或可直接适用的窄范围规则；只有两者不存在、长期缺乏维护、范围不准或格式不适合时，才按证据比较其他成熟作者、v2fly 或 MetaCubeX。若候选规则规范化后等价，作者优先偏好作为 tie-breaker。
 - 新 App 在 manifest 提交前，优先执行定向只读预检：`build.py --app <App>`。不要因为一个新增 App 而在本地重复阻塞于所有既有上游的网络状态。
 - 全量预检仍是必要的健康检查，但应放在 GitHub Actions、每日更新、发布前检查或明确的全仓库验证中；生成动作必须继续保持“所有选定 App 都成功后才写输出”的原子性。
 - 本地验证优先复用被 `.gitignore` 排除的 `.venv` 与锁定的 `requirements.txt`，避免重复下载依赖；`.venv` 绝不提交。
