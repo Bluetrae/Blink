@@ -18,6 +18,9 @@
 > [!NOTE]
 > 这是 **App Rule-Set 仓库**，不是完整的 Surge 配置模板；策略组与 `FINAL` 由你的主配置负责。
 
+> [!IMPORTANT]
+> 本仓库仅供个人学习研究使用；使用前请阅读 [DISCLAIMER.md](DISCLAIMER.md) 与 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**禁止任何形式的转载或发布至国内平台**。
+
 ## ✨ 特点
 
 - **入口稳定** —— 主配置只引用本仓库 raw URL，上游变动无需改主配置。
@@ -32,6 +35,11 @@
 ```ini
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/<App>.list,<你的策略>
 ```
+
+> [!IMPORTANT]
+> **规则顺序**：域名类规则集必须放在 IP 类规则（如 China IPv4）**之前**。Surge 自上而下匹配，只有 IP 类规则与 `FINAL` 才触发 DNS 解析；顺序颠倒会让待代理域名被提前解析，失去 DNS 防污染保护。
+
+<sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Rulink@main/Surge/<App>.list`。</sub>
 
 <details>
 <summary>📋 点击展开全部 18 个 App 的引用示例</summary>
@@ -155,5 +163,7 @@ python -m venv .venv
 <sub>`.venv/` 已被 Git 忽略，绝不提交。提交前请检查生成差异；不要手工修改 `Surge/*.list`，也不要提交订阅 URL、token、密码、证书或其他敏感信息。</sub>
 
 ## ⚖️ 使用与许可
+
+感谢 Repcz、SukkaW、blackmatrix7、v2fly 等上游作者对规则集的长期维护（各 App 的来源明细与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）。
 
 本仓库为个人规则分发与学习维护而设，无任何担保；请结合自己的 Surge 策略与日志自行验证，并遵守适用法律、服务条款与上游许可。根目录**不设统一许可证**：构建代码与文档是原创内容，`Surge/*.list` 是多上游生成的产物，不得被统一标记为 MIT 等单一许可证 —— 详情见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。

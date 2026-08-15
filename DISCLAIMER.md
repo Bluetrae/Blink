@@ -34,7 +34,9 @@ outputs is responsible for:
 - checking Surge logs and correcting app-specific gaps through the documented
   `sources/supplement/` process;
 - complying with applicable laws, service terms, and all relevant upstream
-  licenses, notices, and attribution requirements; and
+  licenses, notices, and attribution requirements;
+- not redistributing, republishing, or mirroring repository content to
+  domestic content platforms or public media without permission; and
 - protecting their own credentials, subscription URLs, tokens, certificates,
   account data, and other sensitive information.
 
