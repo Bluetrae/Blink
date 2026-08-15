@@ -42,6 +42,12 @@ The exact source URL, format, and selection rationale for each App are kept in
 licenses, notices, source content, or repository structure; source audits and
 this notice must be reviewed whenever a source is added or replaced.
 
+## Repository assets
+
+| Asset | Origin | Notice |
+| --- | --- | --- |
+| `portal/public/favicon.svg` | https://www.deepseek.com/harness/favicon.svg | DeepSeek official logo asset; DeepSeek trademark, all rights reserved by DeepSeek. Used for browser-tab identification only and is not covered by this repository's terms. Replace with your own icon for any broader use. |
+
 ## License handling principles
 
 - Do not remove, override, or misrepresent upstream copyright, license, or

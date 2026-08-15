@@ -6,7 +6,7 @@
 
 [![Update Surge Rule-Sets](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml)
 [![Surge Rule-Sets](https://img.shields.io/badge/Surge-Rule--Sets-2f81f7?style=flat-square)](https://github.com/Bluetrae/Rulink/tree/main/Surge)
-[![Portal](https://img.shields.io/badge/Portal-可视化门户-4d6bfe?style=flat-square)](https://bluetrae.github.io/Rulink/)
+[![Portal](https://img.shields.io/badge/Portal-网页入口-4d6bfe?style=flat-square)](https://bluetrae.github.io/Rulink/)
 [![Updated](https://img.shields.io/github/last-commit/Bluetrae/Rulink/main?label=updated&style=flat-square)](https://github.com/Bluetrae/Rulink/commits/main)
 [![Stars](https://img.shields.io/github/stars/Bluetrae/Rulink?label=stars&style=flat-square)](https://github.com/Bluetrae/Rulink/stargazers)
 
@@ -42,33 +42,15 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/<App>.list
 
 <sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Rulink@main/Surge/<App>.list`。</sub>
 
-<details>
-<summary>📋 点击展开 Surge 引用示例（节选）</summary>
+## 🌐 网页入口
 
-```ini
-# 💳 Finance
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list,Finance
+无需域名即可访问：[`https://bluetrae.github.io/Rulink/`](https://bluetrae.github.io/Rulink/)。集中展示全部 Rule-Set 的规则数、规则类型与来源，一键复制 `RULE-SET` 接入行。
 
-# 🧠 AI
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list,<你的 AI 策略>
-
-# 🎬 Media
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list,<你的媒体策略>
-
-# 📺 自用直播源
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,<你的直播策略>
-```
-
-<sub>其余 App 格式相同；全部规则集文件见 [Surge/](https://github.com/Bluetrae/Rulink/tree/main/Surge)。输出不带策略名，`RULE-SET` 的最后一个字段始终由你的主配置决定；规则数量每天随上游变化，实时数字见各文件开头的 `# 规则统计` 头。</sub>
-
-</details>
-
-> [!TIP]
-> 若主配置已直接引用 blackmatrix7、Repcz、v2fly 的同类列表，请**替换**为本仓库 URL，而非叠加两份。OKX 输出已覆盖此前手工维护的 `okx.ac`、`okx.cab`、`okx.com.cdn.cloudflare.net`、`xlayer.tech`；ZA Bank 的 9 条手工域名亦可删除。
-
-## 🌐 可视化门户
-
-无需域名即可访问的门户站点：[`https://bluetrae.github.io/Rulink/`](https://bluetrae.github.io/Rulink/)。集中展示全部 Rule-Set 的规则数、规则类型与来源，一键复制 `RULE-SET` 接入行。
+<div align="center">
+  <a href="https://bluetrae.github.io/Rulink/">
+    <img src="docs/images/portal-preview.png" alt="Rulink 门户预览" width="720" />
+  </a>
+</div>
 
 - 技术栈：Vite + React + TypeScript + Tailwind CSS，源码在 [`portal/`](portal/)。
 - 部署：GitHub Actions（[`pages.yml`](.github/workflows/pages.yml)）在 `main` 推送时自动构建并部署到 GitHub Pages，无需提交构建产物。
@@ -108,7 +90,8 @@ scripts/build.py           # 保守、显式失败的构建器
 scripts/gen_portal_stats.py # 从 Surge 输出与 manifest 生成门户数据
 tests/                     # 单元测试
 Surge/                     # Generated files：仅由构建器 / Actions 写入
-portal/                    # 可视化门户（Vite + React + TS + Tailwind CSS）
+portal/                    # 网页门户（Vite + React + TS + Tailwind CSS）
+docs/                      # 门户预览图等静态资源
 .github/workflows/update.yml
 .github/workflows/pages.yml # 门户构建与 GitHub Pages 部署
 ```

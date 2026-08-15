@@ -33,6 +33,7 @@ https://github.com/Bluetrae/Rulink
 - `sources/supplement/` 目前含 `ZABank.list`（3 条根域名，supplement-only）与 `APTV.list`（26 条自用直播源，supplement-only，已注释自用）；其他 App 无 supplement 文件，这是预期状态
 - 2026-08-15：完成用户 Surge 主配置与仓库输出的完整对照；脱敏结论见 `SOURCE_AUDITS.md`「用户 Surge 主配置对照」一节（要点：ZA Bank 9 条手工行、OKX 7 条手工行可删；Telegram 主配置保持现状；Steam 已新增纳入；APTV 已迁入为自用 supplement）
 - `portal/` 与 `scripts/gen_portal_stats.py` 是用户在**另一个工作流窗口**开发中的仓库门户网站内容，属授权内容：不要删除、不要改动、不要纳入自己的提交；本地提交一律使用显式路径暂存（如 `git add README.md`），避免与门户开发互相干扰
+- 门户已上线：https://bluetrae.github.io/Rulink/（仓库 About 已填 Website；GitHub Pages 采用 GitHub Actions 构建，`pages.yml` 随 `main` 推送自动部署）。主题为时间制：08:00–22:00 浅色、22:00–08:00 深色，无手动切换按钮；配色对齐 DeepSeek Harness 设计令牌；favicon 使用 DeepSeek 官方图标（已记录于 `THIRD_PARTY_NOTICES.md`「Repository assets」）。页面特性：悬浮胶囊导航（滚动玻璃化）、首屏错峰入场、CTA 旋转描边、移动端汉堡菜单、流式标题；README 预览图位于 `docs/images/portal-preview.png`（与 README 同步更新）
 
 ## 项目目标
 
