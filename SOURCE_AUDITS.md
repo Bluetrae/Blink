@@ -5,13 +5,11 @@
 
 ## 审计政策摘要
 
-- 优先偏好：Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX；这是优先偏好而非机械排序。
-- 每个 App 的 primary 由 freshness（更新活跃度）、completeness（覆盖完整度）、scope（范围是否精准）、format suitability（Surge 适配性）与 maintenance quality（维护质量）综合决定；作者偏好不能覆盖明显过时或不完整的证据。
+- 上游优先偏好与选源标准（freshness/completeness/scope/format/maintenance）以 [AGENTS.md](AGENTS.md) 为准，此处不重复。
 - Manifest 硬约束：每个 App 恰好 1 个 primary source，最多 1 个 supplemental source；输出规则不带策略名。
-- 构建器 v1 格式边界：
+- 构建器 v1 格式边界（下文各 App 的“格式风险”据此标注）：
   - `v2fly-domain-list`：`domain`/`full`/`keyword` 映射为 Surge `DOMAIN-SUFFIX`/`DOMAIN`/`DOMAIN-KEYWORD`；regexp 与 `@!` 否定属性直接构建失败；带 `@attribute` 的条目默认被跳过（除非 manifest 显式 include）；`include` 必须在 include_policy 显式 allow/deny，否则构建失败。
   - `surge-rule-set`（严格白名单）：仅接受无策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR`、`IP-CIDR6`；IP 仅允许额外 `no-resolve`。`IP-ASN`、`URL-REGEX`、带策略名等会导致构建失败。
-- 不追求规则数量最大化；避免吞入共享 CDN、广告 SDK、无关基础设施或过宽关键字。
 - `sources/supplement/<App>.list` 仅存放上游未覆盖、且由 Surge 日志或实际使用确认的缺口。
 
 ## 审计状态

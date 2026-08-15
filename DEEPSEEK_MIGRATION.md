@@ -59,29 +59,15 @@ origin: https://github.com/Bluetrae/Rulink.git
 
 ## 项目目标
 
-Rulink 自动聚合、转换、去重，并在确认存在上游缺口时合并 supplement，发布个人使用的 Surge App Rule-Sets。
-
-Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指定策略。上游发生变化时，优先更新 manifest/source 定义，而不是要求用户批量修改 Surge 主配置。
+自动生成个人使用的 Surge App Rule-Sets；详细规范见 `AGENTS.md`，对外说明见 `README.md`，本文件不重复。
 
 ## 不可违反的项目边界
 
-- `Surge/*.list` 是 generated files；禁止手工编辑。
-- `sources/supplement/<App>.list` 只存放上游未覆盖、且由 Surge 日志或实际使用确认的缺口；没有缺口时不创建空文件。
-- 写入 supplement 前必须与选定上游比较，禁止重复加入已有规则。
-- 每个 App 默认一个 primary source，最多一个 supplemental source；不追求规则数量最大化。
-- Reject、Domestic、China IP、CDN、LAN 等基础设施规则不纳入本仓库，继续直接引用成熟上游。
-- 输出规则不带 Surge 策略名。
-- 不得提交订阅 URL、token、PAT、密码、2FA、MTProto secret、证书或任何敏感信息。
-- 不得未经用户明确确认使用 `git reset --hard`、force push 或改写已经发布的历史。
-- 任何会改变 Git 状态的命令前，先用一句中文说明该命令作用；暂存、提交、推送均需清楚汇报范围和结果。
+以 `AGENTS.md` 的「规则与来源规范」「安全规范」「可用工具与 Git 规范」为准，要点：`Surge/*.list` 与 supplement 的边界、敏感信息禁令、git 危险命令与改动前说明，均不得违反。
 
 ## 上游选择与审计原则
 
-长期优先偏好为：Repcz 与 SukkaW 一梯队 > 其他长期验证过的成熟作者 > v2fly / MetaCubeX。
-
-偏好不是机械排序。每次 source audit 都必须基于 freshness、completeness、scope、format suitability 与 maintenance quality 作出结论。若优先作者的专项规则缺失、过时、范围不准或覆盖不足，应按证据选择更合适的活跃来源。
-
-新增 App 或替换 primary 前必须完成独立 source audit，记录候选来源、作者、URL、维护情况、覆盖特点、Surge 适配性、潜在过宽条目、推荐 source 与理由。可以按产品类别批量研究，但结论必须按 App 独立保存。
+以 `AGENTS.md` 的「Upstream Source Selection Policy」为准（一梯队 Repcz/SukkaW 先审，按证据决定，audit 结论按 App 独立记录），本文件不重复。
 
 ## 构建器 v1 的关键语义
 
@@ -97,28 +83,7 @@ Surge 主配置只引用 Rulink 的稳定 raw URL，并由 `RULE-SET` 自行指�
 
 ## 已启用的 App 与 primary source
 
-| App | 当前 primary | 格式 | 关键边界 |
-| --- | --- | --- | --- |
-| OKX | v2fly | `v2fly-domain-list` | `oklink.com @cn` 当前不启用。 |
-| WhatsApp | v2fly | `v2fly-domain-list` | `@ads` graph 条目当前不启用。 |
-| LINE | v2fly | `v2fly-domain-list` | 不引入整个 `naver.jp`；`nhncorp.jp` 仅凭证据处理。 |
-| GitHub | v2fly | `v2fly-domain-list` | 允许 `github-copilot`，拒绝 `npmjs`；不扩大为 Microsoft/Amazon/Azure 公共基础设施。 |
-| SafePal | v2fly | `v2fly-domain-list` | 上游已覆盖 `isafepal.com` 与 `safepal.com`。 |
-| PayPal | Repcz | `surge-rule-set` | 与比较过的 blackmatrix7 输出等价时，按优先偏好选择 Repcz。 |
-| Netflix | blackmatrix7 | `surge-rule-set` | 保留有价值的 IPv4/IPv6 与 `no-resolve` 语义。 |
-| YouTube | Repcz | `surge-rule-set` | 保持紧凑、核心的专项范围。 |
-| X | Repcz | `surge-rule-set` | 保留 X/Twitter/Grok/媒体及已审计的窄范围 IP 覆盖。 |
-| Instagram | Repcz | `surge-rule-set` | 排除过宽的 `DOMAIN-KEYWORD,instagram`。 |
-| Telegram | SukkaW | `surge-rule-set` | 只保留核心 Telegram 范围；不默认包含 TON 与第三方客户端生态。 |
-| Threads | v2fly | `v2fly-domain-list` | 当前为 `threads.com` 与 `threads.net` 的窄范围集合。 |
-| TikTok | Repcz | `surge-rule-set` | 2 条 `IP-ASN` 通过 `exclude: ["ip-asn:*"]` 类型级丢弃。 |
-| Spotify | Repcz | `surge-rule-set` | 21 条全白名单兼容，零转换风险。 |
-| AI | Repcz | `surge-rule-set` | 1 条 `URL-REGEX` 通过 `exclude: ["url-regex:*"]` 类型级丢弃；DeepSeek 未纳入。 |
-| ZABank | 无上游 | supplement-only | `sources: []`，仅 `sources/supplement/ZABank.list` 三条根域名。 |
-| Steam | Repcz | `surge-rule-set` | 20 条核心域名，零转换风险；blackmatrix7 陈旧且含无关域名。 |
-| APTV | 无上游 | supplement-only | 用户自用直播源（26 条，注释自用，迁自 Bluetrae/Bridge；原计划名 Live）。 |
-
-实际 URL、exclude、include policy、attribute policy 和完整选源理由均以 `sources/apps.yaml` 为准。
+18 个 App 的权威定义（URL、格式、exclude/include/attribute policy 与选源理由）见 `sources/apps.yaml`；完整审计档案见 `SOURCE_AUDITS.md`。本文件不维护冗余清单。
 
 ## 自动化与验证
 

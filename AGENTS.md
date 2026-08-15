@@ -25,8 +25,6 @@
 - 如果 Repcz 或 SukkaW 有对应且维护良好的专项规则，优先使用。
 - 如果 Repcz 或 SukkaW 没有对应规则，或规则明显长期未更新、覆盖不足，则可以选择 v2fly / MetaCubeX 等更活跃的数据源。
 - 不允许仅因作者偏好而继续使用明显过时或不完整的规则。
-- 每个 App 默认使用 1 个 primary source，最多 1 个 supplemental source；`sources/supplement/<App>.list` 仅用于上游仍缺失、且通过 Surge 日志或实际使用确认的补充规则。
-- 不追求“合并越多越好”，避免不同规则源叠加后吞入无关共享 CDN 域名。
 - 后续 `apps.yaml` 应为每个 App 保留 `note` 或 `reason` 字段，记录主源的选择理由，避免决策依据遗失。
 - 真正创建 `apps.yaml` 前，必须先完成 source audit。
 

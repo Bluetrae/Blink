@@ -87,6 +87,9 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,
 
 ## 📦 Rule-Sets 清单
 
+<details>
+<summary>📋 点击展开全部 18 个 Rule-Sets 清单</summary>
+
 | 分类 | App | 文件 | 规则类型 |
 | --- | --- | --- | --- |
 | 💳 Finance | [OKX](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list) | `Surge/OKX.list` | 域名 |
@@ -107,6 +110,8 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,
 | 🎬 Media | [Spotify](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list) | `Surge/Spotify.list` | 域名、IP、User-Agent、Process |
 | 🎬 Media | [Netflix](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list) | `Surge/Netflix.list` | 域名、IP、User-Agent、Process |
 | 📺 APTV | [APTV](https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list) | `Surge/APTV.list` | 域名、IP（自用） |
+
+</details>
 
 <sub>输出不带策略名：`RULE-SET` 的最后一个字段始终由你的主配置决定。规则数量每天随上游变化，实时数字见各文件开头的 `# 规则统计` 头，本表不固化数字以免过时。</sub>
 

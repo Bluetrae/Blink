@@ -35,54 +35,11 @@ https://github.com/Bluetrae/Rulink
 
 ## 项目目标
 
-建立一个自动聚合、转换、去重、合并 supplement 补充规则并发布 Surge Rule-Set 的个人仓库，让 Surge 只引用稳定的自己仓库 URL，上游变动时只改仓库 source 定义而不用改 Surge 主配置。
-
-`supplement` 只存放上游规则未覆盖、且通过 Surge 日志或实际使用确认需要补充的规则。不得重复放入上游已存在的规则；每次补充前须先与选定上游比较。`Surge/*.list` 为 generated files，不允许手工修改。补充文件按需创建，没有补充规则的 App 不需要空文件。
+自动生成个人使用的 Surge App Rule-Sets；完整规范见 [AGENTS.md](AGENTS.md)，对外说明见 [README.md](README.md)，本文件不重复。
 
 ## Upstream Source Selection Policy
 
-### 长期信任优先偏好
-
-Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX
-
-该排序是优先偏好，不是绝对规则。每个 App 的最终 primary source 必须综合评估：freshness（更新活跃度）、completeness（覆盖完整度）、scope（是否精准属于该 App）、format suitability（是否适合 Surge 或能稳定转换）、maintenance quality（维护质量）。
-
-Repcz 与 SukkaW 是一梯队可信上游：每个 App audit 先审 Repcz 的专项规则，再审 SukkaW 的专项或可直接适用的窄范围规则；不能把 SukkaW 在执行中降为普通 fallback。SukkaW 的通用基础设施规则与配置方法继续直接引用，不复制进本仓库，也不误归类为 App 专项规则。
-
-- 如果 Repcz 或 SukkaW 有对应且维护良好的专项规则，优先使用。
-- 如果 Repcz 或 SukkaW 没有对应规则，或规则明显长期未更新、覆盖不足，可以选择 v2fly / MetaCubeX 等更活跃的数据源。
-- 不允许仅因作者偏好而继续使用明显过时或不完整的规则。
-- 每个 App 默认 1 个 primary source，最多 1 个 supplemental source。
-- `sources/supplement/<App>.list` 仅用于上游仍缺失、且通过 Surge 日志或实际使用确认的补充规则。
-- 不追求“合并越多越好”，避免不同规则源叠加后吞入无关共享 CDN 域名。
-- 后续 `apps.yaml` 应为每个 App 保留 `note` 或 `reason` 字段，记录主源选择理由，避免以后遗失决策依据。
-
-### Source audit 前置要求
-
-新增 App 或更换既有 App 的 primary source 前，必须先完成一轮 source audit。至少覆盖：YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、Live（现命名 APTV）、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub。
-
-每个 App 的 audit 应记录：
-
-- 候选来源
-- 作者
-- URL
-- 最近维护情况
-- 规则规模或覆盖特点
-- 是否 Surge 原生
-- 是否需要转换
-- 是否存在明显过宽规则
-- 推荐 primary
-- 是否需要 supplemental
-- 选择理由
-
-## 第一批验证样本
-
-- OKX
-- WhatsApp
-- LINE
-- GitHub
-
-这四个 App 只是 source → build → supplement → Surge output 整个 pipeline 的验证样本，不代表它们优先于其他 App，也不代表仓库只面向它们；仓库设计上应支持当前计划中的全部 App。
+上游选择政策与 source audit 要求以 [AGENTS.md](AGENTS.md) 为准（一梯队审计顺序、audit 记录项均在其中），本文件不重复；每个 App 的最终结论见下文「已确定的规则源结论」与 [SOURCE_AUDITS.md](SOURCE_AUDITS.md)。
 
 ## 后续计划纳入
 
@@ -92,7 +49,7 @@ Repcz 与 SukkaW 是一梯队可信上游：每个 App audit 先审 Repcz 的专
 
 ## 已确定的规则源结论
 
-四个初始验证样本及 SafePal、Threads 当前均只使用 1 个 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；ZABank 无可用上游，仅由 `sources/supplement/ZABank.list` 提供规则。所有 App 均不配置 supplemental source；`build.py` 会根据 `format` 解析真实语义，而非按行粗暴转换。
+各 App 的具体选源结论如下（权威定义与精简理由见 `sources/apps.yaml` 的 `note`；完整审计档案见 `SOURCE_AUDITS.md`）：
 
 - OKX：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx`。旧 blackmatrix7 规则过少；当前保留无 attribute 条目，`oklink.com @cn` 未启用。
 - WhatsApp：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp`。比旧 blackmatrix7 覆盖更现代；`@ads` graph 条目未启用。
@@ -113,8 +70,6 @@ Repcz 与 SukkaW 是一梯队可信上游：每个 App audit 先审 Repcz 的专
 - Steam：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Steam.list`。Repcz 的 20 条核心 Steam 域名零转换风险、每日更新；SukkaW 无专项；v2fly 偏宽（地区性 CDN）；blackmatrix7 陈旧（2025-06）且混入盗版站 `steamunlocked.net`。2026-08-15 新增，替代用户主配置中的 blackmatrix7 Steam。
 - APTV（原计划名 Live）：无上游，用户自用直播源（经 APTV 前端 App 观看）。2026-08-15 自用户私有仓库 `Bluetrae/Bridge` 迁入（garyshare 直播源 2026-02-22 版，26 条：17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），supplement-only（`sources: []`），文件头部与 manifest note 均已注明自用；不含订阅 URL 或 token。
 
-属性语义固定为：输出所有无 attribute 条目，加上至少具有一个 `attributes.include` 中属性的条目。当前 manifest 的 `attributes.include` 均为 `[]`；该属性选择仅适用于 v2fly 条目，v1 遇到 `@!name` 否定属性会失败，不会静默误解析。surge-rule-set 来源中的 `IP-ASN`、`URL-REGEX` 可通过 `exclude: ["ip-asn:*"]`、`exclude: ["url-regex:*"]` 类型级显式丢弃（TikTok、AI 使用）；无上游的 App 可声明 `sources: []` 仅由 supplement 提供规则（ZABank 使用）。
-
 ## Finance supplement 候选与当前已知
 
 ### ZABank
@@ -132,21 +87,6 @@ supplement 内容为 `DOMAIN-SUFFIX,za.group`、`DOMAIN-SUFFIX,zainvest.group`�
 ### SafePal
 
 SafePal 已采用 v2fly primary source；`isafepal.com` 与 `safepal.com` 均由上游覆盖，因此不应写入 `sources/supplement/`。
-
-## 当前仓库结构
-
-```text
-README.md
-AGENTS.md
-HANDOFF.md
-DEEPSEEK_MIGRATION.md
-SOURCE_AUDITS.md
-sources/apps.yaml
-sources/supplement/
-scripts/build.py
-Surge/
-.github/workflows/update.yml
-```
 
 ## 已验证的生成结果
 
