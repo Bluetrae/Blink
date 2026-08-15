@@ -28,7 +28,7 @@
 
 1. 当前 Git 工作区、`git status`、Git 历史和实际生成文件。
 2. `sources/apps.yaml`、`scripts/build.py`、测试与 GitHub Actions workflow。
-3. `AGENTS.md`、`CODEX_HANDOFF.md`、README 与合规文档。
+3. `AGENTS.md`、`HANDOFF.md`、README 与合规文档。
 4. 本文件。
 5. 仓库外保存的原始聊天档案。
 
@@ -38,7 +38,7 @@
 
 1. `README.md`：项目用途、用户入口和当前输出清单。
 2. `AGENTS.md`：长期规则、上游选择政策、Git 安全要求和新增 App 流程。
-3. `CODEX_HANDOFF.md`：最近完成状态、已审计来源和后续计划。
+3. `HANDOFF.md`：最近完成状态、已审计来源和后续计划。
 4. `sources/apps.yaml`：所有启用 App 的权威 source manifest 与 parser policy。
 5. `scripts/build.py` 与 `tests/test_build.py`：构建器实际支持的语义和测试边界。
 6. `.github/workflows/update.yml`：自动更新、写入和 Actions 提交逻辑。

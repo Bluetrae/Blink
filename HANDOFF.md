@@ -137,7 +137,7 @@ SafePal 已采用 v2fly primary source；`isafepal.com` 与 `safepal.com` 均由
 ```text
 README.md
 AGENTS.md
-CODEX_HANDOFF.md
+HANDOFF.md
 DEEPSEEK_MIGRATION.md
 SOURCE_AUDITS.md
 sources/apps.yaml

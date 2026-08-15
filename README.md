@@ -159,7 +159,7 @@ Surge/                     # Generated files：仅由构建器或 Actions 写入
 .github/workflows/update.yml
 ```
 
-更多项目规范、source audit 结论和交接状态见 [AGENTS.md](AGENTS.md) 与 [CODEX_HANDOFF.md](CODEX_HANDOFF.md)。
+更多项目规范、source audit 结论和交接状态见 [AGENTS.md](AGENTS.md) 与 [HANDOFF.md](HANDOFF.md)。
 
 ---
 
