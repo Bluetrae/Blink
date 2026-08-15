@@ -42,43 +42,23 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/<App>.list
 <sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Rulink@main/Surge/<App>.list`。</sub>
 
 <details>
-<summary>📋 点击展开全部 18 个 App 的引用示例</summary>
+<summary>📋 点击展开 Surge 引用示例（节选）</summary>
 
 ```ini
 # 💳 Finance
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list,Finance
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/PayPal.list,Finance
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list,Finance
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/ZABank.list,Finance
-
-# 💬 Communication
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/WhatsApp.list,Proxy
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/LINE.list,Proxy
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Telegram.list,Proxy
-
-# 💻 Development
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list,GitHub
 
 # 🧠 AI
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list,<你的 AI 策略>
 
-# 🎮 Game
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Steam.list,<你的游戏策略>
-
-# 🌐 Social
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list,<你的社交策略>
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list,<你的社交策略>
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Threads.list,<你的社交策略>
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/TikTok.list,<你的社交策略>
-
 # 🎬 Media
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list,<你的媒体策略>
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list,<你的媒体策略>
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list,<你的媒体策略>
 
-# 📺 APTV（自用）
+# 📺 自用直播源
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,<你的直播策略>
 ```
+
+<sub>其余 App 格式相同；完整清单见下方「Rule-Sets 清单」。</sub>
 
 </details>
 
