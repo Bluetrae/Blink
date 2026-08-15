@@ -46,7 +46,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
           href="#rulesets"
           className="rounded-[9px] border border-line bg-white px-5 py-2.5 text-[15px] font-medium text-ink transition hover:bg-paper"
         >
-          浏览规则集
+          查看规则集
         </a>
       </div>
       <div className="mx-auto mt-11 max-w-2xl">

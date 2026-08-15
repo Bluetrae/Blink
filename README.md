@@ -68,7 +68,7 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list,
 
 ## 🌐 可视化门户
 
-无需域名即可访问的规则浏览门户：[`https://bluetrae.github.io/Rulink/`](https://bluetrae.github.io/Rulink/)。一览全部 Rule-Set 的规则数、规则类型与来源，一键复制 `RULE-SET` 接入行。
+无需域名即可访问的门户站点：[`https://bluetrae.github.io/Rulink/`](https://bluetrae.github.io/Rulink/)。集中展示全部 Rule-Set 的规则数、规则类型与来源，一键复制 `RULE-SET` 接入行。
 
 - 技术栈：Vite + React + TypeScript + Tailwind CSS，源码在 [`portal/`](portal/)。
 - 部署：GitHub Actions（[`pages.yml`](.github/workflows/pages.yml)）在 `main` 推送时自动构建并部署到 GitHub Pages，无需提交构建产物。
