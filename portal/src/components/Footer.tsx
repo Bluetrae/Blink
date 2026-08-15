@@ -12,7 +12,16 @@ export default function Footer({ repo }: FooterProps) {
   return (
     <footer className="border-t border-line px-6 py-9">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 text-center">
-        <p className="text-sm font-semibold">🧭 Rulink · 个人使用的多客户端 App Rule-Set 分发仓库</p>
+        <p className="flex items-center justify-center gap-2 text-sm font-semibold">
+          <img
+            src="https://github.com/Bluetrae.png"
+            alt=""
+            width={24}
+            height={24}
+            className="h-6 w-6 rounded-full border border-line"
+          />
+          Rulink · 个人使用的多客户端 App Rule-Set 分发仓库
+        </p>
         <nav className="flex flex-wrap justify-center gap-4 text-[13.5px]" aria-label="页脚链接">
           {links.map((link) => (
             <a

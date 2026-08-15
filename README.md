@@ -1,6 +1,6 @@
 <div align="center">
 
-# <img src="https://github.com/Bluetrae.png" width="36" height="36" style="border-radius:50%;vertical-align:middle" /> Rulink
+# <img src="docs/images/avatar.png" width="36" height="36" alt="" style="vertical-align:middle" /> Rulink
 
 **多客户端 App Rule-Set · 自动构建 · 稳定分发**
 
