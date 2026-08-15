@@ -44,17 +44,30 @@ RULE-SET,<URL>,<策略>
 # 💳 Finance
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list,Finance
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/PayPal.list,Finance
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list,Finance
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/ZABank.list,Finance
 
 # 💬 Communication
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/WhatsApp.list,Proxy
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/LINE.list,Proxy
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Telegram.list,Proxy
 
 # 💻 Development
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list,GitHub
 
-# 🧩 Choose policies in your own configuration
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list,<你的金融策略>
+# 🧠 AI
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list,<你的 AI 策略>
+
+# 🌐 Social
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list,<你的社交策略>
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list,<你的社交策略>
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Threads.list,<你的社交策略>
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/TikTok.list,<你的社交策略>
+
+# 🎬 Media
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list,<你的媒体策略>
 RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list,<你的媒体策略>
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list,<你的媒体策略>
 ```
 
 > [!TIP]
