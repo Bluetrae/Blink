@@ -12,6 +12,7 @@
 | WhatsApp | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/WhatsApp.list` |
 | LINE | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/LINE.list` |
 | GitHub | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/GitHub.list` |
+| SafePal | `https://raw.githubusercontent.com/Bluetrae/WProxyRules/main/Surge/SafePal.list` |
 
 示例：在 Surge 主配置的 `[Rule]` 中以 `RULE-SET,<URL>,<策略>` 形式为每个 Rule-Set 指定策略名称。
 

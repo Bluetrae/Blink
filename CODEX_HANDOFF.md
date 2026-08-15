@@ -17,13 +17,14 @@ https://github.com/Bluetrae/WProxyRules
 - `main` 跟踪 `origin/main`
 - working tree clean
 - `safe.directory` 已配置完成
-- `sources/apps.yaml` 已定义 OKX、WhatsApp、LINE、GitHub 四个 App 的 v2fly primary source 与显式 parser policy
+- `sources/apps.yaml` 已定义 OKX、WhatsApp、LINE、GitHub、SafePal 五个 App 的 v2fly primary source 与显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
 - `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`
 - `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、错误策略及实际 manifest 校验
 - `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 02:17 的定时运行
 - GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
-- 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`
+- GitHub Actions 第 3 次手动运行成功，生成 commit 为 `498ca27 chore: update generated Surge rule-sets`
+- 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`、`Surge/SafePal.list`
 - 目前没有任何 `sources/supplement/<App>.list` 文件；这是预期状态
 
 ## 项目目标
@@ -88,19 +89,19 @@ Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX
 - Netflix
 - Live
 - PayPal
-- SafePal
 - ZABank
 
 ## 已确定的规则源结论
 
-四个验证样本当前均只使用 1 个 v2fly primary source，不配置 supplemental source，不创建 supplement 文件；所有 App 均采用 `format: v2fly-domain-list`，由 `build.py` 解析真实语义，而非按行粗暴转换。
+四个初始验证样本及已纳入的 SafePal 当前均只使用 1 个 v2fly primary source，不配置 supplemental source，不创建 supplement 文件；所有 App 均采用 `format: v2fly-domain-list`，由 `build.py` 解析真实语义，而非按行粗暴转换。
 
 - OKX：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx`。旧 blackmatrix7 规则过少；当前保留无 attribute 条目，`oklink.com @cn` 未启用。
 - WhatsApp：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp`。比旧 blackmatrix7 覆盖更现代；`@ads` graph 条目未启用。
 - LINE：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/line`。当前比旧 blackmatrix7 更完整；避免引入整个 `naver.jp`，但 `line.naver.jp` 与 `nhncorp.jp` 暂不凭猜测排除，等待实际日志证据。
 - GitHub：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/github`。显式允许 `github-copilot` include，显式拒绝 `npmjs` include；精确 GitHub Azure/S3 生产主机可保留，但不得扩展为整个 Microsoft、Amazon 或 Azure 公共基础设施；`@ads` telemetry 条目未启用。
+- SafePal：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/safepal`。当前无可用的 Repcz、SukkaW、blackmatrix7 或 MetaCubeX 专项规则；v2fly 的窄范围列表覆盖 `isafepal.com` 与 `safepal.com`，没有 include 或 attribute 条目。
 
-属性语义固定为：输出所有无 attribute 条目，加上至少具有一个 `attributes.include` 中属性的条目。当前四个 App 均为 `attributes.include: []`；v1 遇到 `@!name` 否定属性会失败，不会静默误解析。
+属性语义固定为：输出所有无 attribute 条目，加上至少具有一个 `attributes.include` 中属性的条目。当前五个 App 均为 `attributes.include: []`；v1 遇到 `@!name` 否定属性会失败，不会静默误解析。
 - PayPal：blackmatrix7 当前仍可作为合理上游。
 - Netflix：blackmatrix7 现有列表的 IP 覆盖仍有价值，不要盲目替换成纯域名源。
 
@@ -124,9 +125,7 @@ integrate-appgw.zajourney.com
 
 ### SafePal
 
-```text
-isafepal.com
-```
+SafePal 已采用 v2fly primary source；`isafepal.com` 与 `safepal.com` 均由上游覆盖，因此不应写入 `sources/supplement/`。
 
 ## 当前仓库结构
 
@@ -149,6 +148,10 @@ Surge/
 - `Surge/WhatsApp.list`：11 条规则
 - `Surge/LINE.list`：20 条规则
 - `Surge/GitHub.list`：58 条规则
+
+GitHub Actions 第 3 次手动运行在同日新增：
+
+- `Surge/SafePal.list`：2 条规则（`isafepal.com`、`safepal.com`）
 
 生成文件仅可由 `python scripts/build.py --write` 或 GitHub Actions 更新，绝不手工编辑。Surge 主配置应引用本仓库稳定 raw URL，并通过 `RULE-SET` 自行指定策略。
 
