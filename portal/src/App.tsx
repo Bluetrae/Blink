@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { PortalData } from "./types";
+import { useTimedTheme } from "./hooks";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Rulesets from "./components/Rulesets";
@@ -10,6 +11,7 @@ import Footer from "./components/Footer";
 const FALLBACK_REPO = "https://github.com/Bluetrae/Rulink";
 
 export default function App() {
+  useTimedTheme();
   const [data, setData] = useState<PortalData | null>(null);
   const [error, setError] = useState<string | null>(null);
 

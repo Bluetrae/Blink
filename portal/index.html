@@ -11,17 +11,11 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script>
       (function () {
-        var saved = null;
-        try {
-          saved = localStorage.getItem("rulink-theme");
-        } catch (e) {
-          /* ignore */
+        // 8:00–22:00 light, 22:00–8:00 dark
+        var hour = new Date().getHours();
+        if (hour < 8 || hour >= 22) {
+          document.documentElement.classList.add("dark");
         }
-        var dark =
-          saved === "dark" ||
-          ((saved === null || saved === "system") &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches);
-        if (dark) document.documentElement.classList.add("dark");
       })();
     </script>
   </head>

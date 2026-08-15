@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
-import { useTheme, type Theme } from "../hooks";
 
 interface NavProps {
   repo: string;
 }
-
-const THEME_META: Record<Theme, { icon: string; label: string }> = {
-  system: { icon: "🌗", label: "主题：跟随系统" },
-  light: { icon: "☀️", label: "主题：浅色" },
-  dark: { icon: "🌙", label: "主题：深色" },
-};
 
 const NAV_LINKS = [
   { href: "#rulesets", label: "规则集" },
@@ -18,8 +11,6 @@ const NAV_LINKS = [
 ];
 
 export default function Nav({ repo }: NavProps) {
-  const { theme, cycle } = useTheme();
-  const meta = THEME_META[theme];
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -56,15 +47,6 @@ export default function Nav({ repo }: NavProps) {
             </a>
           ))}
         </nav>
-        <button
-          type="button"
-          onClick={cycle}
-          title={meta.label}
-          aria-label={meta.label}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-card text-[15px] leading-none transition hover:bg-paper"
-        >
-          {meta.icon}
-        </button>
         <a
           href={repo}
           target="_blank"

@@ -47,54 +47,30 @@ export function useCopy(
   return { copied, copy };
 }
 
-export type Theme = "system" | "light" | "dark";
-
-const THEME_STORAGE_KEY = "rulink-theme";
-
-function resolveTheme(theme: Theme): "light" | "dark" {
-  if (theme === "system") {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  }
-  return theme;
+/* Time-based theme: 08:00–22:00 light, 22:00–08:00 dark. Re-checks every
+   minute and when the tab becomes visible again, so the page flips
+   automatically across the boundary even while it stays open. */
+function themeForHour(hour: number): "light" | "dark" {
+  return hour >= 8 && hour < 22 ? "light" : "dark";
 }
 
-export function useTheme(): {
-  theme: Theme;
-  resolved: "light" | "dark";
-  cycle: () => void;
-} {
-  const [theme, setTheme] = useState<Theme>(() => {
-    try {
-      const saved = localStorage.getItem(THEME_STORAGE_KEY);
-      if (saved === "light" || saved === "dark" || saved === "system") return saved;
-    } catch {
-      /* ignore */
-    }
-    return "system";
-  });
-
+export function useTimedTheme(): void {
   useEffect(() => {
     const apply = () => {
-      document.documentElement.classList.toggle("dark", resolveTheme(theme) === "dark");
+      const next = themeForHour(new Date().getHours());
+      document.documentElement.classList.toggle("dark", next === "dark");
     };
     apply();
     try {
-      localStorage.setItem(THEME_STORAGE_KEY, theme);
+      localStorage.removeItem("rulink-theme");
     } catch {
       /* ignore */
     }
-    if (theme === "system") {
-      const media = window.matchMedia("(prefers-color-scheme: dark)");
-      media.addEventListener("change", apply);
-      return () => media.removeEventListener("change", apply);
-    }
-  }, [theme]);
-
-  const cycle = useCallback(() => {
-    setTheme((current) =>
-      current === "system" ? "light" : current === "light" ? "dark" : "system",
-    );
+    const interval = window.setInterval(apply, 60_000);
+    document.addEventListener("visibilitychange", apply);
+    return () => {
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", apply);
+    };
   }, []);
-
-  return { theme, resolved: resolveTheme(theme), cycle };
 }
