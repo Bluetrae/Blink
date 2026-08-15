@@ -3,8 +3,8 @@
 ## Scope
 
 Rulink contains original build code, tests, workflow configuration, and
-documentation, together with generated Surge Rule-Sets derived from publicly
-available upstream rule sources.
+documentation, together with generated multi-client Rule-Sets derived from
+publicly available upstream rule sources.
 
 This file records the known upstream provenance and license or project notice
 for each generated Rule-Set. It is an attribution and compliance reference,
@@ -13,6 +13,15 @@ not legal advice and not a replacement for the full upstream terms.
 `Surge/*.list` files are generated artifacts. Rulink does not claim to
 relicense upstream rules, nor does this repository grant permissions beyond
 those available from the applicable upstream authors and licenses.
+
+## Generated Rule-Set provenance
+
+The `Surge/<App>.list` table below is the canonical provenance record.
+`Loon/<App>.list`, `Shadowrocket/<App>.list`, and `Stash/<App>.list` are
+byte-identical copies of the Surge output, and `Egern/<App>.yaml` is rendered
+from the same canonical rule set; all five inherit the provenance and license
+attribution of the corresponding `Surge/<App>.list` row without any
+additional upstream source.
 
 ## Generated Rule-Set provenance
 

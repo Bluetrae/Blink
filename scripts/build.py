@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Conservatively compile audited sources into native Surge rules.
+"""Conservatively compile audited sources into canonical rules.
 
-The default mode is a read-only preflight.  Surge files are written only when
-``--write`` is supplied after every selected app has compiled successfully.
+The default mode is a read-only preflight that renders every client target.
+Files (Surge / Loon / Shadowrocket / Stash classical lists plus Egern YAML)
+are written only when ``--write`` is supplied after every selected app has
+compiled and rendered successfully.
 """
 
 from __future__ import annotations
@@ -22,8 +24,19 @@ from typing import Callable, Iterable
 
 import yaml
 
+from renderers import (
+    CLIENTS,
+    RendererError,
+    render_classical,
+    render_classical_body,
+    render_egern_yaml,
+    render_for_client,
+)
 
-ALLOWED_SURGE_TYPES = (
+
+# Canonical rule kinds.  The names happen to match Surge vocabulary, but the
+# model is client-neutral: renderers own every client-specific serialization.
+ALLOWED_RULE_TYPES = (
     "DOMAIN",
     "DOMAIN-SUFFIX",
     "DOMAIN-KEYWORD",
@@ -32,7 +45,7 @@ ALLOWED_SURGE_TYPES = (
     "IP-CIDR",
     "IP-CIDR6",
 )
-SORT_ORDER = {rule_type: position for position, rule_type in enumerate(ALLOWED_SURGE_TYPES)}
+SORT_ORDER = {rule_type: position for position, rule_type in enumerate(ALLOWED_RULE_TYPES)}
 SAFE_INCLUDE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 SUPPORTED_SOURCE_FORMATS = {"v2fly-domain-list", "surge-rule-set"}
 
@@ -61,7 +74,13 @@ class ParsedEntry:
 
 
 @dataclasses.dataclass(frozen=True)
-class SurgeRule:
+class Rule:
+    """One canonical, client-neutral, policy-free rule.
+
+    ``kind``/``value`` describe what the rule matches; ``options`` keeps
+    match modifiers such as ``no-resolve``.  Client serialization lives
+    exclusively in ``renderers.py``.
+    """
     kind: str
     value: str
     options: tuple[str, ...]
@@ -71,14 +90,11 @@ class SurgeRule:
     def key(self) -> tuple[str, str, tuple[str, ...]]:
         return self.kind, self.value, self.options
 
-    def render(self) -> str:
-        return ",".join((self.kind, self.value, *self.options))
-
 
 @dataclasses.dataclass
 class Compilation:
     app_name: str
-    rules: list[SurgeRule]
+    rules: list[Rule]
     skipped_attributes: list[ParsedEntry]
     denied_includes: list[tuple[str, SourceLocation]]
     provenance: dict[tuple[str, str, tuple[str, ...]], list[SourceLocation]]
@@ -245,18 +261,18 @@ def normalize_domain(value: str, location: SourceLocation) -> str:
     return encoded
 
 
-def convert_entry(entry: ParsedEntry) -> SurgeRule:
+def convert_entry(entry: ParsedEntry) -> Rule:
     if entry.kind == "regexp":
         raise BuildError(f"unsupported v2fly regexp at {entry.location.describe()}: {entry.value!r}")
     if entry.kind == "domain":
-        return SurgeRule("DOMAIN-SUFFIX", normalize_domain(entry.value, entry.location), (), entry.location)
+        return Rule("DOMAIN-SUFFIX", normalize_domain(entry.value, entry.location), (), entry.location)
     if entry.kind == "full":
-        return SurgeRule("DOMAIN", normalize_domain(entry.value, entry.location), (), entry.location)
+        return Rule("DOMAIN", normalize_domain(entry.value, entry.location), (), entry.location)
     if entry.kind == "keyword":
         value = entry.value.lower()
         if not value or any(character in value for character in ",\r\n"):
             raise BuildError(f"invalid domain keyword at {entry.location.describe()}: {entry.value!r}")
-        return SurgeRule("DOMAIN-KEYWORD", value, (), entry.location)
+        return Rule("DOMAIN-KEYWORD", value, (), entry.location)
     raise BuildError(f"cannot convert v2fly entry {entry.kind!r} at {entry.location.describe()}")
 
 
@@ -265,27 +281,27 @@ def normalize_surge_rule(
     value: str,
     options: tuple[str, ...],
     location: SourceLocation,
-) -> SurgeRule:
+) -> Rule:
     """Validate and canonicalize one policy-free native Surge rule."""
-    if kind not in ALLOWED_SURGE_TYPES:
+    if kind not in ALLOWED_RULE_TYPES:
         raise BuildError(f"unsupported Surge rule type at {location.describe()}: {kind!r}")
     if kind in {"DOMAIN", "DOMAIN-SUFFIX"}:
         if options:
             raise BuildError(f"unexpected option for {kind} at {location.describe()}: {options!r}")
-        return SurgeRule(kind, normalize_domain(value, location), (), location)
+        return Rule(kind, normalize_domain(value, location), (), location)
     if kind == "DOMAIN-KEYWORD":
         if options:
             raise BuildError(f"unexpected option for DOMAIN-KEYWORD at {location.describe()}: {options!r}")
         normalized = value.lower()
         if not normalized or any(character in normalized for character in ",\r\n\t"):
             raise BuildError(f"invalid domain keyword at {location.describe()}: {value!r}")
-        return SurgeRule(kind, normalized, (), location)
+        return Rule(kind, normalized, (), location)
     if kind in {"USER-AGENT", "PROCESS-NAME"}:
         if options:
             raise BuildError(f"unexpected option for {kind} at {location.describe()}: {options!r}")
         if not value or any(character in value for character in ",\r\n"):
             raise BuildError(f"invalid {kind} value at {location.describe()}: {value!r}")
-        return SurgeRule(kind, value, (), location)
+        return Rule(kind, value, (), location)
 
     if options not in {(), ("no-resolve",)}:
         raise BuildError(f"unsupported {kind} option at {location.describe()}: {options!r}")
@@ -296,7 +312,7 @@ def normalize_surge_rule(
     expected = "IP-CIDR6" if network.version == 6 else "IP-CIDR"
     if kind != expected:
         raise BuildError(f"IP family does not match rule type at {location.describe()}: {kind},{value}")
-    return SurgeRule(kind, str(network), options, location)
+    return Rule(kind, str(network), options, location)
 
 
 def parse_surge_rule_set_text(
@@ -305,7 +321,7 @@ def parse_surge_rule_set_text(
     chain: tuple[str, ...],
     skip_kinds: set[str] | None = None,
     skipped: list[str] | None = None,
-) -> list[SurgeRule]:
+) -> list[Rule]:
     """Parse a deliberately small, policy-free subset of native Surge syntax.
 
     A source rule must be one of the explicitly supported output types.  It
@@ -317,7 +333,7 @@ def parse_surge_rule_set_text(
     the build.  Dropped lines are recorded in ``skipped`` so the decision stays
     auditable in the build report.
     """
-    rules: list[SurgeRule] = []
+    rules: list[Rule] = []
     for line_number, original in enumerate(text.splitlines(), start=1):
         stripped = original.strip()
         if not stripped or stripped.startswith(("#", ";", "//")):
@@ -363,7 +379,7 @@ def parse_excludes(items: Iterable[object], app_name: str) -> tuple[list[tuple[s
     return excludes, skipped_kinds
 
 
-def is_excluded(rule: SurgeRule, excludes: Iterable[tuple[str, str]]) -> bool:
+def is_excluded(rule: Rule, excludes: Iterable[tuple[str, str]]) -> bool:
     for kind, value in excludes:
         if kind == "DOMAIN" and rule.kind == "DOMAIN" and rule.value == value:
             return True
@@ -377,7 +393,7 @@ def is_excluded(rule: SurgeRule, excludes: Iterable[tuple[str, str]]) -> bool:
     return False
 
 
-def parse_supplement(path: Path, app_name: str) -> list[SurgeRule]:
+def parse_supplement(path: Path, app_name: str) -> list[Rule]:
     if not path.exists():
         return []
     try:
@@ -393,9 +409,9 @@ def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = de
     deny = set(app["include_policy"]["deny"])
     selected_attributes = set(app["attributes"]["include"])
     cached_entries: dict[str, list[ParsedEntry]] = {}
-    cached_surge_rules: dict[str, list[SurgeRule]] = {}
+    cached_surge_rules: dict[str, list[Rule]] = {}
     stack: list[str] = []
-    rules: list[SurgeRule] = []
+    rules: list[Rule] = []
     skipped_attributes: list[ParsedEntry] = []
     denied_includes: list[tuple[str, SourceLocation]] = []
     skipped_excluded: list[str] = []
@@ -440,7 +456,7 @@ def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = de
 
     rules.extend(parse_supplement(root / app["supplement"], app_name))
     provenance: dict[tuple[str, str, tuple[str, ...]], list[SourceLocation]] = defaultdict(list)
-    unique: dict[tuple[str, str, tuple[str, ...]], SurgeRule] = {}
+    unique: dict[tuple[str, str, tuple[str, ...]], Rule] = {}
     for rule in rules:
         if is_excluded(rule, excludes):
             continue
@@ -452,19 +468,37 @@ def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = de
     return Compilation(app_name, ordered, skipped_attributes, denied_includes, dict(provenance), skipped_excluded)
 
 
+def rendered_outputs(compilation: Compilation, manifest: dict, root: Path) -> dict[str, tuple[Path, str, list[str]]]:
+    """Render one compilation for every client and resolve output paths.
+
+    The manifest ``output`` field keeps naming the Surge file (backward
+    compatibility); other clients derive their path from the same stem under
+    their own directory.  Returns ``{client_key: (path, text, dropped)}``.
+    """
+    app = manifest["apps"][compilation.app_name]
+    surge_path = root / app["output"]
+    stem = surge_path.stem
+    outputs: dict[str, tuple[Path, str, list[str]]] = {}
+    for key, client in CLIENTS.items():
+        if key == "surge":
+            path = surge_path
+        else:
+            path = root / client.directory / f"{stem}{client.suffix}"
+        try:
+            text, dropped = render_for_client(client, compilation.rules, compilation.app_name)
+        except RendererError as error:
+            raise BuildError(f"{compilation.app_name}: {key} render failed: {error}") from error
+        outputs[key] = (path, text, dropped)
+    return outputs
+
+
 def write_outputs(compilations: Iterable[Compilation], manifest: dict, root: Path) -> None:
     for compilation in compilations:
-        output = root / manifest["apps"][compilation.app_name]["output"]
-        output.parent.mkdir(parents=True, exist_ok=True)
-        temporary = output.with_suffix(output.suffix + ".tmp")
-        lines = [
-            f"# 规则名称: {compilation.app_name}",
-            f"# 规则统计: {len(compilation.rules)}",
-            "",
-            *(rule.render() for rule in compilation.rules),
-        ]
-        temporary.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
-        temporary.replace(output)
+        for output, text, _dropped in rendered_outputs(compilation, manifest, root).values():
+            output.parent.mkdir(parents=True, exist_ok=True)
+            temporary = output.with_suffix(output.suffix + ".tmp")
+            temporary.write_text(text, encoding="utf-8", newline="\n")
+            temporary.replace(output)
 
 
 def select_apps(manifest: dict, requested: list[str]) -> list[str]:
@@ -480,13 +514,16 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=Path("sources/apps.yaml"))
     parser.add_argument("--app", action="append", default=[], help="compile only this app; may be repeated")
-    parser.add_argument("--write", action="store_true", help="write Surge outputs after all selected apps compile")
+    parser.add_argument("--write", action="store_true", help="write all client outputs after every selected app compiles")
     arguments = parser.parse_args(argv)
     root = arguments.manifest.resolve().parent.parent
     try:
         manifest = load_manifest(arguments.manifest)
         names = select_apps(manifest, arguments.app)
         compilations = [compile_app(name, manifest["apps"][name], root) for name in names]
+        # Render for every client even in check mode: an app that only fails
+        # in a non-Surge renderer must fail the preflight, never the CI write.
+        rendered = [rendered_outputs(compilation, manifest, root) for compilation in compilations]
         if arguments.write:
             write_outputs(compilations, manifest, root)
         report = {
@@ -498,8 +535,15 @@ def main(argv: list[str] | None = None) -> int:
                     "skipped_attributes": len(item.skipped_attributes),
                     "skipped_excluded": len(item.skipped_excluded),
                     "denied_includes": [name for name, _ in item.denied_includes],
+                    "clients": {
+                        key: {
+                            "rules": len(item.rules) - len(dropped),
+                            "dropped": dropped,
+                        }
+                        for key, (_path, _text, dropped) in client_outputs.items()
+                    },
                 }
-                for item in compilations
+                for item, client_outputs in zip(compilations, rendered)
             ],
         }
         print(json.dumps(report, ensure_ascii=False, indent=2))

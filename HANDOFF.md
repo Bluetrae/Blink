@@ -20,8 +20,13 @@ https://github.com/Bluetrae/Rulink
 - 根目录刻意不设置覆盖整个仓库的统一许可证：原创构建代码/文档与第三方上游及 generated Rule-Set 分开处理；`THIRD_PARTY_NOTICES.md` 记录来源和已知许可，`DISCLAIMER.md` 记录个人使用、无担保与责任边界
 - `sources/apps.yaml` 已定义十八个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI、Steam 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；ZABank 无可用上游、APTV 为用户自用直播源，均为 supplement-only App（`sources: []`）；均保留显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
-- `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式，并支持类型级 exclude（`ip-asn:*`、`url-regex:*`）与 supplement-only App（`sources: []`）
-- `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、类型级 exclude、supplement-only App、抓取重试、CLI 端到端、错误策略及实际 manifest 校验（19 个用例全过）
+- `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入生成目录。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式，并支持类型级 exclude（`ip-asn:*`、`url-regex:*`）与 supplement-only App（`sources: []`）
+- **多客户端支持已完成（v1.1）**：`scripts/renderers.py` 提供 2 个 Renderer —— `classical`（Surge / Shadowrocket / Loon / Stash 四个目录逐字节相同，`Surge/*.list` 路径与字节完全不变）与 `egern-yaml`（Egern `*_set` schema；`PROCESS-NAME` 显式丢弃并计入构建报告，`no_resolve` 为 set 级、混合时显式失败）。格式审计与架构决策见 `docs/MULTI_CLIENT_AUDIT.md`；Surge 向后兼容门禁 = 重构建后 `git diff Surge/` 为空（单测 `test_existing_surge_outputs_roundtrip_byte_identical` 覆盖离线往返字节一致性）
+- 新增生成目录：`Loon/*.list`、`Shadowrocket/*.list`、`Stash/*.list`（与 `Surge/*.list` 逐字节相同）、`Egern/*.yaml`（每 App 一份 YAML Rule-Set）
+- 构建报告新增 `clients` 字段：每客户端规则数与显式 dropped 列表；check 模式同样渲染全部客户端，非 Surge renderer 的失败会在预检阶段暴露
+- `.github/workflows/update.yml` 已更名为 Update Rule-Sets，提交范围覆盖 `Surge Loon Shadowrocket Stash Egern portal/public/data`
+- `tests/test_build.py` 增至 25 个用例；测试临时目录经模块级 patch 落在工作区 `.tmp-tests/`（已 gitignore），兼容沙箱化 Windows 运行环境
+- `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、类型级 exclude、supplement-only App、抓取重试、CLI 端到端、错误策略、实际 manifest 校验、Egern YAML schema、PROCESS-NAME 降级报告、no-resolve set 级语义及 Surge golden-byte 往返
 - `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 00:01 的定时运行（GitHub 定时任务不保证准点）
 - GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
 - GitHub Actions 第 3 次手动运行成功，生成 commit 为 `498ca27 chore: update generated Surge rule-sets`
@@ -37,7 +42,7 @@ https://github.com/Bluetrae/Rulink
 
 ## 项目目标
 
-自动生成个人使用的 Surge App Rule-Sets；完整规范见 [AGENTS.md](AGENTS.md)，对外说明见 [README.md](README.md)，本文件不重复。
+自动生成个人使用的多客户端 App Rule-Sets（Surge / Shadowrocket / Loon / Stash / Egern）：一份 source definition 与 canonical 规则，渲染为多客户端输出；完整规范见 [AGENTS.md](AGENTS.md)，对外说明见 [README.md](README.md)，本文件不重复。
 
 ## Upstream Source Selection Policy
 
@@ -125,7 +130,7 @@ GitHub Actions 第 4 次手动运行在同日新增：
 - `Surge/Steam.list`：20 条规则（同日稍后新增）
 - `Surge/APTV.list`：26 条规则（supplement-only，自用直播源，同日迁入）
 
-生成文件仅可由 `python scripts/build.py --write` 或 GitHub Actions 更新，绝不手工编辑。Surge 主配置应引用本仓库稳定 raw URL，并通过 `RULE-SET` 自行指定策略。
+生成文件仅可由 `python scripts/build.py --write` 或 GitHub Actions 更新，绝不手工编辑。各客户端主配置引用本仓库稳定 raw URL，并在引用处指定策略：Surge / Shadowrocket 用 `RULE-SET`，Loon 用 `[Remote Rule]`，Stash 用 `rule-providers` + `RULE-SET`，Egern 用 `rule_set.match`（最小引用示例见 README「快速开始」）。
 
 ## 构建闭环
 
@@ -134,15 +139,17 @@ GitHub Actions 第 4 次手动运行在同日新增：
 → GitHub Actions（或本地 `build.py --write`）
 → 解析 v2fly / 展开经显式批准的 include，或解析经审计的原生 Surge Rule-Set
 → 解析/转换/合并 supplement
-→ 去重/规范化
-→ Surge/*.list
-→ 仅当 `Surge/` 有变化时由 Actions bot 提交
-→ Surge 使用自己仓库的稳定 raw URL
+→ 去重/规范化 → canonical 规则（含 provenance）
+→ Renderer 层（renderers.py）
+→ Surge/*.list + Loon/*.list + Shadowrocket/*.list + Stash/*.list（四者逐字节相同）
+→ Egern/*.yaml（PROCESS-NAME 显式丢弃并计入报告）
+→ 仅当生成目录有变化时由 Actions bot 提交
+→ 各客户端使用自己目录的稳定 raw URL（Surge URL 自 v1 起保持不变）
 ```
 
 ## 无人值守与人工介入时机
 
-- **每日 00:01（北京时间）的 GitHub Actions 全自动、无人值守**：拉取上游 → 单测 → 全量重建 → 仅 `Surge/` 有实质变化时由 bot 提交；无变化零提交。维护者无需每天登录。GitHub 定时任务不保证准点，实际执行可能延后。
+- **每日 00:01（北京时间）的 GitHub Actions 全自动、无人值守**：拉取上游 → 单测 → 全量重建 → 仅生成目录（`Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Egern/`）或门户数据有实质变化时由 bot 提交；无变化零提交。维护者无需每天登录。GitHub 定时任务不保证准点，实际执行可能延后。
 - **构建失败 = 暂停更新，不是故障**：上游 404/超时/格式不合 v1 时，构建显式失败且不写任何文件，旧输出继续可用；无处理时限，下次维护时修复 manifest 或等待上游恢复即可。
 - **需要人工介入的时机（全部事件驱动、无时限）**：
   1. Actions 出现红色失败（上游格式变化、404、超时）→ 查日志，修复 source/manifest 或等上游恢复。

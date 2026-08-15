@@ -3,6 +3,11 @@ __pycache__/
 .pytest_cache/
 .venv/
 Surge/*.tmp
+Loon/*.tmp
+Shadowrocket/*.tmp
+Stash/*.tmp
+Egern/*.tmp
+.tmp-tests/
 portal/node_modules/
 portal/dist/
 portal/.npm-cache/

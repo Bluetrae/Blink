@@ -1,13 +1,51 @@
 from __future__ import annotations
 
+import os
 import sys
 import time
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+import yaml
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import build  # noqa: E402
+
+# Some sandboxed runners ship a tempfile whose mkdtemp creates directories
+# with restrictive DACLs: subdirectory creation inside them then fails with
+# PermissionError.  Redirect mkdtemp to plain directories inside the
+# workspace so TemporaryDirectory keeps working everywhere.  Cleanup still
+# runs through the standard path.
+import tempfile as _tempfile
+
+_WORKSPACE_TMP = Path(__file__).resolve().parents[1] / ".tmp-tests"
+_temp_sequence = iter(range(1 << 30))
+
+
+def _mkdtemp(*_args, **_kwargs):
+    _WORKSPACE_TMP.mkdir(exist_ok=True)
+    path = _WORKSPACE_TMP / f"t{os.getpid()}_{next(_temp_sequence)}"
+    os.mkdir(path)
+    return str(path)
+
+
+_tempfile.mkdtemp = _mkdtemp
+
+# Fallback for runners that also deny chmod on directories (tempfile cleanup
+# calls it before deleting).  Neutralize directory chmod only when unusable.
+if os.name == "nt":
+    try:
+        os.chmod(_WORKSPACE_TMP, 0o700)
+    except PermissionError:
+        _real_chmod = os.chmod
+
+        def _chmod_skip_directories(path, mode):
+            if not os.path.isdir(path):
+                return _real_chmod(path, mode)
+            return None
+
+        os.chmod = _chmod_skip_directories
 
 
 ROOT_URL = "https://example.invalid/data/root"
@@ -36,7 +74,7 @@ class BuildTests(unittest.TestCase):
             {ROOT_URL: "Example.COM.\nfull:Api.Example.com\nkeyword:GitHub\n"},
         )
         self.assertEqual(
-            [rule.render() for rule in result.rules],
+            build.render_classical_body(result.rules),
             ["DOMAIN,api.example.com", "DOMAIN-SUFFIX,example.com", "DOMAIN-KEYWORD,github"],
         )
 
@@ -73,7 +111,7 @@ class BuildTests(unittest.TestCase):
         with TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
             config = app_config()
-            rule = build.SurgeRule(
+            rule = build.Rule(
                 "DOMAIN-SUFFIX",
                 "example.com",
                 (),
@@ -81,10 +119,85 @@ class BuildTests(unittest.TestCase):
             )
             compilation = build.Compilation("Test", [rule], [], [], {})
             build.write_outputs([compilation], {"apps": {"Test": config}}, root)
+            surge = (root / "Surge" / "Test.list").read_text(encoding="utf-8")
+            self.assertEqual(surge, "# 规则名称: Test\n# 规则统计: 1\n\nDOMAIN-SUFFIX,example.com\n")
+            # The three classical clients consume the exact same bytes.
+            for directory in ("Loon", "Shadowrocket", "Stash"):
+                self.assertEqual((root / directory / "Test.list").read_text(encoding="utf-8"), surge)
+            # Egern gets its own YAML rule-set schema.
             self.assertEqual(
-                (root / "Surge" / "Test.list").read_text(encoding="utf-8"),
-                "# 规则名称: Test\n# 规则统计: 1\n\nDOMAIN-SUFFIX,example.com\n",
+                (root / "Egern" / "Test.yaml").read_text(encoding="utf-8"),
+                "# 规则名称: Test\n# 规则统计: 1\n\ndomain_suffix_set:\n- example.com\n",
             )
+
+    def test_egern_yaml_covers_all_expressible_kinds(self) -> None:
+        with TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            location = build.SourceLocation("test", 1, ("Test",))
+            rules = [
+                build.Rule("DOMAIN", "api.example.com", (), location),
+                build.Rule("DOMAIN-SUFFIX", "example.com", (), location),
+                build.Rule("DOMAIN-KEYWORD", "example", (), location),
+                build.Rule("IP-CIDR", "192.0.2.0/24", ("no-resolve",), location),
+                build.Rule("IP-CIDR6", "2001:db8::/64", ("no-resolve",), location),
+                build.Rule("USER-AGENT", "Example App*", (), location),
+            ]
+            text, dropped = build.render_egern_yaml(rules, "Test")
+            self.assertEqual(dropped, [])
+            document = yaml.safe_load(text.split("\n\n", 1)[1])
+            self.assertEqual(document["no_resolve"], True)
+            self.assertEqual(document["domain_set"], ["api.example.com"])
+            self.assertEqual(document["domain_suffix_set"], ["example.com"])
+            self.assertEqual(document["domain_keyword_set"], ["example"])
+            self.assertEqual(document["ip_cidr_set"], ["192.0.2.0/24"])
+            self.assertEqual(document["ip_cidr6_set"], ["2001:db8::/64"])
+            self.assertEqual(document["user_agent_set"], ["Example App*"])
+
+    def test_egern_drops_process_name_and_reports_it(self) -> None:
+        location = build.SourceLocation("test", 1, ("Test",))
+        rules = [
+            build.Rule("PROCESS-NAME", "com.example.app", (), location),
+            build.Rule("DOMAIN-SUFFIX", "example.com", (), location),
+        ]
+        text, dropped = build.render_egern_yaml(rules, "Test")
+        self.assertEqual(dropped, ["PROCESS-NAME,com.example.app"])
+        self.assertNotIn("process", text)
+        self.assertEqual(text.splitlines()[1], "# 规则统计: 1")
+
+    def test_egern_omits_no_resolve_without_ip_rules(self) -> None:
+        location = build.SourceLocation("test", 1, ("Test",))
+        text, _dropped = build.render_egern_yaml(
+            [build.Rule("DOMAIN-SUFFIX", "example.com", (), location)], "Test"
+        )
+        self.assertNotIn("no_resolve", text)
+
+    def test_egern_mixed_no_resolve_fails_explicitly(self) -> None:
+        location = build.SourceLocation("test", 1, ("Test",))
+        rules = [
+            build.Rule("IP-CIDR", "192.0.2.0/24", ("no-resolve",), location),
+            build.Rule("IP-CIDR", "198.51.100.0/24", (), location),
+        ]
+        with self.assertRaisesRegex(build.RendererError, "no_resolve"):
+            build.render_egern_yaml(rules, "Test")
+
+    def test_egern_output_never_silently_empty(self) -> None:
+        location = build.SourceLocation("test", 1, ("Test",))
+        with self.assertRaisesRegex(build.RendererError, "empty"):
+            build.render_egern_yaml(
+                [build.Rule("PROCESS-NAME", "com.example.app", (), location)], "Test"
+            )
+
+    def test_existing_surge_outputs_roundtrip_byte_identical(self) -> None:
+        # Backward-compatibility gate: every committed Surge/*.list must be
+        # reproduced byte-for-byte by parse -> dedup/sort -> classical render.
+        root = Path(__file__).resolve().parents[1]
+        for path in sorted((root / "Surge").glob("*.list")):
+            with self.subTest(app=path.stem):
+                text = path.read_text(encoding="utf-8")
+                rules = build.parse_surge_rule_set_text(text, str(path), ("golden",))
+                unique = {rule.key: rule for rule in rules}
+                ordered = sorted(unique.values(), key=lambda rule: (build.SORT_ORDER[rule.kind], rule.value))
+                self.assertEqual(build.render_classical(ordered, path.stem), text)
 
     def test_explicit_include_allows_and_denies(self) -> None:
         result = self.compile(
@@ -94,7 +207,7 @@ class BuildTests(unittest.TestCase):
                 "https://example.invalid/data/child": "child.example\n",
             },
         )
-        self.assertEqual([rule.render() for rule in result.rules], ["DOMAIN-SUFFIX,child.example", "DOMAIN-SUFFIX,root.example"])
+        self.assertEqual(build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,child.example", "DOMAIN-SUFFIX,root.example"])
         self.assertEqual([name for name, _ in result.denied_includes], ["other"])
 
     def test_unclassified_include_fails(self) -> None:
@@ -104,9 +217,9 @@ class BuildTests(unittest.TestCase):
     def test_attribute_selection_keeps_untagged_entries(self) -> None:
         texts = {ROOT_URL: "plain.example\ncn.example @cn\nads.example @ads\n"}
         without_attributes = self.compile(app_config(), texts)
-        self.assertEqual([rule.render() for rule in without_attributes.rules], ["DOMAIN-SUFFIX,plain.example"])
+        self.assertEqual(build.render_classical_body(without_attributes.rules), ["DOMAIN-SUFFIX,plain.example"])
         with_cn = self.compile(app_config(attributes=["cn"]), texts)
-        self.assertEqual([rule.render() for rule in with_cn.rules], ["DOMAIN-SUFFIX,cn.example", "DOMAIN-SUFFIX,plain.example"])
+        self.assertEqual(build.render_classical_body(with_cn.rules), ["DOMAIN-SUFFIX,cn.example", "DOMAIN-SUFFIX,plain.example"])
 
     def test_negative_attributes_and_regexp_fail(self) -> None:
         with self.assertRaisesRegex(build.BuildError, "negative attributes"):
@@ -132,7 +245,7 @@ class BuildTests(unittest.TestCase):
             },
         )
         self.assertEqual(
-            [rule.render() for rule in result.rules],
+            build.render_classical_body(result.rules),
             [
                 "DOMAIN,api.example.com",
                 "DOMAIN-SUFFIX,example.com",
@@ -178,7 +291,7 @@ class BuildTests(unittest.TestCase):
                 )
             },
         )
-        self.assertEqual([rule.render() for rule in result.rules], ["DOMAIN-SUFFIX,example.com"])
+        self.assertEqual(build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,example.com"])
         self.assertEqual(result.skipped_excluded, ["IP-ASN,11983", "URL-REGEX,^https://example\\.com"])
 
     def test_type_level_exclude_requires_wildcard_value(self) -> None:
@@ -196,7 +309,7 @@ class BuildTests(unittest.TestCase):
             supplement_dir.mkdir(parents=True)
             (supplement_dir / "Test.list").write_text("DOMAIN-SUFFIX,example.com\n", encoding="utf-8")
             result = build.compile_app("Test", config, root, lambda url: "")
-            self.assertEqual([rule.render() for rule in result.rules], ["DOMAIN-SUFFIX,example.com"])
+            self.assertEqual(build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,example.com"])
 
     def test_supplement_only_app_without_rules_fails(self) -> None:
         config = app_config()
@@ -223,7 +336,7 @@ class BuildTests(unittest.TestCase):
             config,
             {source_url: "DOMAIN-SUFFIX,example.com\nDOMAIN-SUFFIX,blocked.com\nIP-ASN,11983,no-resolve\n"},
         )
-        self.assertEqual([rule.render() for rule in result.rules], ["DOMAIN-SUFFIX,example.com"])
+        self.assertEqual(build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,example.com"])
         self.assertEqual(result.skipped_excluded, ["IP-ASN,11983"])
 
     def test_supplement_stays_strict_despite_type_excludes(self) -> None:
