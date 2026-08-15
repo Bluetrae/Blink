@@ -132,11 +132,11 @@ apps:
     enabled: true
     output: Surge/PayPal.list
     sources:
-      - name: blackmatrix7-ios_rule_script
-        author: blackmatrix7
+      - name: Repcz-Tool
+        author: Repcz
         role: primary
         format: surge-rule-set
-        url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/PayPal/PayPal.list
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/PayPal.list
     include_policy:
       mode: explicit
       allow: []
@@ -147,10 +147,10 @@ apps:
     supplement: sources/supplement/PayPal.list
     exclude: []
     note: >-
-      blackmatrix7 is selected because its native Surge PayPal list currently
-      matches Repcz's normalized PayPal output, so author preference provides
-      no material coverage advantage. It is parsed as a policy-free native
-      Surge source; no supplement is justified without a confirmed upstream gap.
+      Repcz is selected by the long-term source preference because its native
+      Surge PayPal list currently normalizes to the same output as blackmatrix7.
+      It is parsed as a policy-free native Surge source; no supplement is
+      justified without a confirmed upstream gap.
 
   Netflix:
     enabled: true

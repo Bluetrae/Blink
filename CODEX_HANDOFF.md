@@ -17,7 +17,7 @@ https://github.com/Bluetrae/WProxyRules
 - `main` 跟踪 `origin/main`
 - working tree clean
 - `safe.directory` 已配置完成
-- `sources/apps.yaml` 已定义七个 App：OKX、WhatsApp、LINE、GitHub、SafePal 使用 v2fly primary source；PayPal、Netflix 使用 blackmatrix7 的原生 Surge primary source；均保留显式 parser policy
+- `sources/apps.yaml` 已定义七个 App：OKX、WhatsApp、LINE、GitHub、SafePal 使用 v2fly primary source；PayPal 使用 Repcz 原生 Surge primary source，Netflix 使用 blackmatrix7 原生 Surge primary source；均保留显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
 - `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入 `Surge/*.list`。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式
 - `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、错误策略及实际 manifest 校验
@@ -100,7 +100,7 @@ Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX
 - LINE：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/line`。当前比旧 blackmatrix7 更完整；避免引入整个 `naver.jp`，但 `line.naver.jp` 与 `nhncorp.jp` 暂不凭猜测排除，等待实际日志证据。
 - GitHub：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/github`。显式允许 `github-copilot` include，显式拒绝 `npmjs` include；精确 GitHub Azure/S3 生产主机可保留，但不得扩展为整个 Microsoft、Amazon 或 Azure 公共基础设施；`@ads` telemetry 条目未启用。
 - SafePal：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/safepal`。当前无可用的 Repcz、SukkaW、blackmatrix7 或 MetaCubeX 专项规则；v2fly 的窄范围列表覆盖 `isafepal.com` 与 `safepal.com`，没有 include 或 attribute 条目。
-- PayPal：`https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/PayPal/PayPal.list`。与 Repcz 当前 PayPal 产物规范化后同为 248 条、差集为零，因此作者偏好没有带来实际覆盖优势；保留 blackmatrix7 原生 `DOMAIN-SUFFIX`、`DOMAIN-KEYWORD` 与 `USER-AGENT` 语义。
+- PayPal：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/PayPal.list`。与 blackmatrix7 当前 PayPal 产物规范化后同为 248 条、差集为零，因此按长期作者优先偏好选择 Repcz；保留原生 `DOMAIN-SUFFIX`、`DOMAIN-KEYWORD` 与 `USER-AGENT` 语义。
 - Netflix：`https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Netflix/Netflix.list`。保留其相较纯域名来源更有价值的 IPv4/IPv6 覆盖与 `no-resolve` 语义；第 4 次 Actions 生成 1,158 条原生 Surge 规则。
 
 属性语义固定为：输出所有无 attribute 条目，加上至少具有一个 `attributes.include` 中属性的条目。当前 manifest 的 `attributes.include` 均为 `[]`；该属性选择仅适用于 v2fly 条目，v1 遇到 `@!name` 否定属性会失败，不会静默误解析。
