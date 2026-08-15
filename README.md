@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧭 Rulink
+# <img src="https://github.com/Bluetrae.png" width="36" height="36" style="border-radius:50%;vertical-align:middle" /> Rulink
 
 **Surge App Rule-Set · 自动构建 · 稳定分发**
 
