@@ -25,6 +25,25 @@
 | Steam | 已落地 | Repcz `Steam.list`（20 条核心域名），零转换风险，无需 supplemental |
 | Live | 不纳入 | 用户个人直播源，不进入本仓库（2026-08 确认） |
 
+## 早期 12 个 App 的审计结论索引
+
+以下 App 在本档案建立（2026-08-15）之前完成审计与落地，未逐 App 分节；精简理由见 `sources/apps.yaml` 各 App 的 `note`，演进历史见 `HANDOFF.md`。
+
+| App | Primary | 格式 | 要点 |
+| --- | --- | --- | --- |
+| OKX | v2fly | v2fly-domain-list | `oklink.com @cn` 未启用；覆盖此前 7 条手工补充域名（okx-dns/dns1/dns2、okx.ac、okx.cab、okx.com.cdn.cloudflare.net、xlayer.tech） |
+| WhatsApp | v2fly | v2fly-domain-list | `@ads` graph 条目未启用 |
+| LINE | v2fly | v2fly-domain-list | 不引入整个 `naver.jp`；`nhncorp.jp` 仅凭证据处理 |
+| GitHub | v2fly | v2fly-domain-list | allow `github-copilot`、deny `npmjs`；不扩大为 Microsoft/Amazon/Azure 公共基础设施 |
+| SafePal | v2fly | v2fly-domain-list | 上游已覆盖 `isafepal.com` 与 `safepal.com` |
+| PayPal | Repcz | surge-rule-set | 与 blackmatrix7 输出规范化后等价，按作者偏好选 Repcz |
+| Netflix | blackmatrix7 | surge-rule-set | 保留 IPv4/IPv6 与 `no-resolve` 语义 |
+| YouTube | Repcz | surge-rule-set | 紧凑核心专项范围 |
+| X | Repcz | surge-rule-set | 保留 X/Twitter/Grok/媒体与已审计窄范围 IP |
+| Instagram | Repcz | surge-rule-set | 排除过宽 `DOMAIN-KEYWORD,instagram` |
+| Telegram | SukkaW | surge-rule-set | 仅核心域名；用户主配置保持 MTProto + Repcz 双列表（含 IP） |
+| Threads | v2fly | v2fly-domain-list | `threads.com`/`threads.net` 窄集合 |
+
 ## 各 App 审计记录
 
 ### TikTok

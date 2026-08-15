@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sys
+import time
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -202,6 +203,106 @@ class BuildTests(unittest.TestCase):
         with TemporaryDirectory() as temporary_directory:
             with self.assertRaisesRegex(build.BuildError, "empty"):
                 build.compile_app("Test", config, Path(temporary_directory), lambda url: "")
+
+    def test_include_cycle_fails(self) -> None:
+        with self.assertRaisesRegex(build.BuildError, "cycle"):
+            self.compile(
+                app_config(allow=["child", "test-source"]),
+                {
+                    ROOT_URL: "include:child\nroot.example\n",
+                    "https://example.invalid/data/child": "include:test-source\n",
+                },
+            )
+
+    def test_mixed_domain_and_type_level_excludes(self) -> None:
+        source_url = "https://example.invalid/Surge/Test.list"
+        config = app_config(source_format="surge-rule-set", url=source_url)
+        config["exclude"] = ["domain-suffix:blocked.com", "ip-asn:*"]
+        result = self.compile(
+            config,
+            {source_url: "DOMAIN-SUFFIX,example.com\nDOMAIN-SUFFIX,blocked.com\nIP-ASN,11983,no-resolve\n"},
+        )
+        self.assertEqual([rule.render() for rule in result.rules], ["DOMAIN-SUFFIX,example.com"])
+        self.assertEqual(result.skipped_excluded, ["IP-ASN,11983"])
+
+    def test_supplement_stays_strict_despite_type_excludes(self) -> None:
+        source_url = "https://example.invalid/Surge/Test.list"
+        config = app_config(source_format="surge-rule-set", url=source_url)
+        config["exclude"] = ["ip-asn:*"]
+        with TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            supplement_dir = root / "sources" / "supplement"
+            supplement_dir.mkdir(parents=True)
+            (supplement_dir / "Test.list").write_text("IP-ASN,11983,no-resolve\n", encoding="utf-8")
+            with self.assertRaisesRegex(build.BuildError, "invalid supplement rule"):
+                build.compile_app("Test", config, root, {source_url: "DOMAIN-SUFFIX,example.com\n"}.__getitem__)
+
+    def test_fetch_retries_transient_failures(self) -> None:
+        class FakeHeaders:
+            def get_content_type(self):
+                return "text/plain"
+
+        class FakeResponse:
+            def __init__(self, body):
+                self.headers = FakeHeaders()
+                self._body = body
+
+            def read(self):
+                return self._body
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *exc):
+                return False
+
+        real_urlopen = build.urllib.request.urlopen
+        real_sleep = time.sleep
+        calls = []
+
+        def fake_urlopen(request, timeout):
+            calls.append(timeout)
+            if len(calls) < 3:
+                raise TimeoutError("transient network failure")
+            return FakeResponse(b"example.com\n")
+
+        build.urllib.request.urlopen = fake_urlopen
+        time.sleep = lambda seconds: None
+        try:
+            text = build.default_fetch_text("https://example.invalid/test.list")
+        finally:
+            build.urllib.request.urlopen = real_urlopen
+            time.sleep = real_sleep
+        self.assertEqual(text, "example.com\n")
+        self.assertEqual(len(calls), 3)
+
+    def test_cli_supplement_only_app_end_to_end(self) -> None:
+        with TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            supplement_dir = root / "sources" / "supplement"
+            supplement_dir.mkdir(parents=True)
+            (supplement_dir / "Demo.list").write_text("DOMAIN-SUFFIX,example.com\n", encoding="utf-8")
+            sources_dir = root / "sources"
+            manifest = sources_dir / "apps.yaml"
+            manifest.write_text(
+                "version: 1\n"
+                "apps:\n"
+                "  Demo:\n"
+                "    enabled: true\n"
+                "    output: Surge/Demo.list\n"
+                "    sources: []\n"
+                "    include_policy: {mode: explicit, allow: [], deny: []}\n"
+                "    attributes: {mode: explicit, include: []}\n"
+                "    supplement: sources/supplement/Demo.list\n"
+                "    exclude: []\n",
+                encoding="utf-8",
+            )
+            exit_code = build.main(["--manifest", str(manifest), "--app", "Demo", "--write"])
+            self.assertEqual(exit_code, 0)
+            self.assertEqual(
+                (root / "Surge" / "Demo.list").read_text(encoding="utf-8"),
+                "# 规则名称: Demo\n# 规则统计: 1\n\nDOMAIN-SUFFIX,example.com\n",
+            )
 
 
 if __name__ == "__main__":

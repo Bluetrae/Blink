@@ -13,6 +13,7 @@ import ipaddress
 import json
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 from collections import defaultdict
@@ -162,16 +163,28 @@ def validate_app_config(app_name: str, app: object) -> None:
         raise BuildError(f"{app_name}: attributes.include must be a list of positive attribute names")
 
 
+FETCH_ATTEMPTS = 3
+FETCH_TIMEOUT_SECONDS = 20
+
+
 def default_fetch_text(url: str) -> str:
     request = urllib.request.Request(url, headers={"User-Agent": "Rulink/1"})
-    try:
-        with urllib.request.urlopen(request, timeout=20) as response:
-            content_type = response.headers.get_content_type()
-            raw = response.read()
-    except urllib.error.HTTPError as error:
-        raise BuildError(f"upstream HTTP {error.code} for {url}") from error
-    except (urllib.error.URLError, TimeoutError, OSError) as error:
-        raise BuildError(f"upstream fetch failed for {url}: {error}") from error
+    last_network_error: Exception | None = None
+    for attempt in range(1, FETCH_ATTEMPTS + 1):
+        try:
+            with urllib.request.urlopen(request, timeout=FETCH_TIMEOUT_SECONDS) as response:
+                content_type = response.headers.get_content_type()
+                raw = response.read()
+            break
+        except urllib.error.HTTPError as error:
+            # Deterministic upstream errors are not retried.
+            raise BuildError(f"upstream HTTP {error.code} for {url}") from error
+        except (urllib.error.URLError, TimeoutError, OSError) as error:
+            last_network_error = error
+            if attempt < FETCH_ATTEMPTS:
+                time.sleep(1.0 * attempt)
+    else:
+        raise BuildError(f"upstream fetch failed for {url}: {last_network_error}") from last_network_error
     if content_type == "text/html" or raw.lstrip().lower().startswith((b"<!doctype html", b"<html")):
         raise BuildError(f"upstream returned HTML instead of a rule list: {url}")
     try:
