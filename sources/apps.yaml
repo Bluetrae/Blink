@@ -103,3 +103,27 @@ apps:
       v2fly include directives deliberately and must not import unrelated npm,
       Microsoft, Amazon, Azure, or other shared infrastructure merely because
       it is reachable through an include.
+
+  SafePal:
+    enabled: true
+    output: Surge/SafePal.list
+    sources:
+      - name: v2fly-domain-list-community
+        author: v2fly
+        role: primary
+        format: v2fly-domain-list
+        url: https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/safepal
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: sources/supplement/SafePal.list
+    exclude: []
+    note: >-
+      Repcz, SukkaW, blackmatrix7, and MetaCubeX currently have no dedicated
+      SafePal dataset. v2fly is selected because its actively maintained,
+      narrowly scoped list contains both isafepal.com and safepal.com without
+      include directives or attribute-qualified entries.
