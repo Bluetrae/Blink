@@ -49,14 +49,14 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         <span className="rotating-border inline-block rounded-full p-[1.5px]">
           <a
             href="#usage"
-            className="inline-block rounded-full bg-accent px-6 py-2.5 text-[15px] font-medium text-white transition-colors hover:bg-accent-strong"
+            className="inline-block rounded-full bg-accent px-6 py-2.5 text-[15px] font-medium text-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-accent-strong hover:shadow-lg hover:shadow-accent/30 active:translate-y-0 active:scale-[0.96]"
           >
             开始使用
           </a>
         </span>
         <a
           href="#rulesets"
-          className="rounded-full border border-line bg-card px-6 py-2.5 text-[15px] font-medium text-ink transition hover:bg-paper"
+          className="rounded-full border border-line bg-card px-6 py-2.5 text-[15px] font-medium text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-line-strong hover:bg-paper hover:shadow-md active:translate-y-0 active:scale-[0.96]"
         >
           查看规则集
         </a>

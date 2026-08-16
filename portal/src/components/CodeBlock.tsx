@@ -27,7 +27,7 @@ export default function CodeBlock({
         <button
           type="button"
           onClick={copy}
-          className="ml-auto rounded-md border border-white/15 bg-white/5 px-2.5 py-1 text-xs text-white/70 transition hover:bg-white/10 hover:text-white"
+          className="ml-auto rounded-md border border-white/15 bg-white/5 px-2.5 py-1 text-xs text-white/70 transition-all duration-200 ease-out hover:bg-white/10 hover:text-white active:scale-95"
         >
           {copied ? "已复制 ✓" : copyLabel}
         </button>

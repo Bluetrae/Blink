@@ -42,7 +42,11 @@ export default function Nav({ repo }: NavProps) {
         </a>
         <nav className="ml-auto hidden gap-5 sm:flex" aria-label="主导航">
           {NAV_LINKS.map((link) => (
-            <a key={link.href} href={link.href} className="text-sm text-mute transition hover:text-ink">
+            <a
+              key={link.href}
+              href={link.href}
+              className="text-sm text-mute transition-colors duration-200 ease-out hover:-translate-y-px hover:text-ink active:translate-y-0"
+            >
               {link.label}
             </a>
           ))}
@@ -51,7 +55,7 @@ export default function Nav({ repo }: NavProps) {
           href={repo}
           target="_blank"
           rel="noopener noreferrer"
-          className="hidden rounded-full border border-line bg-card px-3.5 py-2 text-[13.5px] text-ink transition hover:bg-paper sm:inline-flex"
+          className="hidden rounded-full border border-line bg-card px-3.5 py-2 text-[13.5px] text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-paper active:translate-y-0 active:scale-[0.95] sm:inline-flex"
         >
           GitHub
         </a>
@@ -60,7 +64,7 @@ export default function Nav({ repo }: NavProps) {
           onClick={() => setMenuOpen((open) => !open)}
           aria-label={menuOpen ? "关闭菜单" : "打开菜单"}
           aria-expanded={menuOpen}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-card text-[15px] leading-none transition hover:bg-paper sm:hidden"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-card text-[15px] leading-none transition-all duration-200 ease-out hover:bg-paper active:scale-90 sm:hidden"
         >
           {menuOpen ? "✕" : "☰"}
         </button>

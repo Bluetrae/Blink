@@ -59,10 +59,10 @@ export default function Usage({ data }: { data: PortalData }) {
                 type="button"
                 onClick={() => setClient(item.key)}
                 title={item.badge}
-                className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-[13.5px] font-medium transition ${
+                className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-[13.5px] font-medium transition-all duration-200 ease-out active:scale-[0.96] ${
                   client === item.key
-                    ? "border-accent bg-accent text-white shadow-sm"
-                    : "border-line bg-card text-mute hover:-translate-y-0.5 hover:border-line-strong hover:text-ink"
+                    ? "border-accent bg-accent text-white shadow-sm hover:shadow-md hover:shadow-accent/30"
+                    : "border-line bg-card text-mute hover:-translate-y-0.5 hover:border-line-strong hover:text-ink active:translate-y-0"
                 }`}
               >
                 <img

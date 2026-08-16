@@ -80,7 +80,7 @@ function AppCard({
           <button
             type="button"
             onClick={copy}
-            className="flex-1 rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white transition hover:bg-accent-strong"
+            className="flex-1 rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
           >
             {copied ? "已复制 ✓" : "复制接入"}
           </button>
@@ -88,7 +88,7 @@ function AppCard({
             href={clientFileUrl(rawBase, app, client)}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex-1 rounded-lg border border-line bg-card px-3 py-2 text-center text-sm text-ink transition hover:bg-paper"
+            className="group flex-1 rounded-lg border border-line bg-card px-3 py-2 text-center text-sm text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-paper active:translate-y-0 active:scale-[0.96]"
           >
             查看{" "}
             <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
@@ -132,10 +132,10 @@ export default function Rulesets({ data }: { data: PortalData }) {
                 type="button"
                 onClick={() => setClient(tab.key)}
                 title={tab.badge}
-                className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-[13.5px] font-medium transition ${
+                className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-[13.5px] font-medium transition-all duration-200 ease-out active:scale-[0.96] ${
                   client === tab.key
-                    ? "border-accent bg-accent text-white shadow-sm"
-                    : "border-line bg-card text-mute hover:-translate-y-0.5 hover:border-line-strong hover:text-ink"
+                    ? "border-accent bg-accent text-white shadow-sm hover:shadow-md hover:shadow-accent/30"
+                    : "border-line bg-card text-mute hover:-translate-y-0.5 hover:border-line-strong hover:text-ink active:translate-y-0"
                 }`}
               >
                 <img
@@ -157,9 +157,9 @@ export default function Rulesets({ data }: { data: PortalData }) {
               key={key}
               type="button"
               onClick={() => setFilter(key)}
-              className={`rounded-full border px-4 py-1.5 text-[13.5px] transition ${
+              className={`rounded-full border px-4 py-1.5 text-[13.5px] transition-all duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.95] ${
                 filter === key
-                  ? "border-accent bg-accent text-white"
+                  ? "border-accent bg-accent text-white shadow-sm"
                   : "border-line bg-card text-mute hover:border-line-strong hover:text-ink"
               }`}
             >
@@ -177,7 +177,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
             <button
               type="button"
               onClick={() => setExpanded((value) => !value)}
-              className="inline-flex items-center gap-2 rounded-full border border-line bg-card px-6 py-2.5 text-sm text-ink transition hover:-translate-y-0.5 hover:border-line-strong"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-card px-6 py-2.5 text-sm text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-line-strong hover:shadow-sm active:translate-y-0 active:scale-[0.96]"
             >
               {expanded ? "收起" : `展开全部 ${visible.length} 个 App`}
               <span
