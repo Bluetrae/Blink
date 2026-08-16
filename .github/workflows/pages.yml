@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "portal/**"
+      - "engine/portal/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -29,20 +29,20 @@ jobs:
         with:
           node-version: "22"
           cache: npm
-          cache-dependency-path: portal/package-lock.json
+          cache-dependency-path: engine/portal/package-lock.json
 
       - name: Install dependencies
-        working-directory: portal
+        working-directory: engine/portal
         run: npm ci
 
       - name: Build the portal
-        working-directory: portal
+        working-directory: engine/portal
         run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: portal/dist
+          path: engine/portal/dist
 
   deploy:
     needs: build

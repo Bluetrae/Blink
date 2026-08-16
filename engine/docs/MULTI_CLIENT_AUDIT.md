@@ -204,6 +204,6 @@ QuantumultX/<App>.list   # QX filter 行（行尾占位符 policy，force-policy
 
 ## 12. 后续阶段
 
-多客户端输出落地后，重构更新 `portal/` 网页：卡片增加客户端切换/标签页，为每客户端提供对应复制接入行（Surge/Shadowrocket `RULE-SET,URL,POLICY`；Loon `[Remote Rule]` 行；Stash `rule-providers`+`RULE-SET` YAML 片段；Egern `rule_set` YAML 片段 + Egern YAML 文件链接；Quantumult X `[filter_remote]` 行）。
+多客户端输出落地后，重构更新 `engine/portal/` 网页：卡片增加客户端切换/标签页，为每客户端提供对应复制接入行（Surge/Shadowrocket `RULE-SET,URL,POLICY`；Loon `[Remote Rule]` 行；Stash `rule-providers`+`RULE-SET` YAML 片段；Egern `rule_set` YAML 片段 + Egern YAML 文件链接；Quantumult X `[filter_remote]` 行）。
 
 > ✅ 已完成（commit `77ebe22`，QX 于六客户端扩展时加入）：portal 规则集与接入区均带客户端切换与官方 App 图标，`gen_portal_stats.py` 输出每 App 的 `clients` 统计（Egern / Quantumult X 含显式 dropped 计数）。

@@ -9,6 +9,6 @@ Stash/*.tmp
 Egern/*.tmp
 QuantumultX/*.tmp
 .tmp-tests/
-portal/node_modules/
-portal/dist/
-portal/.npm-cache/
+engine/portal/node_modules/
+engine/portal/dist/
+engine/portal/.npm-cache/

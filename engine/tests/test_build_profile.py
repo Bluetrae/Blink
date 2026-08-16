@@ -8,7 +8,7 @@ from tempfile import TemporaryDirectory
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "engine" / "scripts"))
 import build_profile  # noqa: E402
 
 # Sandboxed Windows runners may deny chmod on directories; tempfile cleanup
@@ -17,7 +17,7 @@ import build_profile  # noqa: E402
 import os
 import tempfile as _tempfile
 
-_WORKSPACE_TMP = Path(__file__).resolve().parents[1] / ".tmp-tests"
+_WORKSPACE_TMP = Path(__file__).resolve().parents[2] / ".tmp-tests"
 _temp_sequence = iter(range(1 << 30))
 
 

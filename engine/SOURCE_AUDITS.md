@@ -1,7 +1,7 @@
 # Rulink Source Audits
 
 > 每个 App 的独立 source audit 记录：候选来源、证据、结论与选择理由，按 App 分节集中保存。
-> 最终的精简理由同步写入 `sources/apps.yaml` 对应 App 的 `note` 字段；本文件是完整审计档案。
+> 最终的精简理由同步写入 `engine/sources/apps.yaml` 对应 App 的 `note` 字段；本文件是完整审计档案。
 
 ## 审计政策摘要
 
@@ -10,8 +10,8 @@
 - 构建器 v1 格式边界（下文各 App 的“格式风险”据此标注）：
   - `v2fly-domain-list`：`domain`/`full`/`keyword` 映射为 Surge `DOMAIN-SUFFIX`/`DOMAIN`/`DOMAIN-KEYWORD`；regexp 与 `@!` 否定属性直接构建失败；带 `@attribute` 的条目默认被跳过（除非 manifest 显式 include）；`include` 必须在 include_policy 显式 allow/deny，否则构建失败。
   - `surge-rule-set`（严格白名单）：仅接受无策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR`、`IP-CIDR6`；IP 仅允许额外 `no-resolve`。`IP-ASN`、`URL-REGEX`、带策略名等会导致构建失败。
-  - 多客户端输出边界（v1.1，见 `docs/MULTI_CLIENT_AUDIT.md`）：canonical 规则渲染为 classical（Surge / Loon / Shadowrocket / Stash 逐字节相同）与 egern-yaml（Egern）；`PROCESS-NAME` 对 Loon / Shadowrocket / Egern 显式丢弃并计入构建报告，禁止静默转换。
-- `sources/supplement/<App>.list` 仅存放上游未覆盖、且由客户端日志（当前以 Surge 为准）或实际使用确认的缺口。
+  - 多客户端输出边界（v1.1，见 `engine/docs/MULTI_CLIENT_AUDIT.md`）：canonical 规则渲染为 classical（Surge / Loon / Shadowrocket / Stash 逐字节相同）与 egern-yaml（Egern）；`PROCESS-NAME` 对 Loon / Shadowrocket / Egern 显式丢弃并计入构建报告，禁止静默转换。
+- `engine/sources/supplement/<App>.list` 仅存放上游未覆盖、且由客户端日志（当前以 Surge 为准）或实际使用确认的缺口。
 
 ## 审计状态
 
@@ -26,7 +26,7 @@
 
 ## 早期 12 个 App 的审计结论索引
 
-以下 App 在本档案建立（2026-08-15）之前完成审计与落地，未逐 App 分节；精简理由见 `sources/apps.yaml` 各 App 的 `note`，演进历史见 `HANDOFF.md`。
+以下 App 在本档案建立（2026-08-15）之前完成审计与落地，未逐 App 分节；精简理由见 `engine/sources/apps.yaml` 各 App 的 `note`，演进历史见 `HANDOFF.md`。
 
 | App | Primary | 格式 | 要点 |
 | --- | --- | --- | --- |
@@ -131,7 +131,7 @@ supplemental：**不需要**。
 
 推荐方案：无成熟上游可作 primary。以 3 条根域名 `DOMAIN-SUFFIX,za.group` / `DOMAIN-SUFFIX,zainvest.group` / `DOMAIN-SUFFIX,zajourney.com` 建立最小规则集，即可覆盖全部 9 个候选域名；纯 DOMAIN-SUFFIX，零转换风险，兼容 build.py 两种格式。
 
-决议（2026-08-15）：采用方案 (a) —— build.py 允许 `sources: []`（supplement-only），manifest 已落地：`sources/supplement/ZABank.list` 写入三条根域名，输出 3 条规则。9 个候选域名来自用户实际使用记录（此前交接文档中的候选清单），若与实际使用不符请告知，可随时移除。
+决议（2026-08-15）：采用方案 (a) —— build.py 允许 `sources: []`（supplement-only），manifest 已落地：`engine/sources/supplement/ZABank.list` 写入三条根域名，输出 3 条规则。9 个候选域名来自用户实际使用记录（此前交接文档中的候选清单），若与实际使用不符请告知，可随时移除。
 
 ### Steam
 
@@ -152,7 +152,7 @@ supplemental：**不需要**。
 审计日期：2026-08-15。原计划名“Live”，因用户实际通过 APTV 前端 App 观看直播而命名 APTV；此前决定“不纳入”，用户随后要求迁入本仓库。
 
 - **来源**：用户私有仓库的 `Surge/Rules/LiveStreaming.list`（garyshare 直播源，原文件版本 2026-02-22），26 条（17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），全部 policy-free 且在 build.py v1 白名单内，无需转换。
-- **落地方式**：supplement-only（`sources: []` + `sources/supplement/APTV.list`），与 ZABank 同一模式；supplement 文件头部注明“自用”，manifest note 记录迁移来源与免责说明。
+- **落地方式**：supplement-only（`sources: []` + `engine/sources/supplement/APTV.list`），与 ZABank 同一模式；supplement 文件头部注明“自用”，manifest note 记录迁移来源与免责说明。
 - **安全**：内容仅含域名与 IP，不含订阅 URL 或 token；若他人复用本仓库需自行移除。
 - **主配置**：由 Bridge 仓库 URL 改为引用 `Surge/APTV.list`，策略（US）仍由主配置指定。
 

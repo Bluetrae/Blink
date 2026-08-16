@@ -9,7 +9,7 @@ from tempfile import TemporaryDirectory
 
 import yaml
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "engine" / "scripts"))
 import build  # noqa: E402
 
 # Some sandboxed runners ship a tempfile whose mkdtemp creates directories
@@ -19,7 +19,7 @@ import build  # noqa: E402
 # runs through the standard path.
 import tempfile as _tempfile
 
-_WORKSPACE_TMP = Path(__file__).resolve().parents[1] / ".tmp-tests"
+_WORKSPACE_TMP = Path(__file__).resolve().parents[2] / ".tmp-tests"
 _temp_sequence = iter(range(1 << 30))
 
 
@@ -58,7 +58,7 @@ def app_config(*, allow=None, deny=None, attributes=None, source_format="v2fly-d
         "sources": [{"name": "test-source", "role": "primary", "format": source_format, "url": url}],
         "include_policy": {"mode": "explicit", "allow": allow or [], "deny": deny or []},
         "attributes": {"mode": "explicit", "include": attributes or []},
-        "supplement": "sources/supplement/Test.list",
+        "supplement": "engine/sources/supplement/Test.list",
         "exclude": [],
     }
 
@@ -79,8 +79,8 @@ class BuildTests(unittest.TestCase):
         )
 
     def test_loads_and_validates_project_manifest(self) -> None:
-        root = Path(__file__).resolve().parents[1]
-        manifest = build.load_manifest(root / "sources" / "apps.yaml")
+        root = Path(__file__).resolve().parents[2]
+        manifest = build.load_manifest(root / "engine" / "sources" / "apps.yaml")
         self.assertEqual(
             set(manifest["apps"]),
             {
@@ -228,7 +228,7 @@ class BuildTests(unittest.TestCase):
     def test_existing_surge_outputs_roundtrip_byte_identical(self) -> None:
         # Backward-compatibility gate: every committed Surge/*.list must be
         # reproduced byte-for-byte by parse -> dedup/sort -> classical render.
-        root = Path(__file__).resolve().parents[1]
+        root = Path(__file__).resolve().parents[2]
         for path in sorted((root / "Surge").glob("*.list")):
             with self.subTest(app=path.stem):
                 text = path.read_text(encoding="utf-8")
@@ -343,7 +343,7 @@ class BuildTests(unittest.TestCase):
         config["sources"] = []
         with TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
-            supplement_dir = root / "sources" / "supplement"
+            supplement_dir = root / "engine" / "sources" / "supplement"
             supplement_dir.mkdir(parents=True)
             (supplement_dir / "Test.list").write_text("DOMAIN-SUFFIX,example.com\n", encoding="utf-8")
             result = build.compile_app("Test", config, root, lambda url: "")
@@ -383,7 +383,7 @@ class BuildTests(unittest.TestCase):
         config["exclude"] = ["ip-asn:*"]
         with TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
-            supplement_dir = root / "sources" / "supplement"
+            supplement_dir = root / "engine" / "sources" / "supplement"
             supplement_dir.mkdir(parents=True)
             (supplement_dir / "Test.list").write_text("IP-ASN,11983,no-resolve\n", encoding="utf-8")
             with self.assertRaisesRegex(build.BuildError, "invalid supplement rule"):
@@ -431,10 +431,10 @@ class BuildTests(unittest.TestCase):
     def test_cli_supplement_only_app_end_to_end(self) -> None:
         with TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
-            supplement_dir = root / "sources" / "supplement"
+            supplement_dir = root / "engine" / "sources" / "supplement"
             supplement_dir.mkdir(parents=True)
             (supplement_dir / "Demo.list").write_text("DOMAIN-SUFFIX,example.com\n", encoding="utf-8")
-            sources_dir = root / "sources"
+            sources_dir = root / "engine" / "sources"
             manifest = sources_dir / "apps.yaml"
             manifest.write_text(
                 "version: 1\n"
@@ -445,7 +445,7 @@ class BuildTests(unittest.TestCase):
                 "    sources: []\n"
                 "    include_policy: {mode: explicit, allow: [], deny: []}\n"
                 "    attributes: {mode: explicit, include: []}\n"
-                "    supplement: sources/supplement/Demo.list\n"
+                "    supplement: engine/sources/supplement/Demo.list\n"
                 "    exclude: []\n",
                 encoding="utf-8",
             )

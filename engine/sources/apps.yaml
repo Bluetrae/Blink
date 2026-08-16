@@ -23,7 +23,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/OKX.list
+    supplement: engine/sources/supplement/OKX.list
     exclude: []
     note: >-
       Repcz/SukkaW currently have no preferred maintained dedicated OKX source.
@@ -46,7 +46,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/WhatsApp.list
+    supplement: engine/sources/supplement/WhatsApp.list
     exclude: []
     note: >-
       v2fly is preferred over the older blackmatrix7 list because its current
@@ -69,7 +69,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/LINE.list
+    supplement: engine/sources/supplement/LINE.list
     exclude: []
     note: >-
       v2fly currently provides more precise LINE coverage than the old
@@ -95,7 +95,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/GitHub.list
+    supplement: engine/sources/supplement/GitHub.list
     exclude: []
     note: >-
       v2fly is selected because the GitHub dataset is actively maintained and
@@ -120,7 +120,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/SafePal.list
+    supplement: engine/sources/supplement/SafePal.list
     exclude: []
     note: >-
       Repcz, SukkaW, blackmatrix7, and MetaCubeX currently have no dedicated
@@ -144,7 +144,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/PayPal.list
+    supplement: engine/sources/supplement/PayPal.list
     exclude: []
     note: >-
       Repcz is selected by the long-term source preference because its native
@@ -168,7 +168,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/Netflix.list
+    supplement: engine/sources/supplement/Netflix.list
     exclude: []
     note: >-
       blackmatrix7 is selected because its native Surge list retains materially
@@ -192,7 +192,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/YouTube.list
+    supplement: engine/sources/supplement/YouTube.list
     exclude: []
     note: >-
       Repcz is selected because its actively refreshed native Surge list keeps
@@ -216,7 +216,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/X.list
+    supplement: engine/sources/supplement/X.list
     exclude: []
     note: >-
       Repcz is selected because its native X/Twitter list is actively refreshed,
@@ -240,7 +240,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/Instagram.list
+    supplement: engine/sources/supplement/Instagram.list
     exclude:
       - domain-keyword:instagram
     note: >-
@@ -266,7 +266,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/Telegram.list
+    supplement: engine/sources/supplement/Telegram.list
     exclude: []
     note: >-
       SukkaW is selected because its actively maintained native Surge source is
@@ -291,7 +291,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/Threads.list
+    supplement: engine/sources/supplement/Threads.list
     exclude: []
     note: >-
       Repcz and SukkaW currently provide no dedicated Threads Rule-Set. v2fly is
@@ -314,7 +314,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/TikTok.list
+    supplement: engine/sources/supplement/TikTok.list
     exclude:
       - ip-asn:*
     note: >-
@@ -342,7 +342,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/Spotify.list
+    supplement: engine/sources/supplement/Spotify.list
     exclude: []
     note: >-
       Repcz is selected because it publishes a compact, actively refreshed,
@@ -368,7 +368,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/AI.list
+    supplement: engine/sources/supplement/AI.list
     exclude:
       - url-regex:*
     note: >-
@@ -391,7 +391,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/ZABank.list
+    supplement: engine/sources/supplement/ZABank.list
     exclude: []
     note: >-
       The 2026-08-15 source audit verified that Repcz, SukkaW, v2fly,
@@ -417,7 +417,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/Steam.list
+    supplement: engine/sources/supplement/Steam.list
     exclude: []
     note: >-
       Repcz is selected because its native, actively refreshed Steam list keeps
@@ -439,7 +439,7 @@ apps:
     attributes:
       mode: explicit
       include: []
-    supplement: sources/supplement/APTV.list
+    supplement: engine/sources/supplement/APTV.list
     exclude: []
     note: >-
       APTV (planned as "Live") is the user's personal live-streaming source,

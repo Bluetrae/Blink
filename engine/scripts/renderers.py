@@ -4,7 +4,7 @@
 One renderer exists per truly different serialization format, not per client:
 
 - ``classical``: policy-free classical text (Surge / Shadowrocket / Loon /
-  Stash consume the exact same bytes; see docs/MULTI_CLIENT_AUDIT.md).
+  Stash consume the exact same bytes; see engine/docs/MULTI_CLIENT_AUDIT.md).
 - ``egern-yaml``: Egern's own ``*_set`` YAML rule-set schema.  Egern could
   also consume the classical file through ``rule_set.match``, but the YAML
   form is its native rule-set format and keeps USER-AGENT expressible while
@@ -102,7 +102,7 @@ def render_quantumultx(rules: Iterable[object], app_name: str) -> tuple[str, lis
     ``no-resolve`` option has no production-proven slot in QX filter files
     (Repcz / QuixoticHeart / blackmatrix7 all omit it), so IP options are
     not serialized; this uniform behavior is documented in
-    docs/MULTI_CLIENT_AUDIT.md instead of being reported per line.
+    engine/docs/MULTI_CLIENT_AUDIT.md instead of being reported per line.
     """
     body: list[str] = []
     dropped: list[str] = []

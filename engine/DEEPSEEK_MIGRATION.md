@@ -12,7 +12,7 @@
 
 ```text
 你正在接手 Rulink 项目。请先只读地阅读 DEEPSEEK_MIGRATION.md 指定的文件，
-并执行 Git 与项目状态审计。把当前 Git 工作区和 sources/apps.yaml 视为最高
+并执行 Git 与项目状态审计。把当前 Git 工作区和 engine/sources/apps.yaml 视为最高
 事实来源；若与历史聊天或摘要冲突，以当前文件和 Git 历史为准。先报告你的理解，
 在我明确确认前不要修改文件。
 ```
@@ -33,7 +33,7 @@
 遇到信息不一致时，按以下顺序判断：
 
 1. 当前 Git 工作区、`git status`、Git 历史和实际生成文件。
-2. `sources/apps.yaml`、`scripts/build.py`、测试与 GitHub Actions workflow。
+2. `engine/sources/apps.yaml`、`engine/scripts/build.py`、测试与 GitHub Actions workflow。
 3. `AGENTS.md`、`HANDOFF.md`、README 与合规文档。
 4. 本文件。
 5. 仓库外保存的原始聊天档案。
@@ -45,8 +45,8 @@
 1. `README.md`：项目用途、用户入口和当前输出清单。
 2. `AGENTS.md`：长期规则、上游选择政策、Git 安全要求和新增 App 流程。
 3. `HANDOFF.md`：最近完成状态、已审计来源和后续计划。
-4. `sources/apps.yaml`：所有启用 App 的权威 source manifest 与 parser policy。
-5. `scripts/build.py` 与 `tests/test_build.py`：构建器实际支持的语义和测试边界。
+4. `engine/sources/apps.yaml`：所有启用 App 的权威 source manifest 与 parser policy。
+5. `engine/scripts/build.py` 与 `engine/tests/test_build.py`：构建器实际支持的语义和测试边界。
 6. `.github/workflows/update.yml`：自动更新、写入和 Actions 提交逻辑。
 7. `THIRD_PARTY_NOTICES.md` 与 `DISCLAIMER.md`：来源许可、个人使用和责任边界。
 
@@ -65,7 +65,7 @@ origin: https://github.com/Bluetrae/Rulink.git
 
 ## 项目目标
 
-自动生成个人使用的多客户端 App Rule-Sets（Surge / Shadowrocket / Loon / Stash / Egern）；详细规范见 `AGENTS.md`，对外说明见 `README.md`，格式审计与架构决策见 `docs/MULTI_CLIENT_AUDIT.md`，本文件不重复。
+自动生成个人使用的多客户端 App Rule-Sets（Surge / Shadowrocket / Loon / Stash / Egern）；详细规范见 `AGENTS.md`，对外说明见 `README.md`，格式审计与架构决策见 `engine/docs/MULTI_CLIENT_AUDIT.md`，本文件不重复。
 
 ## 不可违反的项目边界
 
@@ -77,20 +77,20 @@ origin: https://github.com/Bluetrae/Rulink.git
 
 ## 构建器关键语义
 
-- `scripts/build.py` 默认只检查（含全部客户端渲染验证）；仅显式传入 `--write` 才写入生成目录。
+- `engine/scripts/build.py` 默认只检查（含全部客户端渲染验证）；仅显式传入 `--write` 才写入生成目录。
 - v1 支持 `v2fly-domain-list` 与严格白名单的 policy-free `surge-rule-set`。
 - v2fly `domain`、`full`、`keyword` 分别映射为 `DOMAIN-SUFFIX`、`DOMAIN`、`DOMAIN-KEYWORD`；不安全的 regexp 不得静默改变语义。
 - v2fly include 采用显式 allow/deny policy：未在 allow 或 deny 中声明的 include 必须导致构建失败；同一 include 同时允许和拒绝也必须失败。
 - attribute 语义固定为“无 attribute 条目 + 至少带一个显式允许 attribute 的条目”。当前所有 App 的 `attributes.include` 均为空，因此只输出无 attribute 条目；`@!name` 否定属性在 v1 不支持，必须失败而非静默处理。
 - exclude 是 manifest 的显式、可审计决策，不能用猜测替代 source audit。
 - surge-rule-set 来源可通过类型级 exclude（`ip-asn:*`、`url-regex:*`）显式丢弃 v1 不输出的规则类型；被丢弃的行数出现在构建报告的 `skipped_excluded` 字段。
-- 上游完全缺失的 App 可声明 `sources: []`（supplement-only），全部规则来自 `sources/supplement/<App>.list`；最终输出仍必须非空。
-- **多客户端渲染（v1.1）**：canonical 规则经 `scripts/renderers.py` 渲染 —— `classical` 供 Surge / Loon / Shadowrocket / Stash（四目录逐字节相同）、`egern-yaml` 供 Egern、`quantumultx` 供 Quantumult X（`HOST*`/`IP-CIDR`/`IP6-CIDR`/`USER-AGENT` 行，行尾占位符 `policy` 由 `[filter_remote]` 的 `force-policy` 覆盖；no-resolve 槽位无生产实证故统一省略，见 `docs/MULTI_CLIENT_AUDIT.md`）。构建报告 `clients` 字段给出每客户端规则数与显式 dropped 列表；`PROCESS-NAME` 对 Loon / Shadowrocket / Egern / Quantumult X 显式丢弃，绝不静默。Surge 向后兼容门禁：`Surge/*.list` 路径与字节自 v1 起不变，重构建后 `git diff Surge/` 必须为空。
+- 上游完全缺失的 App 可声明 `sources: []`（supplement-only），全部规则来自 `engine/sources/supplement/<App>.list`；最终输出仍必须非空。
+- **多客户端渲染（v1.1）**：canonical 规则经 `engine/scripts/renderers.py` 渲染 —— `classical` 供 Surge / Loon / Shadowrocket / Stash（四目录逐字节相同）、`egern-yaml` 供 Egern、`quantumultx` 供 Quantumult X（`HOST*`/`IP-CIDR`/`IP6-CIDR`/`USER-AGENT` 行，行尾占位符 `policy` 由 `[filter_remote]` 的 `force-policy` 覆盖；no-resolve 槽位无生产实证故统一省略，见 `engine/docs/MULTI_CLIENT_AUDIT.md`）。构建报告 `clients` 字段给出每客户端规则数与显式 dropped 列表；`PROCESS-NAME` 对 Loon / Shadowrocket / Egern / Quantumult X 显式丢弃，绝不静默。Surge 向后兼容门禁：`Surge/*.list` 路径与字节自 v1 起不变，重构建后 `git diff Surge/` 必须为空。
 - 构建必须保守、可读、错误显式；不能为了成功生成而扩大规则范围或篡改规则语义。
 
 ## 已启用的 App 与 primary source
 
-18 个 App 的权威定义（URL、格式、exclude/include/attribute policy 与选源理由）见 `sources/apps.yaml`；完整审计档案见 `SOURCE_AUDITS.md`。本文件不维护冗余清单。
+18 个 App 的权威定义（URL、格式、exclude/include/attribute policy 与选源理由）见 `engine/sources/apps.yaml`；完整审计档案见 `SOURCE_AUDITS.md`。本文件不维护冗余清单。
 
 ## 自动化与验证
 
@@ -107,8 +107,8 @@ origin: https://github.com/Bluetrae/Rulink.git
 
 - 后续计划中的 AI、TikTok、Spotify、ZABank 已于 2026-08-15 完成 source audit 并全部落地；完整档案见 `SOURCE_AUDITS.md`。原清单中的 Live（现命名 APTV）是用户自用直播源，同日以 supplement-only 形式迁入（26 条，注释自用）。
 - Apple Music 暂缓：当前 Apple 分流仍依赖 Repcz、SukkaW、extended-matching 与手工 CDN 修复，暂不纳入此 pipeline。
-- ZABank 的 9 个候选域名已经 2026-08-15 审计确认上游全部缺失，并以三条根域名（`za.group`、`zainvest.group`、`zajourney.com`）写入 `sources/supplement/ZABank.list`；如有日志发现新的 ZA Bank 域名，按漏网处理流程追加。
-- `sources/supplement/` 目前含 `ZABank.list`（3 条根域名）与 `APTV.list`（26 条自用直播源）；其他 App 无 supplement 文件是正确的空状态，不是缺失文件。
+- ZABank 的 9 个候选域名已经 2026-08-15 审计确认上游全部缺失，并以三条根域名（`za.group`、`zainvest.group`、`zajourney.com`）写入 `engine/sources/supplement/ZABank.list`；如有日志发现新的 ZA Bank 域名，按漏网处理流程追加。
+- `engine/sources/supplement/` 目前含 `ZABank.list`（3 条根域名）与 `APTV.list`（26 条自用直播源）；其他 App 无 supplement 文件是正确的空状态，不是缺失文件。
 - 若 Surge 日志出现漏网：先确认 App 归属，再与上游比较，确认真正缺失后才加入对应 supplement、重新构建并验证。
 
 ## 原始聊天档案

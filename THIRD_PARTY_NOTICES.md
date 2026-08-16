@@ -41,11 +41,11 @@ six inherit the provenance and license attribution of the corresponding
 | `Surge/Spotify.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/AI.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/Steam.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
-| `Surge/ZABank.list` | Rulink repo-maintained supplement | `sources/supplement/ZABank.list` | No upstream source; original repo-maintained rules |
-| `Surge/APTV.list` | Rulink repo-maintained supplement (self-use) | `sources/supplement/APTV.list` | Personal rules migrated from the user's private repository; no third-party license |
+| `Surge/ZABank.list` | Rulink repo-maintained supplement | `engine/sources/supplement/ZABank.list` | No upstream source; original repo-maintained rules |
+| `Surge/APTV.list` | Rulink repo-maintained supplement (self-use) | `engine/sources/supplement/APTV.list` | Personal rules migrated from the user's private repository; no third-party license |
 
 The exact source URL, format, and selection rationale for each App are kept in
-[`sources/apps.yaml`](sources/apps.yaml). Upstream projects may change their
+[`engine/sources/apps.yaml`](engine/sources/apps.yaml). Upstream projects may change their
 licenses, notices, source content, or repository structure; source audits and
 this notice must be reviewed whenever a source is added or replaced.
 
@@ -53,10 +53,10 @@ this notice must be reviewed whenever a source is added or replaced.
 
 | Asset | Origin | Notice |
 | --- | --- | --- |
-| `portal/public/favicon.svg` | https://www.deepseek.com/harness/favicon.svg | DeepSeek official logo asset; DeepSeek trademark, all rights reserved by DeepSeek. Used for browser-tab identification only and is not covered by this repository's terms. Replace with your own icon for any broader use. |
-| `docs/images/avatar.png` | https://github.com/Bluetrae.png | Personal GitHub avatar of the repository owner, circular-cropped for the README title. Owned by the repository owner; not covered by any third-party license. |
-| `portal/public/icons/*.jpg` | Apple App Store artwork (iTunes Search API) | Official app icons of Surge, Shadowrocket, Loon, Stash, Egern, and Quantumult X, downloaded from the App Store and used only to identify each supported client in the portal. Trademarks and icons belong to their respective owners; not covered by this repository's terms. |
-| `portal/public/app-icons/*.jpg` | Apple App Store artwork (iTunes Search API) | Official app icons of each covered App (OKX, PayPal, SafePal, ZA Bank, LINE, Telegram, WhatsApp, GitHub, Steam, Instagram, Threads, X, YouTube, Netflix, TikTok, Spotify, APTV, and ChatGPT for the aggregated AI Rule-Set), downloaded from the App Store and used only to identify each Rule-Set in the portal. Trademarks and icons belong to their respective owners; not covered by this repository's terms. |
+| `engine/portal/public/favicon.svg` | https://www.deepseek.com/harness/favicon.svg | DeepSeek official logo asset; DeepSeek trademark, all rights reserved by DeepSeek. Used for browser-tab identification only and is not covered by this repository's terms. Replace with your own icon for any broader use. |
+| `engine/docs/images/avatar.png` | https://github.com/Bluetrae.png | Personal GitHub avatar of the repository owner, circular-cropped for the README title. Owned by the repository owner; not covered by any third-party license. |
+| `engine/portal/public/icons/*.jpg` | Apple App Store artwork (iTunes Search API) | Official app icons of Surge, Shadowrocket, Loon, Stash, Egern, and Quantumult X, downloaded from the App Store and used only to identify each supported client in the portal. Trademarks and icons belong to their respective owners; not covered by this repository's terms. |
+| `engine/portal/public/app-icons/*.jpg` | Apple App Store artwork (iTunes Search API) | Official app icons of each covered App (OKX, PayPal, SafePal, ZA Bank, LINE, Telegram, WhatsApp, GitHub, Steam, Instagram, Threads, X, YouTube, Netflix, TikTok, Spotify, APTV, and ChatGPT for the aggregated AI Rule-Set), downloaded from the App Store and used only to identify each Rule-Set in the portal. Trademarks and icons belong to their respective owners; not covered by this repository's terms. |
 
 ## License handling principles
 

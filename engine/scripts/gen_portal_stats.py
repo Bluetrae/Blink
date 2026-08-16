@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate portal/public/data/stats.json for the portal.
+"""Generate engine/portal/public/data/stats.json for the portal.
 
 Reads the generated client outputs plus the source manifest and writes a
 small JSON document consumed by the Vite + React portal.  The output contains
@@ -31,7 +31,7 @@ RAW_BASE = "https://raw.githubusercontent.com/Bluetrae/Rulink/main"
 # mapping only groups apps for the portal and suggests a policy label for the
 # copyable reference line.  The last field is always the user's own choice.
 # ``icon`` points at the official App Store artwork stored under
-# portal/public/app-icons/ (AI uses the ChatGPT logo by request).
+# engine/portal/public/app-icons/ (AI uses the ChatGPT logo by request).
 PORTAL_META = {
     "OKX": {"category": "Finance", "emoji": "💠", "policy": "Finance", "icon": "app-icons/OKX.jpg"},
     "PayPal": {"category": "Finance", "emoji": "💸", "policy": "Finance", "icon": "app-icons/PayPal.jpg"},
@@ -107,7 +107,7 @@ def parse_header_count(path: Path) -> int:
 
 
 def build(root: Path) -> dict:
-    manifest_path = root / "sources" / "apps.yaml"
+    manifest_path = root / "engine" / "sources" / "apps.yaml"
     try:
         manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
     except (OSError, yaml.YAMLError) as error:
@@ -170,11 +170,11 @@ def build(root: Path) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", type=Path, default=Path("sources/apps.yaml"))
-    parser.add_argument("--output", type=Path, default=Path("portal/public/data/stats.json"))
+    parser.add_argument("--manifest", type=Path, default=Path("engine/sources/apps.yaml"))
+    parser.add_argument("--output", type=Path, default=Path("engine/portal/public/data/stats.json"))
     parser.add_argument("--stdout", action="store_true", help="print the JSON instead of writing it")
     arguments = parser.parse_args(argv)
-    root = arguments.manifest.resolve().parent.parent
+    root = arguments.manifest.resolve().parent.parent.parent
     try:
         document = build(root)
         text = json.dumps(document, ensure_ascii=False, indent=2) + "\n"

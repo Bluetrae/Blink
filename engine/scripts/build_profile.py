@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Human-controlled Profile Engine: canonical profile intent -> candidates.
 
-Reads ``sources/profile/intent.yaml`` (the human-maintained Canonical Profile
+Reads ``engine/sources/profile/intent.yaml`` (the human-maintained Canonical Profile
 Intent), validates it, and renders six client candidate configs into
 ``Profiles/`` from the per-client base templates under
-``sources/profile/templates/``.
+``engine/sources/profile/templates/``.
 
 This tool is deliberately NOT part of the daily GitHub Actions rule update:
 profile files evolve through human review and device testing only
-(see docs/MULTI_CLIENT_AUDIT.md and the project handoff notes).
+(see engine/docs/MULTI_CLIENT_AUDIT.md and the project handoff notes).
 """
 
 from __future__ import annotations
@@ -21,9 +21,9 @@ from typing import Any
 
 import yaml
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-INTENT_PATH = REPO_ROOT / "sources" / "profile" / "intent.yaml"
-TEMPLATE_DIR = REPO_ROOT / "sources" / "profile" / "templates"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+INTENT_PATH = REPO_ROOT / "engine" / "sources" / "profile" / "intent.yaml"
+TEMPLATE_DIR = REPO_ROOT / "engine" / "sources" / "profile" / "templates"
 OUTPUT_DIR = REPO_ROOT / "Profiles"
 
 CLIENTS = {

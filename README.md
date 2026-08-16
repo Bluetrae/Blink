@@ -1,6 +1,6 @@
 <div align="center">
 
-# <img src="docs/images/avatar.png" width="36" height="36" alt="" style="vertical-align:middle" /> Rulink
+# <img src="engine/docs/images/avatar.png" width="36" height="36" alt="" style="vertical-align:middle" /> Rulink
 
 **多客户端 App Rule-Set · 自动构建 · 稳定分发**
 
@@ -88,7 +88,7 @@ https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/<App>.list, t
 
 <div align="center">
   <a href="https://bluetrae.github.io/Rulink/">
-    <img src="docs/images/portal-preview.png" alt="Rulink 门户预览" width="720" />
+    <img src="engine/docs/images/portal-preview.png" alt="Rulink 门户预览" width="720" />
   </a>
 </div>
 
@@ -111,27 +111,25 @@ https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/<App>.list, t
 ## 🗂️ 仓库结构
 
 ```text
-AGENTS.md                  # 长期项目规范与上游选择政策
-HANDOFF.md                 # 项目交接状态档案
-SOURCE_AUDITS.md           # source audit 档案与主配置对照
-THIRD_PARTY_NOTICES.md     # 上游许可记录；DISCLAIMER.md 责任边界
-docs/MULTI_CLIENT_AUDIT.md # 六客户端格式审计与架构决策依据
-sources/apps.yaml          # source manifest：来源、范围控制与选源理由
-sources/supplement/        # 仅限日志确认的上游缺口，按需创建
-scripts/build.py           # 保守、显式失败的构建器（canonical 模型 + 处理管线）
-scripts/renderers.py       # 客户端 Renderer：classical / egern-yaml / quantumultx
-scripts/gen_portal_stats.py # 从 Surge 输出与 manifest 生成门户数据
-tests/                     # 单元测试
-Surge/                     # Generated：classical .list（原 Surge 入口，路径与字节不变）
-Loon/                      # Generated：与 Surge 逐字节相同的 classical .list
-Shadowrocket/              # Generated：与 Surge 逐字节相同的 classical .list
-Stash/                     # Generated：与 Surge 逐字节相同的 classical .list
-Egern/                     # Generated：Egern 自有 YAML Rule-Set schema
-QuantumultX/               # Generated：QX filter 行（行尾占位符 policy，force-policy 覆盖）
-portal/                    # 网页门户（Vite + React + TS + Tailwind CSS）
-docs/                      # 审计文档与门户预览图等静态资源
-.github/workflows/update.yml
-.github/workflows/pages.yml # 门户构建与 GitHub Pages 部署
+# 产品输出（根级，raw URL 稳定）
+Surge/                      # classical .list（原 Surge 入口，路径与字节不变）
+Loon/                       # 与 Surge 逐字节相同的 classical .list
+Shadowrocket/               # 与 Surge 逐字节相同的 classical .list
+Stash/                      # 与 Surge 逐字节相同的 classical .list
+Egern/                      # Egern 自有 YAML Rule-Set schema
+QuantumultX/                # QX filter 行（行尾占位符 policy，force-policy 覆盖）
+Profiles/                   # 六客户端候选配置（人工维护层，订阅占位符）
+
+# 必留根文件
+README.md · AGENTS.md · DISCLAIMER.md · THIRD_PARTY_NOTICES.md · .gitignore · .github/
+
+# 构建引擎与开发侧（全部收敛于此）
+engine/
+├── scripts/                # build.py / renderers.py / build_profile.py / gen_portal_stats.py
+├── sources/                # apps.yaml、supplement、profile intent 与 templates
+├── tests/                  # 单元测试
+├── portal/                 # 网页门户（Vite + React + TS + Tailwind CSS）
+└── docs/                   # 审计档案、交接文档与门户预览图等静态资源
 ```
 
 <sub>生成目录绝不手工修改；本仓库不包含任何订阅 URL、token、密码、证书或其他敏感信息。</sub>

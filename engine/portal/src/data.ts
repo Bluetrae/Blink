@@ -89,6 +89,45 @@ export function clientTab(key: ClientKey): ClientTab {
   return tab;
 }
 
+export interface ProfileFile {
+  file: string;
+  format: string;
+  kind: string;
+}
+
+export const PROFILE_FILES: Record<ClientKey, ProfileFile> = {
+  surge: { file: "Profiles/Surge.conf", format: "conf", kind: "INI · [Proxy Group]" },
+  shadowrocket: { file: "Profiles/Shadowrocket.conf", format: "conf", kind: "INI · [Proxy Group]" },
+  loon: { file: "Profiles/Loon.conf", format: "conf", kind: "INI · [Remote Filter]" },
+  stash: { file: "Profiles/Stash.yaml", format: "yaml", kind: "YAML · proxy-groups" },
+  egern: { file: "Profiles/Egern.yaml", format: "yaml", kind: "YAML · policy_groups" },
+  quantumultx: { file: "Profiles/QuantumultX.conf", format: "conf", kind: "INI · [policy]" },
+};
+
+export function profileFileUrl(rawBase: string, client: ClientKey): string {
+  return `${rawBase}/${PROFILE_FILES[client].file}`;
+}
+
+// iOS 一键导入 URL Scheme（官方文档核实；QX 官方仅文档化资源导入，
+// 无整体配置安装 Scheme，故返回 null 不展示按钮）。
+export function profileInstallScheme(rawBase: string, client: ClientKey): string | null {
+  const url = encodeURIComponent(profileFileUrl(rawBase, client));
+  switch (client) {
+    case "surge":
+      return `surge:///install-config?url=${url}`;
+    case "shadowrocket":
+      return `shadowrocket://config/add/${url}`;
+    case "loon":
+      return `loon://import?sub=${url}`;
+    case "stash":
+      return `stash://install-config?url=${url}`;
+    case "egern":
+      return `egern:/profiles/new?name=${encodeURIComponent("Rulink")}&url=${url}`;
+    case "quantumultx":
+      return null;
+  }
+}
+
 interface TypeGroup {
   label: string;
   kinds: string[];

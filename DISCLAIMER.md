@@ -33,7 +33,7 @@ outputs is responsible for:
 - selecting and testing their own policies, DNS settings, and network
   configuration for each client they use;
 - checking proxy client logs (currently verified through Surge) and correcting
-  app-specific gaps through the documented `sources/supplement/` process;
+  app-specific gaps through the documented `engine/sources/supplement/` process;
 - complying with applicable laws, service terms, and all relevant upstream
   licenses, notices, and attribution requirements;
 - not redistributing, republishing, or mirroring repository content to
@@ -50,7 +50,7 @@ use, copy, modify, or redistribute upstream material beyond what the relevant
 rightsholders allow.
 
 See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and
-[`sources/apps.yaml`](sources/apps.yaml) for the current source inventory.
+[`engine/sources/apps.yaml`](engine/sources/apps.yaml) for the current source inventory.
 
 ## Liability boundary
 

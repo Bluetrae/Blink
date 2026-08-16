@@ -132,8 +132,8 @@ def validate_app_config(app_name: str, app: object) -> None:
         raise BuildError(f"{app_name}: enabled must be boolean")
     if not isinstance(app["output"], str) or not app["output"].startswith("Surge/"):
         raise BuildError(f"{app_name}: output must be a path below Surge/")
-    if not isinstance(app["supplement"], str) or not app["supplement"].startswith("sources/supplement/"):
-        raise BuildError(f"{app_name}: supplement must be a path below sources/supplement/")
+    if not isinstance(app["supplement"], str) or not app["supplement"].startswith("engine/sources/supplement/"):
+        raise BuildError(f"{app_name}: supplement must be a path below engine/sources/supplement/")
     if not isinstance(app["exclude"], list):
         raise BuildError(f"{app_name}: exclude must be a list")
 
@@ -513,11 +513,11 @@ def select_apps(manifest: dict, requested: list[str]) -> list[str]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--manifest", type=Path, default=Path("sources/apps.yaml"))
+    parser.add_argument("--manifest", type=Path, default=Path("engine/sources/apps.yaml"))
     parser.add_argument("--app", action="append", default=[], help="compile only this app; may be repeated")
     parser.add_argument("--write", action="store_true", help="write all client outputs after every selected app compiles")
     arguments = parser.parse_args(argv)
-    root = arguments.manifest.resolve().parent.parent
+    root = arguments.manifest.resolve().parent.parent.parent
     try:
         manifest = load_manifest(arguments.manifest)
         names = select_apps(manifest, arguments.app)

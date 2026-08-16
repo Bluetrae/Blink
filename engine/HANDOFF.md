@@ -18,15 +18,15 @@ https://github.com/Bluetrae/Rulink
 - working tree clean
 - `safe.directory` 已配置完成
 - 根目录刻意不设置覆盖整个仓库的统一许可证：原创构建代码/文档与第三方上游及 generated Rule-Set 分开处理；`THIRD_PARTY_NOTICES.md` 记录来源和已知许可，`DISCLAIMER.md` 记录个人使用、无担保与责任边界
-- `sources/apps.yaml` 已定义十八个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI、Steam 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；ZABank 无可用上游、APTV 为用户自用直播源，均为 supplement-only App（`sources: []`）；均保留显式 parser policy
+- `engine/sources/apps.yaml` 已定义十八个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI、Steam 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；ZABank 无可用上游、APTV 为用户自用直播源，均为 supplement-only App（`sources: []`）；均保留显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
-- `scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入生成目录。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式，并支持类型级 exclude（`ip-asn:*`、`url-regex:*`）与 supplement-only App（`sources: []`）
-- **多客户端支持已完成（v1.1 → 六客户端）**：`scripts/renderers.py` 提供 3 个 Renderer —— `classical`（Surge / Shadowrocket / Loon / Stash 四个目录逐字节相同，`Surge/*.list` 路径与字节完全不变）、`egern-yaml`（Egern `*_set` schema；`PROCESS-NAME` 显式丢弃并计入构建报告，`no_resolve` 为 set 级、混合时显式失败）与 `quantumultx`（QX filter 行，`HOST*`/`IP-CIDR`/`IP6-CIDR`/`USER-AGENT`，行尾占位符 `policy` 由 `[filter_remote]` 的 `force-policy` 覆盖；PROCESS-NAME 显式丢弃、no-resolve 槽位无生产实证故统一省略，均已记入 `docs/MULTI_CLIENT_AUDIT.md`）。格式审计与架构决策见 `docs/MULTI_CLIENT_AUDIT.md`；Surge 向后兼容门禁 = 重构建后 `git diff Surge/` 为空（单测 `test_existing_surge_outputs_roundtrip_byte_identical` 覆盖离线往返字节一致性）
+- `engine/scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入生成目录。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式，并支持类型级 exclude（`ip-asn:*`、`url-regex:*`）与 supplement-only App（`sources: []`）
+- **多客户端支持已完成（v1.1 → 六客户端）**：`engine/scripts/renderers.py` 提供 3 个 Renderer —— `classical`（Surge / Shadowrocket / Loon / Stash 四个目录逐字节相同，`Surge/*.list` 路径与字节完全不变）、`egern-yaml`（Egern `*_set` schema；`PROCESS-NAME` 显式丢弃并计入构建报告，`no_resolve` 为 set 级、混合时显式失败）与 `quantumultx`（QX filter 行，`HOST*`/`IP-CIDR`/`IP6-CIDR`/`USER-AGENT`，行尾占位符 `policy` 由 `[filter_remote]` 的 `force-policy` 覆盖；PROCESS-NAME 显式丢弃、no-resolve 槽位无生产实证故统一省略，均已记入 `engine/docs/MULTI_CLIENT_AUDIT.md`）。格式审计与架构决策见 `engine/docs/MULTI_CLIENT_AUDIT.md`；Surge 向后兼容门禁 = 重构建后 `git diff Surge/` 为空（单测 `test_existing_surge_outputs_roundtrip_byte_identical` 覆盖离线往返字节一致性）
 - 新增生成目录：`Loon/*.list`、`Shadowrocket/*.list`、`Stash/*.list`（与 `Surge/*.list` 逐字节相同）、`Egern/*.yaml`（每 App 一份 YAML Rule-Set）、`QuantumultX/*.list`（每 App 一份 QX filter）
 - 构建报告新增 `clients` 字段：每客户端规则数与显式 dropped 列表；check 模式同样渲染全部客户端，非 Surge renderer 的失败会在预检阶段暴露
-- `.github/workflows/update.yml` 已更名为 Update Rule-Sets，提交范围覆盖 `Surge Loon Shadowrocket Stash Egern QuantumultX portal/public/data`
-- `tests/test_build.py` 增至 27 个用例；测试临时目录经模块级 patch 落在工作区 `.tmp-tests/`（已 gitignore），兼容沙箱化 Windows 运行环境
-- `tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、类型级 exclude、supplement-only App、抓取重试、CLI 端到端、错误策略、实际 manifest 校验、Egern YAML schema、QX filter 映射与占位策略、PROCESS-NAME 降级报告、no-resolve set 级语义及 Surge golden-byte 往返
+- `.github/workflows/update.yml` 已更名为 Update Rule-Sets，提交范围覆盖 `Surge Loon Shadowrocket Stash Egern QuantumultX engine/portal/public/data`
+- `engine/tests/test_build.py` 增至 27 个用例；测试临时目录经模块级 patch 落在工作区 `.tmp-engine/tests/`（已 gitignore），兼容沙箱化 Windows 运行环境
+- `engine/tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、类型级 exclude、supplement-only App、抓取重试、CLI 端到端、错误策略、实际 manifest 校验、Egern YAML schema、QX filter 映射与占位策略、PROCESS-NAME 降级报告、no-resolve set 级语义及 Surge golden-byte 往返
 - `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 00:01 的定时运行（GitHub 定时任务不保证准点）
 - GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
 - GitHub Actions 第 3 次手动运行成功，生成 commit 为 `498ca27 chore: update generated Surge rule-sets`
@@ -35,10 +35,10 @@ https://github.com/Bluetrae/Rulink
 - 随后一次 GitHub Actions 运行生成 commit `832541c chore: update generated Surge rule-sets`：为全部 12 个生成文件写入 `# 规则名称` 与 `# 规则统计` 头部（构建器实现于 `76cdb63 feat: add metadata headers to generated rule-sets`）
 - `DEEPSEEK_MIGRATION.md` 已加入仓库，供新 Agent 无会话接手；2026-08-15 之后的最新提交以 `git log` 为准
 - 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`、`Surge/SafePal.list`、`Surge/PayPal.list`、`Surge/Netflix.list`、`Surge/YouTube.list`、`Surge/X.list`、`Surge/Instagram.list`、`Surge/Telegram.list`、`Surge/Threads.list`、`Surge/TikTok.list`、`Surge/Spotify.list`、`Surge/AI.list`、`Surge/ZABank.list`、`Surge/Steam.list`、`Surge/APTV.list`
-- `sources/supplement/` 目前含 `ZABank.list`（3 条根域名，supplement-only）与 `APTV.list`（26 条自用直播源，supplement-only，已注释自用）；其他 App 无 supplement 文件，这是预期状态
+- `engine/sources/supplement/` 目前含 `ZABank.list`（3 条根域名，supplement-only）与 `APTV.list`（26 条自用直播源，supplement-only，已注释自用）；其他 App 无 supplement 文件，这是预期状态
 - 2026-08-15：完成用户 Surge 主配置与仓库输出的完整对照；脱敏结论见 `SOURCE_AUDITS.md`「用户 Surge 主配置对照」一节（要点：ZA Bank 9 条手工行、OKX 7 条手工行可删；Telegram 主配置保持现状；Steam 已新增纳入；APTV 已迁入为自用 supplement）
-- `portal/` 已随多客户端扩展完成重构（原为用户另一工作流窗口的开发内容，多客户端落地后经用户明确指示更新）：规则集与「接入你的客户端」两个区域都提供 Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 客户端切换，按钮带各客户端官方 App Store 图标（`portal/public/icons/*.jpg`，来源与商标归属已记入 `THIRD_PARTY_NOTICES.md`「Repository assets」），每个 App 卡片按所选客户端给出对应引用片段（`RULE-SET` / `[Remote Rule]` / `rule-providers` + `RULE-SET` / `rule_set` / `[filter_remote]`），Egern 与 Quantumult X 卡片对显式丢弃的 PROCESS-NAME 给出提示；`scripts/gen_portal_stats.py` 的 `stats.json` schema 扩展了每 App 的 `clients` 字段（egern / quantumultx 含 `dropped` 计数）。后续修改 portal 请保持与其他区域同等的显式路径暂存习惯
-- 门户已上线：https://bluetrae.github.io/Rulink/（仓库 About 已填 Website；GitHub Pages 采用 GitHub Actions 构建，`pages.yml` 随 `main` 推送自动部署）。主题为时间制：08:00–22:00 浅色、22:00–08:00 深色，无手动切换按钮；配色对齐 DeepSeek Harness 设计令牌；favicon 使用 DeepSeek 官方图标（已记录于 `THIRD_PARTY_NOTICES.md`「Repository assets」）。页面特性：六客户端切换（规则集卡片与接入区，按钮带官方 App 图标）、悬浮胶囊导航（滚动玻璃化）、首屏错峰入场、CTA 旋转描边、移动端汉堡菜单、流式标题；README 预览图位于 `docs/images/portal-preview.png`（多客户端规则集区块视图，随门户变更同步更新）
+- `engine/portal/` 已随多客户端扩展完成重构（原为用户另一工作流窗口的开发内容，多客户端落地后经用户明确指示更新）：规则集与「接入你的客户端」两个区域都提供 Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 客户端切换，按钮带各客户端官方 App Store 图标（`engine/portal/public/icons/*.jpg`，来源与商标归属已记入 `THIRD_PARTY_NOTICES.md`「Repository assets」），每个 App 卡片按所选客户端给出对应引用片段（`RULE-SET` / `[Remote Rule]` / `rule-providers` + `RULE-SET` / `rule_set` / `[filter_remote]`），Egern 与 Quantumult X 卡片对显式丢弃的 PROCESS-NAME 给出提示；`engine/scripts/gen_portal_stats.py` 的 `stats.json` schema 扩展了每 App 的 `clients` 字段（egern / quantumultx 含 `dropped` 计数）。后续修改 portal 请保持与其他区域同等的显式路径暂存习惯
+- 门户已上线：https://bluetrae.github.io/Rulink/（仓库 About 已填 Website；GitHub Pages 采用 GitHub Actions 构建，`pages.yml` 随 `main` 推送自动部署）。主题为时间制：08:00–22:00 浅色、22:00–08:00 深色，无手动切换按钮；配色对齐 DeepSeek Harness 设计令牌；favicon 使用 DeepSeek 官方图标（已记录于 `THIRD_PARTY_NOTICES.md`「Repository assets」）。页面特性：六客户端切换（规则集卡片与接入区，按钮带官方 App 图标）、悬浮胶囊导航（滚动玻璃化）、首屏错峰入场、CTA 旋转描边、移动端汉堡菜单、流式标题；README 预览图位于 `engine/docs/images/portal-preview.png`（多客户端规则集区块视图，随门户变更同步更新）
 
 ## 项目目标
 
@@ -56,14 +56,14 @@ https://github.com/Bluetrae/Rulink
 
 ### Profile 层（配置迁移）进度与计划
 
-- **Phase 1 已完成**：`sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 六客户端 Base Template（`sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染六端候选配置）+ `Profiles/` 六个候选配置（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
+- **Phase 1 已完成**：`engine/sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 六客户端 Base Template（`engine/sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `engine/scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染六端候选配置）+ `Profiles/` 六个候选配置（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
 - 已确认决策：每客户端完整候选配置（占位符）；地区组保持 Surge select 意图；Emby 类个人组公开版移除；Egern url-test 按 Needs Verification 处理（当前 ADAPTED 为 select 并已注释标注）；`Profiles/` 提交进仓库。
 - 待办：portal 新增「配置文件」板块（六客户端候选配置展示 / 下载 / 复制 + 订阅占位符替换提示）；Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Rulink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
 - **仓库改名计划（用户已定）**：Profile 层内容完善后，仓库由 `Rulink` 改名为 **`Blink`**（GitHub：`Bluetrae/Blink`）。改名时需系统性迁移：仓库内所有 URL/文案引用（raw base、portal `stats.json` 的 repo/raw_base、`build.py`/`gen_portal_stats.py`/`build_profile.py` 常量、README/AGENTS/HANDOFF/审计文档、workflow、portal 文案）、GitHub Pages 地址（`bluetrae.github.io/Rulink/` → `bluetrae.github.io/Blink/`，Pages 无旧地址重定向，需在 README/portal 同步更新）、以及用户 Surge 主配置中的 Rulink raw URL（GitHub 会对旧 raw 路径做重定向，但应尽快替换为 Blink 地址）。改名动作本身由用户在 GitHub Settings 完成（或 gh CLI），本仓库只负责内容侧迁移。
 
 ## 已确定的规则源结论
 
-各 App 的具体选源结论如下（权威定义与精简理由见 `sources/apps.yaml` 的 `note`；完整审计档案见 `SOURCE_AUDITS.md`）：
+各 App 的具体选源结论如下（权威定义与精简理由见 `engine/sources/apps.yaml` 的 `note`；完整审计档案见 `SOURCE_AUDITS.md`）：
 
 - OKX：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx`。旧 blackmatrix7 规则过少；当前保留无 attribute 条目，`oklink.com @cn` 未启用。
 - WhatsApp：`https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp`。比旧 blackmatrix7 覆盖更现代；`@ads` graph 条目未启用。
@@ -80,7 +80,7 @@ https://github.com/Bluetrae/Rulink
 - TikTok：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/TikTok.list`。Repcz 的 83 条原生规则覆盖最完整且每日更新；2 条 `IP-ASN` 通过 `exclude: ["ip-asn:*"]` 类型级显式丢弃；blackmatrix7 陈旧且混入字节 AI IDE 域名，v2fly 条目全部带 `@!cn` 否定属性不可用。
 - Spotify：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Spotify.list`。21 条原生规则全部在 v1 白名单内，零转换风险；SukkaW 仅内嵌于 stream.ts（2025-11 后未更新），blackmatrix7 约 14 个月未更新，v2fly 会混入第三方 conductrics.com。
 - AI：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AI.list`。51 条聚合覆盖主流 AI 服务，为 SukkaW ai.conf 的派生（多 `file.oaiusercontent.com`）；1 条 `URL-REGEX` 通过 `exclude: ["url-regex:*"]` 类型级显式丢弃；DeepSeek 未纳入（国内直连默认，须日志确认缺口后才可进 supplement）。
-- ZABank：无任何上游提供 ZABank 规则（2026-08-15 审计验证 Repcz/SukkaW/v2fly/blackmatrix7/MetaCubeX 全部缺失）。采用 supplement-only：`sources: []` + `sources/supplement/ZABank.list`（`za.group`、`zainvest.group`、`zajourney.com` 三条根域名），覆盖此前记录的 9 个候选域名。
+- ZABank：无任何上游提供 ZABank 规则（2026-08-15 审计验证 Repcz/SukkaW/v2fly/blackmatrix7/MetaCubeX 全部缺失）。采用 supplement-only：`sources: []` + `engine/sources/supplement/ZABank.list`（`za.group`、`zainvest.group`、`zajourney.com` 三条根域名），覆盖此前记录的 9 个候选域名。
 - Steam：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Steam.list`。Repcz 的 20 条核心 Steam 域名零转换风险、每日更新；SukkaW 无专项；v2fly 偏宽（地区性 CDN）；blackmatrix7 陈旧（2025-06）且混入盗版站 `steamunlocked.net`。2026-08-15 新增，替代用户主配置中的 blackmatrix7 Steam。
 - APTV（原计划名 Live）：无上游，用户自用直播源（经 APTV 前端 App 观看）。2026-08-15 自用户私有仓库迁入（garyshare 直播源 2026-02-22 版，26 条：17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），supplement-only（`sources: []`），文件头部与 manifest note 均已注明自用；不含订阅 URL 或 token。
 
@@ -88,7 +88,7 @@ https://github.com/Bluetrae/Rulink
 
 ### ZABank
 
-2026-08-15 source audit 确认 Repcz、SukkaW、v2fly（全树 1536 个 data 文件）、blackmatrix7、MetaCubeX 均无 ZABank 规则，因此 ZABank 采用 supplement-only 方案：`sources: []`，全部规则来自 `sources/supplement/ZABank.list`。此前记录的 9 个候选域名全部落在三条根域名之下，已由三条根域名完整覆盖：
+2026-08-15 source audit 确认 Repcz、SukkaW、v2fly（全树 1536 个 data 文件）、blackmatrix7、MetaCubeX 均无 ZABank 规则，因此 ZABank 采用 supplement-only 方案：`sources: []`，全部规则来自 `engine/sources/supplement/ZABank.list`。此前记录的 9 个候选域名全部落在三条根域名之下，已由三条根域名完整覆盖：
 
 ```text
 za.group          → wbs、i18n、offlineapp、bankappgw、aim-abtesting-sdk
@@ -100,7 +100,7 @@ supplement 内容为 `DOMAIN-SUFFIX,za.group`、`DOMAIN-SUFFIX,zainvest.group`�
 
 ### SafePal
 
-SafePal 已采用 v2fly primary source；`isafepal.com` 与 `safepal.com` 均由上游覆盖，因此不应写入 `sources/supplement/`。
+SafePal 已采用 v2fly primary source；`isafepal.com` 与 `safepal.com` 均由上游覆盖，因此不应写入 `engine/sources/supplement/`。
 
 ## 已验证的生成结果
 
@@ -137,7 +137,7 @@ GitHub Actions 第 4 次手动运行在同日新增：
 - `Surge/Steam.list`：20 条规则（同日稍后新增）
 - `Surge/APTV.list`：26 条规则（supplement-only，自用直播源，同日迁入）
 
-生成文件仅可由 `python scripts/build.py --write` 或 GitHub Actions 更新，绝不手工编辑。各客户端主配置引用本仓库稳定 raw URL，并在引用处指定策略：Surge / Shadowrocket 用 `RULE-SET`，Loon 用 `[Remote Rule]`，Stash 用 `rule-providers` + `RULE-SET`，Egern 用 `rule_set.match`，Quantumult X 用 `[filter_remote]` 的 `force-policy`（QX 文件行尾的 `policy` 是占位符，会被覆盖）（最小引用示例见 README「快速开始」）。
+生成文件仅可由 `python engine/scripts/build.py --write` 或 GitHub Actions 更新，绝不手工编辑。各客户端主配置引用本仓库稳定 raw URL，并在引用处指定策略：Surge / Shadowrocket 用 `RULE-SET`，Loon 用 `[Remote Rule]`，Stash 用 `rule-providers` + `RULE-SET`，Egern 用 `rule_set.match`，Quantumult X 用 `[filter_remote]` 的 `force-policy`（QX 文件行尾的 `policy` 是占位符，会被覆盖）（最小引用示例见 README「快速开始」）。
 
 ## 构建闭环
 
@@ -171,7 +171,7 @@ GitHub Actions 第 4 次手动运行在同日新增：
 Surge 日志出现漏网
 → 日志确认归属
 → 与选定上游比较，确认缺失
-→ sources/supplement/<App>.list
+→ engine/sources/supplement/<App>.list
 → 重新构建
 → 以后永久保留
 ```
