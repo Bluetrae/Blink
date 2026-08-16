@@ -84,7 +84,7 @@ https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/<App>.list, t
 
 ## 🌐 网页入口
 
-无需域名即可访问：[`https://bluetrae.github.io/Rulink/`](https://bluetrae.github.io/Rulink/)。集中展示全部 Rule-Set 的规则数、规则类型与来源，一键复制 `RULE-SET` 接入行。
+无需域名即可访问：[`https://bluetrae.github.io/Rulink/`](https://bluetrae.github.io/Rulink/)。切换顶部客户端标签（Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X）即可查看每个 App 的规则数与对应接入行，一键复制。
 
 <div align="center">
   <a href="https://bluetrae.github.io/Rulink/">
@@ -92,15 +92,9 @@ https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/<App>.list, t
   </a>
 </div>
 
-- 技术栈：Vite + React + TypeScript + Tailwind CSS，源码在 [`portal/`](portal/)。
-- 部署：GitHub Actions（[`pages.yml`](.github/workflows/pages.yml)）在 `main` 推送时自动构建并部署到 GitHub Pages，无需提交构建产物。
-- 数据：页面数据由 [`scripts/gen_portal_stats.py`](scripts/gen_portal_stats.py) 从六客户端生成目录（canonical 计数取自 `Surge/*.list`，Egern / Quantumult X 计数取自各自文件头部）与 `sources/apps.yaml` 生成到 `portal/public/data/stats.json`，随每日构建一起刷新。页面提供六客户端切换（带各客户端官方 App 图标）：每个 App 卡片按所选客户端给出对应的引用片段（`RULE-SET` / `[Remote Rule]` / `rule-providers` / `rule_set` / `[filter_remote]`）。
-
 ## ⚙️ 更新机制
 
-`apps.yaml → build.py 解析 / 转换 / 去重 → canonical 规则 → 合并 supplement → 渲染六客户端输出`，由 GitHub Actions（[`update.yml`](.github/workflows/update.yml)）每天北京时间约 **00:01**（定时任务不保证准点）先跑单测再全量构建，**只有生成目录（`Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Egern/`、`QuantumultX/`）或门户数据变化**才由 `github-actions[bot]` 提交；上游 404、超时、未知规则类型、未声明 include 等一律**显式失败**，绝不静默改变语义。Egern / Quantumult X 无法表达的 `PROCESS-NAME` 规则被显式丢弃并记录在构建报告里，不会静默转换。门户数据（`portal/public/data/stats.json`）由同一工作流生成，只在内容实际变化时随生成目录一起提交。
-
-<sub>每日运行全自动、无人值守：有实质变化才提交，无变化零提交；构建失败时保留旧输出并等待人工处理，不阻塞日常使用。新 App 与 supplement 永远由人工审计添加，CI 不会自动引入。</sub>
+每天北京时间约 **00:01**，GitHub Actions（[`update.yml`](.github/workflows/update.yml)）自动检查上游并重建六个客户端的规则文件与门户数据：有实质变化才提交，无变化零提交；构建失败时保留旧输出、暂停更新，不影响日常使用。新 App 与补充规则由人工审计添加，CI 不会自动引入。
 
 ## 🧩 来源政策
 
