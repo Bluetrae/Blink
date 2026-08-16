@@ -58,9 +58,9 @@ https://github.com/Bluetrae/Blink
 
 - **Phase 1 已完成**：`engine/sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 六客户端 Base Template（`engine/sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `engine/scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染六端候选配置）+ `Profiles/` 六个候选配置（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
 - 已确认决策：每客户端完整候选配置（占位符）；地区组保持 Surge select 意图；Emby 类个人组公开版移除；Egern url-test 按 Needs Verification 处理（当前 ADAPTED 为 select 并已注释标注）；`Profiles/` 提交进仓库。
-- **公开模板范围（已收敛）**：策略组只保留核心（Sub / Proxy / Final / 地区组 / Auto）+ 普遍常用场景组（Daily / Telegram / AI / AppleMusic），App 路由只保留 YouTube / X / Instagram / Telegram / AI / AppleMusic；APTV 等个人内容与其余 App（Google / GitHub / Finance / Threads / OKX / PayPal / SafePal / ZABank / TikTok / Netflix / Spotify / Steam / WhatsApp / LINE）从公开候选配置中移除，由使用者按需自行添加。规则层不受影响（六端规则目录仍发布全部 18 个 App）。
+- **公开模板范围（已收敛）**：策略组只保留核心（Sub / Proxy / Final / 地区组 / Auto）+ 普遍常用场景组（Daily / Telegram / AI / AppleMusic），App 路由只保留 YouTube / X / Instagram / Telegram / AI / AppleMusic；APTV 等个人内容与其余 App（Google / GitHub / Finance / Threads / OKX / PayPal / SafePal / ZABank / TikTok / Netflix / Spotify / Steam / WhatsApp / LINE 及 2026-08-16 好友场景新增的 10 个 App）从公开候选配置中移除，由使用者按需自行添加。规则层不受影响（六端规则目录仍发布全部 28 个 App）。
 - 待办：Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Blink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
-- **仓库改名（已执行内容侧，GitHub 侧待用户操作）**：仓库已由 `Rulink` 更名为 **`Blink`**（GitHub：`Bluetrae/Blink`），全部仓库内 URL/文案/生成数据已迁移为 Blink。GitHub 会对旧 `Bluetrae/Rulink` 路径（含 raw）做 301 重定向；但 GitHub Pages 旧地址 `bluetrae.github.io/Rulink/` 无重定向，新地址为 `bluetrae.github.io/Blink/`。用户 Surge 主配置中的旧 Rulink raw URL 依赖 301 重定向可用，建议尽快替换为 Blink 地址。待办：用户确认在 GitHub Settings 完成 Rename 后推送本提交并更新本地 origin 为 `Bluetrae/Blink`。
+- **仓库改名（已完成）**：仓库已由 `Rulink` 更名为 **`Blink`**（GitHub：`Bluetrae/Blink`），全部仓库内 URL/文案/生成数据已迁移为 Blink。用户已在 GitHub Settings 完成 Rename，本地 origin 已更新为 `Bluetrae/Blink`，Pages 新地址 `bluetrae.github.io/Blink/` 已生效；旧 Rulink raw URL 由 GitHub 301 重定向（旧 Pages 地址无重定向）。
 
 ## 已确定的规则源结论
 
@@ -84,6 +84,7 @@ https://github.com/Bluetrae/Blink
 - ZABank：无任何上游提供 ZABank 规则（2026-08-15 审计验证 Repcz/SukkaW/v2fly/blackmatrix7/MetaCubeX 全部缺失）。采用 supplement-only：`sources: []` + `engine/sources/supplement/ZABank.list`（`za.group`、`zainvest.group`、`zajourney.com` 三条根域名），覆盖此前记录的 9 个候选域名。
 - Steam：`https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Steam.list`。Repcz 的 20 条核心 Steam 域名零转换风险、每日更新；SukkaW 无专项；v2fly 偏宽（地区性 CDN）；blackmatrix7 陈旧（2025-06）且混入盗版站 `steamunlocked.net`。2026-08-15 新增，替代用户主配置中的 blackmatrix7 Steam。
 - APTV（原计划名 Live）：无上游，用户自用直播源（经 APTV 前端 App 观看）。2026-08-15 自用户私有仓库迁入（garyshare 直播源 2026-02-22 版，26 条：17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），supplement-only（`sources: []`），文件头部与 manifest note 均已注明自用；不含订阅 URL 或 token。
+- 好友使用场景新增（2026-08-16，完整审计见 `SOURCE_AUDITS.md`「好友使用场景新增 10 App」）：Disney / PrimeVideo / HBO / Facebook / Google = Repcz `Surge/Rules/`（HBO 通过 `exclude` 剔除 2 条通用 AWS API Gateway 后缀，48→46）；ParamountPlus / Hulu / Twitch = blackmatrix7 `rule/Surge/`（Twitch 含 IP 覆盖；此三 App 的 PROCESS-NAME 仅对 Egern/QX 丢弃）；NBA / Suno = supplement-only（各 2 条根域，无任何上游专项）。清单中的 YouTube TV 由 YouTube.list 覆盖、Gemini/ChatGPT 由 AI.list 覆盖，无需新增。
 
 ## Finance supplement 候选与当前已知
 

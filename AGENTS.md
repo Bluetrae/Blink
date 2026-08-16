@@ -15,7 +15,7 @@
 - 不追求规则数量最大化，避免无意义吞入共享 CDN。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施规则不纳入本仓库，继续直接引用成熟上游。
 - 输出规则不带策略名：Surge / Shadowrocket 由主配置 `RULE-SET`、Loon 由 `[Remote Rule]`、Stash 由 `rule-providers` + `RULE-SET`、Egern 由 `rule_set.match` 在引用处指定策略。Quantumult X 例外：filter 行尾必有策略字段，本仓库用字面占位符 `policy`，实际策略由 `[filter_remote]` 引用行的 `force-policy` 指定（QX 的 no-resolve 槽位无生产实证，渲染时统一省略并已记入 `engine/docs/MULTI_CLIENT_AUDIT.md`）。
-- 每个客户端渲染器只允许序列化该客户端可无损表达的规则；无法表达时必须显式丢弃并在构建报告计数（当前唯一降级项：PROCESS-NAME 对 Loon / Shadowrocket / Egern / Quantumult X），禁止静默转换。
+- 每个客户端渲染器只允许序列化该客户端可无损表达的规则；无法表达时必须显式丢弃并在构建报告计数（当前唯一降级项：PROCESS-NAME 对 Egern / Quantumult X 显式丢弃并计数；classical 输出保持 Surge / Loon / Shadowrocket / Stash 四端逐字节相同、保留该行——Loon / Shadowrocket 无此类型，客户端直接忽略），禁止静默转换。
 
 ## Upstream Source Selection Policy
 
@@ -31,7 +31,7 @@
 
 ### Source audit 范围与记录项
 
-- Source audit 至少覆盖当前计划中的 YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub；原清单中的 Live（现命名 APTV）是用户自用直播源，2026-08-15 起以 supplement-only 形式纳入（`sources: []`，内容已注释自用、未经上游审计）。
+- Source audit 至少覆盖当前计划中的 YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub；原清单中的 Live（现命名 APTV）是用户自用直播源，2026-08-15 起以 supplement-only 形式纳入（`sources: []`，内容已注释自用、未经上游审计）。2026-08-16 好友使用场景新增的 Disney、ParamountPlus、Hulu、PrimeVideo、HBO、Twitch、Facebook、Google、NBA、Suno 已按同一流程完成审计并落地（NBA/Suno 无上游，supplement-only；完整档案见 `engine/SOURCE_AUDITS.md`）。
 - 每个 App 的 audit 必须记录：候选来源、作者、URL、最近维护情况、规则规模或覆盖特点、是否 Surge 原生、是否需要转换、是否存在明显过宽规则、推荐 primary、是否需要 supplemental，以及选择理由。
 
 ## 安全规范

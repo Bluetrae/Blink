@@ -108,7 +108,7 @@ origin: https://github.com/Bluetrae/Blink.git
 - 后续计划中的 AI、TikTok、Spotify、ZABank 已于 2026-08-15 完成 source audit 并全部落地；完整档案见 `SOURCE_AUDITS.md`。原清单中的 Live（现命名 APTV）是用户自用直播源，同日以 supplement-only 形式迁入（26 条，注释自用）。
 - Apple Music 暂缓：当前 Apple 分流仍依赖 Repcz、SukkaW、extended-matching 与手工 CDN 修复，暂不纳入此 pipeline。
 - ZABank 的 9 个候选域名已经 2026-08-15 审计确认上游全部缺失，并以三条根域名（`za.group`、`zainvest.group`、`zajourney.com`）写入 `engine/sources/supplement/ZABank.list`；如有日志发现新的 ZA Bank 域名，按漏网处理流程追加。
-- `engine/sources/supplement/` 目前含 `ZABank.list`（3 条根域名）与 `APTV.list`（26 条自用直播源）；其他 App 无 supplement 文件是正确的空状态，不是缺失文件。
+- `engine/sources/supplement/` 目前含 `ZABank.list`（3 条根域名）、`APTV.list`（26 条自用直播源）、`NBA.list` 与 `Suno.list`（各 2 条根域，2026-08-16 好友场景新增，无任何上游专项）；其他 App 无 supplement 文件是正确的空状态，不是缺失文件。
 - 若 Surge 日志出现漏网：先确认 App 归属，再与上游比较，确认真正缺失后才加入对应 supplement、重新构建并验证。
 
 ## 原始聊天档案

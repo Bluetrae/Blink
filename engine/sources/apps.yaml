@@ -680,7 +680,7 @@ apps:
       SukkaW, blackmatrix7, v2fly, MetaCubeX, or RuleGo, so this app is
       supplement-only: two root domains (nba.com, nba.net) cover the official
       site and the NBA app (api/cdn/stats subdomains live under nba.com).
-      Marked log-verification-pending; extend only with confirmed usage logs.
+      It stays supplement-only unless usage reveals missing hosts.
 
   Suno:
     enabled: true
@@ -698,5 +698,5 @@ apps:
     note: >-
       The 2026-08-16 friend-scenario audit found no Suno rules in any audited
       source, so this app is supplement-only: two root domains (suno.com,
-      suno.ai) cover the web app, mobile app, and studio API. Marked
-      log-verification-pending; extend only with confirmed usage logs.
+      suno.ai) cover the web app, mobile app, and studio API.
+      It stays supplement-only unless usage reveals missing hosts.

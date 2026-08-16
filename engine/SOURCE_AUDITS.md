@@ -31,8 +31,8 @@
 | Twitch | 已落地 | blackmatrix7 `Twitch.list`（22 条：域名+关键字+IP 覆盖） |
 | Facebook | 已落地 | Repcz `Facebook.list`（580 条，含防钓鱼拼写变体） |
 | Google | 已落地 | Repcz `Google.list`（25 条；KEYWORD google/gmail 覆盖搜索与 Gmail） |
-| NBA | 已落地 | supplement-only（2 条根域，待日志验证） |
-| Suno | 已落地 | supplement-only（2 条根域，待日志验证） |
+| NBA | 已落地 | supplement-only（2 条根域；无上游，如日后使用暴露缺口按政策补） |
+| Suno | 已落地 | supplement-only（2 条根域；无上游，如日后使用暴露缺口按政策补） |
 
 ## 早期 12 个 App 的审计结论索引
 
@@ -267,17 +267,17 @@ Repcz / SukkaW / v2fly / MetaCubeX 均无专项规则；blackmatrix7 `rule/Surge
 
 Repcz / SukkaW / blackmatrix7 / v2fly / MetaCubeX / RuleGo 六家均无 NBA 专项规则（v2fly `data/nba` 404、bm7 `rule/Surge/NBA` 无命中、Repcz `Surge/Rules` 无命中）。
 
-决议：supplement-only（`sources: []`）。`DOMAIN-SUFFIX,nba.com` + `DOMAIN-SUFFIX,nba.net` 覆盖官网与官方 App（api/cdn/stats.nba.com 均为 nba.com 子域）。标注“待日志验证”：待好友端 Surge 日志确认后按需补充。
+决议：supplement-only（`sources: []`）。`DOMAIN-SUFFIX,nba.com` + `DOMAIN-SUFFIX,nba.net` 覆盖官网与官方 App（api/cdn/stats.nba.com 均为 nba.com 子域）。若日后使用暴露缺失域名，按 supplement 政策（先与上游比较、只补真正缺口）追加。
 
 ### Suno（supplement-only）
 
 六家上游均无 Suno 专项规则（v2fly `data/suno` 404、其余无命中）。
 
-决议：supplement-only（`sources: []`）。`DOMAIN-SUFFIX,suno.com` + `DOMAIN-SUFFIX,suno.ai` 覆盖官网、移动 App 与 API（studio-api.suno.ai 为 suno.ai 子域）。标注“待日志验证”：待好友端 Surge 日志确认后按需补充。
+决议：supplement-only（`sources: []`）。`DOMAIN-SUFFIX,suno.com` + `DOMAIN-SUFFIX,suno.ai` 覆盖官网、移动 App 与 API（studio-api.suno.ai 为 suno.ai 子域）。若日后使用暴露缺失域名，按 supplement 政策（先与上游比较、只补真正缺口）追加。
 
 ### 落地决议汇总（2026-08-16）
 
 - 8 个有上游的 App 全部按上表 primary 落地，均无需 supplemental；manifest `note` 已写入选择理由。
 - 构建报告：Disney 174 / ParamountPlus 10 / Hulu 59 / PrimeVideo 16 / HBO 46（排除 2 条）/ Twitch 22 / Facebook 580 / Google 25 / NBA 2 / Suno 2；PROCESS-NAME 丢弃仅发生在 Egern/QX（Disney 2、Hulu 1、Twitch 1、HBO 1、Netflix 1、Spotify 1）。
 - Portal：新增“网页(Web)”类别承载 Google；图标取 iTunes App Store 官方 artwork（HBO 取现行 Max 应用图标）。
-- 待办：NBA/Suno 以好友端实际日志验证后按需扩充 supplement。
+- NBA/Suno 为无上游的 supplement-only App，维持两条核心根域（2026-08-16 用户确认无需专门等待真机反馈）；如日后使用暴露缺失域名，按 supplement 政策追加。
