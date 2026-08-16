@@ -9,7 +9,8 @@ const PIPELINE = [
   { title: "build.py", text: "解析 / 转换 / 规范化 / 去重，异常即中止" },
   { title: "supplement", text: "只合并经 Surge 日志证实的上游缺口" },
   { title: "多客户端渲染", text: "classical ×4 + Egern YAML + QX filter；无法表达的类型显式丢弃并计数" },
-  { title: "稳定 raw URL", text: "主配置引用一次，自动保持更新" },
+  { title: "配置迁移", text: "Canonical Profile Intent → 六客户端候选配置，人工审核 + 真机验证" },
+  { title: "稳定 raw URL", text: "规则每日自动更新；配置人工维护后发布" },
 ];
 
 export default function About({ repo }: AboutProps) {

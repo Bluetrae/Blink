@@ -24,7 +24,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         className="hero-enter mx-auto mb-5 inline-block rounded-full border border-accent-soft bg-accent-soft px-3.5 py-1 text-[13px] font-semibold tracking-wide text-accent"
         style={{ animationDelay: "0ms" }}
       >
-        多客户端 App Rule-Set · 自动构建 · 稳定分发
+        多客户端规则与配置 · 自动构建 · 稳定分发
       </p>
       <h1
         className="hero-enter mx-auto max-w-3xl text-[clamp(2rem,5.2vw,3.25rem)] font-bold leading-[1.2] tracking-tight"
@@ -41,9 +41,9 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         className="hero-enter mx-auto mt-5 max-w-xl text-base text-mute"
         style={{ animationDelay: "140ms" }}
       >
-        Blink 每日从可信上游保守转换 App 专用规则，一份 canonical 规则渲染为
-        Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 六种输出。主配置只需引用一次，
-        之后由这里自动保持更新。
+        Blink 每日从可信上游保守转换 App 专用规则，渲染为 Surge / Shadowrocket / Loon / Stash /
+        Egern / Quantumult X 六种输出；同时把同一份配置意图迁移为六客户端候选配置（单订阅池、
+        占位符已内置），替换一条订阅即可复用。规则自动更新，配置人工维护、真机验证后发布。
       </p>
       <div className="hero-enter mt-7 flex justify-center gap-3" style={{ animationDelay: "210ms" }}>
         <span className="rotating-border inline-block rounded-full p-[1.5px]">
@@ -76,7 +76,8 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         <Stat value={String(appsCount)} label="Rule-Sets" />
         <Stat value={String(totalRules)} label="有效规则" />
         <Stat value="6 客户端" label="Surge · Shadowrocket · Loon · Stash · Egern · Quantumult X" />
-        <Stat value="每日 00:01" label="自动检查上游" />
+        <Stat value="6 候选配置" label="完整可导入 · 单订阅池 · 占位符内置" />
+        <Stat value="每日 00:01" label="规则自动检查上游" />
         <Stat value="审计准入" label="Repcz · SukkaW 优先" />
       </ul>
     </section>

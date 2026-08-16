@@ -23,6 +23,12 @@ byte-identical copies of the Surge output, while `Egern/<App>.yaml` and
 six inherit the provenance and license attribution of the corresponding
 `Surge/<App>.list` row without any additional upstream source.
 
+The candidate configs under `Profiles/` reference the same upstream rule
+URLs (no rule content is copied), and their General/DNS skeletons follow
+the layout of the [Repcz/Tool](https://github.com/Repcz/Tool) client
+templates (MIT License); policy-group semantics originate from the
+repository owner's own configuration.
+
 | Generated file | Upstream project | Upstream URL | Known license or project notice |
 | --- | --- | --- | --- |
 | `Surge/OKX.list` | v2fly/domain-list-community | https://github.com/v2fly/domain-list-community | MIT License |
