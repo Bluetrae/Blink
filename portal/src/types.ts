@@ -1,4 +1,4 @@
-export type ClientKey = "surge" | "loon" | "shadowrocket" | "stash" | "egern";
+export type ClientKey = "surge" | "loon" | "shadowrocket" | "stash" | "egern" | "quantumultx";
 
 export interface SourceInfo {
   author: string;

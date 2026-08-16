@@ -31,6 +31,7 @@ from renderers import (
     render_classical_body,
     render_egern_yaml,
     render_for_client,
+    render_quantumultx,
 )
 
 

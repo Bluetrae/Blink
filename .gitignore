@@ -7,6 +7,7 @@ Loon/*.tmp
 Shadowrocket/*.tmp
 Stash/*.tmp
 Egern/*.tmp
+QuantumultX/*.tmp
 .tmp-tests/
 portal/node_modules/
 portal/dist/

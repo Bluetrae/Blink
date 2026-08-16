@@ -57,6 +57,7 @@ CLIENTS = (
     ("shadowrocket", "Shadowrocket", ".list"),
     ("stash", "Stash", ".list"),
     ("egern", "Egern", ".yaml"),
+    ("quantumultx", "QuantumultX", ".list"),
 )
 
 HEADER_NAME = re.compile(r"^# 规则名称:\s*(.+?)\s*$")
@@ -132,14 +133,14 @@ def build(root: Path) -> dict:
         clients = {}
         for key, directory, suffix in CLIENTS:
             entry = {"file": f"{directory}/{stem}{suffix}", "rules": header_count}
-            if key == "egern":
-                egern_count = parse_header_count(root / entry["file"])
-                if egern_count > header_count:
+            if key in {"egern", "quantumultx"}:
+                client_count = parse_header_count(root / entry["file"])
+                if client_count > header_count:
                     raise PortalError(
-                        f"{app_name}: egern count {egern_count} exceeds canonical {header_count}"
+                        f"{app_name}: {key} count {client_count} exceeds canonical {header_count}"
                     )
-                entry["rules"] = egern_count
-                entry["dropped"] = header_count - egern_count
+                entry["rules"] = client_count
+                entry["dropped"] = header_count - client_count
             clients[key] = entry
         sources = app.get("sources") or []
         primary = next((item for item in sources if item.get("role") == "primary"), sources[0] if sources else {})

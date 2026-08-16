@@ -33,6 +33,11 @@
           "file": "Egern/OKX.yaml",
           "rules": 9,
           "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/OKX.list",
+          "rules": 9,
+          "dropped": 0
         }
       },
       "source": {
@@ -73,6 +78,11 @@
           "file": "Egern/WhatsApp.yaml",
           "rules": 11,
           "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/WhatsApp.list",
+          "rules": 11,
+          "dropped": 0
         }
       },
       "source": {
@@ -111,6 +121,11 @@
         },
         "egern": {
           "file": "Egern/LINE.yaml",
+          "rules": 20,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/LINE.list",
           "rules": 20,
           "dropped": 0
         }
@@ -154,6 +169,11 @@
           "file": "Egern/GitHub.yaml",
           "rules": 58,
           "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/GitHub.list",
+          "rules": 58,
+          "dropped": 0
         }
       },
       "source": {
@@ -192,6 +212,11 @@
         },
         "egern": {
           "file": "Egern/SafePal.yaml",
+          "rules": 2,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/SafePal.list",
           "rules": 2,
           "dropped": 0
         }
@@ -234,6 +259,11 @@
         },
         "egern": {
           "file": "Egern/PayPal.yaml",
+          "rules": 248,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/PayPal.list",
           "rules": 248,
           "dropped": 0
         }
@@ -282,6 +312,11 @@
           "file": "Egern/Netflix.yaml",
           "rules": 1157,
           "dropped": 1
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Netflix.list",
+          "rules": 1157,
+          "dropped": 1
         }
       },
       "source": {
@@ -322,6 +357,11 @@
         },
         "egern": {
           "file": "Egern/YouTube.yaml",
+          "rules": 14,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/YouTube.list",
           "rules": 14,
           "dropped": 0
         }
@@ -365,6 +405,11 @@
           "file": "Egern/X.yaml",
           "rules": 34,
           "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/X.list",
+          "rules": 34,
+          "dropped": 0
         }
       },
       "source": {
@@ -403,6 +448,11 @@
         },
         "egern": {
           "file": "Egern/Instagram.yaml",
+          "rules": 3,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Instagram.list",
           "rules": 3,
           "dropped": 0
         }
@@ -445,6 +495,11 @@
           "file": "Egern/Telegram.yaml",
           "rules": 14,
           "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Telegram.list",
+          "rules": 14,
+          "dropped": 0
         }
       },
       "source": {
@@ -483,6 +538,11 @@
         },
         "egern": {
           "file": "Egern/Threads.yaml",
+          "rules": 2,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Threads.list",
           "rules": 2,
           "dropped": 0
         }
@@ -525,6 +585,11 @@
         },
         "egern": {
           "file": "Egern/TikTok.yaml",
+          "rules": 81,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/TikTok.list",
           "rules": 81,
           "dropped": 0
         }
@@ -571,6 +636,11 @@
           "file": "Egern/Spotify.yaml",
           "rules": 20,
           "dropped": 1
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Spotify.list",
+          "rules": 20,
+          "dropped": 1
         }
       },
       "source": {
@@ -613,6 +683,11 @@
           "file": "Egern/AI.yaml",
           "rules": 50,
           "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/AI.list",
+          "rules": 50,
+          "dropped": 0
         }
       },
       "source": {
@@ -651,6 +726,11 @@
         },
         "egern": {
           "file": "Egern/ZABank.yaml",
+          "rules": 3,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/ZABank.list",
           "rules": 3,
           "dropped": 0
         }
@@ -693,6 +773,11 @@
           "file": "Egern/Steam.yaml",
           "rules": 20,
           "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Steam.list",
+          "rules": 20,
+          "dropped": 0
         }
       },
       "source": {
@@ -733,6 +818,11 @@
         },
         "egern": {
           "file": "Egern/APTV.yaml",
+          "rules": 26,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/APTV.list",
           "rules": 26,
           "dropped": 0
         }

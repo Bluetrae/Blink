@@ -2,7 +2,7 @@
 
 ## 项目目标
 
-自动生成个人使用的多客户端 App Rule-Sets：一份 source definition 与 canonical 规则，渲染为 Surge / Shadowrocket / Loon / Stash / Egern 五个客户端的输出（格式事实与架构决策见 `docs/MULTI_CLIENT_AUDIT.md`）。
+自动生成个人使用的多客户端 App Rule-Sets：一份 source definition 与 canonical 规则，渲染为 Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 六个客户端的输出（格式事实与架构决策见 `docs/MULTI_CLIENT_AUDIT.md`）。
 
 ## 规则与来源规范
 
@@ -10,12 +10,12 @@
 - 补充规则只能放在 `sources/supplement/`。`supplement` 只存放上游规则未覆盖、且通过 Surge 日志或实际使用确认需要补充的规则。
 - 不允许将上游已存在的规则重复放进 `supplement`；应先与选定上游比较，只加入真正缺失的规则。
 - `supplement` 文件按需创建；没有补充规则的 App 不需要空文件。
-- Generated `Surge/*.list`、`Loon/*.list`、`Shadowrocket/*.list`、`Stash/*.list`、`Egern/*.yaml` 不允许手工维护或修改；Surge / Loon / Shadowrocket / Stash 四个 classical 目录必须保持逐字节相同。
+- Generated `Surge/*.list`、`Loon/*.list`、`Shadowrocket/*.list`、`Stash/*.list`、`Egern/*.yaml`、`QuantumultX/*.list` 不允许手工维护或修改；Surge / Loon / Shadowrocket / Stash 四个 classical 目录必须保持逐字节相同。
 - 每个 App 默认使用 1 个 primary source，最多 1 个 supplemental source，除非有明确理由。
 - 不追求规则数量最大化，避免无意义吞入共享 CDN。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施规则不纳入本仓库，继续直接引用成熟上游。
-- 输出规则不带策略名：Surge / Shadowrocket 由主配置 `RULE-SET`、Loon 由 `[Remote Rule]`、Stash 由 `rule-providers` + `RULE-SET`、Egern 由 `rule_set.match` 在引用处指定策略。
-- 每个客户端渲染器只允许序列化该客户端可无损表达的规则；无法表达时必须显式丢弃并在构建报告计数（当前唯一降级项：PROCESS-NAME 对 Loon / Shadowrocket / Egern），禁止静默转换。
+- 输出规则不带策略名：Surge / Shadowrocket 由主配置 `RULE-SET`、Loon 由 `[Remote Rule]`、Stash 由 `rule-providers` + `RULE-SET`、Egern 由 `rule_set.match` 在引用处指定策略。Quantumult X 例外：filter 行尾必有策略字段，本仓库用字面占位符 `policy`，实际策略由 `[filter_remote]` 引用行的 `force-policy` 指定（QX 的 no-resolve 槽位无生产实证，渲染时统一省略并已记入 `docs/MULTI_CLIENT_AUDIT.md`）。
+- 每个客户端渲染器只允许序列化该客户端可无损表达的规则；无法表达时必须显式丢弃并在构建报告计数（当前唯一降级项：PROCESS-NAME 对 Loon / Shadowrocket / Egern / Quantumult X），禁止静默转换。
 
 ## Upstream Source Selection Policy
 

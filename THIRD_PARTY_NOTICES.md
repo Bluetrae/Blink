@@ -18,12 +18,10 @@ those available from the applicable upstream authors and licenses.
 
 The `Surge/<App>.list` table below is the canonical provenance record.
 `Loon/<App>.list`, `Shadowrocket/<App>.list`, and `Stash/<App>.list` are
-byte-identical copies of the Surge output, and `Egern/<App>.yaml` is rendered
-from the same canonical rule set; all five inherit the provenance and license
-attribution of the corresponding `Surge/<App>.list` row without any
-additional upstream source.
-
-## Generated Rule-Set provenance
+byte-identical copies of the Surge output, while `Egern/<App>.yaml` and
+`QuantumultX/<App>.list` are rendered from the same canonical rule set; all
+six inherit the provenance and license attribution of the corresponding
+`Surge/<App>.list` row without any additional upstream source.
 
 | Generated file | Upstream project | Upstream URL | Known license or project notice |
 | --- | --- | --- | --- |
@@ -57,6 +55,7 @@ this notice must be reviewed whenever a source is added or replaced.
 | --- | --- | --- |
 | `portal/public/favicon.svg` | https://www.deepseek.com/harness/favicon.svg | DeepSeek official logo asset; DeepSeek trademark, all rights reserved by DeepSeek. Used for browser-tab identification only and is not covered by this repository's terms. Replace with your own icon for any broader use. |
 | `docs/images/avatar.png` | https://github.com/Bluetrae.png | Personal GitHub avatar of the repository owner, circular-cropped for the README title. Owned by the repository owner; not covered by any third-party license. |
+| `portal/public/icons/*.jpg` | Apple App Store artwork (iTunes Search API) | Official app icons of Surge, Shadowrocket, Loon, Stash, Egern, and Quantumult X, downloaded from the App Store and used only to identify each supported client in the portal. Trademarks and icons belong to their respective owners; not covered by this repository's terms. |
 
 ## License handling principles
 

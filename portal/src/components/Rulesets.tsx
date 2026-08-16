@@ -5,6 +5,7 @@ import {
   CATEGORY_ORDER,
   CLIENT_TABS,
   clientFileUrl,
+  clientIcon,
   clientSnippet,
   sortedApps,
   sourceLine,
@@ -27,7 +28,7 @@ function AppCard({
   const snippet = clientSnippet(rawBase, app, client);
   const { copied, copy } = useCopy(snippet);
   const stat = app.clients[client];
-  const dropped = client === "egern" ? (stat.dropped ?? 0) : 0;
+  const dropped = client === "egern" || client === "quantumultx" ? (stat.dropped ?? 0) : 0;
   return (
     <Reveal className="h-full" delay={Math.min(index, 6) * 40}>
       <article
@@ -59,7 +60,7 @@ function AppCard({
         </div>
         {dropped > 0 && (
           <p className="rounded-lg border border-line bg-paper px-2 py-1 text-[11px] leading-relaxed text-mute">
-            ⚠️ {dropped} 条 PROCESS-NAME 无法在 Egern 无损表达，构建器已显式丢弃。
+            ⚠️ {dropped} 条 PROCESS-NAME 无法在 {client === "egern" ? "Egern" : "Quantumult X"} 无损表达，构建器已显式丢弃。
           </p>
         )}
         <p className="truncate text-xs text-mute" title={app.source.name || undefined}>
@@ -111,19 +112,26 @@ export default function Rulesets({ data }: { data: PortalData }) {
           </div>
         </Reveal>
         <Reveal>
-          <div className="mb-4 flex flex-wrap justify-center gap-2">
+          <div className="mb-4 flex flex-wrap justify-center gap-2.5">
             {CLIENT_TABS.map((tab) => (
               <button
                 key={tab.key}
                 type="button"
                 onClick={() => setClient(tab.key)}
                 title={tab.badge}
-                className={`rounded-full border px-4 py-1.5 text-[13.5px] transition ${
+                className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-[13.5px] font-medium transition ${
                   client === tab.key
-                    ? "border-accent bg-accent text-white"
-                    : "border-line bg-card text-mute hover:border-line-strong hover:text-ink"
+                    ? "border-accent bg-accent text-white shadow-sm"
+                    : "border-line bg-card text-mute hover:-translate-y-0.5 hover:border-line-strong hover:text-ink"
                 }`}
               >
+                <img
+                  src={clientIcon(tab.key)}
+                  alt=""
+                  width={18}
+                  height={18}
+                  className="h-[18px] w-[18px] rounded-[5px] object-cover"
+                />
                 {tab.label}
               </button>
             ))}

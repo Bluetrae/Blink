@@ -9,6 +9,12 @@ One renderer exists per truly different serialization format, not per client:
   also consume the classical file through ``rule_set.match``, but the YAML
   form is its native rule-set format and keeps USER-AGENT expressible while
   making the PROCESS-NAME downgrade explicit.
+- ``quantumultx``: Quantumult X filter lines (``HOST*`` / ``IP-CIDR`` /
+  ``IP6-CIDR`` / ``USER-AGENT``).  QX requires a policy field per line; every
+  production publisher emits a placeholder there because the main config's
+  ``force-policy`` overrides it.  PROCESS-NAME is not expressible and the
+  ``no-resolve`` option has no production-proven slot, so both are dropped
+  explicitly and reported by the caller.
 
 Renderers never invent semantics: any rule kind or option combination a
 client cannot express losslessly must either be dropped here and reported by
@@ -43,6 +49,7 @@ CLIENTS: dict[str, ClientTarget] = {
     "shadowrocket": ClientTarget("shadowrocket", "Shadowrocket", ".list", "classical"),
     "stash": ClientTarget("stash", "Stash", ".list", "classical"),
     "egern": ClientTarget("egern", "Egern", ".yaml", "egern-yaml"),
+    "quantumultx": ClientTarget("quantumultx", "QuantumultX", ".list", "quantumultx"),
 }
 
 EGERN_KEY_ORDER = (
@@ -55,6 +62,20 @@ EGERN_KEY_ORDER = (
     "user_agent_set",
     "url_regex_set",
 )
+
+# Quantumult X filter types for each canonical kind.  The placeholder policy
+# field is overridden by ``force-policy`` in the main config; the lowercase
+# literal ``policy`` mirrors the production convention and cannot be
+# mistaken for a real policy name.
+QUANTUMULTX_TYPES = {
+    "DOMAIN": "HOST",
+    "DOMAIN-SUFFIX": "HOST-SUFFIX",
+    "DOMAIN-KEYWORD": "HOST-KEYWORD",
+    "IP-CIDR": "IP-CIDR",
+    "IP-CIDR6": "IP6-CIDR",
+    "USER-AGENT": "USER-AGENT",
+}
+QUANTUMULTX_POLICY_PLACEHOLDER = "policy"
 
 
 def render_classical_body(rules: Iterable[object]) -> list[str]:
@@ -71,6 +92,32 @@ def render_classical(rules: Iterable[object], app_name: str) -> str:
     body = render_classical_body(rules)
     lines = [f"# 规则名称: {app_name}", f"# 规则统计: {len(body)}", "", *body]
     return "\n".join(lines) + "\n"
+
+
+def render_quantumultx(rules: Iterable[object], app_name: str) -> tuple[str, list[str]]:
+    """Serialize rules into Quantumult X filter lines.
+
+    Returns ``(text, dropped)``.  Dropped records every rule the format
+    cannot express (PROCESS-NAME) so the downgrade stays auditable.  The
+    ``no-resolve`` option has no production-proven slot in QX filter files
+    (Repcz / QuixoticHeart / blackmatrix7 all omit it), so IP options are
+    not serialized; this uniform behavior is documented in
+    docs/MULTI_CLIENT_AUDIT.md instead of being reported per line.
+    """
+    body: list[str] = []
+    dropped: list[str] = []
+    for rule in rules:
+        qx_type = QUANTUMULTX_TYPES.get(rule.kind)
+        if qx_type is None:
+            if rule.kind == "PROCESS-NAME":
+                dropped.append(f"{rule.kind},{rule.value}")
+                continue
+            raise RendererError(f"quantumultx cannot express rule kind {rule.kind!r}")
+        body.append(f"{qx_type},{rule.value},{QUANTUMULTX_POLICY_PLACEHOLDER}")
+    if not body:
+        raise RendererError("quantumultx output is empty after dropping unsupported rules")
+    lines = [f"# 规则名称: {app_name}", f"# 规则统计: {len(body)}", "", *body]
+    return "\n".join(lines) + "\n", dropped
 
 
 def render_egern_yaml(rules: Iterable[object], app_name: str) -> tuple[str, list[str]]:
@@ -137,4 +184,6 @@ def render_for_client(client: ClientTarget, rules: Iterable[object], app_name: s
         return render_classical(rules, app_name), []
     if client.renderer == "egern-yaml":
         return render_egern_yaml(rules, app_name)
+    if client.renderer == "quantumultx":
+        return render_quantumultx(rules, app_name)
     raise RendererError(f"unknown renderer {client.renderer!r} for client {client.key!r}")

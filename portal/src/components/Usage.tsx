@@ -1,6 +1,6 @@
 import { useMemo, useState, type ReactNode } from "react";
 import type { ClientKey, PortalData } from "../types";
-import { allSnippets, CLIENT_TABS, clientTab } from "../data";
+import { allSnippets, CLIENT_TABS, clientIcon, clientTab } from "../data";
 import CodeBlock from "./CodeBlock";
 import Reveal from "./Reveal";
 
@@ -30,6 +30,11 @@ const STEPS: Record<ClientKey, ReactNode[]> = {
     <>按你的匹配顺序放置 <code>rule_set</code> 条目，<code>default</code> 之前。</>,
     <>把 <code>policy</code> 换成你自己的策略组。</>,
   ],
+  quantumultx: [
+    <>打开 Quantumult X 配置，把下面整段复制进 <code>[filter_remote]</code> 段。</>,
+    <>一行一个 App；行尾的 <code>policy</code> 是占位符，实际策略由 <code>force-policy</code> 指定。</>,
+    <>把 <code>force-policy</code> 换成你自己的策略组，<code>update-interval</code> 控制更新周期。</>,
+  ],
 };
 
 export default function Usage({ data }: { data: PortalData }) {
@@ -43,22 +48,30 @@ export default function Usage({ data }: { data: PortalData }) {
         <Reveal>
           <div className="mx-auto mb-10 max-w-xl text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">接入你的客户端</h2>
-            <p className="mt-2.5 text-mute">同一套规则，五种客户端各自的最小引用方式。</p>
+            <p className="mt-2.5 text-mute">同一套规则，六种客户端各自的最小引用方式。</p>
           </div>
         </Reveal>
         <Reveal>
-          <div className="mb-6 flex flex-wrap justify-center gap-2">
+          <div className="mb-6 flex flex-wrap justify-center gap-2.5">
             {CLIENT_TABS.map((item) => (
               <button
                 key={item.key}
                 type="button"
                 onClick={() => setClient(item.key)}
-                className={`rounded-full border px-4 py-1.5 text-[13.5px] transition ${
+                title={item.badge}
+                className={`inline-flex items-center gap-2 rounded-full border px-5 py-2 text-[13.5px] font-medium transition ${
                   client === item.key
-                    ? "border-accent bg-accent text-white"
-                    : "border-line bg-card text-mute hover:border-line-strong hover:text-ink"
+                    ? "border-accent bg-accent text-white shadow-sm"
+                    : "border-line bg-card text-mute hover:-translate-y-0.5 hover:border-line-strong hover:text-ink"
                 }`}
               >
+                <img
+                  src={clientIcon(item.key)}
+                  alt=""
+                  width={18}
+                  height={18}
+                  className="h-[18px] w-[18px] rounded-[5px] object-cover"
+                />
                 {item.label}
               </button>
             ))}

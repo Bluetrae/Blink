@@ -42,7 +42,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         style={{ animationDelay: "140ms" }}
       >
         Rulink 每日从可信上游保守转换 App 专用规则，一份 canonical 规则渲染为
-        Surge / Shadowrocket / Loon / Stash / Egern 五种输出。主配置只需引用一次，
+        Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 六种输出。主配置只需引用一次，
         之后由这里自动保持更新。
       </p>
       <div className="hero-enter mt-7 flex justify-center gap-3" style={{ animationDelay: "210ms" }}>
@@ -75,7 +75,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
       >
         <Stat value={String(appsCount)} label="Rule-Sets" />
         <Stat value={String(totalRules)} label="有效规则" />
-        <Stat value="5 客户端" label="Surge · Shadowrocket · Loon · Stash · Egern" />
+        <Stat value="6 客户端" label="Surge · Shadowrocket · Loon · Stash · Egern · Quantumult X" />
         <Stat value="每日 00:01" label="自动检查上游" />
         <Stat value="审计准入" label="Repcz · SukkaW 优先" />
       </ul>

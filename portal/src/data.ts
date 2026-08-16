@@ -64,7 +64,18 @@ export const CLIENT_TABS: ClientTab[] = [
     fileLabel: "Egern 配置 · rules",
     note: "使用本仓库渲染的 Egern YAML 规则集；PROCESS-NAME 无法无损表达，由构建器显式丢弃并计数。",
   },
+  {
+    key: "quantumultx",
+    label: "Quantumult X",
+    badge: "INI · [filter_remote]",
+    fileLabel: "Quantumult X 配置 · [filter_remote]",
+    note: "QX 规则行尾的 policy 为占位符，实际策略由引用行的 force-policy 指定；PROCESS-NAME 无法表达，由构建器显式丢弃并计数。",
+  },
 ];
+
+export function clientIcon(key: ClientKey): string {
+  return `/icons/${key}.jpg`;
+}
 
 export const CLIENT_KEYS: ClientKey[] = CLIENT_TABS.map((tab) => tab.key);
 
@@ -151,6 +162,8 @@ export function clientSnippet(rawBase: string, app: AppEntry, client: ClientKey)
       ].join("\n");
     case "egern":
       return ["rules:", "  - rule_set:", `      match: ${url}`, `      policy: ${app.policy}`].join("\n");
+    case "quantumultx":
+      return `${url}, tag=${app.name}, force-policy=${app.policy}, update-interval=172800, opt-parser=false, enabled=true`;
   }
 }
 
@@ -186,6 +199,11 @@ export function allSnippets(data: PortalData, client: ClientKey): string {
       out.push(`      match: ${clientFileUrl(data.raw_base, app, client)}`);
       out.push(`      policy: ${app.policy}`);
     }
+    return out.join("\n");
+  }
+  if (client === "quantumultx") {
+    out.push("[filter_remote]");
+    for (const app of sortedApps(data.apps)) out.push(clientSnippet(data.raw_base, app, client));
     return out.join("\n");
   }
   for (const group of groupedApps(data)) {

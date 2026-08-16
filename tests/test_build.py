@@ -129,6 +129,44 @@ class BuildTests(unittest.TestCase):
                 (root / "Egern" / "Test.yaml").read_text(encoding="utf-8"),
                 "# 规则名称: Test\n# 规则统计: 1\n\ndomain_suffix_set:\n- example.com\n",
             )
+            # Quantumult X gets its own filter lines with a placeholder policy.
+            self.assertEqual(
+                (root / "QuantumultX" / "Test.list").read_text(encoding="utf-8"),
+                "# 规则名称: Test\n# 规则统计: 1\n\nHOST-SUFFIX,example.com,policy\n",
+            )
+
+    def test_quantumultx_maps_kinds_and_drops_unexpressible(self) -> None:
+        location = build.SourceLocation("test", 1, ("Test",))
+        rules = [
+            build.Rule("DOMAIN", "api.example.com", (), location),
+            build.Rule("DOMAIN-SUFFIX", "example.com", (), location),
+            build.Rule("DOMAIN-KEYWORD", "example", (), location),
+            build.Rule("IP-CIDR", "192.0.2.0/24", ("no-resolve",), location),
+            build.Rule("IP-CIDR6", "2001:db8::/64", ("no-resolve",), location),
+            build.Rule("USER-AGENT", "Example App*", (), location),
+            build.Rule("PROCESS-NAME", "com.example.app", (), location),
+        ]
+        text, dropped = build.render_quantumultx(rules, "Test")
+        self.assertEqual(dropped, ["PROCESS-NAME,com.example.app"])
+        self.assertEqual(
+            text.splitlines()[3:],
+            [
+                "HOST,api.example.com,policy",
+                "HOST-SUFFIX,example.com,policy",
+                "HOST-KEYWORD,example,policy",
+                "IP-CIDR,192.0.2.0/24,policy",
+                "IP6-CIDR,2001:db8::/64,policy",
+                "USER-AGENT,Example App*,policy",
+            ],
+        )
+        self.assertEqual(text.splitlines()[1], "# 规则统计: 6")
+
+    def test_quantumultx_output_never_silently_empty(self) -> None:
+        location = build.SourceLocation("test", 1, ("Test",))
+        with self.assertRaisesRegex(build.RendererError, "empty"):
+            build.render_quantumultx(
+                [build.Rule("PROCESS-NAME", "com.example.app", (), location)], "Test"
+            )
 
     def test_egern_yaml_covers_all_expressible_kinds(self) -> None:
         with TemporaryDirectory() as temporary_directory:

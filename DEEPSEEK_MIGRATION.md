@@ -28,6 +28,7 @@
   - Loon：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Loon/`
   - Stash：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Stash/`
   - Egern：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Egern/`
+  - Quantumult X：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/`
 
 遇到信息不一致时，按以下顺序判断：
 
@@ -84,7 +85,7 @@ origin: https://github.com/Bluetrae/Rulink.git
 - exclude 是 manifest 的显式、可审计决策，不能用猜测替代 source audit。
 - surge-rule-set 来源可通过类型级 exclude（`ip-asn:*`、`url-regex:*`）显式丢弃 v1 不输出的规则类型；被丢弃的行数出现在构建报告的 `skipped_excluded` 字段。
 - 上游完全缺失的 App 可声明 `sources: []`（supplement-only），全部规则来自 `sources/supplement/<App>.list`；最终输出仍必须非空。
-- **多客户端渲染（v1.1）**：canonical 规则经 `scripts/renderers.py` 渲染 —— `classical` 供 Surge / Loon / Shadowrocket / Stash（四目录逐字节相同），`egern-yaml` 供 Egern。构建报告 `clients` 字段给出每客户端规则数与显式 dropped 列表；`PROCESS-NAME` 对 Loon / Shadowrocket / Egern 显式丢弃，绝不静默。Surge 向后兼容门禁：`Surge/*.list` 路径与字节自 v1 起不变，重构建后 `git diff Surge/` 必须为空。
+- **多客户端渲染（v1.1）**：canonical 规则经 `scripts/renderers.py` 渲染 —— `classical` 供 Surge / Loon / Shadowrocket / Stash（四目录逐字节相同）、`egern-yaml` 供 Egern、`quantumultx` 供 Quantumult X（`HOST*`/`IP-CIDR`/`IP6-CIDR`/`USER-AGENT` 行，行尾占位符 `policy` 由 `[filter_remote]` 的 `force-policy` 覆盖；no-resolve 槽位无生产实证故统一省略，见 `docs/MULTI_CLIENT_AUDIT.md`）。构建报告 `clients` 字段给出每客户端规则数与显式 dropped 列表；`PROCESS-NAME` 对 Loon / Shadowrocket / Egern / Quantumult X 显式丢弃，绝不静默。Surge 向后兼容门禁：`Surge/*.list` 路径与字节自 v1 起不变，重构建后 `git diff Surge/` 必须为空。
 - 构建必须保守、可读、错误显式；不能为了成功生成而扩大规则范围或篡改规则语义。
 
 ## 已启用的 App 与 primary source
@@ -97,7 +98,7 @@ origin: https://github.com/Bluetrae/Rulink.git
 - 单元测试入口：`.\.venv\Scripts\python.exe -m unittest discover -s tests -v`
 - 单 App 只读预检优先使用：`.\.venv\Scripts\python.exe scripts\build.py --app <App>`。
 - 全量写入仅使用：`.\.venv\Scripts\python.exe scripts\build.py --write`，并应在确认范围后执行。
-- GitHub Actions workflow 名称为 `Update Rule-Sets`，支持手动运行和每日北京时间约 00:01 运行（GitHub 定时任务不保证准点，实际执行可能延后）。只有生成目录（`Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Egern/`）或门户数据发生变化时，workflow 才会以 `github-actions[bot]` 创建生成提交。
+- GitHub Actions workflow 名称为 `Update Rule-Sets`，支持手动运行和每日北京时间约 00:01 运行（GitHub 定时任务不保证准点，实际执行可能延后）。只有生成目录（`Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Egern/`、`QuantumultX/`）或门户数据发生变化时，workflow 才会以 `github-actions[bot]` 创建生成提交。
 - 每日运行全自动、无人值守：有实质变化才提交、无变化零提交；构建失败（上游 404/超时/格式不合 v1）时保留旧输出、暂停更新，等待人工处理且无时限；新 App 与 supplement 永远由人工审计添加。
 
 对新增 App，优先做定向预检；全量构建放在 GitHub Actions、每日更新、发布前健康检查或用户明确要求的全仓库验证中。构建写入必须保持原子性：所有选定 App 都成功后才更新输出。
