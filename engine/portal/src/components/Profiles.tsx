@@ -24,7 +24,7 @@ export default function Profiles({ data }: { data: PortalData }) {
           <div className="mx-auto mb-8 max-w-xl text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">配置文件</h2>
             <p className="mt-2.5 text-mute">
-              把同一份配置意图（策略组 / 规则引用 / 通用设置）迁移为六客户端候选配置。
+              作者推荐的最小配置模板供选择使用。
               人工维护、真机验证后发布，不随规则每日更新。
             </p>
           </div>

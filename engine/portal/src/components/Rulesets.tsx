@@ -131,7 +131,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
         </Reveal>
         <Reveal>
           <div className="mb-4 flex justify-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent-soft bg-accent-soft px-4 py-1.5 text-[13px] font-medium text-accent">
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent-soft bg-accent-soft px-5 py-2 text-[13.5px] font-bold tracking-wide text-accent shadow-sm">
               <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
               先选择你要导入的客户端，再复制接入
             </span>
