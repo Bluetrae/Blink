@@ -39,7 +39,7 @@ export default function Nav({ repo }: NavProps) {
             height={24}
             className="h-6 w-6 rounded-full border border-line"
           />
-          Rulink
+          Blink
         </a>
         <nav className="ml-auto hidden gap-5 sm:flex" aria-label="主导航">
           {NAV_LINKS.map((link) => (

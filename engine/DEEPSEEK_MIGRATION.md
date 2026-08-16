@@ -1,6 +1,6 @@
 # DeepSeek Harness 迁移说明
 
-> 用途：让新的 Agent 在不导入或伪造旧聊天会话的前提下，安全、准确地接手 Rulink。
+> 用途：让新的 Agent 在不导入或伪造旧聊天会话的前提下，安全、准确地接手 Blink。
 >
 > 本文件是项目上下文摘要，不是完整聊天记录，也不是运行时配置文件。它不应包含 API key、token、订阅地址、密码、2FA、证书或其他敏感信息。
 
@@ -11,7 +11,7 @@
 推荐的首次提示：
 
 ```text
-你正在接手 Rulink 项目。请先只读地阅读 DEEPSEEK_MIGRATION.md 指定的文件，
+你正在接手 Blink 项目。请先只读地阅读 DEEPSEEK_MIGRATION.md 指定的文件，
 并执行 Git 与项目状态审计。把当前 Git 工作区和 engine/sources/apps.yaml 视为最高
 事实来源；若与历史聊天或摘要冲突，以当前文件和 Git 历史为准。先报告你的理解，
 在我明确确认前不要修改文件。
@@ -19,16 +19,16 @@
 
 ## 项目身份与事实优先级
 
-- 项目名称：Rulink
-- GitHub：<https://github.com/Bluetrae/Rulink>
-- 本地工作区：`C:\Users\<用户名>\Projects\Rulink`
+- 项目名称：Blink
+- GitHub：<https://github.com/Bluetrae/Blink>
+- 本地工作区：`C:\Users\<用户名>\Projects\Blink`
 - Raw Rule-Set 基础地址（v1.1 起）：
-  - Surge：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/`（自 v1 起不变，用户主配置依赖此路径）
-  - Shadowrocket：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Shadowrocket/`
-  - Loon：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Loon/`
-  - Stash：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Stash/`
-  - Egern：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/Egern/`
-  - Quantumult X：`https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/`
+  - Surge：`https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/`（自 v1 起不变，用户主配置依赖此路径）
+  - Shadowrocket：`https://raw.githubusercontent.com/Bluetrae/Blink/main/Shadowrocket/`
+  - Loon：`https://raw.githubusercontent.com/Bluetrae/Blink/main/Loon/`
+  - Stash：`https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/`
+  - Egern：`https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/`
+  - Quantumult X：`https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/`
 
 遇到信息不一致时，按以下顺序判断：
 
@@ -55,13 +55,13 @@
 本文件创建前的已验证 Git 基线是：
 
 ```text
-4402b1a refactor: rename repository to Rulink
-origin: https://github.com/Bluetrae/Rulink.git
+4402b1a refactor: rename repository to Blink
+origin: https://github.com/Bluetrae/Blink.git
 ```
 
 该基线仅作迁移记录。每次接手都必须重新执行只读 `git status`、`git log` 和必要的测试；不要假设此处的提交仍是最新状态。
 
-仓库已从 `WProxyRules` 改名为 `Rulink`。项目文档、origin 和 public raw URL 应使用 `Bluetrae/Rulink`，不得再新增旧名称或旧 raw URL。
+仓库曾用名 `WProxyRules`、`Rulink`，现为 **`Blink`**。项目文档、origin 和 public raw URL 应使用 `Bluetrae/Blink`；旧 `Bluetrae/Rulink` 路径（含 raw）由 GitHub 301 重定向到新地址，但不得再新增旧名称引用。
 
 ## 项目目标
 
@@ -116,7 +116,7 @@ origin: https://github.com/Bluetrae/Rulink.git
 完整对话若需要保留，应存放在仓库外的私密本地目录，例如：
 
 ```text
-C:\Users\<用户名>\Documents\AI-Archives\Rulink\
+C:\Users\<用户名>\Documents\AI-Archives\Blink\
 ```
 
 不要将完整聊天记录提交到公开仓库，也不要在每次新 session 自动交给模型。只有在需要追溯某项决策时，才提供经过筛选和脱敏的相关片段。

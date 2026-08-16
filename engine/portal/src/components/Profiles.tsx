@@ -111,7 +111,7 @@ export default function Profiles({ data }: { data: PortalData }) {
             </ol>
             <p className="mt-4 text-[13px] leading-relaxed text-mute">
               配置以单一订阅池组织：所有策略组与地区筛选只依赖一条订阅，替换后即可复用；
-              规则全部通过远程 URL 引用（Rulink 规则 + 成熟上游基础设施），不复制规则内容。
+              规则全部通过远程 URL 引用（Blink 规则 + 成熟上游基础设施），不复制规则内容。
             </p>
           </div>
         </Reveal>

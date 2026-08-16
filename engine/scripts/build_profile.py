@@ -36,7 +36,7 @@ CLIENTS = {
 }
 
 BUILTIN_POLICIES = {"DIRECT", "REJECT", "REJECT-DROP", "Sub"}
-RULINK_RAW = "https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge"
+BLINK_RAW = "https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge"
 
 # Placeholders the templates may carry.  Each renderer fills the ones that
 # make sense for its client; leftover markers fail the build loudly.
@@ -214,7 +214,7 @@ def _render_surge(intent: dict) -> dict[str, str]:
         else:
             rules.append(f"RULE-SET,{entry['url']},{policy}{suffix}")
     for app_name, app in intent["apps"].items():
-        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
     rules.append("FINAL,Final,dns-failed")
     return {"__POLICY_GROUPS__": "\n".join(lines), "__RULES__": "\n".join(rules)}
@@ -247,7 +247,7 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
         else:
             rules.append(f"RULE-SET,{entry['url']},{policy}")
     for app_name, app in intent["apps"].items():
-        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
     rules.append("FINAL,Final")
     subscription = [
@@ -291,7 +291,7 @@ def _render_loon(intent: dict) -> dict[str, str]:
         else:
             remote_rules.append(f"{entry['url']}, policy = {policy}, tag = {entry['name']}, enabled = true")
     for app_name, app in intent["apps"].items():
-        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         remote_rules.append(f"{source}, policy = {app['policy']}, tag = {app_name}, enabled = true")
     local_rules.append("FINAL,Final")
     subscription = ["# 在 App 内添加订阅节点；地区组通过 [Remote Filter] 正则筛选全部节点。"]
@@ -370,7 +370,7 @@ def _render_stash(intent: dict) -> dict[str, str]:
             provider_lines.append("    interval: 86400")
             rules.append(f"  - RULE-SET,{key},{policy}")
     for app_name, app in intent["apps"].items():
-        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         key = provider_name(app_name)
         provider_lines.append(f"  {key}:")
         provider_lines.append("    type: http")
@@ -433,7 +433,7 @@ def _render_egern(intent: dict) -> dict[str, str]:
             rules.append(f"    match: {entry['url']}")
             rules.append(f"    policy: {policy}")
     for app_name, app in intent["apps"].items():
-        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append("- rule_set:")
         rules.append(f"    match: {source}")
         rules.append(f"    policy: {app['policy']}")
@@ -487,7 +487,7 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
                 " update-interval=172800, opt-parser=false, enabled=true"
             )
     for app_name, app in intent["apps"].items():
-        source = app.get("qx_source") or f"https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/{app_name}.list"
+        source = app.get("qx_source") or f"https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/{app_name}.list"
         remote_rules.append(
             f"{source}, tag={app_name}, force-policy={qx_policy(app['policy'])},"
             " update-interval=172800, opt-parser=false, enabled=true"

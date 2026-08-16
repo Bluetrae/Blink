@@ -1,4 +1,4 @@
-# Rulink Multi-Client Audit（Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X）
+# Blink Multi-Client Audit（Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X）
 
 > 审计日期：2026-08。目的：在动手改代码前，确认六个客户端的规则格式事实，
 > 决定 Shared Output、Renderer 数量与 Output Architecture。本文件是
@@ -36,7 +36,7 @@
 - 引用：主配置 `[Rule]` 段 `RULE-SET,<URL>,<policy>[,pre-matching][,extended-matching]`，policy 在引用处。
 - 注释：官方 profile format 文档：`#`、`;`、`//` 行注释，`//` 支持行内注释。
 - 更新/缓存：App 管理，规则集文件内无 TTL。
-- 无损性：Rulink 现行 7 种类型全支持（含 USER-AGENT、PROCESS-NAME，Repcz Surge 文件携带二者生产验证）。
+- 无损性：Blink 现行 7 种类型全支持（含 USER-AGENT、PROCESS-NAME，Repcz Surge 文件携带二者生产验证）。
 
 ### Shadowrocket（LOWERTOP 手册 + 生产实证；无公开官方手册站点）
 
@@ -181,7 +181,7 @@ QuantumultX/<App>.list   # QX filter 行（行尾占位符 policy，force-policy
 
 ## 9. Surge Backward Compatibility Plan
 
-1. `Surge/<App>.list` 路径与字节**保持完全不变**：`RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/<App>.list,<策略>` 持续有效；jsDelivr 镜像说明不变。
+1. `Surge/<App>.list` 路径与字节**保持完全不变**：`RULE-SET,https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/<App>.list,<策略>` 持续有效；jsDelivr 镜像说明不变。
 2. 重构验收门禁：重构建后 `git diff Surge/` 必须为空（golden-byte 检查）。
 3. Surge 路径从不移动 → 无需 alias / 重复发布路径 / staged migration。
 

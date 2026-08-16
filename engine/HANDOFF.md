@@ -1,16 +1,16 @@
-# Rulink 项目交接状态
+# Blink 项目交接状态
 
 ## 项目名称
 
-Rulink
+Blink
 
 ## GitHub
 
-https://github.com/Bluetrae/Rulink
+https://github.com/Bluetrae/Blink
 
 ## 本地路径
 
-`C:\Users\<用户名>\Projects\Rulink`
+`C:\Users\<用户名>\Projects\Blink`
 
 ## 当前状态
 
@@ -38,7 +38,7 @@ https://github.com/Bluetrae/Rulink
 - `engine/sources/supplement/` 目前含 `ZABank.list`（3 条根域名，supplement-only）与 `APTV.list`（26 条自用直播源，supplement-only，已注释自用）；其他 App 无 supplement 文件，这是预期状态
 - 2026-08-15：完成用户 Surge 主配置与仓库输出的完整对照；脱敏结论见 `SOURCE_AUDITS.md`「用户 Surge 主配置对照」一节（要点：ZA Bank 9 条手工行、OKX 7 条手工行可删；Telegram 主配置保持现状；Steam 已新增纳入；APTV 已迁入为自用 supplement）
 - `engine/portal/` 已随多客户端扩展完成重构（原为用户另一工作流窗口的开发内容，多客户端落地后经用户明确指示更新）：规则集与「接入你的客户端」两个区域都提供 Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 客户端切换，按钮带各客户端官方 App Store 图标（`engine/portal/public/icons/*.jpg`，来源与商标归属已记入 `THIRD_PARTY_NOTICES.md`「Repository assets」），每个 App 卡片按所选客户端给出对应引用片段（`RULE-SET` / `[Remote Rule]` / `rule-providers` + `RULE-SET` / `rule_set` / `[filter_remote]`），Egern 与 Quantumult X 卡片对显式丢弃的 PROCESS-NAME 给出提示；`engine/scripts/gen_portal_stats.py` 的 `stats.json` schema 扩展了每 App 的 `clients` 字段（egern / quantumultx 含 `dropped` 计数）。后续修改 portal 请保持与其他区域同等的显式路径暂存习惯
-- 门户已上线：https://bluetrae.github.io/Rulink/（仓库 About 已填 Website；GitHub Pages 采用 GitHub Actions 构建，`pages.yml` 随 `main` 推送自动部署）。主题为时间制：08:00–22:00 浅色、22:00–08:00 深色，无手动切换按钮；配色对齐 DeepSeek Harness 设计令牌；favicon 使用 DeepSeek 官方图标（已记录于 `THIRD_PARTY_NOTICES.md`「Repository assets」）。页面特性：六客户端切换（规则集卡片与接入区，按钮带官方 App 图标）、悬浮胶囊导航（滚动玻璃化）、首屏错峰入场、CTA 旋转描边、移动端汉堡菜单、流式标题；README 预览图位于 `engine/docs/images/portal-preview.png`（多客户端规则集区块视图，随门户变更同步更新）
+- 门户已上线：https://bluetrae.github.io/Blink/（仓库 About 已填 Website；GitHub Pages 采用 GitHub Actions 构建，`pages.yml` 随 `main` 推送自动部署）。主题为时间制：08:00–22:00 浅色、22:00–08:00 深色，无手动切换按钮；配色对齐 DeepSeek Harness 设计令牌；favicon 使用 DeepSeek 官方图标（已记录于 `THIRD_PARTY_NOTICES.md`「Repository assets」）。页面特性：六客户端切换（规则集卡片与接入区，按钮带官方 App 图标）、悬浮胶囊导航（滚动玻璃化）、首屏错峰入场、CTA 旋转描边、移动端汉堡菜单、流式标题；README 预览图位于 `engine/docs/images/portal-preview.png`（多客户端规则集区块视图，随门户变更同步更新）
 
 ## 项目目标
 
@@ -58,8 +58,8 @@ https://github.com/Bluetrae/Rulink
 
 - **Phase 1 已完成**：`engine/sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 六客户端 Base Template（`engine/sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `engine/scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染六端候选配置）+ `Profiles/` 六个候选配置（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
 - 已确认决策：每客户端完整候选配置（占位符）；地区组保持 Surge select 意图；Emby 类个人组公开版移除；Egern url-test 按 Needs Verification 处理（当前 ADAPTED 为 select 并已注释标注）；`Profiles/` 提交进仓库。
-- 待办：portal 新增「配置文件」板块（六客户端候选配置展示 / 下载 / 复制 + 订阅占位符替换提示）；Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Rulink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
-- **仓库改名计划（用户已定）**：Profile 层内容完善后，仓库由 `Rulink` 改名为 **`Blink`**（GitHub：`Bluetrae/Blink`）。改名时需系统性迁移：仓库内所有 URL/文案引用（raw base、portal `stats.json` 的 repo/raw_base、`build.py`/`gen_portal_stats.py`/`build_profile.py` 常量、README/AGENTS/HANDOFF/审计文档、workflow、portal 文案）、GitHub Pages 地址（`bluetrae.github.io/Rulink/` → `bluetrae.github.io/Blink/`，Pages 无旧地址重定向，需在 README/portal 同步更新）、以及用户 Surge 主配置中的 Rulink raw URL（GitHub 会对旧 raw 路径做重定向，但应尽快替换为 Blink 地址）。改名动作本身由用户在 GitHub Settings 完成（或 gh CLI），本仓库只负责内容侧迁移。
+- 待办：portal 新增「配置文件」板块（六客户端候选配置展示 / 下载 / 复制 + 订阅占位符替换提示）；Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Blink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
+- **仓库改名（已执行内容侧，GitHub 侧待用户操作）**：仓库已由 `Rulink` 更名为 **`Blink`**（GitHub：`Bluetrae/Blink`），全部仓库内 URL/文案/生成数据已迁移为 Blink。GitHub 会对旧 `Bluetrae/Rulink` 路径（含 raw）做 301 重定向；但 GitHub Pages 旧地址 `bluetrae.github.io/Rulink/` 无重定向，新地址为 `bluetrae.github.io/Blink/`。用户 Surge 主配置中的旧 Rulink raw URL 依赖 301 重定向可用，建议尽快替换为 Blink 地址。待办：用户确认在 GitHub Settings 完成 Rename 后推送本提交并更新本地 origin 为 `Bluetrae/Blink`。
 
 ## 已确定的规则源结论
 

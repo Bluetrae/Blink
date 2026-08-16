@@ -1,14 +1,14 @@
 <div align="center">
 
-# <img src="engine/docs/images/avatar.png" width="36" height="36" alt="" style="vertical-align:middle" /> Rulink
+# <img src="engine/docs/images/avatar.png" width="36" height="36" alt="" style="vertical-align:middle" /> Blink
 
 **多客户端 App Rule-Set · 自动构建 · 稳定分发**
 
-[![Update Rule-Sets](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Rulink/actions/workflows/update.yml)
-[![Rule-Sets](https://img.shields.io/badge/Rule--Sets-6_clients-2f81f7?style=flat-square)](https://github.com/Bluetrae/Rulink/tree/main/Surge)
-[![Portal](https://img.shields.io/badge/Portal-网页入口-4d6bfe?style=flat-square)](https://bluetrae.github.io/Rulink/)
-[![Updated](https://img.shields.io/github/last-commit/Bluetrae/Rulink/main?label=updated&style=flat-square)](https://github.com/Bluetrae/Rulink/commits/main)
-[![Stars](https://img.shields.io/github/stars/Bluetrae/Rulink?label=stars&style=flat-square)](https://github.com/Bluetrae/Rulink/stargazers)
+[![Update Rule-Sets](https://github.com/Bluetrae/Blink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Blink/actions/workflows/update.yml)
+[![Rule-Sets](https://img.shields.io/badge/Rule--Sets-6_clients-2f81f7?style=flat-square)](https://github.com/Bluetrae/Blink/tree/main/Surge)
+[![Portal](https://img.shields.io/badge/Portal-网页入口-4d6bfe?style=flat-square)](https://bluetrae.github.io/Blink/)
+[![Updated](https://img.shields.io/github/last-commit/Bluetrae/Blink/main?label=updated&style=flat-square)](https://github.com/Bluetrae/Blink/commits/main)
+[![Stars](https://img.shields.io/github/stars/Bluetrae/Blink?label=stars&style=flat-square)](https://github.com/Bluetrae/Blink/stargazers)
 
 </div>
 
@@ -29,7 +29,7 @@
 在 `[Rule]` 段、`FINAL` 之前加一行（policy 由你的主配置指定）：
 
 ```ini
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/<App>.list,<你的策略>
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/<App>.list,<你的策略>
 ```
 
 Shadowrocket 语法与 Surge 相同，也可直接用 `Shadowrocket/` 目录 URL。
@@ -39,7 +39,7 @@ Shadowrocket 语法与 Surge 相同，也可直接用 `Shadowrocket/` 目录 URL
 在 `[Remote Rule]` 段添加一行：
 
 ```ini
-https://raw.githubusercontent.com/Bluetrae/Rulink/main/Loon/<App>.list, policy=<你的策略>, tag=<App>, enabled=true
+https://raw.githubusercontent.com/Bluetrae/Blink/main/Loon/<App>.list, policy=<你的策略>, tag=<App>, enabled=true
 ```
 
 ### Stash
@@ -52,7 +52,7 @@ rule-providers:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Stash/<App>.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/<App>.list
     interval: 86400
 rules:
   - RULE-SET,<App>,<你的策略>
@@ -63,7 +63,7 @@ rules:
 ```yaml
 rules:
   - rule_set:
-      match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Egern/<App>.yaml
+      match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/<App>.yaml
       policy: <你的策略>
 ```
 
@@ -74,21 +74,21 @@ rules:
 在 `[filter_remote]` 段添加一行；行尾的 `policy` 是占位符，实际策略由 `force-policy` 指定：
 
 ```ini
-https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/<App>.list, tag=<App>, force-policy=<你的策略>, update-interval=172800, opt-parser=false, enabled=true
+https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, tag=<App>, force-policy=<你的策略>, update-interval=172800, opt-parser=false, enabled=true
 ```
 
 > [!IMPORTANT]
 > **规则顺序**：域名类规则集必须放在 IP 类规则（如 China IPv4）**之前**。自上而下匹配的客户端（Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X）都只有 IP 类规则与 `FINAL` 才触发 DNS 解析；顺序颠倒会让待代理域名被提前解析，失去 DNS 防污染保护。
 
-<sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Rulink@main/Surge/<App>.list`。</sub>
+<sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Blink@main/Surge/<App>.list`。</sub>
 
 ## 🌐 网页入口
 
-无需域名即可访问：[`https://bluetrae.github.io/Rulink/`](https://bluetrae.github.io/Rulink/)。切换顶部客户端标签（Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X）即可查看每个 App 的规则数与对应接入行，一键复制。
+无需域名即可访问：[`https://bluetrae.github.io/Blink/`](https://bluetrae.github.io/Blink/)。切换顶部客户端标签（Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X）即可查看每个 App 的规则数与对应接入行，一键复制。
 
 <div align="center">
-  <a href="https://bluetrae.github.io/Rulink/">
-    <img src="engine/docs/images/portal-preview.png" alt="Rulink 门户预览" width="720" />
+  <a href="https://bluetrae.github.io/Blink/">
+    <img src="engine/docs/images/portal-preview.png" alt="Blink 门户预览" width="720" />
   </a>
 </div>
 

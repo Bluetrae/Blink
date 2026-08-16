@@ -1,6 +1,6 @@
 {
-  "repo": "https://github.com/Bluetrae/Rulink",
-  "raw_base": "https://raw.githubusercontent.com/Bluetrae/Rulink/main",
+  "repo": "https://github.com/Bluetrae/Blink",
+  "raw_base": "https://raw.githubusercontent.com/Bluetrae/Blink/main",
   "apps": [
     {
       "name": "OKX",

@@ -24,8 +24,8 @@ from pathlib import Path
 
 import yaml
 
-REPO = "https://github.com/Bluetrae/Rulink"
-RAW_BASE = "https://raw.githubusercontent.com/Bluetrae/Rulink/main"
+REPO = "https://github.com/Bluetrae/Blink"
+RAW_BASE = "https://raw.githubusercontent.com/Bluetrae/Blink/main"
 
 # Display-only portal metadata.  Source logic lives in the manifest; this
 # mapping only groups apps for the portal and suggests a policy label for the

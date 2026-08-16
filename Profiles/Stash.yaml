@@ -1,5 +1,5 @@
 # ============================================================
-# Rulink 候选配置 · Stash —— 人工维护层，不参与每日自动更新
+# Blink 候选配置 · Stash —— 人工维护层，不参与每日自动更新
 # 导入前：将订阅占位符替换为你的订阅链接。
 # 通用骨架参考 Repcz/Tool（MIT）。
 # 本文件由 engine/scripts/build_profile.py 生成；修改请编辑
@@ -119,37 +119,37 @@ rule-providers:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/YouTube.list
     interval: 86400
   X:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/X.list
     interval: 86400
   Instagram:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Instagram.list
     interval: 86400
   Threads:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Threads.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Threads.list
     interval: 86400
   Telegram:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Telegram.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Telegram.list
     interval: 86400
   AI:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/AI.list
     interval: 86400
   Google:
     type: http
@@ -161,31 +161,31 @@ rule-providers:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/GitHub.list
     interval: 86400
   OKX:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/OKX.list
     interval: 86400
   PayPal:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/PayPal.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/PayPal.list
     interval: 86400
   SafePal:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/SafePal.list
     interval: 86400
   ZABank:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/ZABank.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/ZABank.list
     interval: 86400
   AppleMusic:
     type: http
@@ -197,43 +197,43 @@ rule-providers:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/APTV.list
     interval: 86400
   TikTok:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/TikTok.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/TikTok.list
     interval: 86400
   Netflix:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Netflix.list
     interval: 86400
   Spotify:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Spotify.list
     interval: 86400
   Steam:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Steam.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Steam.list
     interval: 86400
   WhatsApp:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/WhatsApp.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/WhatsApp.list
     interval: 86400
   LINE:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/LINE.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/LINE.list
     interval: 86400
 
 rules:

@@ -9,7 +9,7 @@ import Usage from "./components/Usage";
 import About from "./components/About";
 import Footer from "./components/Footer";
 
-const FALLBACK_REPO = "https://github.com/Bluetrae/Rulink";
+const FALLBACK_REPO = "https://github.com/Bluetrae/Blink";
 
 export default function App() {
   useTimedTheme();
@@ -48,7 +48,7 @@ export default function App() {
               {error} · 请直接查看{" "}
               <a
                 className="text-accent underline underline-offset-2"
-                href="https://github.com/Bluetrae/Rulink"
+                href="https://github.com/Bluetrae/Blink"
                 target="_blank"
                 rel="noopener noreferrer"
               >

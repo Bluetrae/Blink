@@ -2,7 +2,7 @@
 
 ## Purpose and scope
 
-Rulink is a personal-use repository for building and distributing multi-client
+Blink is a personal-use repository for building and distributing multi-client
 App Rule-Sets (Surge, Shadowrocket, Loon, Stash, Egern) from reviewed public
 sources. It is provided for learning, personal configuration maintenance, and
 rule-format automation.
@@ -45,7 +45,7 @@ outputs is responsible for:
 
 Generated Rule-Sets may contain or be derived from third-party public rule
 sources. Those sources remain subject to their respective authors' terms,
-licenses, notices, and availability. Rulink does not grant permission to
+licenses, notices, and availability. Blink does not grant permission to
 use, copy, modify, or redistribute upstream material beyond what the relevant
 rightsholders allow.
 

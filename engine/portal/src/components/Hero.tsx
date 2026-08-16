@@ -6,7 +6,7 @@ interface HeroProps {
 }
 
 const EXAMPLE_LINE =
-  "RULE-SET,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list,Proxy";
+  "RULE-SET,https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/YouTube.list,Proxy";
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
@@ -41,7 +41,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         className="hero-enter mx-auto mt-5 max-w-xl text-base text-mute"
         style={{ animationDelay: "140ms" }}
       >
-        Rulink 每日从可信上游保守转换 App 专用规则，一份 canonical 规则渲染为
+        Blink 每日从可信上游保守转换 App 专用规则，一份 canonical 规则渲染为
         Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 六种输出。主配置只需引用一次，
         之后由这里自动保持更新。
       </p>
@@ -65,7 +65,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         <CodeBlock file="Surge 主配置 · [Rule]" copyText={EXAMPLE_LINE}>
           <span className="text-white/40"># 一行接入，策略名由你自己决定{"\n"}</span>
           <span className="text-[#8ab4ff]">RULE-SET</span>
-          ,https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list,
+          ,https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/YouTube.list,
           <span className="text-[#7ee2a8]">Proxy</span>
         </CodeBlock>
       </div>

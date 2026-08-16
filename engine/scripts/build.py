@@ -185,7 +185,7 @@ FETCH_TIMEOUT_SECONDS = 20
 
 
 def default_fetch_text(url: str) -> str:
-    request = urllib.request.Request(url, headers={"User-Agent": "Rulink/1"})
+    request = urllib.request.Request(url, headers={"User-Agent": "Blink/1"})
     last_network_error: Exception | None = None
     for attempt in range(1, FETCH_ATTEMPTS + 1):
         try:

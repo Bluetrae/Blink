@@ -2,7 +2,7 @@
 
 ## Scope
 
-Rulink contains original build code, tests, workflow configuration, and
+Blink contains original build code, tests, workflow configuration, and
 documentation, together with generated multi-client Rule-Sets derived from
 publicly available upstream rule sources.
 
@@ -10,7 +10,7 @@ This file records the known upstream provenance and license or project notice
 for each generated Rule-Set. It is an attribution and compliance reference,
 not legal advice and not a replacement for the full upstream terms.
 
-`Surge/*.list` files are generated artifacts. Rulink does not claim to
+`Surge/*.list` files are generated artifacts. Blink does not claim to
 relicense upstream rules, nor does this repository grant permissions beyond
 those available from the applicable upstream authors and licenses.
 
@@ -41,8 +41,8 @@ six inherit the provenance and license attribution of the corresponding
 | `Surge/Spotify.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/AI.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/Steam.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
-| `Surge/ZABank.list` | Rulink repo-maintained supplement | `engine/sources/supplement/ZABank.list` | No upstream source; original repo-maintained rules |
-| `Surge/APTV.list` | Rulink repo-maintained supplement (self-use) | `engine/sources/supplement/APTV.list` | Personal rules migrated from the user's private repository; no third-party license |
+| `Surge/ZABank.list` | Blink repo-maintained supplement | `engine/sources/supplement/ZABank.list` | No upstream source; original repo-maintained rules |
+| `Surge/APTV.list` | Blink repo-maintained supplement (self-use) | `engine/sources/supplement/APTV.list` | Personal rules migrated from the user's private repository; no third-party license |
 
 The exact source URL, format, and selection rationale for each App are kept in
 [`engine/sources/apps.yaml`](engine/sources/apps.yaml). Upstream projects may change their
@@ -68,7 +68,7 @@ this notice must be reviewed whenever a source is added or replaced.
   personal use, review the full terms of every applicable upstream source.
 - The Apache, MIT, GPL, AGPL, or other terms of one source do not automatically
   apply to files derived from another source.
-- A future license for Rulink original code and documentation must clearly
+- A future license for Blink original code and documentation must clearly
   exclude upstream material and generated Rule-Sets unless a separate license
   audit establishes that broader licensing is appropriate.
 

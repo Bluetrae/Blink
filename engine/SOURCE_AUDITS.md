@@ -1,4 +1,4 @@
-# Rulink Source Audits
+# Blink Source Audits
 
 > 每个 App 的独立 source audit 记录：候选来源、证据、结论与选择理由，按 App 分节集中保存。
 > 最终的精简理由同步写入 `engine/sources/apps.yaml` 对应 App 的 `note` 字段；本文件是完整审计档案。
@@ -135,7 +135,7 @@ supplemental：**不需要**。
 
 ### Steam
 
-审计日期：2026-08-15。触发原因：用户 Surge 主配置仍引用 blackmatrix7 Steam，是当时唯一未被 Rulink 覆盖的非国内 App。以下 URL 与正文均为当日直接抓取验证（Node.js fetch；GitHub API 本轮被限流，维护时间沿用同日对同仓库的实测）。
+审计日期：2026-08-15。触发原因：用户 Surge 主配置仍引用 blackmatrix7 Steam，是当时唯一未被 Blink 覆盖的非国内 App。以下 URL 与正文均为当日直接抓取验证（Node.js fetch；GitHub API 本轮被限流，维护时间沿用同日对同仓库的实测）。
 
 | 候选 | 作者 | URL | 格式 | Surge 原生 | 规模/覆盖 | 维护证据 | 过宽/无关条目 | 格式风险 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -160,14 +160,14 @@ supplemental：**不需要**。
 
 对用户 iOS 端主配置 `[Rule]` 段与仓库输出做了一次完整对照。本记录已脱敏，不含主配置中的个人域名与订阅相关条目。
 
-- **ZA Bank**：主配置有 9 条手工 `DOMAIN`（za.group / zainvest.group / zajourney.com 子域）。Rulink `ZABank.list` 的三条根域名完整覆盖，可删除 9 条手工行。
-- **SafePal**：主配置只有 `isafepal.com`；Rulink `SafePal.list` 额外补上 `safepal.com`，替换更完整。
-- **OKX**：主配置为 blackmatrix7 OKX + 7 条手工补充（okx-dns/dns1/dns2、okx.ac、okx.cab、okx.com.cdn.cloudflare.net、xlayer.tech）。Rulink `OKX.list` 全部覆盖，可整体替换并删除手工行。
-- **Telegram**：主配置为 `PROTOCOL,MTProto` + Repcz Telegram/Telegram_NoIP 双列表（含 IP 覆盖）。Rulink `Telegram.list` 仅为 SukkaW 核心域名，覆盖较窄 → 主配置**保持现状**；Rulink Telegram.list 供需要最小域名集的场景使用。
-- **Steam**：主配置引用 blackmatrix7 Steam；本次审计后 Rulink 已新增 `Steam.list`（Repcz），可替换。
+- **ZA Bank**：主配置有 9 条手工 `DOMAIN`（za.group / zainvest.group / zajourney.com 子域）。Blink `ZABank.list` 的三条根域名完整覆盖，可删除 9 条手工行。
+- **SafePal**：主配置只有 `isafepal.com`；Blink `SafePal.list` 额外补上 `safepal.com`，替换更完整。
+- **OKX**：主配置为 blackmatrix7 OKX + 7 条手工补充（okx-dns/dns1/dns2、okx.ac、okx.cab、okx.com.cdn.cloudflare.net、xlayer.tech）。Blink `OKX.list` 全部覆盖，可整体替换并删除手工行。
+- **Telegram**：主配置为 `PROTOCOL,MTProto` + Repcz Telegram/Telegram_NoIP 双列表（含 IP 覆盖）。Blink `Telegram.list` 仅为 SukkaW 核心域名，覆盖较窄 → 主配置**保持现状**；Blink Telegram.list 供需要最小域名集的场景使用。
+- **Steam**：主配置引用 blackmatrix7 Steam；本次审计后 Blink 已新增 `Steam.list`（Repcz），可替换。
 - **Apple Music / Apple 全套**：主配置直引 Repcz AppleMusic + SukkaW apple_cn/apple_cdn + 手工 Apple 补充；按既定政策暂缓，保持现状。
-- **Google/Gmail、WeChat、DouYin、Emby、sub-store 等**：属基础设施、国内 App 或个人影音项，不在 Rulink 范围，保持现状。
-- **APTV（自用直播源，原计划名 Live）**：2026-08-15 已迁入 Rulink（supplement-only，26 条，注释自用，迁自用户私有仓库）；主配置可改为引用 `Surge/APTV.list`，策略仍由主配置指定。
+- **Google/Gmail、WeChat、DouYin、Emby、sub-store 等**：属基础设施、国内 App 或个人影音项，不在 Blink 范围，保持现状。
+- **APTV（自用直播源，原计划名 Live）**：2026-08-15 已迁入 Blink（supplement-only，26 条，注释自用，迁自用户私有仓库）；主配置可改为引用 `Surge/APTV.list`，策略仍由主配置指定。
 - **Reject / LAN / domestic / CDN / China IP 等基础设施**：继续直接引用成熟上游，不纳入本仓库。
 
 supplemental：不适用（本身即无 primary 上游）。

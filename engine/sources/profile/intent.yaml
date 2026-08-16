@@ -1,4 +1,4 @@
-# Rulink Canonical Profile Intent —— Phase 1: Policy Groups + Rule References
+# Blink Canonical Profile Intent —— Phase 1: Policy Groups + Rule References
 #
 # 本文件是配置文件层的唯一语义源（人工维护，绝不进入 update.yml 每日任务）。
 # 普适性原则：
@@ -87,7 +87,7 @@ policy_groups:
     tolerance: 80
     hidden: true
 
-# App → 策略组 路由意图。默认 source 为 Rulink 已发布 URL；个别 App 显式指定上游。
+# App → 策略组 路由意图。默认 source 为 Blink 已发布 URL；个别 App 显式指定上游。
 apps:
   YouTube:   {policy: Daily}
   X:         {policy: Daily}
