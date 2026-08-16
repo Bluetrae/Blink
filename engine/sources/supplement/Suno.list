@@ -1,0 +1,6 @@
+# Suno 补充规则：2026-08-16 friend-scenario source audit 确认 Repcz、SukkaW、
+# blackmatrix7、v2fly、MetaCubeX、RuleGo 均无 Suno 专项规则，本 App 仅由 supplement 提供。
+# 两条根域覆盖 Suno 官网、移动 App 与 API（studio-api.suno.ai 等均在此域下）。
+# 标注“待日志验证”：请按实际使用日志补充确认的缺失域名。
+DOMAIN-SUFFIX,suno.com
+DOMAIN-SUFFIX,suno.ai

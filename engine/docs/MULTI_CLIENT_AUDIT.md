@@ -146,8 +146,8 @@
 - **A. 可共享同一 output**：Surge / Shadowrocket / Loon / Stash 共享**逐字节相同**的 classical `.list`。
 - **B. 引用方式不同、Rule-Set 内容相同**：上述四客户端；Egern 也能直接消费同一 classical 文件（`rule_set.match`）。
 - **C. 真正需要不同 serialization**：**Egern 自有 YAML schema**（可选但采纳）与 **Quantumult X 自有 filter 格式**（必需：QX 不消费 policy-free classical）。共 3 种序列化格式覆盖 6 客户端。
-- **D. 无法无损表达的 Canonical Type**：只有 **PROCESS-NAME**（Loon ❌、Shadowrocket ❌、Egern ❌、Quantumult X ❌）。QX 另外无法表达 no-resolve 选项（生产源全部省略）。
-- **E. 必须 capability fail/downgrade 的项目**：PROCESS-NAME → 对 Loon/Shadowrocket/Egern/Quantumult X **显式降级丢弃**（构建报告计数，绝不 silent）。受影响 App：Netflix（1 条）、Spotify（1 条）。Egern 的 `no_resolve: true` 为 set 级：全部 IP 规则带 no-resolve 时输出，全不带时省略（语义等价），**混合时显式构建失败**。QX 的 no-resolve 省略为全类型统一行为，记入本文档而非逐行报告。
+- **D. 无法无损表达的 Canonical Type**：对 **Egern ❌、Quantumult X ❌** 只有 **PROCESS-NAME**。Loon 与 Shadowrocket 无此类型，但 §7 classical 渲染器的逐字节一致性要求保留该行（客户端忽略未知规则类型），不属于序列化降级。QX 另外无法表达 no-resolve 选项（生产源全部省略）。
+- **E. 必须 capability fail/downgrade 的项目**：PROCESS-NAME → 对 Egern / Quantumult X **显式降级丢弃**（构建报告计数，绝不 silent）。受影响 App：Netflix（1 条）、Spotify（1 条）、Disney（2 条）、Hulu（1 条）、Twitch（1 条）、HBO（1 条）。Egern 的 `no_resolve: true` 为 set 级：全部 IP 规则带 no-resolve 时输出，全不带时省略（语义等价），**混合时显式构建失败**。QX 的 no-resolve 省略为全类型统一行为，记入本文档而非逐行报告。
 
 ## 6. Shared Output Feasibility
 

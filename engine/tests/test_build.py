@@ -102,6 +102,16 @@ class BuildTests(unittest.TestCase):
                 "ZABank",
                 "APTV",
                 "Steam",
+                "Disney",
+                "ParamountPlus",
+                "Hulu",
+                "PrimeVideo",
+                "HBO",
+                "Twitch",
+                "Facebook",
+                "Google",
+                "NBA",
+                "Suno",
             },
         )
         for app_name, app in manifest["apps"].items():

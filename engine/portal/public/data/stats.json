@@ -387,7 +387,7 @@
         "name": "Repcz-Tool",
         "format": "surge-rule-set"
       },
-      "note": "Repcz is selected because its actively refreshed native Surge list keeps a compact set of core YouTube, video, image, API, and country-domain coverage. Its focused scope is preferred over larger lists whose extra entries do not provide confirmed value for this personal Rule-Set."
+      "note": "Repcz is selected because its actively refreshed native Surge list keeps a compact set of core YouTube, video, image, API, and country-domain coverage. Its focused scope is preferred over larger lists whose extra entries do not provide confirmed value for this personal Rule-Set. The DOMAIN-SUFFIX,youtube.com entry also covers YouTube TV (tv.youtube.com), so no separate YouTube TV app is needed for the friend usage scenario."
     },
     {
       "name": "X",
@@ -869,6 +869,491 @@
         "format": ""
       },
       "note": "APTV (planned as \"Live\") is the user's personal live-streaming source, watched through the APTV frontend app. It is supplement-only by design: the rules (self-use, annotated in the supplement file) were migrated from the user's private repository on 2026-08-15, contain no subscription URLs or tokens, and are not upstream-audited. Others reusing this repository should replace or remove these rules."
+    },
+    {
+      "name": "Disney",
+      "category": "Media",
+      "emoji": "🏰",
+      "icon": "app-icons/Disney.jpg",
+      "self_use": false,
+      "policy": "Media",
+      "file": "Surge/Disney.list",
+      "rules": 174,
+      "types": {
+        "DOMAIN-SUFFIX": 172,
+        "PROCESS-NAME": 2
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Disney.list",
+          "rules": 174
+        },
+        "loon": {
+          "file": "Loon/Disney.list",
+          "rules": 174
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Disney.list",
+          "rules": 174
+        },
+        "stash": {
+          "file": "Stash/Disney.list",
+          "rules": 174
+        },
+        "egern": {
+          "file": "Egern/Disney.yaml",
+          "rules": 172,
+          "dropped": 2
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Disney.list",
+          "rules": 172,
+          "dropped": 2
+        }
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its actively refreshed native Surge Disney list covers Disney+ streaming together with the Disney family brands (ABC, ESPN, National Geographic). PROCESS-NAME entries are dropped explicitly for Egern/Quantumult X and counted in the build report; the byte- identical classical output retains the line, which Loon and Shadowrocket simply ignore because the type does not exist there. No supplement is justified without a confirmed gap."
+    },
+    {
+      "name": "ParamountPlus",
+      "category": "Media",
+      "emoji": "🎞️",
+      "icon": "app-icons/ParamountPlus.jpg",
+      "self_use": false,
+      "policy": "Media",
+      "file": "Surge/ParamountPlus.list",
+      "rules": 10,
+      "types": {
+        "DOMAIN": 4,
+        "DOMAIN-SUFFIX": 5,
+        "USER-AGENT": 1
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/ParamountPlus.list",
+          "rules": 10
+        },
+        "loon": {
+          "file": "Loon/ParamountPlus.list",
+          "rules": 10
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/ParamountPlus.list",
+          "rules": 10
+        },
+        "stash": {
+          "file": "Stash/ParamountPlus.list",
+          "rules": 10
+        },
+        "egern": {
+          "file": "Egern/ParamountPlus.yaml",
+          "rules": 10,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/ParamountPlus.list",
+          "rules": 10,
+          "dropped": 0
+        }
+      },
+      "source": {
+        "author": "blackmatrix7",
+        "name": "blackmatrix7-ios_rule_script",
+        "format": "surge-rule-set"
+      },
+      "note": "The 2026-08-16 audit found blackmatrix7 to be the only dedicated Paramount+ source (Repcz, SukkaW, v2fly, and MetaCubeX have none). Its Surge-native list covers paramountplus.com plus CBS streaming hosts and a focused USER-AGENT rule. It is about 14 months old, but the domains are stable; revisit if usage reveals missing hosts."
+    },
+    {
+      "name": "Hulu",
+      "category": "Media",
+      "emoji": "💚",
+      "icon": "app-icons/Hulu.jpg",
+      "self_use": false,
+      "policy": "Media",
+      "file": "Surge/Hulu.list",
+      "rules": 59,
+      "types": {
+        "DOMAIN": 1,
+        "DOMAIN-SUFFIX": 57,
+        "PROCESS-NAME": 1
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Hulu.list",
+          "rules": 59
+        },
+        "loon": {
+          "file": "Loon/Hulu.list",
+          "rules": 59
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Hulu.list",
+          "rules": 59
+        },
+        "stash": {
+          "file": "Stash/Hulu.list",
+          "rules": 59
+        },
+        "egern": {
+          "file": "Egern/Hulu.yaml",
+          "rules": 58,
+          "dropped": 1
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Hulu.list",
+          "rules": 58,
+          "dropped": 1
+        }
+      },
+      "source": {
+        "author": "blackmatrix7",
+        "name": "blackmatrix7-ios_rule_script",
+        "format": "surge-rule-set"
+      },
+      "note": "blackmatrix7 is selected because its Surge-native Hulu list (US and JP scope) is the freshest dedicated source: the v2fly dataset is unchanged since 2022 and Repcz/SukkaW publish no standalone Hulu Rule-Set. The single PROCESS-NAME entry is dropped explicitly for Egern/Quantumult X and counted in the build report; the classical output retains the line for Loon/Shadowrocket, which ignore the unsupported type."
+    },
+    {
+      "name": "PrimeVideo",
+      "category": "Media",
+      "emoji": "📦",
+      "icon": "app-icons/PrimeVideo.jpg",
+      "self_use": false,
+      "policy": "Media",
+      "file": "Surge/PrimeVideo.list",
+      "rules": 16,
+      "types": {
+        "DOMAIN": 9,
+        "DOMAIN-SUFFIX": 6,
+        "DOMAIN-KEYWORD": 1
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/PrimeVideo.list",
+          "rules": 16
+        },
+        "loon": {
+          "file": "Loon/PrimeVideo.list",
+          "rules": 16
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/PrimeVideo.list",
+          "rules": 16
+        },
+        "stash": {
+          "file": "Stash/PrimeVideo.list",
+          "rules": 16
+        },
+        "egern": {
+          "file": "Egern/PrimeVideo.yaml",
+          "rules": 16,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/PrimeVideo.list",
+          "rules": 16,
+          "dropped": 0
+        }
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its actively refreshed native Surge list keeps core Prime Video domains plus exact, distribution-specific CloudFront and Akamai host entries, so no shared CDN namespace is swallowed. blackmatrix7 is older and adds a broader keyword; no supplement is justified without a confirmed upstream gap."
+    },
+    {
+      "name": "HBO",
+      "category": "Media",
+      "emoji": "🍿",
+      "icon": "app-icons/HBO.jpg",
+      "self_use": false,
+      "policy": "Media",
+      "file": "Surge/HBO.list",
+      "rules": 46,
+      "types": {
+        "DOMAIN-SUFFIX": 45,
+        "PROCESS-NAME": 1
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/HBO.list",
+          "rules": 46
+        },
+        "loon": {
+          "file": "Loon/HBO.list",
+          "rules": 46
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/HBO.list",
+          "rules": 46
+        },
+        "stash": {
+          "file": "Stash/HBO.list",
+          "rules": 46
+        },
+        "egern": {
+          "file": "Egern/HBO.yaml",
+          "rules": 45,
+          "dropped": 1
+        },
+        "quantumultx": {
+          "file": "QuantumultX/HBO.list",
+          "rules": 45,
+          "dropped": 1
+        }
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its actively refreshed native Surge list covers the HBO Max brand (hbomax.com and the current max.com) plus HBO-specific Akamai and CloudFront hosts. The two generic AWS API Gateway region suffixes are excluded explicitly: they would otherwise route unrelated AWS services, and the exclusion stays auditable in this manifest."
+    },
+    {
+      "name": "Twitch",
+      "category": "Media",
+      "emoji": "🔴",
+      "icon": "app-icons/Twitch.jpg",
+      "self_use": false,
+      "policy": "Media",
+      "file": "Surge/Twitch.list",
+      "rules": 22,
+      "types": {
+        "DOMAIN-SUFFIX": 8,
+        "DOMAIN-KEYWORD": 1,
+        "PROCESS-NAME": 1,
+        "IP-CIDR": 11,
+        "IP-CIDR6": 1
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Twitch.list",
+          "rules": 22
+        },
+        "loon": {
+          "file": "Loon/Twitch.list",
+          "rules": 22
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Twitch.list",
+          "rules": 22
+        },
+        "stash": {
+          "file": "Stash/Twitch.list",
+          "rules": 22
+        },
+        "egern": {
+          "file": "Egern/Twitch.yaml",
+          "rules": 21,
+          "dropped": 1
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Twitch.list",
+          "rules": 21,
+          "dropped": 1
+        }
+      },
+      "source": {
+        "author": "blackmatrix7",
+        "name": "blackmatrix7-ios_rule_script",
+        "format": "surge-rule-set"
+      },
+      "note": "blackmatrix7 is selected because its Surge-native list combines Twitch domains, a keyword, and no-resolve IP ranges (IPv4 and IPv6) into the most complete coverage. v2fly is fresher (2026-05) but domain-only, and Repcz/SukkaW publish no dedicated Twitch Rule-Set. The PROCESS-NAME entry is dropped explicitly for Egern/Quantumult X and counted in the build report; the classical output retains the line for Loon/ Shadowrocket, which ignore the unsupported type."
+    },
+    {
+      "name": "Facebook",
+      "category": "Social",
+      "emoji": "📘",
+      "icon": "app-icons/Facebook.jpg",
+      "self_use": false,
+      "policy": "Proxy",
+      "file": "Surge/Facebook.list",
+      "rules": 580,
+      "types": {
+        "DOMAIN-SUFFIX": 545,
+        "IP-CIDR": 35
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Facebook.list",
+          "rules": 580
+        },
+        "loon": {
+          "file": "Loon/Facebook.list",
+          "rules": 580
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Facebook.list",
+          "rules": 580
+        },
+        "stash": {
+          "file": "Stash/Facebook.list",
+          "rules": 580
+        },
+        "egern": {
+          "file": "Egern/Facebook.yaml",
+          "rules": 580,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Facebook.list",
+          "rules": 580,
+          "dropped": 0
+        }
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its actively refreshed native Surge list keeps the widest current Facebook domain coverage, including the anti- typosquatting variants that are community-standard practice (the v2fly dataset carries the same kind of entries). No supplement is justified without a confirmed upstream gap."
+    },
+    {
+      "name": "Google",
+      "category": "Web",
+      "emoji": "🔍",
+      "icon": "app-icons/Google.jpg",
+      "self_use": false,
+      "policy": "Proxy",
+      "file": "Surge/Google.list",
+      "rules": 25,
+      "types": {
+        "DOMAIN-SUFFIX": 21,
+        "DOMAIN-KEYWORD": 2,
+        "IP-CIDR": 2
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Google.list",
+          "rules": 25
+        },
+        "loon": {
+          "file": "Loon/Google.list",
+          "rules": 25
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Google.list",
+          "rules": 25
+        },
+        "stash": {
+          "file": "Stash/Google.list",
+          "rules": 25
+        },
+        "egern": {
+          "file": "Egern/Google.yaml",
+          "rules": 25,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Google.list",
+          "rules": 25,
+          "dropped": 0
+        }
+      },
+      "source": {
+        "author": "Repcz",
+        "name": "Repcz-Tool",
+        "format": "surge-rule-set"
+      },
+      "note": "Repcz is selected because its actively refreshed native Surge list is a compact core for Google search and Gmail: DOMAIN-KEYWORD,google covers google.com and googleusercontent.com, and DOMAIN-KEYWORD,gmail covers gmail.com and googlemail.com. Unlike the Instagram keyword case, the google keyword is retained deliberately because it is the backbone of coverage and real third-party collisions are negligible. Its youtube.com entries deduplicate against the YouTube Rule-Set."
+    },
+    {
+      "name": "NBA",
+      "category": "Media",
+      "emoji": "🏀",
+      "icon": "app-icons/NBA.jpg",
+      "self_use": false,
+      "policy": "Media",
+      "file": "Surge/NBA.list",
+      "rules": 2,
+      "types": {
+        "DOMAIN-SUFFIX": 2
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/NBA.list",
+          "rules": 2
+        },
+        "loon": {
+          "file": "Loon/NBA.list",
+          "rules": 2
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/NBA.list",
+          "rules": 2
+        },
+        "stash": {
+          "file": "Stash/NBA.list",
+          "rules": 2
+        },
+        "egern": {
+          "file": "Egern/NBA.yaml",
+          "rules": 2,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/NBA.list",
+          "rules": 2,
+          "dropped": 0
+        }
+      },
+      "source": {
+        "author": "",
+        "name": "",
+        "format": ""
+      },
+      "note": "The 2026-08-16 friend-scenario audit found no NBA rules in Repcz, SukkaW, blackmatrix7, v2fly, MetaCubeX, or RuleGo, so this app is supplement-only: two root domains (nba.com, nba.net) cover the official site and the NBA app (api/cdn/stats subdomains live under nba.com). Marked log-verification-pending; extend only with confirmed usage logs."
+    },
+    {
+      "name": "Suno",
+      "category": "AI",
+      "emoji": "🎶",
+      "icon": "app-icons/Suno.jpg",
+      "self_use": false,
+      "policy": "AI",
+      "file": "Surge/Suno.list",
+      "rules": 2,
+      "types": {
+        "DOMAIN-SUFFIX": 2
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Suno.list",
+          "rules": 2
+        },
+        "loon": {
+          "file": "Loon/Suno.list",
+          "rules": 2
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Suno.list",
+          "rules": 2
+        },
+        "stash": {
+          "file": "Stash/Suno.list",
+          "rules": 2
+        },
+        "egern": {
+          "file": "Egern/Suno.yaml",
+          "rules": 2,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Suno.list",
+          "rules": 2,
+          "dropped": 0
+        }
+      },
+      "source": {
+        "author": "",
+        "name": "",
+        "format": ""
+      },
+      "note": "The 2026-08-16 friend-scenario audit found no Suno rules in any audited source, so this app is supplement-only: two root domains (suno.com, suno.ai) cover the web app, mobile app, and studio API. Marked log-verification-pending; extend only with confirmed usage logs."
     }
   ]
 }

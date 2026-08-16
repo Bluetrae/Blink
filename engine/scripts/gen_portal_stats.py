@@ -45,12 +45,22 @@ PORTAL_META = {
     "X": {"category": "Social", "emoji": "𝕏", "policy": "Proxy", "icon": "app-icons/X.jpg"},
     "Instagram": {"category": "Social", "emoji": "📷", "policy": "Proxy", "icon": "app-icons/Instagram.jpg"},
     "Threads": {"category": "Social", "emoji": "🧵", "policy": "Proxy", "icon": "app-icons/Threads.jpg"},
+    "Facebook": {"category": "Social", "emoji": "📘", "policy": "Proxy", "icon": "app-icons/Facebook.jpg"},
     "YouTube": {"category": "Media", "emoji": "▶️", "policy": "Media", "icon": "app-icons/YouTube.jpg"},
     "Netflix": {"category": "Media", "emoji": "🎬", "policy": "Media", "icon": "app-icons/Netflix.jpg"},
     "TikTok": {"category": "Media", "emoji": "🎵", "policy": "Proxy", "icon": "app-icons/TikTok.jpg"},
     "Spotify": {"category": "Media", "emoji": "🎧", "policy": "Proxy", "icon": "app-icons/Spotify.jpg"},
     "APTV": {"category": "Media", "emoji": "📺", "policy": "Media", "icon": "app-icons/APTV.jpg", "self_use": True},
+    "Disney": {"category": "Media", "emoji": "🏰", "policy": "Media", "icon": "app-icons/Disney.jpg"},
+    "ParamountPlus": {"category": "Media", "emoji": "🎞️", "policy": "Media", "icon": "app-icons/ParamountPlus.jpg"},
+    "PrimeVideo": {"category": "Media", "emoji": "📦", "policy": "Media", "icon": "app-icons/PrimeVideo.jpg"},
+    "Hulu": {"category": "Media", "emoji": "💚", "policy": "Media", "icon": "app-icons/Hulu.jpg"},
+    "HBO": {"category": "Media", "emoji": "🍿", "policy": "Media", "icon": "app-icons/HBO.jpg"},
+    "Twitch": {"category": "Media", "emoji": "🔴", "policy": "Media", "icon": "app-icons/Twitch.jpg"},
+    "NBA": {"category": "Media", "emoji": "🏀", "policy": "Media", "icon": "app-icons/NBA.jpg"},
     "AI": {"category": "AI", "emoji": "🤖", "policy": "Proxy", "icon": "app-icons/AI.jpg"},
+    "Suno": {"category": "AI", "emoji": "🎶", "policy": "AI", "icon": "app-icons/Suno.jpg"},
+    "Google": {"category": "Web", "emoji": "🔍", "policy": "Proxy", "icon": "app-icons/Google.jpg"},
 }
 
 CLIENTS = (

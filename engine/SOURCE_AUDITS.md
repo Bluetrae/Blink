@@ -10,7 +10,7 @@
 - 构建器 v1 格式边界（下文各 App 的“格式风险”据此标注）：
   - `v2fly-domain-list`：`domain`/`full`/`keyword` 映射为 Surge `DOMAIN-SUFFIX`/`DOMAIN`/`DOMAIN-KEYWORD`；regexp 与 `@!` 否定属性直接构建失败；带 `@attribute` 的条目默认被跳过（除非 manifest 显式 include）；`include` 必须在 include_policy 显式 allow/deny，否则构建失败。
   - `surge-rule-set`（严格白名单）：仅接受无策略名的 `DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR`、`IP-CIDR6`；IP 仅允许额外 `no-resolve`。`IP-ASN`、`URL-REGEX`、带策略名等会导致构建失败。
-  - 多客户端输出边界（v1.1，见 `engine/docs/MULTI_CLIENT_AUDIT.md`）：canonical 规则渲染为 classical（Surge / Loon / Shadowrocket / Stash 逐字节相同）与 egern-yaml（Egern）；`PROCESS-NAME` 对 Loon / Shadowrocket / Egern 显式丢弃并计入构建报告，禁止静默转换。
+  - 多客户端输出边界（v1.1，见 `engine/docs/MULTI_CLIENT_AUDIT.md`）：canonical 规则渲染为 classical（Surge / Loon / Shadowrocket / Stash 逐字节相同，7 种类型全保留）、egern-yaml（Egern）与 quantumultx（Quantumult X）；`PROCESS-NAME` 对 Egern / Quantumult X 显式丢弃并计入构建报告；classical 保留该行（Loon / Shadowrocket 无此类型，客户端直接忽略），禁止静默转换。
 - `engine/sources/supplement/<App>.list` 仅存放上游未覆盖、且由客户端日志（当前以 Surge 为准）或实际使用确认的缺口。
 
 ## 审计状态
@@ -23,6 +23,16 @@
 | ZABank | 已落地 | supplement-only（`sources: []` + 3 条根域名），上游 5+ 家全部缺失 |
 | Steam | 已落地 | Repcz `Steam.list`（20 条核心域名），零转换风险，无需 supplemental |
 | APTV | 已落地 | supplement-only 自用直播源（26 条，迁自用户私有仓库，已注释自用；原计划名 Live） |
+| Disney | 已落地 | Repcz `Disney.list`（174 条；2 条 PROCESS-NAME 对 Egern/QX 显式丢弃） |
+| ParamountPlus | 已落地 | blackmatrix7 `ParamountPlus.list`（10 条，全网唯一专项源） |
+| Hulu | 已落地 | blackmatrix7 `Hulu.list`（59 条；v2fly 2022 陈旧，Repcz/SukkaW 无专项） |
+| PrimeVideo | 已落地 | Repcz `PrimeVideo.list`（16 条，含 6 条精确 CloudFront 分发域名） |
+| HBO | 已落地 | Repcz `HBO.list`（48 条 − 2 条通用 AWS API Gateway 后缀 = 46 条） |
+| Twitch | 已落地 | blackmatrix7 `Twitch.list`（22 条：域名+关键字+IP 覆盖） |
+| Facebook | 已落地 | Repcz `Facebook.list`（580 条，含防钓鱼拼写变体） |
+| Google | 已落地 | Repcz `Google.list`（25 条；KEYWORD google/gmail 覆盖搜索与 Gmail） |
+| NBA | 已落地 | supplement-only（2 条根域，待日志验证） |
+| Suno | 已落地 | supplement-only（2 条根域，待日志验证） |
 
 ## 早期 12 个 App 的审计结论索引
 
@@ -171,3 +181,103 @@ supplemental：**不需要**。
 - **Reject / LAN / domestic / CDN / China IP 等基础设施**：继续直接引用成熟上游，不纳入本仓库。
 
 supplemental：不适用（本身即无 primary 上游）。
+
+## 好友使用场景新增 10 App（2026-08-16）
+
+触发原因：用户提供好友的使用场景 App 清单，逐项对照后发现 Disney、Paramount+、Hulu、Amazon Prime Video、HBO(Max)、Twitch、NBA、Suno、Facebook、Google(含 Gmail) 尚未覆盖。清单中的 YouTube TV 无需新增：`YouTube.list` 的 `DOMAIN-SUFFIX,youtube.com` 已覆盖 tv.youtube.com（已在 manifest note 记录）；Gemini/ChatGPT 由 `AI.list` 覆盖。以下候选证据均为当日从上游仓库直接抓取（本地 shallow clone），Repcz 与 v2fly 的维护时间以仓库分支 head / GitHub API 实测为准。
+
+### Disney
+
+| 候选 | 作者 | 规模/覆盖 | 维护证据 | 结论 |
+| --- | --- | --- | --- | --- |
+| Repcz | Repcz | 174 条，Disney+ 及 Disney 家族品牌（abc/espn/natgeo 等），Surge 原生 | 每日自动更新（分支 head 2026-08-15） | ✅ 选定 |
+| blackmatrix7 | blackmatrix7 | `rule/Surge/Disney/Disney.list`，UPDATED 2025-06-06（陈旧） | 陈旧 | 备选 |
+| v2fly | v2fly | `data/disney` 更新于 2026-08-05，但为 tier-4 且带 attribute 需转换 | 活跃 | 备选 |
+
+决议：primary = Repcz `Surge/Rules/Disney.list`（174 条）。含 2 条 PROCESS-NAME（com.disney.disneyplus、com.disney.datg.videoplatforms.android.abc），对 Egern/QX 显式丢弃并计入报告。无需 supplemental。
+
+### ParamountPlus
+
+Repcz / SukkaW / v2fly / MetaCubeX 均无专项规则；blackmatrix7 `rule/Surge/ParamountPlus/ParamountPlus.list`（10 条：4 DOMAIN + 5 SUFFIX + 1 USER-AGENT `PPlus*`，UPDATED 2025-06-06）为全网唯一可直接使用的专项源；RuleGo 另有 `ParamountPlus.list` 但未做新鲜度实测。
+
+决议：primary = blackmatrix7（10 条）。内容为 paramountplus.com + CBS 流媒体主机，域名稳定；note 已记录“约 14 个月旧，若使用暴露缺口再复核”。无需 supplemental。
+
+### Hulu
+
+| 候选 | 作者 | 规模/覆盖 | 维护证据 | 结论 |
+| --- | --- | --- | --- | --- |
+| blackmatrix7 | blackmatrix7 | 59 条（57 SUFFIX + 1 DOMAIN + 1 PROCESS-NAME），US/JP 范围（含 happyon.jp） | UPDATED 2025-06-06 | ✅ 选定 |
+| v2fly | v2fly | `data/hulu`，GitHub API 实测 2022-10-05 起未更新 | 死亡 | 排除 |
+| Repcz / SukkaW | — | 无专项（SukkaW 仅合并 stream.ts） | — | 排除 |
+
+决议：primary = blackmatrix7（59 条）。1 条 PROCESS-NAME（com.hulu.plus）对 Egern/QX 显式丢弃。v2fly 数据四年未动，Repcz/SukkaW 无独立产物，blackmatrix7 虽 14 个月旧但为最鲜活的专项源。无需 supplemental。
+
+### Amazon Prime Video
+
+| 候选 | 作者 | 规模/覆盖 | 维护证据 | 结论 |
+| --- | --- | --- | --- | --- |
+| Repcz | Repcz | 16 条（含 6 条精确 `DOMAIN,*.cloudfront.net` 分发域名，非通配） | 每日自动更新 | ✅ 选定 |
+| blackmatrix7 | blackmatrix7 | 18 条（含 1 条 KEYWORD primevideo，偏宽） | UPDATED 2025-06-06 | 备选 |
+| v2fly | v2fly | `data/primevideo` 更新于 2025-11-13 | 较新 | 备选 |
+
+决议：primary = Repcz `Surge/Rules/PrimeVideo.list`（16 条）。6 条 cloudfront/akamai 均为 `DOMAIN`（分发级唯一子域），不吞共享 CDN 命名空间。无需 supplemental。
+
+### HBO (Max)
+
+| 候选 | 作者 | 规模/覆盖 | 维护证据 | 结论 |
+| --- | --- | --- | --- | --- |
+| Repcz | Repcz | 48 条，覆盖 hbomax.com 与现行 max.com 品牌 + HBO 专属 Akamai/CloudFront 主机 | 每日自动更新 | ✅ 选定（+2 条 exclude） |
+| blackmatrix7 | blackmatrix7 | HBO/HBOAsia/HBOHK/HBOUSA 分列表，UPDATED 2025-06-06 | 陈旧 | 备选 |
+| v2fly | v2fly | `data/hbo` 更新于 2026-05-12 | 活跃 | 备选 |
+
+决议：primary = Repcz `Surge/Rules/HBO.list`，manifest exclude 2 条通用 AWS API Gateway 区域后缀：
+`domain-suffix:execute-api.ap-southeast-1.amazonaws.com` 与 `domain-suffix:execute-api.us-east-1.amazonaws.com`（会误伤同区域任意 AWS 服务；48 − 2 = 46 条输出）。1 条 PROCESS-NAME（com.hbo.hbonow）对 Egern/QX 显式丢弃。无需 supplemental。
+
+### Twitch
+
+| 候选 | 作者 | 规模/覆盖 | 维护证据 | 结论 |
+| --- | --- | --- | --- | --- |
+| blackmatrix7 | blackmatrix7 | 22 条：8 SUFFIX + 1 KEYWORD(ttvnw) + 11 IP-CIDR + 1 IP-CIDR6 + 1 PROCESS-NAME（no-resolve 语义完整） | UPDATED 2025-06-06 | ✅ 选定 |
+| v2fly | v2fly | `data/twitch` 更新于 2026-05-05，但仅 8 条裸域名，无 IP 覆盖 | 活跃但覆盖窄 | 备选 |
+| Repcz / SukkaW | — | 无专项 | — | 排除 |
+
+决议：primary = blackmatrix7（22 条）。取舍理由：v2fly 虽新但仅域名；blackmatrix7 提供域名 + 关键字 + IP 段（直播媒体走 IP 时仍可命中）。1 条 PROCESS-NAME 对 Egern/QX 显式丢弃。无需 supplemental。
+
+### Facebook
+
+| 候选 | 作者 | 规模/覆盖 | 维护证据 | 结论 |
+| --- | --- | --- | --- | --- |
+| Repcz | Repcz | 580 条（核心 facebook 域 + 防钓鱼拼写变体，社区标准做法） | 每日自动更新 | ✅ 选定 |
+| v2fly | v2fly | `data/facebook` 更新于 2026-08-05，同类拼写变体条目，无相对优势 | 活跃 | 备选 |
+| blackmatrix7 | blackmatrix7 | UPDATED 2025-06-06 | 陈旧 | 备选 |
+
+决议：primary = Repcz `Surge/Rules/Facebook.list`（580 条）。拼写变体（acebook.com 等）为防钓鱼/防错输的社区标准条目，v2fly 数据集同样携带，不构成排除理由。无需 supplemental。
+
+### Google（含 Gmail）
+
+| 候选 | 作者 | 规模/覆盖 | 维护证据 | 结论 |
+| --- | --- | --- | --- | --- |
+| Repcz | Repcz | 25 条紧凑核心：KEYWORD google + KEYWORD gmail + googleapis/gstatic/gvt/1e100 等 | 每日自动更新 | ✅ 选定 |
+| blackmatrix7 | blackmatrix7 | 703 条（684 SUFFIX），含 gmail.com/googlemail.com，UPDATED 2026-05-12 | 较新但体量过大 | 备选 |
+| v2fly | v2fly | `data/google` 更新于 2026-08-01，体量与 bm7 同量级 | 活跃 | 备选 |
+
+决议：primary = Repcz `Surge/Rules/Google.list`（25 条）。`DOMAIN-KEYWORD,google` 是 google.com / googleusercontent.com 覆盖的主干——与 Instagram 排除 KEYWORD 的情形不同：真实第三方含 "google" 的域名几乎不存在（多为钓鱼站），保留收益远大于风险，manifest note 已记录此取舍。Gmail 由 `DOMAIN-KEYWORD,gmail` 覆盖（gmail.com / googlemail.com）。youtube.com 条目与 YouTube.list 自动去重。无需 supplemental。
+
+### NBA（supplement-only）
+
+Repcz / SukkaW / blackmatrix7 / v2fly / MetaCubeX / RuleGo 六家均无 NBA 专项规则（v2fly `data/nba` 404、bm7 `rule/Surge/NBA` 无命中、Repcz `Surge/Rules` 无命中）。
+
+决议：supplement-only（`sources: []`）。`DOMAIN-SUFFIX,nba.com` + `DOMAIN-SUFFIX,nba.net` 覆盖官网与官方 App（api/cdn/stats.nba.com 均为 nba.com 子域）。标注“待日志验证”：待好友端 Surge 日志确认后按需补充。
+
+### Suno（supplement-only）
+
+六家上游均无 Suno 专项规则（v2fly `data/suno` 404、其余无命中）。
+
+决议：supplement-only（`sources: []`）。`DOMAIN-SUFFIX,suno.com` + `DOMAIN-SUFFIX,suno.ai` 覆盖官网、移动 App 与 API（studio-api.suno.ai 为 suno.ai 子域）。标注“待日志验证”：待好友端 Surge 日志确认后按需补充。
+
+### 落地决议汇总（2026-08-16）
+
+- 8 个有上游的 App 全部按上表 primary 落地，均无需 supplemental；manifest `note` 已写入选择理由。
+- 构建报告：Disney 174 / ParamountPlus 10 / Hulu 59 / PrimeVideo 16 / HBO 46（排除 2 条）/ Twitch 22 / Facebook 580 / Google 25 / NBA 2 / Suno 2；PROCESS-NAME 丢弃仅发生在 Egern/QX（Disney 2、Hulu 1、Twitch 1、HBO 1、Netflix 1、Spotify 1）。
+- Portal：新增“网页(Web)”类别承载 Google；图标取 iTunes App Store 官方 artwork（HBO 取现行 Max 应用图标）。
+- 待办：NBA/Suno 以好友端实际日志验证后按需扩充 supplement。

@@ -198,7 +198,9 @@ apps:
       Repcz is selected because its actively refreshed native Surge list keeps
       a compact set of core YouTube, video, image, API, and country-domain
       coverage. Its focused scope is preferred over larger lists whose extra
-      entries do not provide confirmed value for this personal Rule-Set.
+      entries do not provide confirmed value for this personal Rule-Set. The
+      DOMAIN-SUFFIX,youtube.com entry also covers YouTube TV (tv.youtube.com),
+      so no separate YouTube TV app is needed for the friend usage scenario.
 
   X:
     enabled: true
@@ -448,3 +450,253 @@ apps:
       from the user's private repository on 2026-08-15,
       contain no subscription URLs or tokens, and are not upstream-audited.
       Others reusing this repository should replace or remove these rules.
+
+  # --- Friend usage-scenario additions (2026-08-16 source audit) ---
+
+  Disney:
+    enabled: true
+    output: Surge/Disney.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Disney.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/Disney.list
+    exclude: []
+    note: >-
+      Repcz is selected because its actively refreshed native Surge Disney list
+      covers Disney+ streaming together with the Disney family brands (ABC,
+      ESPN, National Geographic). PROCESS-NAME entries are dropped explicitly
+      for Egern/Quantumult X and counted in the build report; the byte-
+      identical classical output retains the line, which Loon and Shadowrocket
+      simply ignore because the type does not exist there. No supplement is
+      justified without a confirmed gap.
+
+  ParamountPlus:
+    enabled: true
+    output: Surge/ParamountPlus.list
+    sources:
+      - name: blackmatrix7-ios_rule_script
+        author: blackmatrix7
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ParamountPlus/ParamountPlus.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/ParamountPlus.list
+    exclude: []
+    note: >-
+      The 2026-08-16 audit found blackmatrix7 to be the only dedicated
+      Paramount+ source (Repcz, SukkaW, v2fly, and MetaCubeX have none). Its
+      Surge-native list covers paramountplus.com plus CBS streaming hosts and
+      a focused USER-AGENT rule. It is about 14 months old, but the domains
+      are stable; revisit if usage reveals missing hosts.
+
+  Hulu:
+    enabled: true
+    output: Surge/Hulu.list
+    sources:
+      - name: blackmatrix7-ios_rule_script
+        author: blackmatrix7
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Hulu/Hulu.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/Hulu.list
+    exclude: []
+    note: >-
+      blackmatrix7 is selected because its Surge-native Hulu list (US and JP
+      scope) is the freshest dedicated source: the v2fly dataset is unchanged
+      since 2022 and Repcz/SukkaW publish no standalone Hulu Rule-Set. The
+      single PROCESS-NAME entry is dropped explicitly for Egern/Quantumult X
+      and counted in the build report; the classical output retains the line
+      for Loon/Shadowrocket, which ignore the unsupported type.
+
+  PrimeVideo:
+    enabled: true
+    output: Surge/PrimeVideo.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/PrimeVideo.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/PrimeVideo.list
+    exclude: []
+    note: >-
+      Repcz is selected because its actively refreshed native Surge list keeps
+      core Prime Video domains plus exact, distribution-specific CloudFront
+      and Akamai host entries, so no shared CDN namespace is swallowed.
+      blackmatrix7 is older and adds a broader keyword; no supplement is
+      justified without a confirmed upstream gap.
+
+  HBO:
+    enabled: true
+    output: Surge/HBO.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/HBO.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/HBO.list
+    exclude:
+      - domain-suffix:execute-api.ap-southeast-1.amazonaws.com
+      - domain-suffix:execute-api.us-east-1.amazonaws.com
+    note: >-
+      Repcz is selected because its actively refreshed native Surge list covers
+      the HBO Max brand (hbomax.com and the current max.com) plus HBO-specific
+      Akamai and CloudFront hosts. The two generic AWS API Gateway region
+      suffixes are excluded explicitly: they would otherwise route unrelated
+      AWS services, and the exclusion stays auditable in this manifest.
+
+  Twitch:
+    enabled: true
+    output: Surge/Twitch.list
+    sources:
+      - name: blackmatrix7-ios_rule_script
+        author: blackmatrix7
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitch/Twitch.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/Twitch.list
+    exclude: []
+    note: >-
+      blackmatrix7 is selected because its Surge-native list combines Twitch
+      domains, a keyword, and no-resolve IP ranges (IPv4 and IPv6) into the
+      most complete coverage. v2fly is fresher (2026-05) but domain-only, and
+      Repcz/SukkaW publish no dedicated Twitch Rule-Set. The PROCESS-NAME
+      entry is dropped explicitly for Egern/Quantumult X and counted in the
+      build report; the classical output retains the line for Loon/
+      Shadowrocket, which ignore the unsupported type.
+
+  Facebook:
+    enabled: true
+    output: Surge/Facebook.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Facebook.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/Facebook.list
+    exclude: []
+    note: >-
+      Repcz is selected because its actively refreshed native Surge list keeps
+      the widest current Facebook domain coverage, including the anti-
+      typosquatting variants that are community-standard practice (the v2fly
+      dataset carries the same kind of entries). No supplement is justified
+      without a confirmed upstream gap.
+
+  Google:
+    enabled: true
+    output: Surge/Google.list
+    sources:
+      - name: Repcz-Tool
+        author: Repcz
+        role: primary
+        format: surge-rule-set
+        url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Google.list
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/Google.list
+    exclude: []
+    note: >-
+      Repcz is selected because its actively refreshed native Surge list is a
+      compact core for Google search and Gmail: DOMAIN-KEYWORD,google covers
+      google.com and googleusercontent.com, and DOMAIN-KEYWORD,gmail covers
+      gmail.com and googlemail.com. Unlike the Instagram keyword case, the
+      google keyword is retained deliberately because it is the backbone of
+      coverage and real third-party collisions are negligible. Its youtube.com
+      entries deduplicate against the YouTube Rule-Set.
+
+  NBA:
+    enabled: true
+    output: Surge/NBA.list
+    sources: []
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/NBA.list
+    exclude: []
+    note: >-
+      The 2026-08-16 friend-scenario audit found no NBA rules in Repcz,
+      SukkaW, blackmatrix7, v2fly, MetaCubeX, or RuleGo, so this app is
+      supplement-only: two root domains (nba.com, nba.net) cover the official
+      site and the NBA app (api/cdn/stats subdomains live under nba.com).
+      Marked log-verification-pending; extend only with confirmed usage logs.
+
+  Suno:
+    enabled: true
+    output: Surge/Suno.list
+    sources: []
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/Suno.list
+    exclude: []
+    note: >-
+      The 2026-08-16 friend-scenario audit found no Suno rules in any audited
+      source, so this app is supplement-only: two root domains (suno.com,
+      suno.ai) cover the web app, mobile app, and studio API. Marked
+      log-verification-pending; extend only with confirmed usage logs.

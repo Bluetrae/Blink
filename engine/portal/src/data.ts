@@ -8,6 +8,7 @@ export const CATEGORY_ORDER = [
   "Social",
   "Media",
   "AI",
+  "Web",
 ] as const;
 
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -18,6 +19,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
   Social: "社交",
   Media: "媒体",
   AI: "AI",
+  Web: "网页",
 };
 
 export interface ClientTab {
