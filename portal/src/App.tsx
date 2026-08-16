@@ -17,7 +17,10 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("data/stats.json")
+    // Cache-bust the data fetch: GitHub Pages serves stats.json with
+    // cache-friendly headers, and a stale cached copy would silently keep
+    // old card data (e.g. missing the app logo paths).
+    fetch(`data/stats.json?v=${Date.now()}`, { cache: "no-store" })
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.json() as Promise<PortalData>;
