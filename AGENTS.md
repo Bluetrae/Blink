@@ -46,7 +46,7 @@
 - 普适性原则：公开 Profile 只含**单一订阅池**（占位 URL `https://YOUR-SUBSCRIPTION-URL`，真实订阅地址绝不进入仓库）；用户个人专属内容（多订阅池、Emby 个人组、个人域名）保留在本地副本，不进入 intent 与公开输出。
 - 能力映射只允许 FULL / ADAPTED / UNSUPPORTED 三种结果；UNSUPPORTED 与 ADAPTED 必须在生成文件中以注释显式标注（例如 Egern url-test 暂以 select 呈现），禁止静默删除或伪造。
 - 采用横向切片开发：一次只做一个功能 × 六客户端，验证后再做下一个；实施顺序与决策依据见 `D:\Blink_Profile_Layer_实施细则.txt`（用户私有文件，不进入仓库）。
-- 候选配置输出 `Profiles/` 为生成产物（含占位符），修改入口是 intent 与 templates，改后运行 `engine/scripts/build_profile.py --write` 重建。
+- 配置文件输出 `Profiles/` 为生成产物（含占位符），修改入口是 intent 与 templates，改后运行 `engine/scripts/build_profile.py --write` 重建。
 
 ## 可用工具与 Git 规范
 

@@ -5,7 +5,7 @@ import { useCopy } from "../hooks";
 import Reveal from "./Reveal";
 
 const STEPS = [
-  <>下载对应客户端的候选配置文件。</>,
+  <>下载对应客户端的配置文件文件。</>,
   <>用文本编辑器把 <code>https://YOUR-SUBSCRIPTION-URL</code> 替换成你的订阅链接。</>,
   <>导入客户端并真机验证策略组与分流效果。</>,
 ];
@@ -25,6 +25,7 @@ export default function Profiles({ data }: { data: PortalData }) {
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">配置文件</h2>
             <p className="mt-2.5 text-mute">
               作者推荐的最小配置模板供选择使用。
+              提供的配置文件为作者考虑普适性之后的推荐的基础使用配置。
               人工维护、真机验证后发布，不随规则每日更新。
             </p>
           </div>
@@ -68,7 +69,7 @@ export default function Profiles({ data }: { data: PortalData }) {
                 />
               </span>
               <div className="leading-tight">
-                <div className="font-semibold tracking-tight">{tab?.label} 候选配置</div>
+                <div className="font-semibold tracking-tight">{tab?.label} 配置文件</div>
                 <div className="text-xs text-mute">
                   {PROFILE_FILES[client].kind} · 单订阅池 · 占位符已内置
                 </div>

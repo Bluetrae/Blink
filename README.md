@@ -13,15 +13,15 @@
 
 <br>
 
-个人使用的**多客户端规则与候选配置**仓库，分两层：
+个人使用的**多客户端规则与配置文件**仓库，分两层：
 
 - **规则层（自动维护）**：把经过审计的上游 App 规则保守转换为一份 Canonical Rule Model，渲染为 **Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X** 六种客户端格式，每日自动更新，不是为每个客户端维护一套独立规则。
-- **配置层（人工维护）**：把同一份配置意图（策略组 / 规则引用 / 通用设置）迁移为六客户端**完整候选配置**，单一订阅池组织、占位符已内置，替换一条订阅即可复用。
+- **配置层（人工维护）**：把同一份配置意图（策略组 / 规则引用 / 通用设置）迁移为六客户端**完整配置文件**，单一订阅池组织、占位符已内置，替换一条订阅即可复用。
 
 <sub>生成目录由构建器自动维护、绝不手工修改；仓库不含任何订阅 URL、token、密码或证书等敏感信息。</sub>
 
 > [!NOTE]
-> 候选配置是**人工维护层**，不随规则每日更新；导入前把 `https://YOUR-SUBSCRIPTION-URL` 替换为你的订阅链接，并真机验证策略组与分流效果。
+> 配置文件是**人工维护层**，不随规则每日更新；导入前把 `https://YOUR-SUBSCRIPTION-URL` 替换为你的订阅链接，并真机验证策略组与分流效果。
 
 > [!IMPORTANT]
 > 本仓库仅供个人学习研究使用；使用前请阅读 [DISCLAIMER.md](DISCLAIMER.md) 与 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**禁止任何形式的转载或发布至国内平台**。
@@ -86,15 +86,15 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 <sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Blink@main/Surge/<App>.list`。</sub>
 
-## 🧭 候选配置快速开始
+## 🧭 配置文件快速开始
 
-六客户端**完整候选配置**位于 [`Profiles/`](Profiles/)：`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`。
+六客户端**完整配置文件**位于 [`Profiles/`](Profiles/)：`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`。
 
 1. 下载对应客户端的配置文件（或在[门户](https://bluetrae.github.io/Blink/)「配置文件」板块用 **iOS 一键导入**）。
 2. 用文本编辑器把 `https://YOUR-SUBSCRIPTION-URL` 替换成你的订阅链接。
 3. 导入客户端，真机验证策略组与分流效果。
 
-配置采用**单一订阅池**组织：全部策略组与地区筛选只依赖一条订阅；规则全部通过远程 URL 引用（本仓库规则 + 成熟上游基础设施），不复制规则内容。候选配置**人工维护、人工审核后发布**，不随规则每日更新。
+配置采用**单一订阅池**组织：全部策略组与地区筛选只依赖一条订阅；规则全部通过远程 URL 引用（本仓库规则 + 成熟上游基础设施），不复制规则内容。配置文件**人工维护、人工审核后发布**，不随规则每日更新。
 
 ## 🌐 网页入口
 
@@ -102,7 +102,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 - **规则集**：切换六客户端标签查看每个 App 的规则数与对应接入行，一键复制；
 - **接入指南**：六客户端全量接入片段，一键复制；
-- **配置文件**：六客户端候选配置的下载 / 复制 / **iOS 一键导入**（支持 URL Scheme 的客户端）与导入指引；
+- **配置文件**：六客户端配置文件的下载 / 复制 / **iOS 一键导入**（支持 URL Scheme 的客户端）与导入指引；
 - **构建与来源**：构建管线与选源原则。
 
 <div align="center">
@@ -121,3 +121,10 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 感谢 Repcz、SukkaW、blackmatrix7、v2fly 等上游作者对规则集的长期维护（各 App 的来源明细与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）。
 
 本仓库为个人规则分发与学习维护而设，无任何担保；请结合自己的代理客户端策略与日志自行验证，并遵守适用法律、服务条款与上游许可。根目录**不设统一许可证**：构建代码与文档是原创内容，`Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Egern/`、`QuantumultX/`、`Profiles/` 是多上游生成的产物，不得被统一标记为 MIT 等单一许可证 —— 详情见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+> [!WARNING]
+> 任何以任何方式查看此项目的人或直接或间接使用该项目的使用者都应仔细阅读此声明。
+>
+> 保留随时更改或补充此免责声明的权利。
+>
+> 一旦使用并复制了该项目的任何文件，则视为您已接受此免责声明。

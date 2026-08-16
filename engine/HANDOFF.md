@@ -52,7 +52,7 @@ Shadowrocket/               # 与 Surge 逐字节相同的 classical .list
 Stash/                      # 与 Surge 逐字节相同的 classical .list
 Egern/                      # Egern 自有 YAML Rule-Set schema
 QuantumultX/                # QX filter 行（行尾占位符 policy，force-policy 覆盖）
-Profiles/                   # 六客户端候选配置（人工维护层，订阅占位符）
+Profiles/                   # 六客户端配置文件（人工维护层，订阅占位符）
 
 # 必留根文件
 README.md · AGENTS.md · DISCLAIMER.md · THIRD_PARTY_NOTICES.md · .gitignore · .github/
@@ -82,9 +82,9 @@ engine/
 
 ### Profile 层（配置迁移）进度与计划
 
-- **Phase 1 已完成**：`engine/sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 六客户端 Base Template（`engine/sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `engine/scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染六端候选配置）+ `Profiles/` 六个候选配置（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
-- 已确认决策：每客户端完整候选配置（占位符）；地区组保持 Surge select 意图；Emby 类个人组公开版移除；Egern url-test 按 Needs Verification 处理（当前 ADAPTED 为 select 并已注释标注）；`Profiles/` 提交进仓库。
-- **公开模板范围（已收敛）**：策略组只保留核心（Sub / Proxy / Final / 地区组 / Auto）+ 普遍常用场景组（Daily / Telegram / AI / AppleMusic），App 路由只保留 YouTube / X / Instagram / Telegram / AI / AppleMusic；APTV 等个人内容与其余 App（Google / GitHub / Finance / Threads / OKX / PayPal / SafePal / ZABank / TikTok / Netflix / Spotify / Steam / WhatsApp / LINE 及 2026-08-16 好友场景新增的 10 个 App）从公开候选配置中移除，由使用者按需自行添加。规则层不受影响（六端规则目录仍发布全部 28 个 App）。
+- **Phase 1 已完成**：`engine/sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 六客户端 Base Template（`engine/sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `engine/scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染六端配置文件）+ `Profiles/` 六个配置文件（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
+- 已确认决策：每客户端完整配置文件（占位符）；地区组保持 Surge select 意图；Emby 类个人组公开版移除；Egern url-test 按 Needs Verification 处理（当前 ADAPTED 为 select 并已注释标注）；`Profiles/` 提交进仓库。
+- **公开模板范围（已收敛）**：策略组只保留核心（Sub / Proxy / Final / 地区组 / Auto）+ 普遍常用场景组（Daily / Telegram / AI / AppleMusic），App 路由只保留 YouTube / X / Instagram / Telegram / AI / AppleMusic；APTV 等个人内容与其余 App（Google / GitHub / Finance / Threads / OKX / PayPal / SafePal / ZABank / TikTok / Netflix / Spotify / Steam / WhatsApp / LINE 及 2026-08-16 好友场景新增的 10 个 App）从公开配置文件中移除，由使用者按需自行添加。规则层不受影响（六端规则目录仍发布全部 28 个 App）。
 - 待办：Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Blink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
 - **仓库改名（已完成）**：仓库已由 `Rulink` 更名为 **`Blink`**（GitHub：`Bluetrae/Blink`），全部仓库内 URL/文案/生成数据已迁移为 Blink。用户已在 GitHub Settings 完成 Rename，本地 origin 已更新为 `Bluetrae/Blink`，Pages 新地址 `bluetrae.github.io/Blink/` 已生效；旧 Rulink raw URL 由 GitHub 301 重定向（旧 Pages 地址无重定向）。
 
