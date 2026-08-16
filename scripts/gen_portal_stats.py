@@ -30,25 +30,27 @@ RAW_BASE = "https://raw.githubusercontent.com/Bluetrae/Rulink/main"
 # Display-only portal metadata.  Source logic lives in the manifest; this
 # mapping only groups apps for the portal and suggests a policy label for the
 # copyable reference line.  The last field is always the user's own choice.
+# ``icon`` points at the official App Store artwork stored under
+# portal/public/app-icons/ (AI uses the ChatGPT logo by request).
 PORTAL_META = {
-    "OKX": {"category": "Finance", "emoji": "💠", "policy": "Finance"},
-    "PayPal": {"category": "Finance", "emoji": "💸", "policy": "Finance"},
-    "SafePal": {"category": "Finance", "emoji": "🔐", "policy": "Finance"},
-    "ZABank": {"category": "Finance", "emoji": "🏦", "policy": "Finance"},
-    "WhatsApp": {"category": "Communication", "emoji": "💬", "policy": "Proxy"},
-    "LINE": {"category": "Communication", "emoji": "💬", "policy": "Proxy"},
-    "Telegram": {"category": "Communication", "emoji": "✈️", "policy": "Proxy"},
-    "GitHub": {"category": "Development", "emoji": "🐙", "policy": "GitHub"},
-    "Steam": {"category": "Gaming", "emoji": "🎮", "policy": "Proxy"},
-    "X": {"category": "Social", "emoji": "𝕏", "policy": "Proxy"},
-    "Instagram": {"category": "Social", "emoji": "📷", "policy": "Proxy"},
-    "Threads": {"category": "Social", "emoji": "🧵", "policy": "Proxy"},
-    "YouTube": {"category": "Media", "emoji": "▶️", "policy": "Media"},
-    "Netflix": {"category": "Media", "emoji": "🎬", "policy": "Media"},
-    "TikTok": {"category": "Media", "emoji": "🎵", "policy": "Proxy"},
-    "Spotify": {"category": "Media", "emoji": "🎧", "policy": "Proxy"},
-    "APTV": {"category": "Media", "emoji": "📺", "policy": "Media"},
-    "AI": {"category": "AI", "emoji": "🤖", "policy": "Proxy"},
+    "OKX": {"category": "Finance", "emoji": "💠", "policy": "Finance", "icon": "app-icons/OKX.jpg"},
+    "PayPal": {"category": "Finance", "emoji": "💸", "policy": "Finance", "icon": "app-icons/PayPal.jpg"},
+    "SafePal": {"category": "Finance", "emoji": "🔐", "policy": "Finance", "icon": "app-icons/SafePal.jpg"},
+    "ZABank": {"category": "Finance", "emoji": "🏦", "policy": "Finance", "icon": "app-icons/ZABank.jpg"},
+    "WhatsApp": {"category": "Communication", "emoji": "💬", "policy": "Proxy", "icon": "app-icons/WhatsApp.jpg"},
+    "LINE": {"category": "Communication", "emoji": "💬", "policy": "Proxy", "icon": "app-icons/LINE.jpg"},
+    "Telegram": {"category": "Communication", "emoji": "✈️", "policy": "Proxy", "icon": "app-icons/Telegram.jpg"},
+    "GitHub": {"category": "Development", "emoji": "🐙", "policy": "GitHub", "icon": "app-icons/GitHub.jpg"},
+    "Steam": {"category": "Gaming", "emoji": "🎮", "policy": "Proxy", "icon": "app-icons/Steam.jpg"},
+    "X": {"category": "Social", "emoji": "𝕏", "policy": "Proxy", "icon": "app-icons/X.jpg"},
+    "Instagram": {"category": "Social", "emoji": "📷", "policy": "Proxy", "icon": "app-icons/Instagram.jpg"},
+    "Threads": {"category": "Social", "emoji": "🧵", "policy": "Proxy", "icon": "app-icons/Threads.jpg"},
+    "YouTube": {"category": "Media", "emoji": "▶️", "policy": "Media", "icon": "app-icons/YouTube.jpg"},
+    "Netflix": {"category": "Media", "emoji": "🎬", "policy": "Media", "icon": "app-icons/Netflix.jpg"},
+    "TikTok": {"category": "Media", "emoji": "🎵", "policy": "Proxy", "icon": "app-icons/TikTok.jpg"},
+    "Spotify": {"category": "Media", "emoji": "🎧", "policy": "Proxy", "icon": "app-icons/Spotify.jpg"},
+    "APTV": {"category": "Media", "emoji": "📺", "policy": "Media", "icon": "app-icons/APTV.jpg"},
+    "AI": {"category": "AI", "emoji": "🤖", "policy": "Proxy", "icon": "app-icons/AI.jpg"},
 }
 
 CLIENTS = (
@@ -149,6 +151,7 @@ def build(root: Path) -> dict:
                 "name": app_name,
                 "category": meta["category"],
                 "emoji": meta["emoji"],
+                "icon": meta.get("icon"),
                 "policy": meta["policy"],
                 "file": app["output"],
                 "rules": header_count,

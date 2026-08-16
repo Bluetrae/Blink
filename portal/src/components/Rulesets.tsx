@@ -36,8 +36,18 @@ function AppCard({
         className="flex h-full flex-col gap-3 rounded-2xl border border-line bg-card p-5 transition duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-lg"
       >
         <div className="flex items-center gap-2.5">
-          <span className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-line bg-paper text-xl">
-            {app.emoji}
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-line bg-paper">
+            {app.icon ? (
+              <img
+                src={app.icon}
+                alt=""
+                width={40}
+                height={40}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <span className="text-xl">{app.emoji}</span>
+            )}
           </span>
           <div className="leading-tight">
             <div className="font-semibold tracking-tight">{app.name}</div>
@@ -94,11 +104,14 @@ function AppCard({
 export default function Rulesets({ data }: { data: PortalData }) {
   const [client, setClient] = useState<ClientKey>("surge");
   const [filter, setFilter] = useState("all");
+  const [expanded, setExpanded] = useState(false);
   const apps = useMemo(() => sortedApps(data.apps), [data.apps]);
   const present = useMemo(() => new Set(apps.map((app) => app.category)), [apps]);
   const filters = ["all", ...CATEGORY_ORDER.filter((category) => present.has(category))];
   const visible = filter === "all" ? apps : apps.filter((app) => app.category === filter);
   const activeNote = CLIENT_TABS.find((tab) => tab.key === client)?.note ?? "";
+  const shown = expanded ? visible : visible.slice(0, 6);
+  const collapsible = visible.length > 6;
 
   return (
     <section id="rulesets" className="scroll-mt-24 border-y border-line bg-paper px-6 py-16 sm:py-20">
@@ -155,10 +168,26 @@ export default function Rulesets({ data }: { data: PortalData }) {
           ))}
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4">
-          {visible.map((app, index) => (
+          {shown.map((app, index) => (
             <AppCard key={app.name} app={app} client={client} rawBase={data.raw_base} index={index} />
           ))}
         </div>
+        {collapsible && (
+          <div className="mt-7 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setExpanded((value) => !value)}
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-card px-6 py-2.5 text-sm text-ink transition hover:-translate-y-0.5 hover:border-line-strong"
+            >
+              {expanded ? "收起" : `展开全部 ${visible.length} 个 App`}
+              <span
+                className={`inline-block text-xs transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+              >
+                ▾
+              </span>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
