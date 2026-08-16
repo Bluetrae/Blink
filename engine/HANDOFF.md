@@ -18,14 +18,14 @@ https://github.com/Bluetrae/Blink
 - working tree clean
 - `safe.directory` 已配置完成
 - 根目录刻意不设置覆盖整个仓库的统一许可证：原创构建代码/文档与第三方上游及 generated Rule-Set 分开处理；`THIRD_PARTY_NOTICES.md` 记录来源和已知许可，`DISCLAIMER.md` 记录个人使用、无担保与责任边界
-- `engine/sources/apps.yaml` 已定义十八个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI、Steam 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix 使用 blackmatrix7 原生 Surge primary source；ZABank 无可用上游、APTV 为用户自用直播源，均为 supplement-only App（`sources: []`）；均保留显式 parser policy
+- `engine/sources/apps.yaml` 已定义 28 个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI、Steam、Disney、PrimeVideo、HBO、Facebook、Google 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix、ParamountPlus、Hulu、Twitch 使用 blackmatrix7 原生 Surge primary source；ZABank、NBA、Suno 无可用上游、APTV 为用户自用直播源，均为 supplement-only App（`sources: []`）；均保留显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
 - `engine/scripts/build.py` 已完成 v1；默认只做检查，只有显式传入 `--write` 才会写入生成目录。它支持 `v2fly-domain-list` 与严格白名单的 `surge-rule-set` 输入格式，并支持类型级 exclude（`ip-asn:*`、`url-regex:*`）与 supplement-only App（`sources: []`）
 - **多客户端支持已完成（v1.1 → 六客户端）**：`engine/scripts/renderers.py` 提供 3 个 Renderer —— `classical`（Surge / Shadowrocket / Loon / Stash 四个目录逐字节相同，`Surge/*.list` 路径与字节完全不变）、`egern-yaml`（Egern `*_set` schema；`PROCESS-NAME` 显式丢弃并计入构建报告，`no_resolve` 为 set 级、混合时显式失败）与 `quantumultx`（QX filter 行，`HOST*`/`IP-CIDR`/`IP6-CIDR`/`USER-AGENT`，行尾占位符 `policy` 由 `[filter_remote]` 的 `force-policy` 覆盖；PROCESS-NAME 显式丢弃、no-resolve 槽位无生产实证故统一省略，均已记入 `engine/docs/MULTI_CLIENT_AUDIT.md`）。格式审计与架构决策见 `engine/docs/MULTI_CLIENT_AUDIT.md`；Surge 向后兼容门禁 = 重构建后 `git diff Surge/` 为空（单测 `test_existing_surge_outputs_roundtrip_byte_identical` 覆盖离线往返字节一致性）
 - 新增生成目录：`Loon/*.list`、`Shadowrocket/*.list`、`Stash/*.list`（与 `Surge/*.list` 逐字节相同）、`Egern/*.yaml`（每 App 一份 YAML Rule-Set）、`QuantumultX/*.list`（每 App 一份 QX filter）
 - 构建报告新增 `clients` 字段：每客户端规则数与显式 dropped 列表；check 模式同样渲染全部客户端，非 Surge renderer 的失败会在预检阶段暴露
 - `.github/workflows/update.yml` 已更名为 Update Rule-Sets，提交范围覆盖 `Surge Loon Shadowrocket Stash Egern QuantumultX engine/portal/public/data`
-- `engine/tests/test_build.py` 增至 27 个用例；测试临时目录经模块级 patch 落在工作区 `.tmp-engine/tests/`（已 gitignore），兼容沙箱化 Windows 运行环境
+- `engine/tests/test_build.py` 增至 37 个用例；测试临时目录经模块级 patch 落在工作区 `.tmp-engine/tests/`（已 gitignore），兼容沙箱化 Windows 运行环境
 - `engine/tests/test_build.py` 已覆盖 v2fly 核心映射、include allow/deny、attribute 语义、严格原生 Surge 解析、类型级 exclude、supplement-only App、抓取重试、CLI 端到端、错误策略、实际 manifest 校验、Egern YAML schema、QX filter 映射与占位策略、PROCESS-NAME 降级报告、no-resolve set 级语义及 Surge golden-byte 往返
 - `.github/workflows/update.yml` 已启用；支持手动运行和每日北京时间约 00:01 的定时运行（GitHub 定时任务不保证准点）
 - GitHub Actions 首次完整成功运行是 #2，生成 commit 为 `5b1ff58 chore: update generated Surge rule-sets`
@@ -35,10 +35,36 @@ https://github.com/Bluetrae/Blink
 - 随后一次 GitHub Actions 运行生成 commit `832541c chore: update generated Surge rule-sets`：为全部 12 个生成文件写入 `# 规则名称` 与 `# 规则统计` 头部（构建器实现于 `76cdb63 feat: add metadata headers to generated rule-sets`）
 - `DEEPSEEK_MIGRATION.md` 已加入仓库，供新 Agent 无会话接手；2026-08-15 之后的最新提交以 `git log` 为准
 - 已生成 `Surge/OKX.list`、`Surge/WhatsApp.list`、`Surge/LINE.list`、`Surge/GitHub.list`、`Surge/SafePal.list`、`Surge/PayPal.list`、`Surge/Netflix.list`、`Surge/YouTube.list`、`Surge/X.list`、`Surge/Instagram.list`、`Surge/Telegram.list`、`Surge/Threads.list`、`Surge/TikTok.list`、`Surge/Spotify.list`、`Surge/AI.list`、`Surge/ZABank.list`、`Surge/Steam.list`、`Surge/APTV.list`
-- `engine/sources/supplement/` 目前含 `ZABank.list`（3 条根域名，supplement-only）与 `APTV.list`（26 条自用直播源，supplement-only，已注释自用）；其他 App 无 supplement 文件，这是预期状态
+- `engine/sources/supplement/` 目前含 `ZABank.list`（3 条根域名，supplement-only）、`APTV.list`（26 条自用直播源，supplement-only，已注释自用）、`NBA.list` 与 `Suno.list`（各 2 条根域，2026-08-16 好友场景新增）；其他 App 无 supplement 文件，这是预期状态
 - 2026-08-15：完成用户 Surge 主配置与仓库输出的完整对照；脱敏结论见 `SOURCE_AUDITS.md`「用户 Surge 主配置对照」一节（要点：ZA Bank 9 条手工行、OKX 7 条手工行可删；Telegram 主配置保持现状；Steam 已新增纳入；APTV 已迁入为自用 supplement）
 - `engine/portal/` 已随多客户端扩展完成重构（原为用户另一工作流窗口的开发内容，多客户端落地后经用户明确指示更新）：规则集与「接入你的客户端」两个区域都提供 Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 客户端切换，按钮带各客户端官方 App Store 图标（`engine/portal/public/icons/*.jpg`，来源与商标归属已记入 `THIRD_PARTY_NOTICES.md`「Repository assets」），每个 App 卡片按所选客户端给出对应引用片段（`RULE-SET` / `[Remote Rule]` / `rule-providers` + `RULE-SET` / `rule_set` / `[filter_remote]`），Egern 与 Quantumult X 卡片对显式丢弃的 PROCESS-NAME 给出提示；`engine/scripts/gen_portal_stats.py` 的 `stats.json` schema 扩展了每 App 的 `clients` 字段（egern / quantumultx 含 `dropped` 计数）。后续修改 portal 请保持与其他区域同等的显式路径暂存习惯
 - 门户已上线：https://bluetrae.github.io/Blink/（仓库 About 已填 Website；GitHub Pages 采用 GitHub Actions 构建，`pages.yml` 随 `main` 推送自动部署）。主题为时间制：08:00–22:00 浅色、22:00–08:00 深色，无手动切换按钮；配色对齐 DeepSeek Harness 设计令牌；favicon 使用 DeepSeek 官方图标（已记录于 `THIRD_PARTY_NOTICES.md`「Repository assets」）。页面特性：六客户端切换（规则集卡片与接入区，按钮带官方 App 图标）、悬浮胶囊导航（滚动玻璃化）、首屏错峰入场、CTA 旋转描边、移动端汉堡菜单、流式标题；README 预览图位于 `engine/docs/images/portal-preview.png`（多客户端规则集区块视图，随门户变更同步更新）
+
+## 仓库结构
+
+2026-08-16 起 README 只保留面向使用者的内容；此结构树即 README 移除内容的归宿（更新机制细节见 `DEEPSEEK_MIGRATION.md`，选源与格式边界见 `SOURCE_AUDITS.md`）。
+
+```text
+# 产品输出（根级，raw URL 稳定）
+Surge/                      # classical .list（原 Surge 入口，路径与字节不变）
+Loon/                       # 与 Surge 逐字节相同的 classical .list
+Shadowrocket/               # 与 Surge 逐字节相同的 classical .list
+Stash/                      # 与 Surge 逐字节相同的 classical .list
+Egern/                      # Egern 自有 YAML Rule-Set schema
+QuantumultX/                # QX filter 行（行尾占位符 policy，force-policy 覆盖）
+Profiles/                   # 六客户端候选配置（人工维护层，订阅占位符）
+
+# 必留根文件
+README.md · AGENTS.md · DISCLAIMER.md · THIRD_PARTY_NOTICES.md · .gitignore · .github/
+
+# 构建引擎与开发侧（全部收敛于此）
+engine/
+├── scripts/                # build.py / renderers.py / build_profile.py / gen_portal_stats.py
+├── sources/                # apps.yaml、supplement、profile intent 与 templates
+├── tests/                  # 单元测试
+├── portal/                 # 网页门户（Vite + React + TS + Tailwind CSS）
+└── docs/                   # 审计档案、交接文档与门户预览图等静态资源
+```
 
 ## 项目目标
 

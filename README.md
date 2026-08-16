@@ -5,10 +5,9 @@
 **多客户端规则与配置 · 自动构建 · 稳定分发**
 
 [![Update Rule-Sets](https://github.com/Bluetrae/Blink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Blink/actions/workflows/update.yml)
-[![Rule-Sets](https://img.shields.io/badge/Rule--Sets-6_clients-2f81f7?style=flat-square)](https://github.com/Bluetrae/Blink/tree/main/Surge)
+[![Stars](https://img.shields.io/github/stars/Bluetrae/Blink?style=flat-square&label=Stars&color=ffcb2e)](https://github.com/Bluetrae/Blink/stargazers)
+[![Updated](https://img.shields.io/github/last-commit/Bluetrae/Blink/main?style=flat-square&label=Updated&color=3178c6)](https://github.com/Bluetrae/Blink/commits/main)
 [![Portal](https://img.shields.io/badge/Portal-网页入口-4d6bfe?style=flat-square)](https://bluetrae.github.io/Blink/)
-[![Updated](https://img.shields.io/github/last-commit/Bluetrae/Blink/main?label=updated&style=flat-square)](https://github.com/Bluetrae/Blink/commits/main)
-[![Stars](https://img.shields.io/github/stars/Bluetrae/Blink?label=stars&style=flat-square)](https://github.com/Bluetrae/Blink/stargazers)
 
 </div>
 
@@ -18,6 +17,8 @@
 
 - **规则层（自动维护）**：把经过审计的上游 App 规则保守转换为一份 Canonical Rule Model，渲染为 **Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X** 六种客户端格式，每日自动更新，不是为每个客户端维护一套独立规则。
 - **配置层（人工维护）**：把同一份配置意图（策略组 / 规则引用 / 通用设置）迁移为六客户端**完整候选配置**，单一订阅池组织、占位符已内置，替换一条订阅即可复用。
+
+<sub>生成目录由构建器自动维护、绝不手工修改；仓库不含任何订阅 URL、token、密码或证书等敏感信息。</sub>
 
 > [!NOTE]
 > 候选配置是**人工维护层**，不随规则每日更新；导入前把 `https://YOUR-SUBSCRIPTION-URL` 替换为你的订阅链接，并真机验证策略组与分流效果。
@@ -93,7 +94,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 2. 用文本编辑器把 `https://YOUR-SUBSCRIPTION-URL` 替换成你的订阅链接。
 3. 导入客户端，真机验证策略组与分流效果。
 
-配置采用**单一订阅池**组织：全部策略组与地区筛选只依赖一条订阅；规则全部通过远程 URL 引用（本仓库规则 + 成熟上游基础设施），不复制规则内容。候选配置由 `engine/scripts/build_profile.py` 从 `engine/sources/profile/intent.yaml` 生成，**人工维护、人工审核后发布**。
+配置采用**单一订阅池**组织：全部策略组与地区筛选只依赖一条订阅；规则全部通过远程 URL 引用（本仓库规则 + 成熟上游基础设施），不复制规则内容。候选配置**人工维护、人工审核后发布**，不随规则每日更新。
 
 ## 🌐 网页入口
 
@@ -110,48 +111,10 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
   </a>
 </div>
 
-## ⚙️ 更新机制
-
-- **规则层（自动）**：每天北京时间约 **00:01**，GitHub Actions（[`update.yml`](.github/workflows/update.yml)）自动检查上游并重建六个客户端的规则文件与门户数据：有实质变化才提交，无变化零提交；构建失败时保留旧输出、暂停更新，不影响日常使用。新 App 与补充规则由人工审计添加，CI 不会自动引入。
-- **配置层（人工）**：候选配置不参与每日自动更新；仅在配置意图变化（如新增策略组、调整 DNS、某客户端规范更新）时人工重建、人工审核、真机验证后提交。
-
 ## 🧩 来源政策
 
-- 每个 App 的选源以证据为准（freshness / completeness / scope / format suitability / maintenance quality），作者偏好只作并列时的 tie-breaker；每 App 恰好 1 个 primary、至多 1 个 supplemental。完整的候选、证据与结论档案见 [`engine/SOURCE_AUDITS.md`](engine/SOURCE_AUDITS.md)。
-- 输入格式：
-
-| 格式 | 构建行为 |
-| --- | --- |
-| `v2fly-domain-list` | `domain`/`full`/`keyword` → `DOMAIN-SUFFIX`/`DOMAIN`/`DOMAIN-KEYWORD`；regexp、否定属性、未声明 include 直接失败 |
-| `surge-rule-set` | 严格白名单：`DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`、`USER-AGENT`、`PROCESS-NAME`、`IP-CIDR`、`IP-CIDR6`（IP 仅允许 `no-resolve`）；支持类型级 exclude（`ip-asn:*`、`url-regex:*`）与 supplement-only App（`sources: []`） |
-
+- 每个 App 独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只作并列时的 tie-breaker；每 App 恰好 1 个 primary、至多 1 个 supplemental。完整的候选、证据与结论档案见 [`engine/SOURCE_AUDITS.md`](engine/SOURCE_AUDITS.md)。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施**不复制进本仓库**，继续直接引用成熟上游。
-
-## 🗂️ 仓库结构
-
-```text
-# 产品输出（根级，raw URL 稳定）
-Surge/                      # classical .list（原 Surge 入口，路径与字节不变）
-Loon/                       # 与 Surge 逐字节相同的 classical .list
-Shadowrocket/               # 与 Surge 逐字节相同的 classical .list
-Stash/                      # 与 Surge 逐字节相同的 classical .list
-Egern/                      # Egern 自有 YAML Rule-Set schema
-QuantumultX/                # QX filter 行（行尾占位符 policy，force-policy 覆盖）
-Profiles/                   # 六客户端候选配置（人工维护层，订阅占位符）
-
-# 必留根文件
-README.md · AGENTS.md · DISCLAIMER.md · THIRD_PARTY_NOTICES.md · .gitignore · .github/
-
-# 构建引擎与开发侧（全部收敛于此）
-engine/
-├── scripts/                # build.py / renderers.py / build_profile.py / gen_portal_stats.py
-├── sources/                # apps.yaml、supplement、profile intent 与 templates
-├── tests/                  # 单元测试
-├── portal/                 # 网页门户（Vite + React + TS + Tailwind CSS）
-└── docs/                   # 审计档案、交接文档与门户预览图等静态资源
-```
-
-<sub>生成目录绝不手工修改；本仓库不包含任何订阅 URL、token、密码、证书或其他敏感信息。</sub>
 
 ## ⚖️ 使用与许可
 
