@@ -7,24 +7,11 @@
 [![Update Rule-Sets](https://github.com/Bluetrae/Blink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Blink/actions/workflows/update.yml)
 [![Stars](https://img.shields.io/github/stars/Bluetrae/Blink?style=flat-square&label=Stars&color=ffcb2e)](https://github.com/Bluetrae/Blink/stargazers)
 [![Updated](https://img.shields.io/github/last-commit/Bluetrae/Blink/main?style=flat-square&label=Updated&color=3178c6)](https://github.com/Bluetrae/Blink/commits/main)
-[![Views](https://komarev.com/ghpvc/?username=Bluetrae&repo=Blink&label=Views&color=7c3aed&style=flat-square)](https://github.com/Bluetrae/Blink)
-[![License](https://img.shields.io/badge/License-Custom-8A2BE2?style=flat-square)](THIRD_PARTY_NOTICES.md)
 [![Portal](https://img.shields.io/badge/Portal-网页入口-4d6bfe?style=flat-square)](https://bluetrae.github.io/Blink/)
 
-[![Surge](https://img.shields.io/badge/Surge-007AFF?style=for-the-badge)](Surge/)
-[![Shadowrocket](https://img.shields.io/badge/Shadowrocket-2C3E50?style=for-the-badge)](Shadowrocket/)
-[![Loon](https://img.shields.io/badge/Loon-FFC107?style=for-the-badge)](Loon/)
-[![Stash](https://img.shields.io/badge/Stash-8E44AD?style=for-the-badge)](Stash/)
-[![Egern](https://img.shields.io/badge/Egern-E74C3C?style=for-the-badge)](Egern/)
-[![Quantumult X](https://img.shields.io/badge/Quantumult_X-0B84CE?style=for-the-badge)](QuantumultX/)
+</div>
 
 <br>
-
-[![Forks](https://img.shields.io/github/forks/Bluetrae/Blink?style=flat-square&label=Forks&color=30c46c)](https://github.com/Bluetrae/Blink/forks)
-[![Repo Size](https://img.shields.io/github/repo-size/Bluetrae/Blink?style=flat-square&label=Size&color=ef4444)](https://github.com/Bluetrae/Blink)
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/Bluetrae/Blink?style=flat-square&label=Commits%2FMonth&color=7c3aed)](https://github.com/Bluetrae/Blink/commits/main)
-
-</div>
 
 个人使用的**多客户端规则与配置文件**仓库，分两层：
 
