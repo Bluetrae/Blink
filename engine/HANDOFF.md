@@ -58,7 +58,8 @@ https://github.com/Bluetrae/Blink
 
 - **Phase 1 已完成**：`engine/sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 六客户端 Base Template（`engine/sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `engine/scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染六端候选配置）+ `Profiles/` 六个候选配置（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
 - 已确认决策：每客户端完整候选配置（占位符）；地区组保持 Surge select 意图；Emby 类个人组公开版移除；Egern url-test 按 Needs Verification 处理（当前 ADAPTED 为 select 并已注释标注）；`Profiles/` 提交进仓库。
-- 待办：portal 新增「配置文件」板块（六客户端候选配置展示 / 下载 / 复制 + 订阅占位符替换提示）；Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Blink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
+- **公开模板范围（已收敛）**：策略组只保留核心（Sub / Proxy / Final / 地区组 / Auto）+ 普遍常用场景组（Daily / Telegram / AI / AppleMusic），App 路由只保留 YouTube / X / Instagram / Telegram / AI / AppleMusic；APTV 等个人内容与其余 App（Google / GitHub / Finance / Threads / OKX / PayPal / SafePal / ZABank / TikTok / Netflix / Spotify / Steam / WhatsApp / LINE）从公开候选配置中移除，由使用者按需自行添加。规则层不受影响（六端规则目录仍发布全部 18 个 App）。
+- 待办：Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Blink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
 - **仓库改名（已执行内容侧，GitHub 侧待用户操作）**：仓库已由 `Rulink` 更名为 **`Blink`**（GitHub：`Bluetrae/Blink`），全部仓库内 URL/文案/生成数据已迁移为 Blink。GitHub 会对旧 `Bluetrae/Rulink` 路径（含 raw）做 301 重定向；但 GitHub Pages 旧地址 `bluetrae.github.io/Rulink/` 无重定向，新地址为 `bluetrae.github.io/Blink/`。用户 Surge 主配置中的旧 Rulink raw URL 依赖 301 重定向可用，建议尽快替换为 Blink 地址。待办：用户确认在 GitHub Settings 完成 Rename 后推送本提交并更新本地 origin 为 `Bluetrae/Blink`。
 
 ## 已确定的规则源结论

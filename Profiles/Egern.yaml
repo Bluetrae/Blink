@@ -77,33 +77,6 @@ policy_groups:
     - US
     - Final
 - select:
-    name: Google
-    policies:
-    - HK
-    - TW
-    - JP
-    - US
-    - SG
-    - Final
-- select:
-    name: GitHub
-    policies:
-    - HK
-    - TW
-    - JP
-    - US
-    - SG
-    - Final
-- select:
-    name: Finance
-    policies:
-    - HK
-    - TW
-    - JP
-    - US
-    - SG
-    - Final
-- select:
     name: AppleMusic
     policies:
     - DIRECT
@@ -111,16 +84,6 @@ policy_groups:
     - TW
     - JP
     - US
-- select:
-    name: APTV
-    policies:
-    - HK
-    - TW
-    - JP
-    - US
-    - SG
-    - Sub
-    - Auto
 - select:
     name: HK
     policies:
@@ -211,55 +174,13 @@ rules:
     match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Instagram.list
     policy: Daily
 - rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Threads.list
-    policy: Daily
-- rule_set:
     match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Telegram.list
     policy: Telegram
 - rule_set:
     match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/AI.list
     policy: AI
 - rule_set:
-    match: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Google.list
-    policy: Google
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/GitHub.list
-    policy: GitHub
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/OKX.list
-    policy: Finance
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/PayPal.list
-    policy: Finance
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/SafePal.list
-    policy: Finance
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/ZABank.list
-    policy: Finance
-- rule_set:
     match: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AppleMusic.list
     policy: AppleMusic
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/APTV.list
-    policy: APTV
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/TikTok.list
-    policy: JP
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Netflix.list
-    policy: JP
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Spotify.list
-    policy: DIRECT
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Steam.list
-    policy: Proxy
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/WhatsApp.list
-    policy: Proxy
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/LINE.list
-    policy: Proxy
 - default:
     policy: Final

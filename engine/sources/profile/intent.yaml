@@ -27,6 +27,7 @@ policy_groups:
     type: select
     members: [HK, TW, JP, US, SG, Auto, Sub, DIRECT]
 
+  # 常用场景组（公开模板只保留普遍常用项；其余按使用习惯自行添加）
   - name: Daily
     type: select
     members: [HK, TW, JP, US, SG, Final]
@@ -39,25 +40,9 @@ policy_groups:
     type: select
     members: [HK, TW, JP, US, Final]
 
-  - name: Google
-    type: select
-    members: [HK, TW, JP, US, SG, Final]
-
-  - name: GitHub
-    type: select
-    members: [HK, TW, JP, US, SG, Final]
-
-  - name: Finance
-    type: select
-    members: [HK, TW, JP, US, SG, Final]
-
   - name: AppleMusic
     type: select
     members: [DIRECT, HK, TW, JP, US]
-
-  - name: APTV
-    type: select
-    members: [HK, TW, JP, US, SG, Sub, Auto]
 
   # 地区组：select（保持 Surge 意图），正则筛选订阅池内节点
   - name: HK
@@ -88,27 +73,14 @@ policy_groups:
     hidden: true
 
 # App → 策略组 路由意图。默认 source 为 Blink 已发布 URL；个别 App 显式指定上游。
+# 公开模板只保留普遍常用的 App；其余按使用习惯自行添加（对应策略组也自行创建）。
 apps:
   YouTube:   {policy: Daily}
   X:         {policy: Daily}
   Instagram: {policy: Daily}
-  Threads:   {policy: Daily}
   Telegram:  {policy: Telegram}
   AI:        {policy: AI}
-  Google:    {policy: Google, source: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Google.list}
-  GitHub:    {policy: GitHub}
-  OKX:       {policy: Finance}
-  PayPal:    {policy: Finance}
-  SafePal:   {policy: Finance}
-  ZABank:    {policy: Finance}
   AppleMusic: {policy: AppleMusic, source: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AppleMusic.list, qx_source: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/AppleMusic.list}
-  APTV:      {policy: APTV}
-  TikTok:    {policy: JP}
-  Netflix:   {policy: JP}
-  Spotify:   {policy: DIRECT}
-  Steam:     {policy: Proxy}
-  WhatsApp:  {policy: Proxy}
-  LINE:      {policy: Proxy}
 
 # 基础设施规则（沿用成熟上游，不复制进仓库；每客户端策略与可用性在此声明）。
 # policy 缺省表示六端一致；options 为客户端专属引用参数；qx_url 为 QX 专用

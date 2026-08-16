@@ -28,11 +28,7 @@ proxy-groups:
   - {name: Daily, type: select, proxies: [HK,TW,JP,US,SG,Final]}
   - {name: Telegram, type: select, proxies: [SG,HK,JP,TW,US,Final]}
   - {name: AI, type: select, proxies: [HK,TW,JP,US,Final]}
-  - {name: Google, type: select, proxies: [HK,TW,JP,US,SG,Final]}
-  - {name: GitHub, type: select, proxies: [HK,TW,JP,US,SG,Final]}
-  - {name: Finance, type: select, proxies: [HK,TW,JP,US,SG,Final]}
   - {name: AppleMusic, type: select, proxies: [DIRECT,HK,TW,JP,US]}
-  - {name: APTV, type: select, proxies: [HK,TW,JP,US,SG,Sub,Auto]}
   - {name: HK, type: select, use: [Sub], filter: '(?i)(香港|🇭🇰|Hong\s*Kong|HongKong|HKG|(?:^|[^A-Za-z])HK(?:G)?(?:[^A-Za-z]|$))', include-all: true}
   - {name: TW, type: select, use: [Sub], filter: '(?i)(台湾|台灣|🇹🇼|Taiwan|Taipei|TWN|(?:^|[^A-Za-z])TW(?:N)?(?:[^A-Za-z]|$))', include-all: true}
   - {name: JP, type: select, use: [Sub], filter: '(?i)(日本|🇯🇵|Japan|Tokyo|Osaka|Sakura|SoftBank|JPN|(?:^|[^A-Za-z])JP(?:N)?(?:[^A-Za-z]|$))', include-all: true}
@@ -131,12 +127,6 @@ rule-providers:
     format: text
     url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Instagram.list
     interval: 86400
-  Threads:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Threads.list
-    interval: 86400
   Telegram:
     type: http
     behavior: classical
@@ -149,89 +139,11 @@ rule-providers:
     format: text
     url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/AI.list
     interval: 86400
-  Google:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Google.list
-    interval: 86400
-  GitHub:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/GitHub.list
-    interval: 86400
-  OKX:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/OKX.list
-    interval: 86400
-  PayPal:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/PayPal.list
-    interval: 86400
-  SafePal:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/SafePal.list
-    interval: 86400
-  ZABank:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/ZABank.list
-    interval: 86400
   AppleMusic:
     type: http
     behavior: classical
     format: text
     url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AppleMusic.list
-    interval: 86400
-  APTV:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/APTV.list
-    interval: 86400
-  TikTok:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/TikTok.list
-    interval: 86400
-  Netflix:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Netflix.list
-    interval: 86400
-  Spotify:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Spotify.list
-    interval: 86400
-  Steam:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Steam.list
-    interval: 86400
-  WhatsApp:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/WhatsApp.list
-    interval: 86400
-  LINE:
-    type: http
-    behavior: classical
-    format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/LINE.list
     interval: 86400
 
 rules:
@@ -250,22 +162,8 @@ rules:
   - RULE-SET,YouTube,Daily
   - RULE-SET,X,Daily
   - RULE-SET,Instagram,Daily
-  - RULE-SET,Threads,Daily
   - RULE-SET,Telegram,Telegram
   - RULE-SET,AI,AI
-  - RULE-SET,Google,Google
-  - RULE-SET,GitHub,GitHub
-  - RULE-SET,OKX,Finance
-  - RULE-SET,PayPal,Finance
-  - RULE-SET,SafePal,Finance
-  - RULE-SET,ZABank,Finance
   - RULE-SET,AppleMusic,AppleMusic
-  - RULE-SET,APTV,APTV
-  - RULE-SET,TikTok,JP
-  - RULE-SET,Netflix,JP
-  - RULE-SET,Spotify,DIRECT
-  - RULE-SET,Steam,Proxy
-  - RULE-SET,WhatsApp,Proxy
-  - RULE-SET,LINE,Proxy
   - DOMAIN,app-site-association.cdn-apple.com,REJECT
   - MATCH,Final
