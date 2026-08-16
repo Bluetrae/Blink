@@ -125,10 +125,12 @@ export default function Rulesets({ data }: { data: PortalData }) {
           </div>
         </Reveal>
         <Reveal>
-          <p className="mb-3 flex items-center justify-center gap-1.5 text-[13px] text-mute">
-            <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-            先选择你要导入的客户端，再复制接入
-          </p>
+          <div className="mb-4 flex justify-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent-soft bg-accent-soft px-4 py-1.5 text-[13px] font-medium text-accent">
+              <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
+              先选择你要导入的客户端，再复制接入
+            </span>
+          </div>
           <div className="mb-4 flex flex-wrap justify-center gap-2.5">
             {CLIENT_TABS.map((tab) => (
               <button
