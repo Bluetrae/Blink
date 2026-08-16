@@ -7,11 +7,24 @@
 [![Update Rule-Sets](https://github.com/Bluetrae/Blink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Blink/actions/workflows/update.yml)
 [![Stars](https://img.shields.io/github/stars/Bluetrae/Blink?style=flat-square&label=Stars&color=ffcb2e)](https://github.com/Bluetrae/Blink/stargazers)
 [![Updated](https://img.shields.io/github/last-commit/Bluetrae/Blink/main?style=flat-square&label=Updated&color=3178c6)](https://github.com/Bluetrae/Blink/commits/main)
+[![Views](https://komarev.com/ghpvc/?username=Bluetrae&repo=Blink&label=Views&color=7c3aed&style=flat-square)](https://github.com/Bluetrae/Blink)
+[![License](https://img.shields.io/badge/License-Custom-8A2BE2?style=flat-square)](THIRD_PARTY_NOTICES.md)
 [![Portal](https://img.shields.io/badge/Portal-网页入口-4d6bfe?style=flat-square)](https://bluetrae.github.io/Blink/)
 
-</div>
+[![Surge](https://img.shields.io/badge/Surge-007AFF?style=for-the-badge)](Surge/)
+[![Shadowrocket](https://img.shields.io/badge/Shadowrocket-2C3E50?style=for-the-badge)](Shadowrocket/)
+[![Loon](https://img.shields.io/badge/Loon-FFC107?style=for-the-badge)](Loon/)
+[![Stash](https://img.shields.io/badge/Stash-8E44AD?style=for-the-badge)](Stash/)
+[![Egern](https://img.shields.io/badge/Egern-E74C3C?style=for-the-badge)](Egern/)
+[![Quantumult X](https://img.shields.io/badge/Quantumult_X-0B84CE?style=for-the-badge)](QuantumultX/)
 
 <br>
+
+[![Forks](https://img.shields.io/github/forks/Bluetrae/Blink?style=flat-square&label=Forks&color=30c46c)](https://github.com/Bluetrae/Blink/forks)
+[![Repo Size](https://img.shields.io/github/repo-size/Bluetrae/Blink?style=flat-square&label=Size&color=ef4444)](https://github.com/Bluetrae/Blink)
+[![Commit Activity](https://img.shields.io/github/commit-activity/m/Bluetrae/Blink?style=flat-square&label=Commits%2FMonth&color=7c3aed)](https://github.com/Bluetrae/Blink/commits/main)
+
+</div>
 
 个人使用的**多客户端规则与配置文件**仓库，分两层：
 
@@ -25,6 +38,20 @@
 
 > [!IMPORTANT]
 > 本仓库仅供个人学习研究使用；使用前请阅读 [DISCLAIMER.md](DISCLAIMER.md) 与 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**禁止任何形式的转载或发布至国内平台**。
+
+---
+
+## 📑 目录
+
+- [🚀 规则集快速开始](#rules-quickstart)
+- [🧭 配置文件快速开始](#profiles-quickstart)
+- [🌐 网页入口](#portal)
+- [🧩 来源政策](#sources)
+- [⚖️ 使用与许可](#license)
+
+---
+
+<a id="rules-quickstart"></a>
 
 ## 🚀 规则集快速开始
 
@@ -86,6 +113,10 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 <sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Blink@main/Surge/<App>.list`。</sub>
 
+---
+
+<a id="profiles-quickstart"></a>
+
 ## 🧭 配置文件快速开始
 
 六客户端**完整配置文件**位于 [`Profiles/`](Profiles/)：`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`。
@@ -95,6 +126,10 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 3. 导入客户端，真机验证策略组与分流效果。
 
 配置采用**单一订阅池**组织：全部策略组与地区筛选只依赖一条订阅；规则全部通过远程 URL 引用（本仓库规则 + 成熟上游基础设施），不复制规则内容。配置文件**人工维护、人工审核后发布**，不随规则每日更新。
+
+---
+
+<a id="portal"></a>
 
 ## 🌐 网页入口
 
@@ -111,10 +146,18 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
   </a>
 </div>
 
+---
+
+<a id="sources"></a>
+
 ## 🧩 来源政策
 
 - 每个 App 独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只作并列时的 tie-breaker；每 App 恰好 1 个 primary、至多 1 个 supplemental。完整的候选、证据与结论档案见 [`engine/SOURCE_AUDITS.md`](engine/SOURCE_AUDITS.md)。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施**不复制进本仓库**，继续直接引用成熟上游。
+
+---
+
+<a id="license"></a>
 
 ## ⚖️ 使用与许可
 
