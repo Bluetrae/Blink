@@ -54,6 +54,13 @@ https://github.com/Bluetrae/Rulink
 
 原清单中的 Live（现命名 APTV）是用户自用直播源，已于 2026-08-15 以 supplement-only 形式迁入本仓库（26 条，注释自用，迁自用户私有仓库）。
 
+### Profile 层（配置迁移）进度与计划
+
+- **Phase 1 已完成**：`sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 六客户端 Base Template（`sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染六端候选配置）+ `Profiles/` 六个候选配置（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Egern.yaml`、`QuantumultX.conf`）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
+- 已确认决策：每客户端完整候选配置（占位符）；地区组保持 Surge select 意图；Emby 类个人组公开版移除；Egern url-test 按 Needs Verification 处理（当前 ADAPTED 为 select 并已注释标注）；`Profiles/` 提交进仓库。
+- 待办：portal 新增「配置文件」板块（六客户端候选配置展示 / 下载 / 复制 + 订阅占位符替换提示）；Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Rulink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
+- **仓库改名计划（用户已定）**：Profile 层内容完善后，仓库由 `Rulink` 改名为 **`Blink`**（GitHub：`Bluetrae/Blink`）。改名时需系统性迁移：仓库内所有 URL/文案引用（raw base、portal `stats.json` 的 repo/raw_base、`build.py`/`gen_portal_stats.py`/`build_profile.py` 常量、README/AGENTS/HANDOFF/审计文档、workflow、portal 文案）、GitHub Pages 地址（`bluetrae.github.io/Rulink/` → `bluetrae.github.io/Blink/`，Pages 无旧地址重定向，需在 README/portal 同步更新）、以及用户 Surge 主配置中的 Rulink raw URL（GitHub 会对旧 raw 路径做重定向，但应尽快替换为 Blink 地址）。改名动作本身由用户在 GitHub Settings 完成（或 gh CLI），本仓库只负责内容侧迁移。
+
 ## 已确定的规则源结论
 
 各 App 的具体选源结论如下（权威定义与精简理由见 `sources/apps.yaml` 的 `note`；完整审计档案见 `SOURCE_AUDITS.md`）：

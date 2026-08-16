@@ -1,0 +1,189 @@
+# Rulink Canonical Profile Intent —— Phase 1: Policy Groups + Rule References
+#
+# 本文件是配置文件层的唯一语义源（人工维护，绝不进入 update.yml 每日任务）。
+# 普适性原则：
+#   - 单一订阅池 Sub（占位 URL），替换一条订阅即可复用；
+#   - 不含任何个人专属内容（用户个人双订阅池、Emby 关键词组、个人域名等
+#     均保留在用户本地配置中，不进入本文件与公开输出）。
+#
+# 策略组语义（Surge 为 Reference，意图归一）：
+#   select   —— 手动选择
+#   url-test —— 自动测速选择
+# 成员可为：其他策略组名、DIRECT / REJECT / REJECT-DROP 内置策略、订阅池 Sub。
+
+version: 1
+
+subscription:
+  name: Sub
+  url: "https://YOUR-SUBSCRIPTION-URL"
+  update_interval: 86400  # 秒；各客户端映射到自己的更新周期字段
+
+policy_groups:
+  - name: Proxy
+    type: select
+    members: [HK, TW, JP, US, SG, Final, Sub]
+
+  - name: Final
+    type: select
+    members: [HK, TW, JP, US, SG, Auto, Sub, DIRECT]
+
+  - name: Daily
+    type: select
+    members: [HK, TW, JP, US, SG, Final]
+
+  - name: Telegram
+    type: select
+    members: [SG, HK, JP, TW, US, Final]
+
+  - name: AI
+    type: select
+    members: [HK, TW, JP, US, Final]
+
+  - name: Google
+    type: select
+    members: [HK, TW, JP, US, SG, Final]
+
+  - name: GitHub
+    type: select
+    members: [HK, TW, JP, US, SG, Final]
+
+  - name: Finance
+    type: select
+    members: [HK, TW, JP, US, SG, Final]
+
+  - name: AppleMusic
+    type: select
+    members: [DIRECT, HK, TW, JP, US]
+
+  - name: APTV
+    type: select
+    members: [HK, TW, JP, US, SG, Sub, Auto]
+
+  # 地区组：select（保持 Surge 意图），正则筛选订阅池内节点
+  - name: HK
+    type: select
+    filter: '(?i)(香港|🇭🇰|Hong\s*Kong|HongKong|HKG|(?:^|[^A-Za-z])HK(?:G)?(?:[^A-Za-z]|$))'
+
+  - name: TW
+    type: select
+    filter: '(?i)(台湾|台灣|🇹🇼|Taiwan|Taipei|TWN|(?:^|[^A-Za-z])TW(?:N)?(?:[^A-Za-z]|$))'
+
+  - name: JP
+    type: select
+    filter: '(?i)(日本|🇯🇵|Japan|Tokyo|Osaka|Sakura|SoftBank|JPN|(?:^|[^A-Za-z])JP(?:N)?(?:[^A-Za-z]|$))'
+
+  - name: US
+    type: select
+    filter: '(?i)(美国|美國|🇺🇸|United\s*States|America|USA|US\s*Premium|(?:^|[^A-Za-z])US(?:A)?(?:[^A-Za-z]|$))'
+
+  - name: SG
+    type: select
+    filter: '(?i)(新加坡|狮城|獅城|🇸🇬|Singapore|SGP|SGGS|(?:^|[^A-Za-z])SG(?:P)?(?:[^A-Za-z]|$))'
+
+  - name: Auto
+    type: url-test
+    members: [HK, TW, JP, US, SG]
+    interval: 600
+    tolerance: 80
+    hidden: true
+
+# App → 策略组 路由意图。默认 source 为 Rulink 已发布 URL；个别 App 显式指定上游。
+apps:
+  YouTube:   {policy: Daily}
+  X:         {policy: Daily}
+  Instagram: {policy: Daily}
+  Threads:   {policy: Daily}
+  Telegram:  {policy: Telegram}
+  AI:        {policy: AI}
+  Google:    {policy: Google, source: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Google.list}
+  GitHub:    {policy: GitHub}
+  OKX:       {policy: Finance}
+  PayPal:    {policy: Finance}
+  SafePal:   {policy: Finance}
+  ZABank:    {policy: Finance}
+  AppleMusic: {policy: AppleMusic, source: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AppleMusic.list, qx_source: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/AppleMusic.list}
+  APTV:      {policy: APTV}
+  TikTok:    {policy: JP}
+  Netflix:   {policy: JP}
+  Spotify:   {policy: DIRECT}
+  Steam:     {policy: Proxy}
+  WhatsApp:  {policy: Proxy}
+  LINE:      {policy: Proxy}
+
+# 基础设施规则（沿用成熟上游，不复制进仓库；每客户端策略与可用性在此声明）。
+# policy 缺省表示六端一致；options 为客户端专属引用参数；qx_url 为 QX 专用
+# 源（QX 不消费 Surge 格式远程规则）。
+infrastructure:
+  - name: reject-drop
+    url: https://ruleset.skk.moe/List/non_ip/reject-drop.conf
+    policy: {surge: REJECT-DROP, shadowrocket: REJECT-DROP, loon: REJECT-DROP, stash: REJECT-DROP, egern: REJECT}
+    clients: [surge, shadowrocket, loon, stash, egern]
+
+  - name: reject
+    url: https://ruleset.skk.moe/List/non_ip/reject.conf
+    policy: REJECT
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/Reject.list
+
+  - name: tracking
+    url: https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Reject/Tracking.list
+    policy: REJECT
+    clients: [surge, shadowrocket, loon, stash, egern]
+
+  - name: lan
+    url: https://ruleset.skk.moe/List/non_ip/lan.conf
+    policy: DIRECT
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/Lan.list
+
+  - name: ntp-123
+    kind: dest-port
+    value: "123"
+    policy: DIRECT
+    clients: [surge, shadowrocket, loon]
+
+  - name: apple-association
+    kind: domain
+    value: app-site-association.cdn-apple.com
+    policy: REJECT
+
+  - name: apple-cn
+    url: https://ruleset.skk.moe/List/non_ip/apple_cn.conf
+    policy: DIRECT
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/AppleCN.list
+
+  - name: apple
+    url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Apple.list
+    policy: DIRECT
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/Apple.list
+
+  - name: wechat
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list
+    policy: DIRECT
+    qx_url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/WeChat/WeChat.list
+
+  - name: douyin
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/DouYin/DouYin.list
+    policy: DIRECT
+    qx_url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/DouYin/DouYin.list
+
+  - name: domestic
+    url: https://ruleset.skk.moe/List/non_ip/domestic.conf
+    policy: DIRECT
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/ChinaDomain.list
+
+  - name: cdn
+    url: https://ruleset.skk.moe/List/non_ip/cdn.conf
+    policy: Proxy
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/CDN.list
+
+  - name: china-ip
+    url: https://ruleset.skk.moe/List/ip/domestic.conf
+    policy: DIRECT
+    clients: [surge, shadowrocket, loon, stash, egern]
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/ChinaIP.list
+    options: {surge: no-resolve}
+
+  - name: china-ip2
+    url: https://ruleset.skk.moe/List/ip/china_ip.conf
+    policy: DIRECT
+    clients: [surge, shadowrocket, loon, stash, egern]
+    options: {surge: no-resolve}

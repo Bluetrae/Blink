@@ -1,0 +1,266 @@
+# ============================================================
+# Rulink 候选配置 · Egern —— 人工维护层，不参与每日自动更新
+# 导入前：将订阅占位符替换为你的订阅链接。
+# 本文件由 scripts/build_profile.py 生成；修改请编辑
+# sources/profile/intent.yaml 与本模板后重建。
+# ============================================================
+
+ipv6: false
+hijack_dns:
+- '*:53'
+geoip_db_url: https://raw.githubusercontent.com/Masaiki/GeoIP2-CN/release/Country.mmdb
+
+dns:
+  bootstrap:
+  - 223.5.5.5
+  - 119.29.29.29
+  upstreams:
+    China:
+    - https://doh.pub/dns-query
+    Global:
+    - https://1.1.1.1/dns-query
+  proxy_nameservers:
+  - https://1.1.1.1/dns-query
+
+policy_groups:
+- external:
+    name: Sub
+    type: select
+    urls:
+    - https://YOUR-SUBSCRIPTION-URL
+    update_interval: 86400
+    hidden: false
+- select:
+    name: Proxy
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Final
+    - Sub
+- select:
+    name: Final
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Auto
+    - Sub
+    - DIRECT
+- select:
+    name: Daily
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Final
+- select:
+    name: Telegram
+    policies:
+    - SG
+    - HK
+    - JP
+    - TW
+    - US
+    - Final
+- select:
+    name: AI
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - Final
+- select:
+    name: Google
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Final
+- select:
+    name: GitHub
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Final
+- select:
+    name: Finance
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Final
+- select:
+    name: AppleMusic
+    policies:
+    - DIRECT
+    - HK
+    - TW
+    - JP
+    - US
+- select:
+    name: APTV
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Sub
+    - Auto
+- select:
+    name: HK
+    policies:
+    - Sub
+    flatten: true
+    filter: '(?i)(香港|🇭🇰|Hong\s*Kong|HongKong|HKG|(?:^|[^A-Za-z])HK(?:G)?(?:[^A-Za-z]|$))'
+- select:
+    name: TW
+    policies:
+    - Sub
+    flatten: true
+    filter: '(?i)(台湾|台灣|🇹🇼|Taiwan|Taipei|TWN|(?:^|[^A-Za-z])TW(?:N)?(?:[^A-Za-z]|$))'
+- select:
+    name: JP
+    policies:
+    - Sub
+    flatten: true
+    filter: '(?i)(日本|🇯🇵|Japan|Tokyo|Osaka|Sakura|SoftBank|JPN|(?:^|[^A-Za-z])JP(?:N)?(?:[^A-Za-z]|$))'
+- select:
+    name: US
+    policies:
+    - Sub
+    flatten: true
+    filter: '(?i)(美国|美國|🇺🇸|United\s*States|America|USA|US\s*Premium|(?:^|[^A-Za-z])US(?:A)?(?:[^A-Za-z]|$))'
+- select:
+    name: SG
+    policies:
+    - Sub
+    flatten: true
+    filter: '(?i)(新加坡|狮城|獅城|🇸🇬|Singapore|SGP|SGGS|(?:^|[^A-Za-z])SG(?:P)?(?:[^A-Za-z]|$))'
+- select:
+    name: Auto
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    # ADAPTED：Egern url-test 待真机验证（Needs Verification），暂以 select 呈现
+
+rules:
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/reject-drop.conf
+    policy: REJECT
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/reject.conf
+    policy: REJECT
+- rule_set:
+    match: https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Reject/Tracking.list
+    policy: REJECT
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/lan.conf
+    policy: DIRECT
+- domain:
+    match: app-site-association.cdn-apple.com
+    policy: REJECT
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/apple_cn.conf
+    policy: DIRECT
+- rule_set:
+    match: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Apple.list
+    policy: DIRECT
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list
+    policy: DIRECT
+- rule_set:
+    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/DouYin/DouYin.list
+    policy: DIRECT
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/domestic.conf
+    policy: DIRECT
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/cdn.conf
+    policy: Proxy
+- rule_set:
+    match: https://ruleset.skk.moe/List/ip/domestic.conf
+    policy: DIRECT
+- rule_set:
+    match: https://ruleset.skk.moe/List/ip/china_ip.conf
+    policy: DIRECT
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/YouTube.list
+    policy: Daily
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/X.list
+    policy: Daily
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Instagram.list
+    policy: Daily
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Threads.list
+    policy: Daily
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Telegram.list
+    policy: Telegram
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/AI.list
+    policy: AI
+- rule_set:
+    match: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Google.list
+    policy: Google
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/GitHub.list
+    policy: GitHub
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/OKX.list
+    policy: Finance
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/PayPal.list
+    policy: Finance
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/SafePal.list
+    policy: Finance
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/ZABank.list
+    policy: Finance
+- rule_set:
+    match: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AppleMusic.list
+    policy: AppleMusic
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/APTV.list
+    policy: APTV
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/TikTok.list
+    policy: JP
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Netflix.list
+    policy: JP
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Spotify.list
+    policy: DIRECT
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/Steam.list
+    policy: Proxy
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/WhatsApp.list
+    policy: Proxy
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge/LINE.list
+    policy: Proxy
+- default:
+    policy: Final

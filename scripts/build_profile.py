@@ -1,0 +1,561 @@
+#!/usr/bin/env python3
+"""Human-controlled Profile Engine: canonical profile intent -> candidates.
+
+Reads ``sources/profile/intent.yaml`` (the human-maintained Canonical Profile
+Intent), validates it, and renders six client candidate configs into
+``Profiles/`` from the per-client base templates under
+``sources/profile/templates/``.
+
+This tool is deliberately NOT part of the daily GitHub Actions rule update:
+profile files evolve through human review and device testing only
+(see docs/MULTI_CLIENT_AUDIT.md and the project handoff notes).
+"""
+
+from __future__ import annotations
+
+import argparse
+import re
+import sys
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+INTENT_PATH = REPO_ROOT / "sources" / "profile" / "intent.yaml"
+TEMPLATE_DIR = REPO_ROOT / "sources" / "profile" / "templates"
+OUTPUT_DIR = REPO_ROOT / "Profiles"
+
+CLIENTS = {
+    "surge": ("surge.conf", "Surge.conf"),
+    "shadowrocket": ("shadowrocket.conf", "Shadowrocket.conf"),
+    "loon": ("loon.conf", "Loon.conf"),
+    "stash": ("stash.yaml", "Stash.yaml"),
+    "egern": ("egern.yaml", "Egern.yaml"),
+    "quantumultx": ("quantumultx.conf", "QuantumultX.conf"),
+}
+
+BUILTIN_POLICIES = {"DIRECT", "REJECT", "REJECT-DROP", "Sub"}
+RULINK_RAW = "https://raw.githubusercontent.com/Bluetrae/Rulink/main/Surge"
+
+# Placeholders the templates may carry.  Each renderer fills the ones that
+# make sense for its client; leftover markers fail the build loudly.
+MARKERS = ("__SUBSCRIPTION__", "__POLICY_GROUPS__", "__FILTERS__", "__RULES__", "__REMOTE_RULES__")
+
+
+class ProfileError(RuntimeError):
+    """A deterministic intent or template error that must stop rendering."""
+
+
+def load_intent(path: Path) -> dict:
+    try:
+        document = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except OSError as error:
+        raise ProfileError(f"cannot read intent {path}: {error}") from error
+    except yaml.YAMLError as error:
+        raise ProfileError(f"invalid YAML in {path}: {error}") from error
+    if not isinstance(document, dict) or document.get("version") != 1:
+        raise ProfileError("intent must be a mapping with version: 1")
+    return document
+
+
+def validate_intent(intent: dict) -> None:
+    subscription = intent.get("subscription")
+    if not isinstance(subscription, dict):
+        raise ProfileError("intent must define a subscription mapping")
+    if not isinstance(subscription.get("url"), str) or not subscription["url"].startswith("https://"):
+        raise ProfileError("subscription.url must be an https placeholder URL")
+    if not isinstance(subscription.get("name"), str) or not subscription["name"]:
+        raise ProfileError("subscription.name is required")
+
+    groups = intent.get("policy_groups")
+    if not isinstance(groups, list) or not groups:
+        raise ProfileError("policy_groups must be a non-empty list")
+    names: set[str] = set()
+    for group in groups:
+        if not isinstance(group, dict) or not isinstance(group.get("name"), str):
+            raise ProfileError(f"invalid policy group entry: {group!r}")
+        name = group["name"]
+        if name in BUILTIN_POLICIES or name in names:
+            raise ProfileError(f"duplicate or reserved policy group name: {name!r}")
+        names.add(name)
+        gtype = group.get("type")
+        if gtype not in {"select", "url-test"}:
+            raise ProfileError(f"{name}: unsupported group type {gtype!r}")
+        if gtype == "url-test" and not group.get("members"):
+            raise ProfileError(f"{name}: url-test group requires members")
+        for extra in ("interval", "tolerance"):
+            value = group.get(extra)
+            if value is not None and not isinstance(value, int):
+                raise ProfileError(f"{name}: {extra} must be an integer")
+        if group.get("filter") is not None and not isinstance(group["filter"], str):
+            raise ProfileError(f"{name}: filter must be a string")
+
+    pool_name = subscription["name"]
+    for group in groups:
+        for member in group.get("members", []):
+            if member not in names and member not in BUILTIN_POLICIES:
+                raise ProfileError(f"{group['name']}: unknown member {member!r}")
+
+    # Cycle detection over group references.
+    edges = {group["name"]: [m for m in group.get("members", []) if m in names] for group in groups}
+    for start in names:
+        seen: set[str] = set()
+        stack = [start]
+        while stack:
+            current = stack.pop()
+            if current in seen:
+                continue
+            seen.add(current)
+            for target in edges.get(current, []):
+                if target == start and len(seen) > 1:
+                    raise ProfileError(f"policy group cycle through {start!r}")
+                stack.append(target)
+
+    apps = intent.get("apps")
+    if not isinstance(apps, dict) or not apps:
+        raise ProfileError("apps must be a non-empty mapping")
+    for app_name, app in apps.items():
+        if not isinstance(app, dict):
+            raise ProfileError(f"{app_name}: app entry must be a mapping")
+        policy = app.get("policy")
+        if policy not in names and policy not in {"DIRECT", "REJECT"}:
+            raise ProfileError(f"{app_name}: policy {policy!r} does not exist")
+        source = app.get("source")
+        if source is not None and (not isinstance(source, str) or not source.startswith("https://")):
+            raise ProfileError(f"{app_name}: source must be an https URL")
+
+    infra = intent.get("infrastructure", [])
+    if not isinstance(infra, list):
+        raise ProfileError("infrastructure must be a list")
+    infra_names: set[str] = set()
+    for rule in infra:
+        if not isinstance(rule, dict) or not isinstance(rule.get("name"), str):
+            raise ProfileError(f"invalid infrastructure entry: {rule!r}")
+        if rule["name"] in infra_names:
+            raise ProfileError(f"duplicate infrastructure name {rule['name']!r}")
+        infra_names.add(rule["name"])
+        clients = rule.get("clients")
+        if clients is not None and any(client not in CLIENTS for client in clients):
+            raise ProfileError(f"{rule['name']}: unknown client in clients {clients!r}")
+        if rule.get("policy") is None:
+            raise ProfileError(f"{rule['name']}: policy is required")
+        if rule.get("kind", "rule-set") not in {"rule-set", "dest-port", "domain"}:
+            raise ProfileError(f"{rule['name']}: unsupported kind {rule.get('kind')!r}")
+
+
+def _policy_for(rule: dict, client: str) -> str:
+    policy = rule["policy"]
+    if isinstance(policy, str):
+        return policy
+    if isinstance(policy, dict):
+        if client in policy:
+            return policy[client]
+        if "all" in policy:
+            return policy["all"]
+        raise ProfileError(f"{rule['name']}: no policy declared for client {client!r}")
+    raise ProfileError(f"{rule['name']}: invalid policy {policy!r}")
+
+
+def _infra_for_client(rule: dict, client: str) -> dict | None:
+    clients = rule.get("clients")
+    if clients is not None and client not in clients:
+        return None
+    return rule
+
+
+# --------------------------------------------------------------------------
+# Per-client renderers.  Each returns a dict of marker -> text.  Anything a
+# client cannot express is either adapted (documented inline as a comment)
+# or omitted through the intent's per-client availability lists; nothing is
+# silently invented.
+# --------------------------------------------------------------------------
+
+def _render_surge(intent: dict) -> dict[str, str]:
+    sub = intent["subscription"]
+    lines: list[str] = []
+    lines.append(
+        f"{sub['name']} = select, policy-path={sub['url']}, update-interval={sub['update_interval']},"
+        " no-alert=0, hidden=0, include-all-proxies=0"
+    )
+    for group in intent["policy_groups"]:
+        if group.get("filter") is not None:
+            lines.append(
+                f"{group['name']} = select, no-alert=0, hidden=0, include-all-proxies=0,"
+                f' include-other-group="{sub["name"]}", policy-regex-filter={group["filter"]}'
+            )
+            continue
+        members = ",".join(group.get("members", []))
+        hidden = "1" if group.get("hidden") else "0"
+        no_alert = "1" if group.get("hidden") else "0"
+        if group["type"] == "url-test":
+            lines.append(
+                f"{group['name']} = url-test, {members}, interval={group.get('interval', 600)},"
+                f" tolerance={group.get('tolerance', 100)}, no-alert={no_alert}, hidden={hidden},"
+                " include-all-proxies=0"
+            )
+        else:
+            lines.append(
+                f"{group['name']} = select, {members}, no-alert={no_alert}, hidden={hidden},"
+                " include-all-proxies=0"
+            )
+    rules: list[str] = []
+    for rule in intent.get("infrastructure", []):
+        entry = _infra_for_client(rule, "surge")
+        if entry is None:
+            continue
+        policy = _policy_for(entry, "surge")
+        options = (entry.get("options") or {}).get("surge")
+        suffix = f",{options}" if options else ""
+        if entry.get("kind") == "dest-port":
+            rules.append(f"DEST-PORT,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain":
+            rules.append(f"DOMAIN,{entry['value']},{policy}")
+        else:
+            rules.append(f"RULE-SET,{entry['url']},{policy}{suffix}")
+    for app_name, app in intent["apps"].items():
+        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        rules.append(f"RULE-SET,{source},{app['policy']}")
+    rules.append("FINAL,Final,dns-failed")
+    return {"__POLICY_GROUPS__": "\n".join(lines), "__RULES__": "\n".join(rules)}
+
+
+def _render_shadowrocket(intent: dict) -> dict[str, str]:
+    lines: list[str] = []
+    for group in intent["policy_groups"]:
+        if group.get("filter") is not None:
+            lines.append(f"{group['name']} = select, policy-regex-filter={group['filter']}")
+            continue
+        members = ",".join(group.get("members", []))
+        if group["type"] == "url-test":
+            lines.append(
+                f"{group['name']} = url-test, {members}, url=http://cp.cloudflare.com/generate_204,"
+                f" interval={group.get('interval', 600)}, tolerance={group.get('tolerance', 100)}, timeout=5"
+            )
+        else:
+            lines.append(f"{group['name']} = select, {members}")
+    rules: list[str] = []
+    for rule in intent.get("infrastructure", []):
+        entry = _infra_for_client(rule, "shadowrocket")
+        if entry is None:
+            continue
+        policy = _policy_for(entry, "shadowrocket")
+        if entry.get("kind") == "dest-port":
+            rules.append(f"DEST-PORT,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain":
+            rules.append(f"DOMAIN,{entry['value']},{policy}")
+        else:
+            rules.append(f"RULE-SET,{entry['url']},{policy}")
+    for app_name, app in intent["apps"].items():
+        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        rules.append(f"RULE-SET,{source},{app['policy']}")
+    rules.append("FINAL,Final")
+    subscription = [
+        "# 在 App 内添加订阅；若订阅命名为 Sub，Proxy/Final 组即可直接引用。",
+        "# 或在此粘贴：<订阅名> = <订阅链接>",
+    ]
+    return {
+        "__POLICY_GROUPS__": "\n".join(lines),
+        "__RULES__": "\n".join(rules),
+        "__SUBSCRIPTION__": "\n".join(subscription),
+    }
+
+
+def _render_loon(intent: dict) -> dict[str, str]:
+    filters: list[str] = []
+    groups: list[str] = []
+    for group in intent["policy_groups"]:
+        if group.get("filter") is not None:
+            filters.append(f'{group["name"]} = NameRegex, FilterKey = {group["filter"]}')
+            continue
+        members = [m for m in group.get("members", []) if m != "Sub"]
+        members = ",".join(members)
+        if group["type"] == "url-test":
+            groups.append(
+                f"{group['name']} = url-test, {members}, interval={group.get('interval', 600)},"
+                f" tolerance={group.get('tolerance', 100)}"
+            )
+        else:
+            groups.append(f"{group['name']} = select, {members}")
+    local_rules: list[str] = []
+    remote_rules: list[str] = []
+    for rule in intent.get("infrastructure", []):
+        entry = _infra_for_client(rule, "loon")
+        if entry is None:
+            continue
+        policy = _policy_for(entry, "loon")
+        if entry.get("kind") == "dest-port":
+            local_rules.append(f"DEST-PORT,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain":
+            local_rules.append(f"DOMAIN,{entry['value']},{policy}")
+        else:
+            remote_rules.append(f"{entry['url']}, policy = {policy}, tag = {entry['name']}, enabled = true")
+    for app_name, app in intent["apps"].items():
+        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        remote_rules.append(f"{source}, policy = {app['policy']}, tag = {app_name}, enabled = true")
+    local_rules.append("FINAL,Final")
+    subscription = ["# 在 App 内添加订阅节点；地区组通过 [Remote Filter] 正则筛选全部节点。"]
+    return {
+        "__FILTERS__": "\n".join(filters),
+        "__POLICY_GROUPS__": "\n".join(groups),
+        "__RULES__": "\n".join(local_rules),
+        "__REMOTE_RULES__": "\n".join(remote_rules),
+        "__SUBSCRIPTION__": "\n".join(subscription),
+    }
+
+
+def _render_stash(intent: dict) -> dict[str, str]:
+    sub = intent["subscription"]
+    subscription = [
+        "proxy-providers:",
+        f"  {sub['name']}:",
+        "    type: http",
+        f"    url: {sub['url']}",
+        f"    interval: {sub['update_interval']}",
+        "    health-check:",
+        "      enable: true",
+        "      url: http://1.1.1.1/generate_204",
+        "      interval: 1800",
+        "      timeout: 5000",
+    ]
+    group_lines: list[str] = ["proxy-groups:"]
+    for group in intent["policy_groups"]:
+        if group.get("filter") is not None:
+            group_lines.append(
+                f'  - {{name: {group["name"]}, type: select, use: [{sub["name"]}],'
+                f" filter: '{group['filter']}', include-all: true}}"
+            )
+            continue
+        members = ",".join(group.get("members", []))
+        if group["type"] == "url-test":
+            group_lines.append(
+                f'  - {{name: {group["name"]}, type: url-test, proxies: [{members}],'
+                f' url: http://cp.cloudflare.com/generate_204, interval: {group.get("interval", 600)},'
+                f' tolerance: {group.get("tolerance", 100)}}}'
+            )
+        else:
+            group_lines.append(f'  - {{name: {group["name"]}, type: select, proxies: [{members}]}}')
+    providers: dict[str, str] = {}
+    rules: list[str] = ["rules:"]
+    local_rules: list[str] = []
+
+    def provider_name(name: str) -> str:
+        base = re.sub(r"[^A-Za-z0-9]", "_", name)
+        base = base.strip("_") or "ruleset"
+        unique = base
+        counter = 2
+        while unique in providers and providers[unique] != name:
+            unique = f"{base}_{counter}"
+            counter += 1
+        providers[unique] = name
+        return unique
+
+    provider_lines: list[str] = ["rule-providers:"]
+    for rule in intent.get("infrastructure", []):
+        entry = _infra_for_client(rule, "stash")
+        if entry is None:
+            continue
+        policy = _policy_for(entry, "stash")
+        if entry.get("kind") == "dest-port":
+            local_rules.append(f"  - DST-PORT,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain":
+            local_rules.append(f"  - DOMAIN,{entry['value']},{policy}")
+        else:
+            key = provider_name(entry["name"])
+            provider_lines.append(f"  {key}:")
+            provider_lines.append("    type: http")
+            provider_lines.append("    behavior: classical")
+            provider_lines.append("    format: text")
+            provider_lines.append(f"    url: {entry['url']}")
+            provider_lines.append("    interval: 86400")
+            rules.append(f"  - RULE-SET,{key},{policy}")
+    for app_name, app in intent["apps"].items():
+        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        key = provider_name(app_name)
+        provider_lines.append(f"  {key}:")
+        provider_lines.append("    type: http")
+        provider_lines.append("    behavior: classical")
+        provider_lines.append("    format: text")
+        provider_lines.append(f"    url: {source}")
+        provider_lines.append("    interval: 86400")
+        rules.append(f"  - RULE-SET,{key},{app['policy']}")
+    rules.extend(local_rules)
+    rules.append("  - MATCH,Final")
+    return {
+        "__SUBSCRIPTION__": "\n".join(subscription),
+        "__POLICY_GROUPS__": "\n".join(group_lines),
+        "__RULES__": "\n".join(provider_lines),
+        "__REMOTE_RULES__": "\n".join(rules),
+    }
+
+
+def _render_egern(intent: dict) -> dict[str, str]:
+    sub = intent["subscription"]
+    group_lines: list[str] = ["- external:", f"    name: {sub['name']}", "    type: select", "    urls:"]
+    group_lines.append(f"    - {sub['url']}")
+    group_lines.append(f"    update_interval: {sub['update_interval']}")
+    group_lines.append("    hidden: false")
+    for group in intent["policy_groups"]:
+        if group.get("filter") is not None:
+            group_lines.extend(
+                [
+                    "- select:",
+                    f'    name: {group["name"]}',
+                    "    policies:",
+                    f"    - {sub['name']}",
+                    "    flatten: true",
+                    f"    filter: '{group['filter']}'",
+                ]
+            )
+            continue
+        members = group.get("members", [])
+        group_lines.append("- select:")
+        group_lines.append(f'    name: {group["name"]}')
+        group_lines.append("    policies:")
+        for member in members:
+            group_lines.append(f"    - {member}")
+        if group["type"] == "url-test":
+            group_lines.append(
+                f'    # ADAPTED：Egern url-test 待真机验证（Needs Verification），暂以 select 呈现'
+            )
+    rules: list[str] = []
+    for rule in intent.get("infrastructure", []):
+        entry = _infra_for_client(rule, "egern")
+        if entry is None:
+            continue
+        policy = _policy_for(entry, "egern")
+        if entry.get("kind") == "domain":
+            rules.append("- domain:")
+            rules.append(f"    match: {entry['value']}")
+            rules.append(f"    policy: {policy}")
+        elif entry.get("kind") != "dest-port":
+            rules.append("- rule_set:")
+            rules.append(f"    match: {entry['url']}")
+            rules.append(f"    policy: {policy}")
+    for app_name, app in intent["apps"].items():
+        source = app.get("source") or f"{RULINK_RAW}/{app_name}.list"
+        rules.append("- rule_set:")
+        rules.append(f"    match: {source}")
+        rules.append(f"    policy: {app['policy']}")
+    rules.append("- default:")
+    rules.append("    policy: Final")
+    return {"__POLICY_GROUPS__": "\n".join(group_lines), "__RULES__": "\n".join(rules)}
+
+
+def _render_quantumultx(intent: dict) -> dict[str, str]:
+    group_lines: list[str] = []
+    for group in intent["policy_groups"]:
+        if group.get("filter") is not None:
+            group_lines.append(f'static={group["name"]}, server-tag-regex={group["filter"]}')
+            continue
+        members = [
+            member.lower() if member in {"DIRECT", "REJECT", "REJECT-DROP"} else member
+            for member in group.get("members", [])
+            if member != "Sub"  # QX 订阅在 App 内添加，组内不引用池名；地区组覆盖池节点
+        ]
+        members = ",".join(members)
+        if group["type"] == "url-test":
+            group_lines.append(
+                f"url-latency-benchmark={group['name']}, {members},"
+                f" check-interval={group.get('interval', 600)}, tolerance={group.get('tolerance', 100)},"
+                " alive-checking=false"
+            )
+        else:
+            group_lines.append(f"static={group['name']}, {members}")
+    remote_rules: list[str] = []
+    local_rules: list[str] = []
+
+    def qx_policy(policy: str) -> str:
+        # QX 内置策略为小写（direct/reject），策略组名保持原大小写。
+        return policy.lower() if policy in {"DIRECT", "REJECT", "REJECT-DROP"} else policy
+
+    for rule in intent.get("infrastructure", []):
+        entry = _infra_for_client(rule, "quantumultx")
+        if entry is None:
+            continue
+        policy = qx_policy(_policy_for(entry, "quantumultx"))
+        if entry.get("kind") == "domain":
+            local_rules.append(f"host, {entry['value']}, {policy}")
+        elif entry.get("kind") == "dest-port":
+            continue
+        else:
+            url = entry.get("qx_url")
+            if url is None:
+                raise ProfileError(f"{entry['name']}: quantumultx requires an explicit qx_url (QX does not parse Surge-format rule lists)")
+            remote_rules.append(
+                f"{url}, tag={entry['name']}, force-policy={policy},"
+                " update-interval=172800, opt-parser=false, enabled=true"
+            )
+    for app_name, app in intent["apps"].items():
+        source = app.get("qx_source") or f"https://raw.githubusercontent.com/Bluetrae/Rulink/main/QuantumultX/{app_name}.list"
+        remote_rules.append(
+            f"{source}, tag={app_name}, force-policy={qx_policy(app['policy'])},"
+            " update-interval=172800, opt-parser=false, enabled=true"
+        )
+    local_rules.append("final, Final")
+    subscription = ["# 在 App 内添加订阅节点；地区组通过 server-tag-regex 正则筛选全部节点。"]
+    return {
+        "__POLICY_GROUPS__": "\n".join(group_lines),
+        "__REMOTE_RULES__": "\n".join(remote_rules),
+        "__RULES__": "\n".join(local_rules),
+        "__SUBSCRIPTION__": "\n".join(subscription),
+    }
+
+
+RENDERERS = {
+    "surge": _render_surge,
+    "shadowrocket": _render_shadowrocket,
+    "loon": _render_loon,
+    "stash": _render_stash,
+    "egern": _render_egern,
+    "quantumultx": _render_quantumultx,
+}
+
+
+def render_client(client: str, intent: dict) -> str:
+    template_name, _output_name = CLIENTS[client]
+    template_path = TEMPLATE_DIR / template_name
+    if not template_path.exists():
+        raise ProfileError(f"missing template {template_path}")
+    text = template_path.read_text(encoding="utf-8")
+    values = RENDERERS[client](intent)
+    for marker in MARKERS:
+        text = text.replace(marker, values.get(marker, ""))
+    leftover = [marker for marker in MARKERS if marker in text]
+    if leftover:
+        raise ProfileError(f"{client}: unfilled template markers {leftover}")
+    return text
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--intent", type=Path, default=INTENT_PATH)
+    parser.add_argument("--write", action="store_true", help="write Profiles/ candidates (default: check only)")
+    arguments = parser.parse_args(argv)
+    try:
+        intent = load_intent(arguments.intent)
+        validate_intent(intent)
+        outputs = {client: render_client(client, intent) for client in CLIENTS}
+        if arguments.write:
+            OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+            for client, text in outputs.items():
+                _template, output_name = CLIENTS[client]
+                target = OUTPUT_DIR / output_name
+                temporary = target.with_suffix(target.suffix + ".tmp")
+                temporary.write_text(text, encoding="utf-8", newline="\n")
+                temporary.replace(target)
+        report = {
+            "mode": "write" if arguments.write else "check",
+            "clients": {
+                client: {"lines": len(text.splitlines())} for client, text in outputs.items()
+            },
+        }
+        print(yaml.safe_dump(report, allow_unicode=True, sort_keys=False))
+        return 0
+    except ProfileError as error:
+        print(f"profile build failed: {error}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

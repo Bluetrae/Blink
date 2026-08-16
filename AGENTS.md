@@ -39,6 +39,15 @@
 - 禁止提交机场订阅 URL、token、GitHub PAT、密码、2FA、MTProto secret、证书等敏感信息。
 - 提交前对变更文件做敏感模式自检：GitHub PAT（`ghp_`/`github_pat_`）、AWS Key（`AKIA…`）、私钥/证书块（`-----BEGIN … PRIVATE KEY-----`）、机场订阅 URL 与代理协议链接（`vmess://`/`vless://`/`ss://`/`trojan://` 等）、URL 内嵌凭据（`?token=`/`user:pass@`）、本地绝对路径（如 `C:\Users\<用户名>`）一律不得进入提交；发现仓库既有的敏感痕迹先报告再处理，不自行删除或改写历史。
 
+## Profile 层规范（配置迁移）
+
+- Rules 自动更新（每日 Actions），Profiles 人工演进：`sources/profile/` 与 `Profiles/` **绝不加入** `update.yml` 定时任务，Profile 修改不自动 Commit，每次提交由用户确认。
+- 语义源是 `sources/profile/intent.yaml`（Canonical Profile Intent），不是 Surge 配置文本；迁移的是配置意图。
+- 普适性原则：公开 Profile 只含**单一订阅池**（占位 URL `https://YOUR-SUBSCRIPTION-URL`，真实订阅地址绝不进入仓库）；用户个人专属内容（多订阅池、Emby 个人组、个人域名）保留在本地副本，不进入 intent 与公开输出。
+- 能力映射只允许 FULL / ADAPTED / UNSUPPORTED 三种结果；UNSUPPORTED 与 ADAPTED 必须在生成文件中以注释显式标注（例如 Egern url-test 暂以 select 呈现），禁止静默删除或伪造。
+- 采用横向切片开发：一次只做一个功能 × 六客户端，验证后再做下一个；实施顺序与决策依据见 `D:\Rulink_Profile_Layer_实施细则.txt`（用户私有文件，不进入仓库）。
+- 候选配置输出 `Profiles/` 为生成产物（含占位符），修改入口是 intent 与 templates，改后运行 `scripts/build_profile.py --write` 重建。
+
 ## 可用工具与 Git 规范
 
 - GitHub Plugin 在当前 Edu 工作区不可用，不要依赖它。

@@ -1,0 +1,22 @@
+# ============================================================
+# Rulink 候选配置 · Stash —— 人工维护层，不参与每日自动更新
+# 导入前：将订阅占位符替换为你的订阅链接。
+# 通用骨架参考 Repcz/Tool（MIT）。
+# 本文件由 scripts/build_profile.py 生成；修改请编辑
+# sources/profile/intent.yaml 与本模板后重建。
+# ============================================================
+
+mode: rule
+log-level: info
+
+dns:
+  nameserver: [223.5.5.5, 119.29.29.29]
+  fake-ip-filter: ['+.lan', '*', '+.local']
+
+__SUBSCRIPTION__
+
+__POLICY_GROUPS__
+
+__RULES__
+
+__REMOTE_RULES__
