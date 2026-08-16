@@ -97,11 +97,12 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 ## 🌐 网页入口
 
-无需域名即可访问：[`https://bluetrae.github.io/Blink/`](https://bluetrae.github.io/Blink/)，三个板块：
+无需域名即可访问：[`https://bluetrae.github.io/Blink/`](https://bluetrae.github.io/Blink/)，页面板块：
 
 - **规则集**：切换六客户端标签查看每个 App 的规则数与对应接入行，一键复制；
+- **接入指南**：六客户端全量接入片段，一键复制；
 - **配置文件**：六客户端候选配置的下载 / 复制 / **iOS 一键导入**（支持 URL Scheme 的客户端）与导入指引；
-- **接入指南**：六客户端全量接入片段，一键复制。
+- **构建与来源**：构建管线与选源原则。
 
 <div align="center">
   <a href="https://bluetrae.github.io/Blink/">
@@ -116,7 +117,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 ## 🧩 来源政策
 
-- 优先偏好 **Repcz → SukkaW → 其他长期验证的成熟作者 → v2fly / MetaCubeX**，但每个 App 的最终主源以 freshness、completeness、scope、format suitability、maintenance quality 的证据为准；每 App 恰好 1 个 primary、至多 1 个 supplemental。
+- 每个 App 的选源以证据为准（freshness / completeness / scope / format suitability / maintenance quality），作者偏好只作并列时的 tie-breaker；每 App 恰好 1 个 primary、至多 1 个 supplemental。完整的候选、证据与结论档案见 [`engine/SOURCE_AUDITS.md`](engine/SOURCE_AUDITS.md)。
 - 输入格式：
 
 | 格式 | 构建行为 |

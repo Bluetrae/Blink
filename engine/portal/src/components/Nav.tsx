@@ -6,8 +6,8 @@ interface NavProps {
 
 const NAV_LINKS = [
   { href: "#rulesets", label: "规则集" },
-  { href: "#profiles", label: "配置文件" },
   { href: "#usage", label: "使用" },
+  { href: "#profiles", label: "配置文件" },
   { href: "#about", label: "构建与来源" },
 ];
 

@@ -63,8 +63,8 @@ export default function App() {
               totalRules={data.apps.reduce((sum, app) => sum + app.rules, 0)}
             />
             <Rulesets data={data} />
-            <Profiles data={data} />
             <Usage data={data} />
+            <Profiles data={data} />
             <About repo={data.repo} />
           </>
         ) : (

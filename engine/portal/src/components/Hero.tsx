@@ -30,12 +30,11 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         className="hero-enter mx-auto max-w-3xl text-[clamp(2rem,5.2vw,3.25rem)] font-bold leading-[1.2] tracking-tight"
         style={{ animationDelay: "70ms" }}
       >
-        经过审计的 App 规则，
+        每个 App 一次审计，
         <br className="hidden sm:block" />
         <span className="bg-gradient-to-r from-accent to-[#8b5cf6] bg-clip-text text-transparent">
-          一套规则
+          六端通用
         </span>
-        ，六个客户端
       </h1>
       <p
         className="hero-enter mx-auto mt-5 max-w-xl text-base text-mute"
@@ -78,7 +77,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         <Stat value="6 客户端" label="Surge · Shadowrocket · Loon · Stash · Egern · Quantumult X" />
         <Stat value="6 候选配置" label="完整可导入 · 单订阅池 · 占位符内置" />
         <Stat value="每日 00:01" label="规则自动检查上游" />
-        <Stat value="审计准入" label="Repcz · SukkaW 优先" />
+        <Stat value="审计准入" label="证据优先 · 每 App 独立审计" />
       </ul>
     </section>
   );

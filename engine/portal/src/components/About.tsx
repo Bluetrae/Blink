@@ -51,7 +51,7 @@ export default function About({ repo }: AboutProps) {
               <ul className="space-y-3">
                 <li className="relative pl-5 text-sm">
                   <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-[2px] bg-accent" />
-                  优先梯队：Repcz → SukkaW → 长期验证的维护者 → v2fly / MetaCubeX，证据优先于偏好。
+                  每个 App 独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只作并列时的 tie-breaker。
                 </li>
                 <li className="relative pl-5 text-sm">
                   <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-[2px] bg-accent" />
