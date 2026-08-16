@@ -30,7 +30,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         className="hero-enter mx-auto max-w-3xl text-[clamp(2rem,5.2vw,3.25rem)] font-bold leading-[1.2] tracking-tight"
         style={{ animationDelay: "70ms" }}
       >
-        一次审计，
+        一次审计
         <br className="hidden sm:block" />
         <span className="bg-gradient-to-r from-accent to-[#8b5cf6] bg-clip-text text-transparent">
           多端适用
