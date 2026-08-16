@@ -33,54 +33,54 @@ function AppCard({
     <Reveal className="h-full" delay={Math.min(index, 6) * 40}>
       <article
         title={app.note || app.name}
-        className="flex h-full flex-col gap-3 rounded-2xl border border-line bg-card p-5 transition duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-lg"
+        className="flex h-full flex-col gap-2.5 rounded-2xl border border-line bg-card p-3.5 transition duration-200 hover:-translate-y-0.5 hover:border-line-strong hover:shadow-lg"
       >
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border border-line bg-paper">
+        <div className="flex items-center gap-2">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-line bg-paper">
             {app.icon ? (
               <img
                 src={app.icon}
                 alt=""
-                width={40}
-                height={40}
+                width={32}
+                height={32}
                 className="h-full w-full object-cover"
               />
             ) : (
-              <span className="text-xl">{app.emoji}</span>
+              <span className="text-base">{app.emoji}</span>
             )}
           </span>
-          <div className="leading-tight">
-            <div className="font-semibold tracking-tight">{app.name}</div>
-            <div className="text-xs text-mute">{CATEGORY_LABELS[app.category] ?? app.category}</div>
+          <div className="min-w-0 leading-tight">
+            <div className="truncate text-sm font-semibold tracking-tight">{app.name}</div>
+            <div className="truncate text-[11px] text-mute">{CATEGORY_LABELS[app.category] ?? app.category}</div>
           </div>
         </div>
-        <div className="flex items-baseline gap-1.5">
-          <strong className="text-2xl font-bold tracking-tight text-accent">{stat.rules}</strong>
-          <span className="text-xs text-mute">条规则</span>
+        <div className="flex items-baseline gap-1">
+          <strong className="text-xl font-bold tracking-tight text-accent">{stat.rules}</strong>
+          <span className="text-[11px] text-mute">条规则</span>
         </div>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1">
           {typeChips(app, client).map((chip) => (
             <span
               key={chip.label}
-              className="rounded-full border border-line bg-paper px-2 py-0.5 text-xs text-mute"
+              className="rounded-full border border-line bg-paper px-1.5 py-0.5 text-[11px] text-mute"
             >
               {chip.label} <b className="font-semibold text-ink">{chip.count}</b>
             </span>
           ))}
         </div>
         {dropped > 0 && (
-          <p className="rounded-lg border border-line bg-paper px-2 py-1 text-[11px] leading-relaxed text-mute">
+          <p className="rounded-lg border border-line bg-paper px-1.5 py-1 text-[10px] leading-relaxed text-mute">
             ⚠️ {dropped} 条 PROCESS-NAME 无法在 {client === "egern" ? "Egern" : "Quantumult X"} 无损表达，构建器已显式丢弃。
           </p>
         )}
-        <p className="truncate text-xs text-mute" title={app.source.name || undefined}>
+        <p className="truncate text-[11px] text-mute" title={app.source.name || undefined}>
           {sourceLine(app)}
         </p>
-        <div className="mt-auto flex gap-2 pt-0.5">
+        <div className="mt-auto flex gap-1.5 pt-0.5">
           <button
             type="button"
             onClick={copy}
-            className="flex-1 rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
+            className="flex-1 rounded-lg bg-accent px-2 py-1.5 text-[13px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
           >
             {copied ? "已复制 ✓" : "复制接入"}
           </button>
@@ -88,7 +88,7 @@ function AppCard({
             href={clientFileUrl(rawBase, app, client)}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex-1 rounded-lg border border-line bg-card px-3 py-2 text-center text-sm text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-paper active:translate-y-0 active:scale-[0.96]"
+            className="group flex-1 rounded-lg border border-line bg-card px-2 py-1.5 text-center text-[13px] text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-paper active:translate-y-0 active:scale-[0.96]"
           >
             查看{" "}
             <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
@@ -110,8 +110,8 @@ export default function Rulesets({ data }: { data: PortalData }) {
   const filters = ["all", ...CATEGORY_ORDER.filter((category) => present.has(category))];
   const visible = filter === "all" ? apps : apps.filter((app) => app.category === filter);
   const activeNote = CLIENT_TABS.find((tab) => tab.key === client)?.note ?? "";
-  const shown = expanded ? visible : visible.slice(0, 6);
-  const collapsible = visible.length > 6;
+  const shown = expanded ? visible : visible.slice(0, 10);
+  const collapsible = visible.length > 10;
 
   return (
     <section id="rulesets" className="scroll-mt-24 border-y border-line bg-paper px-6 py-16 sm:py-20">
@@ -173,7 +173,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(175px,1fr))] gap-3">
           {shown.map((app, index) => (
             <AppCard key={app.name} app={app} client={client} rawBase={data.raw_base} index={index} />
           ))}
