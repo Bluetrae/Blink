@@ -74,7 +74,11 @@ export const CLIENT_TABS: ClientTab[] = [
 ];
 
 export function clientIcon(key: ClientKey): string {
-  return `/icons/${key}.jpg`;
+  // Relative path: the site is deployed under the GitHub Pages subpath
+  // (/Rulink/), and Vite only rewrites asset URLs in index.html — string
+  // literals in JS keep whatever form we write.  Resolving against the
+  // document URL works on Pages, a future apex domain, and the dev server.
+  return `icons/${key}.jpg`;
 }
 
 export const CLIENT_KEYS: ClientKey[] = CLIENT_TABS.map((tab) => tab.key);
