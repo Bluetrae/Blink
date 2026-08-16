@@ -2,7 +2,7 @@
 
 # <img src="engine/docs/images/avatar.png" width="36" height="36" alt="" style="vertical-align:middle" /> Blink
 
-**多客户端 App Rule-Set · 自动构建 · 稳定分发**
+**多客户端规则与配置 · 自动构建 · 稳定分发**
 
 [![Update Rule-Sets](https://github.com/Bluetrae/Blink/actions/workflows/update.yml/badge.svg?branch=main)](https://github.com/Bluetrae/Blink/actions/workflows/update.yml)
 [![Rule-Sets](https://img.shields.io/badge/Rule--Sets-6_clients-2f81f7?style=flat-square)](https://github.com/Bluetrae/Blink/tree/main/Surge)
@@ -14,7 +14,7 @@
 
 <br>
 
-个人使用的**多客户端 App Rule-Set 与候选配置**仓库，分两层：
+个人使用的**多客户端规则与候选配置**仓库，分两层：
 
 - **规则层（自动维护）**：把经过审计的上游 App 规则保守转换为一份 Canonical Rule Model，渲染为 **Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X** 六种客户端格式，每日自动更新，不是为每个客户端维护一套独立规则。
 - **配置层（人工维护）**：把同一份配置意图（策略组 / 规则引用 / 通用设置）迁移为六客户端**完整候选配置**，单一订阅池组织、占位符已内置，替换一条订阅即可复用。
