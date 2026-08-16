@@ -17,6 +17,7 @@ export interface AppEntry {
   category: string;
   emoji: string;
   icon?: string;
+  self_use?: boolean;
   policy: string;
   file: string;
   rules: number;

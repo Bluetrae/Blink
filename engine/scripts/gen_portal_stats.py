@@ -49,7 +49,7 @@ PORTAL_META = {
     "Netflix": {"category": "Media", "emoji": "🎬", "policy": "Media", "icon": "app-icons/Netflix.jpg"},
     "TikTok": {"category": "Media", "emoji": "🎵", "policy": "Proxy", "icon": "app-icons/TikTok.jpg"},
     "Spotify": {"category": "Media", "emoji": "🎧", "policy": "Proxy", "icon": "app-icons/Spotify.jpg"},
-    "APTV": {"category": "Media", "emoji": "📺", "policy": "Media", "icon": "app-icons/APTV.jpg"},
+    "APTV": {"category": "Media", "emoji": "📺", "policy": "Media", "icon": "app-icons/APTV.jpg", "self_use": True},
     "AI": {"category": "AI", "emoji": "🤖", "policy": "Proxy", "icon": "app-icons/AI.jpg"},
 }
 
@@ -152,6 +152,7 @@ def build(root: Path) -> dict:
                 "category": meta["category"],
                 "emoji": meta["emoji"],
                 "icon": meta.get("icon"),
+                "self_use": bool(meta.get("self_use")),
                 "policy": meta["policy"],
                 "file": app["output"],
                 "rules": header_count,

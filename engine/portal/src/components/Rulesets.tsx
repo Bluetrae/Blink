@@ -68,6 +68,11 @@ function AppCard({
             </span>
           ))}
         </div>
+        {app.self_use && (
+          <p className="rounded-lg border border-accent-soft bg-accent-soft px-1.5 py-1 text-[10px] leading-relaxed text-accent">
+            ⚠️ 作者自用直播源 · 请按自身直播源自行配置
+          </p>
+        )}
         {dropped > 0 && (
           <p className="rounded-lg border border-line bg-paper px-1.5 py-1 text-[10px] leading-relaxed text-mute">
             ⚠️ {dropped} 条 PROCESS-NAME 无法在 {client === "egern" ? "Egern" : "Quantumult X"} 无损表达，构建器已显式丢弃。
