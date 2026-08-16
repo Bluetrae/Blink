@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { ClientKey, PortalData } from "../types";
-import { CLIENT_TABS, PROFILE_FILES, clientIcon, profileFileUrl } from "../data";
+import { CLIENT_TABS, PROFILE_FILES, clientIcon, profileFileUrl, profileInstallScheme } from "../data";
 import { useCopy } from "../hooks";
 import Reveal from "./Reveal";
 
@@ -13,6 +13,7 @@ const STEPS = [
 export default function Profiles({ data }: { data: PortalData }) {
   const [client, setClient] = useState<ClientKey>("surge");
   const url = profileFileUrl(data.raw_base, client);
+  const scheme = profileInstallScheme(data.raw_base, client);
   const { copied, copy } = useCopy(url);
   const tab = CLIENT_TABS.find((item) => item.key === client);
 
@@ -72,7 +73,15 @@ export default function Profiles({ data }: { data: PortalData }) {
                   {PROFILE_FILES[client].kind} · 单订阅池 · 占位符已内置
                 </div>
               </div>
-              <div className="ml-auto flex gap-2">
+              <div className="ml-auto flex flex-wrap justify-end gap-2">
+                {scheme && (
+                  <a
+                    href={scheme}
+                    className="rounded-full border border-accent-soft bg-accent-soft px-4 py-2 text-sm font-medium text-accent transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md hover:shadow-accent/20 active:translate-y-0 active:scale-[0.96]"
+                  >
+                    iOS 一键导入
+                  </a>
+                )}
                 <button
                   type="button"
                   onClick={copy}

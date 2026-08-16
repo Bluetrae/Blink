@@ -4,6 +4,7 @@ import { useTimedTheme } from "./hooks";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Rulesets from "./components/Rulesets";
+import Profiles from "./components/Profiles";
 import Usage from "./components/Usage";
 import About from "./components/About";
 import Footer from "./components/Footer";
@@ -62,6 +63,7 @@ export default function App() {
               totalRules={data.apps.reduce((sum, app) => sum + app.rules, 0)}
             />
             <Rulesets data={data} />
+            <Profiles data={data} />
             <Usage data={data} />
             <About repo={data.repo} />
           </>
