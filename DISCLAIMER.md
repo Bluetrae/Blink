@@ -60,6 +60,19 @@ misrouting, data loss, account impact, or other consequences arising from use
 of this repository or its outputs. Nothing in this disclaimer excludes or
 limits liability where exclusion or limitation is prohibited by applicable law.
 
+## Acceptance
+
+> 任何以任何方式查看此项目的人或直接或间接使用该项目的使用者都应仔细阅读此声明。
+>
+> 保留随时更改或补充此免责声明的权利。
+>
+> 一旦使用并复制了该项目的任何文件，则视为您已接受此免责声明。
+
+Any person who views this project in any way, or who directly or indirectly
+uses it, should read this disclaimer carefully. The right to change or
+supplement this disclaimer at any time is reserved. By using and copying any
+file of this project, you are deemed to have accepted this disclaimer.
+
 ## Changes
 
 This repository, its source selections, generated outputs, and these notices
