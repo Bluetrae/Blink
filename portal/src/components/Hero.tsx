@@ -35,7 +35,7 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         <span className="bg-gradient-to-r from-accent to-[#8b5cf6] bg-clip-text text-transparent">
           一套规则
         </span>
-        ，五个客户端
+        ，六个客户端
       </h1>
       <p
         className="hero-enter mx-auto mt-5 max-w-xl text-base text-mute"
