@@ -24,6 +24,20 @@ jobs:
         with:
           persist-credentials: true
 
+      - name: Validate referenced paths exist
+        shell: bash
+        run: |
+          missing=0
+          while read -r p; do
+            if [ ! -e "$p" ]; then
+              echo "::error::Path referenced in update.yml does not exist at checkout: $p"
+              missing=1
+            else
+              echo "ok: $p"
+            fi
+          done < <(grep -oE 'engine/[A-Za-z0-9_./-]+' .github/workflows/update.yml | sort -u)
+          exit $missing
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
