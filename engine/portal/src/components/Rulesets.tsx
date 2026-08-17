@@ -28,7 +28,8 @@ function AppCard({
   const snippet = clientSnippet(rawBase, app, client);
   const { copied, copy } = useCopy(snippet);
   const stat = app.clients[client];
-  const dropped = client === "egern" || client === "quantumultx" ? (stat.dropped ?? 0) : 0;
+  const dropped =
+    client === "egern" || client === "quantumultx" || client === "clash" ? (stat.dropped ?? 0) : 0;
   return (
     <Reveal className="h-full" delay={Math.min(index, 6) * 40}>
       <article
@@ -77,8 +78,9 @@ function AppCard({
         )}
         {dropped > 0 && (
           <p className="rounded-lg border border-line bg-paper px-1.5 py-1 text-[10px] leading-relaxed text-mute">
-            ⚠️ {dropped} 条 PROCESS-NAME 无法在 {client === "egern" ? "Egern" : "Quantumult X"}{" "}
-            无损表达，构建器已显式丢弃。
+            ⚠️ {dropped} 条 {client === "clash" ? "USER-AGENT" : "PROCESS-NAME"} 无法在{" "}
+            {client === "egern" ? "Egern" : client === "clash" ? "Clash" : "Quantumult X"}{" "}
+            无损表达， 构建器已显式丢弃。
           </p>
         )}
         <p className="truncate text-[11px] text-mute" title={app.source.name || undefined}>

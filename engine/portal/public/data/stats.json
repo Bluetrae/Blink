@@ -31,6 +31,11 @@
           "file": "Stash/OKX.list",
           "rules": 9
         },
+        "clash": {
+          "file": "Clash/OKX.list",
+          "rules": 9,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/OKX.yaml",
           "rules": 9,
@@ -78,6 +83,11 @@
           "file": "Stash/WhatsApp.list",
           "rules": 11
         },
+        "clash": {
+          "file": "Clash/WhatsApp.list",
+          "rules": 11,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/WhatsApp.yaml",
           "rules": 11,
@@ -124,6 +134,11 @@
         "stash": {
           "file": "Stash/LINE.list",
           "rules": 20
+        },
+        "clash": {
+          "file": "Clash/LINE.list",
+          "rules": 20,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/LINE.yaml",
@@ -173,6 +188,11 @@
           "file": "Stash/GitHub.list",
           "rules": 58
         },
+        "clash": {
+          "file": "Clash/GitHub.list",
+          "rules": 58,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/GitHub.yaml",
           "rules": 58,
@@ -219,6 +239,11 @@
         "stash": {
           "file": "Stash/SafePal.list",
           "rules": 2
+        },
+        "clash": {
+          "file": "Clash/SafePal.list",
+          "rules": 2,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/SafePal.yaml",
@@ -268,6 +293,11 @@
         "stash": {
           "file": "Stash/PayPal.list",
           "rules": 248
+        },
+        "clash": {
+          "file": "Clash/PayPal.list",
+          "rules": 247,
+          "dropped": 1
         },
         "egern": {
           "file": "Egern/PayPal.yaml",
@@ -322,6 +352,11 @@
           "file": "Stash/Netflix.list",
           "rules": 1158
         },
+        "clash": {
+          "file": "Clash/Netflix.list",
+          "rules": 1157,
+          "dropped": 1
+        },
         "egern": {
           "file": "Egern/Netflix.yaml",
           "rules": 1157,
@@ -371,6 +406,11 @@
           "file": "Stash/YouTube.list",
           "rules": 14
         },
+        "clash": {
+          "file": "Clash/YouTube.list",
+          "rules": 14,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/YouTube.yaml",
           "rules": 14,
@@ -419,6 +459,11 @@
           "file": "Stash/X.list",
           "rules": 34
         },
+        "clash": {
+          "file": "Clash/X.list",
+          "rules": 34,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/X.yaml",
           "rules": 34,
@@ -465,6 +510,11 @@
         "stash": {
           "file": "Stash/Instagram.list",
           "rules": 3
+        },
+        "clash": {
+          "file": "Clash/Instagram.list",
+          "rules": 3,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/Instagram.yaml",
@@ -513,6 +563,11 @@
           "file": "Stash/Telegram.list",
           "rules": 14
         },
+        "clash": {
+          "file": "Clash/Telegram.list",
+          "rules": 14,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/Telegram.yaml",
           "rules": 14,
@@ -559,6 +614,11 @@
         "stash": {
           "file": "Stash/Threads.list",
           "rules": 2
+        },
+        "clash": {
+          "file": "Clash/Threads.list",
+          "rules": 2,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/Threads.yaml",
@@ -608,6 +668,11 @@
         "stash": {
           "file": "Stash/TikTok.list",
           "rules": 81
+        },
+        "clash": {
+          "file": "Clash/TikTok.list",
+          "rules": 81,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/TikTok.yaml",
@@ -660,6 +725,11 @@
           "file": "Stash/Spotify.list",
           "rules": 21
         },
+        "clash": {
+          "file": "Clash/Spotify.list",
+          "rules": 20,
+          "dropped": 1
+        },
         "egern": {
           "file": "Egern/Spotify.yaml",
           "rules": 20,
@@ -709,6 +779,11 @@
           "file": "Stash/AI.list",
           "rules": 50
         },
+        "clash": {
+          "file": "Clash/AI.list",
+          "rules": 50,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/AI.yaml",
           "rules": 50,
@@ -756,6 +831,11 @@
           "file": "Stash/ZABank.list",
           "rules": 3
         },
+        "clash": {
+          "file": "Clash/ZABank.list",
+          "rules": 3,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/ZABank.yaml",
           "rules": 3,
@@ -802,6 +882,11 @@
         "stash": {
           "file": "Stash/Steam.list",
           "rules": 20
+        },
+        "clash": {
+          "file": "Clash/Steam.list",
+          "rules": 20,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/Steam.yaml",
@@ -852,6 +937,11 @@
           "file": "Stash/APTV.list",
           "rules": 26
         },
+        "clash": {
+          "file": "Clash/APTV.list",
+          "rules": 26,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/APTV.yaml",
           "rules": 26,
@@ -899,6 +989,11 @@
         "stash": {
           "file": "Stash/Disney.list",
           "rules": 174
+        },
+        "clash": {
+          "file": "Clash/Disney.list",
+          "rules": 174,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/Disney.yaml",
@@ -949,6 +1044,11 @@
           "file": "Stash/ParamountPlus.list",
           "rules": 10
         },
+        "clash": {
+          "file": "Clash/ParamountPlus.list",
+          "rules": 9,
+          "dropped": 1
+        },
         "egern": {
           "file": "Egern/ParamountPlus.yaml",
           "rules": 10,
@@ -997,6 +1097,11 @@
         "stash": {
           "file": "Stash/Hulu.list",
           "rules": 59
+        },
+        "clash": {
+          "file": "Clash/Hulu.list",
+          "rules": 59,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/Hulu.yaml",
@@ -1047,6 +1152,11 @@
           "file": "Stash/PrimeVideo.list",
           "rules": 16
         },
+        "clash": {
+          "file": "Clash/PrimeVideo.list",
+          "rules": 16,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/PrimeVideo.yaml",
           "rules": 16,
@@ -1094,6 +1204,11 @@
         "stash": {
           "file": "Stash/HBO.list",
           "rules": 46
+        },
+        "clash": {
+          "file": "Clash/HBO.list",
+          "rules": 46,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/HBO.yaml",
@@ -1146,6 +1261,11 @@
           "file": "Stash/Twitch.list",
           "rules": 22
         },
+        "clash": {
+          "file": "Clash/Twitch.list",
+          "rules": 22,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/Twitch.yaml",
           "rules": 21,
@@ -1193,6 +1313,11 @@
         "stash": {
           "file": "Stash/Facebook.list",
           "rules": 580
+        },
+        "clash": {
+          "file": "Clash/Facebook.list",
+          "rules": 580,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/Facebook.yaml",
@@ -1243,6 +1368,11 @@
           "file": "Stash/Google.list",
           "rules": 25
         },
+        "clash": {
+          "file": "Clash/Google.list",
+          "rules": 25,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/Google.yaml",
           "rules": 25,
@@ -1290,6 +1420,11 @@
           "file": "Stash/NBA.list",
           "rules": 2
         },
+        "clash": {
+          "file": "Clash/NBA.list",
+          "rules": 2,
+          "dropped": 0
+        },
         "egern": {
           "file": "Egern/NBA.yaml",
           "rules": 2,
@@ -1336,6 +1471,11 @@
         "stash": {
           "file": "Stash/Suno.list",
           "rules": 2
+        },
+        "clash": {
+          "file": "Clash/Suno.list",
+          "rules": 2,
+          "dropped": 0
         },
         "egern": {
           "file": "Egern/Suno.yaml",

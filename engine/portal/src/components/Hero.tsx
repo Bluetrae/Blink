@@ -41,8 +41,8 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         style={{ animationDelay: "140ms" }}
       >
         Blink 每日从可信上游保守转换 App 专用规则，渲染为 Surge / Shadowrocket / Loon / Stash /
-        Egern / Quantumult X 六种输出；同时把同一份配置意图迁移为六客户端配置文件（单订阅池、
-        占位符已内置），替换一条订阅即可复用。规则自动更新，配置人工维护、真机验证后发布。
+        Clash / Egern / Quantumult X 七种输出；同时把同一份配置意图迁移为七客户端配置文件
+        （单订阅池、占位符已内置），替换一条订阅即可复用。规则自动更新，配置人工维护、真机验证后发布。
       </p>
       <div
         className="hero-enter mt-7 flex justify-center gap-3"
@@ -77,8 +77,11 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
       >
         <Stat value={String(appsCount)} label="Rule-Sets" />
         <Stat value={String(totalRules)} label="有效规则" />
-        <Stat value="6 客户端" label="Surge · Shadowrocket · Loon · Stash · Egern · Quantumult X" />
-        <Stat value="6 配置文件" label="完整可导入 · 单订阅池 · 占位符内置" />
+        <Stat
+          value="7 客户端"
+          label="Surge · Shadowrocket · Loon · Stash · Clash · Egern · Quantumult X"
+        />
+        <Stat value="7 配置文件" label="完整可导入 · 单订阅池 · 占位符内置" />
         <Stat value="每日 00:01" label="规则自动检查上游" />
         <Stat value="审计准入" label="证据优先 · 每 App 独立审计" />
       </ul>

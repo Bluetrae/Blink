@@ -43,6 +43,19 @@ const STEPS: Record<ClientKey, ReactNode[]> = {
       策略名换成你自己的；<code>interval: 86400</code> 控制规则集更新周期。
     </>,
   ],
+  clash: [
+    <>
+      打开 Clash 配置（Clash Meta for Android / FLClash，Mihomo 内核），把下面整段复制进{" "}
+      <code>rule-providers</code> 与 <code>rules</code>。
+    </>,
+    <>
+      把每个 <code>RULE-SET</code> 行放在 <code>MATCH</code> 之前合适的位置；规则经 Clash/ 目录分发
+      （USER-AGENT 已显式去除）。
+    </>,
+    <>
+      策略名换成你自己的；<code>interval: 86400</code> 控制规则集更新周期。
+    </>,
+  ],
   egern: [
     <>
       打开 Egern 配置，把下面整段复制进 <code>rules</code> 列表。
@@ -78,7 +91,7 @@ export default function Usage({ data }: { data: PortalData }) {
         <Reveal>
           <div className="mx-auto mb-10 max-w-xl text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">接入你的客户端</h2>
-            <p className="mt-2.5 text-mute">同一套规则，六种客户端各自的最小引用方式。</p>
+            <p className="mt-2.5 text-mute">同一套规则，七种客户端各自的最小引用方式。</p>
           </div>
         </Reveal>
         <Reveal>

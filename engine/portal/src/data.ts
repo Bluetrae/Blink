@@ -60,6 +60,13 @@ export const CLIENT_TABS: ClientTab[] = [
     note: "classical text 规则集直接复用与 Surge 相同的 .list 文件，policy 在 RULE-SET 行指定。",
   },
   {
+    key: "clash",
+    label: "Clash",
+    badge: "YAML · rule-providers",
+    fileLabel: "Clash 配置 · rule-providers",
+    note: "Mihomo 内核（Clash Meta for Android / FLClash）通用；规则经 Clash/ 目录分发，USER-AGENT 无法表达、由构建器显式丢弃并计数。",
+  },
+  {
     key: "egern",
     label: "Egern",
     badge: "YAML · rule_set",
@@ -102,6 +109,7 @@ export const PROFILE_FILES: Record<ClientKey, ProfileFile> = {
   shadowrocket: { file: "Profiles/Shadowrocket.conf", format: "conf", kind: "INI · [Proxy Group]" },
   loon: { file: "Profiles/Loon.conf", format: "conf", kind: "INI · [Remote Filter]" },
   stash: { file: "Profiles/Stash.yaml", format: "yaml", kind: "YAML · proxy-groups" },
+  clash: { file: "Profiles/Clash.yaml", format: "yaml", kind: "YAML · proxy-groups" },
   egern: { file: "Profiles/Egern.yaml", format: "yaml", kind: "YAML · policy_groups" },
   quantumultx: { file: "Profiles/QuantumultX.conf", format: "conf", kind: "INI · [policy]" },
 };
@@ -123,6 +131,8 @@ export function profileInstallScheme(rawBase: string, client: ClientKey): string
       return `loon://import?sub=${url}`;
     case "stash":
       return `stash://install-config?url=${url}`;
+    case "clash":
+      return null; // Android 客户端无 URL Scheme 整体配置导入
     case "egern":
       return `egern:/profiles/new?name=${encodeURIComponent("Blink")}&url=${url}`;
     case "quantumultx":
@@ -195,6 +205,7 @@ export function clientSnippet(rawBase: string, app: AppEntry, client: ClientKey)
     case "loon":
       return `${url}, policy=${app.policy}, tag=${app.name}, enabled=true`;
     case "stash":
+    case "clash":
       return [
         "rule-providers:",
         `  ${app.name}:`,
@@ -226,7 +237,7 @@ function groupedApps(data: PortalData): Array<{ label: string; apps: AppEntry[] 
 
 export function allSnippets(data: PortalData, client: ClientKey): string {
   const out: string[] = [];
-  if (client === "stash") {
+  if (client === "stash" || client === "clash") {
     out.push("rule-providers:");
     for (const app of sortedApps(data.apps)) {
       out.push(`  ${app.name}:`);
