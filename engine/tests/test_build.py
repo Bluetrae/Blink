@@ -142,6 +142,9 @@ class BuildTests(unittest.TestCase):
                 self.assertEqual(
                     (root / directory / "Test.list").read_text(encoding="utf-8"), surge
                 )
+            # Clash consumes the same classical bytes when no USER-AGENT is
+            # present (its own directory, UA-dropped variant of the same body).
+            self.assertEqual((root / "Clash" / "Test.list").read_text(encoding="utf-8"), surge)
             # Egern gets its own YAML rule-set schema.
             self.assertEqual(
                 (root / "Egern" / "Test.yaml").read_text(encoding="utf-8"),
@@ -178,6 +181,41 @@ class BuildTests(unittest.TestCase):
             ],
         )
         self.assertEqual(text.splitlines()[1], "# 规则统计: 6")
+
+    def test_clash_drops_user_agent_explicitly(self) -> None:
+        location = build.SourceLocation("test", 1, ("Test",))
+        rules = [
+            build.Rule("DOMAIN", "api.example.com", (), location),
+            build.Rule("DOMAIN-SUFFIX", "example.com", (), location),
+            build.Rule("DOMAIN-KEYWORD", "example", (), location),
+            build.Rule("IP-CIDR", "192.0.2.0/24", ("no-resolve",), location),
+            build.Rule("IP-CIDR6", "2001:db8::/64", ("no-resolve",), location),
+            build.Rule("USER-AGENT", "Example App*", (), location),
+            build.Rule("PROCESS-NAME", "com.example.app", (), location),
+        ]
+        text, dropped = build.render_classical_clash(rules, "Test")
+        # USER-AGENT is the only kind Clash cannot express: dropped and
+        # reported, never silently skipped by the kernel.
+        self.assertEqual(dropped, ["USER-AGENT,Example App*"])
+        self.assertEqual(
+            text.splitlines()[3:],
+            [
+                "DOMAIN,api.example.com",
+                "DOMAIN-SUFFIX,example.com",
+                "DOMAIN-KEYWORD,example",
+                "IP-CIDR,192.0.2.0/24,no-resolve",
+                "IP-CIDR6,2001:db8::/64,no-resolve",
+                "PROCESS-NAME,com.example.app",
+            ],
+        )
+        self.assertEqual(text.splitlines()[1], "# 规则统计: 6")
+
+    def test_clash_output_never_silently_empty(self) -> None:
+        location = build.SourceLocation("test", 1, ("Test",))
+        with self.assertRaisesRegex(build.RendererError, "empty"):
+            build.render_classical_clash(
+                [build.Rule("USER-AGENT", "Example App*", (), location)], "Test"
+            )
 
     def test_quantumultx_output_never_silently_empty(self) -> None:
         location = build.SourceLocation("test", 1, ("Test",))

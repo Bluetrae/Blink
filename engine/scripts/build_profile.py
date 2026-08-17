@@ -2,7 +2,7 @@
 """Human-controlled Profile Engine: canonical profile intent -> candidates.
 
 Reads ``engine/sources/profile/intent.yaml`` (the human-maintained Canonical Profile
-Intent), validates it, and renders six client candidate configs into
+Intent), validates it, and renders seven client candidate configs into
 ``Profiles/`` from the per-client base templates under
 ``engine/sources/profile/templates/``.
 
@@ -30,12 +30,14 @@ CLIENTS = {
     "shadowrocket": ("shadowrocket.conf", "Shadowrocket.conf"),
     "loon": ("loon.conf", "Loon.conf"),
     "stash": ("stash.yaml", "Stash.yaml"),
+    "clash": ("clash.yaml", "Clash.yaml"),
     "egern": ("egern.yaml", "Egern.yaml"),
     "quantumultx": ("quantumultx.conf", "QuantumultX.conf"),
 }
 
 BUILTIN_POLICIES = {"DIRECT", "REJECT", "REJECT-DROP", "Sub"}
 BLINK_RAW = "https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge"
+BLINK_RAW_CLASH = "https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash"
 
 # Placeholders the templates may carry.  Each renderer fills the ones that
 # make sense for its client; leftover markers fail the build loudly.
@@ -394,6 +396,101 @@ def _render_stash(intent: dict) -> dict[str, str]:
     }
 
 
+def _render_clash(intent: dict) -> dict[str, str]:
+    sub = intent["subscription"]
+    subscription = [
+        "proxy-providers:",
+        f"  {sub['name']}:",
+        "    type: http",
+        f"    url: {sub['url']}",
+        f"    interval: {sub['update_interval']}",
+        "    health-check:",
+        "      enable: true",
+        "      url: http://www.gstatic.com/generate_204",
+        "      interval: 300",
+        "      timeout: 5000",
+    ]
+    group_lines: list[str] = ["proxy-groups:"]
+    for group in intent["policy_groups"]:
+        if group.get("filter") is not None:
+            group_lines.append(
+                f"  - {{name: {group['name']}, type: select, use: [{sub['name']}],"
+                f" filter: '{group['filter']}', include-all: true}}"
+            )
+            continue
+        # Clash ``proxies`` arrays cannot reference a provider name: the Sub
+        # pool is covered by the region filter groups instead (same handling
+        # as the Loon renderer).
+        members = [member for member in group.get("members", []) if member != "Sub"]
+        members_text = ",".join(members)
+        if group["type"] == "url-test":
+            group_lines.append(
+                f"  - {{name: {group['name']}, type: url-test, proxies: [{members_text}],"
+                f" url: http://cp.cloudflare.com/generate_204, interval: {group.get('interval', 600)},"
+                f" tolerance: {group.get('tolerance', 100)}}}"
+            )
+        else:
+            group_lines.append(
+                f"  - {{name: {group['name']}, type: select, proxies: [{members_text}]}}"
+            )
+    providers: dict[str, str] = {}
+    rules: list[str] = ["rules:"]
+    local_rules: list[str] = []
+
+    def provider_name(name: str) -> str:
+        base = re.sub(r"[^A-Za-z0-9]", "_", name)
+        base = base.strip("_") or "ruleset"
+        unique = base
+        counter = 2
+        while unique in providers and providers[unique] != name:
+            unique = f"{base}_{counter}"
+            counter += 1
+        providers[unique] = name
+        return unique
+
+    provider_lines: list[str] = ["rule-providers:"]
+    for rule in intent.get("infrastructure", []):
+        entry = _infra_for_client(rule, "clash")
+        if entry is None:
+            continue
+        policy = _policy_for(entry, "clash")
+        options = (entry.get("options") or {}).get("clash")
+        suffix = f",{options}" if options else ""
+        if entry.get("kind") == "dest-port":
+            local_rules.append(f"  - DST-PORT,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain":
+            local_rules.append(f"  - DOMAIN,{entry['value']},{policy}")
+        else:
+            key = provider_name(entry["name"])
+            provider_lines.append(f"  {key}:")
+            provider_lines.append("    type: http")
+            provider_lines.append("    behavior: classical")
+            provider_lines.append("    format: text")
+            provider_lines.append(f"    url: {entry['url']}")
+            provider_lines.append("    interval: 86400")
+            rules.append(f"  - RULE-SET,{key},{policy}{suffix}")
+    for app_name, app in intent["apps"].items():
+        # Blink 的 App 规则经 Clash/ 目录分发（classical 已去除 USER-AGENT）；
+        # 显式指定外部 source 的 App（如 AppleMusic）按上游原样引用。
+        source = app.get("source") or f"{BLINK_RAW_CLASH}/{app_name}.list"
+        key = provider_name(app_name)
+        provider_lines.append(f"  {key}:")
+        provider_lines.append("    type: http")
+        provider_lines.append("    behavior: classical")
+        provider_lines.append("    format: text")
+        provider_lines.append(f"    url: {source}")
+        provider_lines.append("    interval: 86400")
+        rules.append(f"  - RULE-SET,{key},{app['policy']}")
+    rules.extend(local_rules)
+    rules.append("  - MATCH,Final")
+    return {
+        "__SUBSCRIPTION__": "\n".join(subscription),
+        "__POLICY_GROUPS__": "\n".join(group_lines),
+        "__RULES__": "\n".join(provider_lines),
+        "__REMOTE_RULES__": "\n".join(rules),
+    }
+
+
 def _render_egern(intent: dict) -> dict[str, str]:
     sub = intent["subscription"]
     group_lines: list[str] = [
@@ -522,6 +619,7 @@ RENDERERS = {
     "shadowrocket": _render_shadowrocket,
     "loon": _render_loon,
     "stash": _render_stash,
+    "clash": _render_clash,
     "egern": _render_egern,
     "quantumultx": _render_quantumultx,
 }

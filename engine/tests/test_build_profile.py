@@ -68,7 +68,7 @@ class ProfileEngineTests(unittest.TestCase):
             client: build_profile.render_client(client, intent) for client in build_profile.CLIENTS
         }
 
-    def test_all_six_clients_render_without_leftover_markers(self) -> None:
+    def test_all_seven_clients_render_without_leftover_markers(self) -> None:
         outputs = self.render(sample_intent())
         self.assertEqual(set(outputs), set(build_profile.CLIENTS))
         for client, text in outputs.items():
@@ -77,9 +77,26 @@ class ProfileEngineTests(unittest.TestCase):
 
     def test_yaml_clients_parse_as_valid_yaml(self) -> None:
         outputs = self.render(sample_intent())
-        for client in ("stash", "egern"):
+        for client in ("stash", "egern", "clash"):
             document = yaml.safe_load(outputs[client])
             self.assertIsInstance(document, dict)
+
+    def test_clash_uses_text_format_drops_sub_and_ends_with_match(self) -> None:
+        outputs = self.render(sample_intent())
+        text = outputs["clash"]
+        document = yaml.safe_load(text)
+        # format: text is mandatory for classical providers (default is yaml).
+        self.assertGreater(text.count("format: text"), 0)
+        # Clash proxies arrays cannot reference a provider name: Sub must be
+        # covered by the region filter groups instead.
+        proxy_group = next(g for g in document["proxy-groups"] if g["name"] == "Proxy")
+        self.assertNotIn("Sub", proxy_group["proxies"])
+        hk_group = next(g for g in document["proxy-groups"] if g["name"] == "HK")
+        self.assertEqual(hk_group["use"], ["Sub"])
+        # Infrastructure + app providers and the MATCH tail rule.
+        self.assertIn("RULE-SET,reject,REJECT", text)
+        self.assertIn("RULE-SET,YouTube,Proxy", text)
+        self.assertTrue(text.rstrip().endswith("- MATCH,Final"))
 
     def test_stash_and_egern_filters_are_single_quoted_and_parse(self) -> None:
         outputs = self.render(sample_intent())
@@ -149,7 +166,7 @@ class ProfileEngineTests(unittest.TestCase):
                 for client, text in outputs.items():
                     _template, output_name = build_profile.CLIENTS[client]
                     (build_profile.OUTPUT_DIR / output_name).write_text(text, encoding="utf-8")
-                self.assertEqual(len(list((root / "Profiles").glob("*"))), 6)
+                self.assertEqual(len(list((root / "Profiles").glob("*"))), 7)
             finally:
                 build_profile.TEMPLATE_DIR, build_profile.OUTPUT_DIR = original
 

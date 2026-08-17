@@ -1,0 +1,34 @@
+# ============================================================
+# Blink 配置文件 · Clash（Mihomo 内核 / Android 通用）
+# 单订阅池（Sub）：导入前把 https://YOUR-SUBSCRIPTION-URL 替换为你的订阅链接。
+# 策略组与规则引用由 Blink 统一维护；本文件为人工维护层，不随规则每日自动更新。
+# 目标客户端：Clash Meta for Android / FLClash（Mihomo 内核，完整兼容）。
+# CFA（Clash Premium 内核，已停更）部分兼容：不支持 format / mrs / size-limit
+# 等 Meta 扩展字段，导入时可能被忽略。
+# Blink 规则经 Clash/ 目录分发：classical 已显式去除 USER-AGENT（内核无此类型），
+# 构建报告计数，绝不让内核静默跳过。
+# ============================================================
+
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: false
+unified-delay: true
+keep-alive-interval: 15
+
+dns:
+  enable: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+
+__SUBSCRIPTION__
+
+__POLICY_GROUPS__
+
+__RULES__
+
+__REMOTE_RULES__

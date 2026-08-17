@@ -5,6 +5,11 @@ One renderer exists per truly different serialization format, not per client:
 
 - ``classical``: policy-free classical text (Surge / Shadowrocket / Loon /
   Stash consume the exact same bytes; see engine/docs/MULTI_CLIENT_AUDIT.md).
+- ``classical-clash``: the same classical text minus USER-AGENT.  Clash
+  kernels (mihomo and original Clash Premium) have no USER-AGENT rule type;
+  unknown lines are skipped with a warning by the classical loader, which
+  would be a silent downgrade, so this renderer drops them explicitly and
+  the caller reports them.
 - ``egern-yaml``: Egern's own ``*_set`` YAML rule-set schema.  Egern could
   also consume the classical file through ``rule_set.match``, but the YAML
   form is its native rule-set format and keeps USER-AGENT expressible while
@@ -48,6 +53,7 @@ CLIENTS: dict[str, ClientTarget] = {
     "loon": ClientTarget("loon", "Loon", ".list", "classical"),
     "shadowrocket": ClientTarget("shadowrocket", "Shadowrocket", ".list", "classical"),
     "stash": ClientTarget("stash", "Stash", ".list", "classical"),
+    "clash": ClientTarget("clash", "Clash", ".list", "classical-clash"),
     "egern": ClientTarget("egern", "Egern", ".yaml", "egern-yaml"),
     "quantumultx": ClientTarget("quantumultx", "QuantumultX", ".list", "quantumultx"),
 }
@@ -92,6 +98,28 @@ def render_classical(rules: Iterable[object], app_name: str) -> str:
     body = render_classical_body(rules)
     lines = [f"# 规则名称: {app_name}", f"# 规则统计: {len(body)}", "", *body]
     return "\n".join(lines) + "\n"
+
+
+def render_classical_clash(rules: Iterable[object], app_name: str) -> tuple[str, list[str]]:
+    """Serialize rules into a Clash (mihomo) classical rule-provider payload.
+
+    Clash kernels have no USER-AGENT rule type; the classical loader warns
+    and silently skips unknown lines, which would hide the downgrade.  This
+    renderer therefore drops USER-AGENT explicitly and reports it (matching
+    the Egern / Quantumult X PROCESS-NAME precedent).  The remaining six
+    canonical kinds serialize line-for-line identically to Surge.
+    """
+    body: list[str] = []
+    dropped: list[str] = []
+    for rule in rules:
+        if rule.kind == "USER-AGENT":
+            dropped.append(f"{rule.kind},{rule.value}")
+            continue
+        body.append(",".join((rule.kind, rule.value, *rule.options)))
+    if not body:
+        raise RendererError("clash output is empty after dropping unsupported rules")
+    lines = [f"# 规则名称: {app_name}", f"# 规则统计: {len(body)}", "", *body]
+    return "\n".join(lines) + "\n", dropped
 
 
 def render_quantumultx(rules: Iterable[object], app_name: str) -> tuple[str, list[str]]:
@@ -184,6 +212,8 @@ def render_for_client(
     """Dispatch to the renderer declared by the client target."""
     if client.renderer == "classical":
         return render_classical(rules, app_name), []
+    if client.renderer == "classical-clash":
+        return render_classical_clash(rules, app_name)
     if client.renderer == "egern-yaml":
         return render_egern_yaml(rules, app_name)
     if client.renderer == "quantumultx":

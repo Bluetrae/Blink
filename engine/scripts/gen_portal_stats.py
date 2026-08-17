@@ -9,8 +9,9 @@ commits it together with the generated rules.
 
 Surge/*.list stays the canonical count and type source; the classical
 clients (Surge / Loon / Shadowrocket / Stash) share byte-identical files,
-while Egern/*.yaml is rendered from the same canonical rules and may
-explicitly drop PROCESS-NAME lines (recorded as ``dropped``).
+while Clash/*.list is the same body minus USER-AGENT (Clash kernels have
+no such rule type) and Egern/*.yaml is rendered from the same canonical
+rules and may explicitly drop PROCESS-NAME lines (recorded as ``dropped``).
 """
 
 from __future__ import annotations
@@ -169,6 +170,7 @@ CLIENTS = (
     ("loon", "Loon", ".list"),
     ("shadowrocket", "Shadowrocket", ".list"),
     ("stash", "Stash", ".list"),
+    ("clash", "Clash", ".list"),
     ("egern", "Egern", ".yaml"),
     ("quantumultx", "QuantumultX", ".list"),
 )
@@ -248,7 +250,7 @@ def build(root: Path) -> dict:
         clients = {}
         for key, directory, suffix in CLIENTS:
             entry = {"file": f"{directory}/{stem}{suffix}", "rules": header_count}
-            if key in {"egern", "quantumultx"}:
+            if key in {"egern", "quantumultx", "clash"}:
                 client_count = parse_header_count(root / entry["file"])
                 if client_count > header_count:
                     raise PortalError(
