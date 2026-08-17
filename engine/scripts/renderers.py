@@ -178,7 +178,9 @@ def render_egern_yaml(rules: Iterable[object], app_name: str) -> tuple[str, list
     return header + yaml.safe_dump(document, sort_keys=False, allow_unicode=True), dropped
 
 
-def render_for_client(client: ClientTarget, rules: Iterable[object], app_name: str) -> tuple[str, list[str]]:
+def render_for_client(
+    client: ClientTarget, rules: Iterable[object], app_name: str
+) -> tuple[str, list[str]]:
     """Dispatch to the renderer declared by the client target."""
     if client.renderer == "classical":
         return render_classical(rules, app_name), []

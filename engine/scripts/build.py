@@ -34,6 +34,18 @@ from renderers import (
     render_quantumultx,
 )
 
+# Re-exported on purpose: engine/tests asserts through the build.* namespace,
+# so keep this module the single public surface (recognised by ruff's F401).
+__all__ = [
+    "CLIENTS",
+    "RendererError",
+    "render_classical",
+    "render_classical_body",
+    "render_egern_yaml",
+    "render_for_client",
+    "render_quantumultx",
+]
+
 
 # Canonical rule kinds.  The names happen to match Surge vocabulary, but the
 # model is client-neutral: renderers own every client-specific serialization.
@@ -82,6 +94,7 @@ class Rule:
     match modifiers such as ``no-resolve``.  Client serialization lives
     exclusively in ``renderers.py``.
     """
+
     kind: str
     value: str
     options: tuple[str, ...]
@@ -125,14 +138,24 @@ def load_manifest(path: Path) -> dict:
 def validate_app_config(app_name: str, app: object) -> None:
     if not isinstance(app, dict):
         raise BuildError(f"{app_name}: app configuration must be a mapping")
-    for key in ("enabled", "output", "sources", "supplement", "exclude", "include_policy", "attributes"):
+    for key in (
+        "enabled",
+        "output",
+        "sources",
+        "supplement",
+        "exclude",
+        "include_policy",
+        "attributes",
+    ):
         if key not in app:
             raise BuildError(f"{app_name}: missing required field {key!r}")
     if not isinstance(app["enabled"], bool):
         raise BuildError(f"{app_name}: enabled must be boolean")
     if not isinstance(app["output"], str) or not app["output"].startswith("Surge/"):
         raise BuildError(f"{app_name}: output must be a path below Surge/")
-    if not isinstance(app["supplement"], str) or not app["supplement"].startswith("engine/sources/supplement/"):
+    if not isinstance(app["supplement"], str) or not app["supplement"].startswith(
+        "engine/sources/supplement/"
+    ):
         raise BuildError(f"{app_name}: supplement must be a path below engine/sources/supplement/")
     if not isinstance(app["exclude"], list):
         raise BuildError(f"{app_name}: exclude must be a list")
@@ -156,7 +179,9 @@ def validate_app_config(app_name: str, app: object) -> None:
         else:
             raise BuildError(f"{app_name}: source role must be primary or supplemental")
     if sources and (primaries != 1 or supplementals > 1):
-        raise BuildError(f"{app_name}: require exactly one primary and at most one supplemental source")
+        raise BuildError(
+            f"{app_name}: require exactly one primary and at most one supplemental source"
+        )
     # An empty sources list is a supplement-only app: every rule must come from
     # the local supplement file. It is reserved for apps where the source audit
     # proved that no upstream provides a usable rule set.
@@ -166,18 +191,28 @@ def validate_app_config(app_name: str, app: object) -> None:
         raise BuildError(f"{app_name}: include_policy.mode must be explicit")
     allow = include_policy.get("allow")
     deny = include_policy.get("deny")
-    if not isinstance(allow, list) or not isinstance(deny, list) or not all(isinstance(item, str) for item in allow + deny):
+    if (
+        not isinstance(allow, list)
+        or not isinstance(deny, list)
+        or not all(isinstance(item, str) for item in allow + deny)
+    ):
         raise BuildError(f"{app_name}: include_policy allow and deny must be string lists")
     overlap = set(allow) & set(deny)
     if overlap:
-        raise BuildError(f"{app_name}: include targets cannot be both allowed and denied: {sorted(overlap)}")
+        raise BuildError(
+            f"{app_name}: include targets cannot be both allowed and denied: {sorted(overlap)}"
+        )
 
     attributes = app["attributes"]
     if not isinstance(attributes, dict) or attributes.get("mode") != "explicit":
         raise BuildError(f"{app_name}: attributes.mode must be explicit")
     selected = attributes.get("include")
-    if not isinstance(selected, list) or not all(isinstance(item, str) and item and not item.startswith("!") for item in selected):
-        raise BuildError(f"{app_name}: attributes.include must be a list of positive attribute names")
+    if not isinstance(selected, list) or not all(
+        isinstance(item, str) and item and not item.startswith("!") for item in selected
+    ):
+        raise BuildError(
+            f"{app_name}: attributes.include must be a list of positive attribute names"
+        )
 
 
 FETCH_ATTEMPTS = 3
@@ -201,8 +236,12 @@ def default_fetch_text(url: str) -> str:
             if attempt < FETCH_ATTEMPTS:
                 time.sleep(1.0 * attempt)
     else:
-        raise BuildError(f"upstream fetch failed for {url}: {last_network_error}") from last_network_error
-    if content_type == "text/html" or raw.lstrip().lower().startswith((b"<!doctype html", b"<html")):
+        raise BuildError(
+            f"upstream fetch failed for {url}: {last_network_error}"
+        ) from last_network_error
+    if content_type == "text/html" or raw.lstrip().lower().startswith(
+        (b"<!doctype html", b"<html")
+    ):
         raise BuildError(f"upstream returned HTML instead of a rule list: {url}")
     try:
         return raw.decode("utf-8-sig")
@@ -222,7 +261,9 @@ def parse_v2fly_text(text: str, source: str, chain: tuple[str, ...]) -> list[Par
         values = [token for token in tail if not token.startswith("@")]
         location = SourceLocation(source, line_number, chain)
         if any(attribute.startswith("!") for attribute in attributes):
-            raise BuildError(f"v1 does not support negative attributes at {location.describe()}: {original}")
+            raise BuildError(
+                f"v1 does not support negative attributes at {location.describe()}: {original}"
+            )
 
         if ":" not in head:
             if values:
@@ -231,10 +272,18 @@ def parse_v2fly_text(text: str, source: str, chain: tuple[str, ...]) -> list[Par
             continue
 
         directive, value = head.split(":", 1)
-        if directive not in {"domain", "full", "keyword", "regexp", "include"} or not value or values:
-            raise BuildError(f"unsupported or malformed v2fly directive at {location.describe()}: {original}")
+        if (
+            directive not in {"domain", "full", "keyword", "regexp", "include"}
+            or not value
+            or values
+        ):
+            raise BuildError(
+                f"unsupported or malformed v2fly directive at {location.describe()}: {original}"
+            )
         if directive == "include" and attributes:
-            raise BuildError(f"attribute-qualified include is unsupported in v1 at {location.describe()}: {original}")
+            raise BuildError(
+                f"attribute-qualified include is unsupported in v1 at {location.describe()}: {original}"
+            )
         entries.append(ParsedEntry(directive, value, attributes, location))
     return entries
 
@@ -257,22 +306,33 @@ def normalize_domain(value: str, location: SourceLocation) -> str:
     except UnicodeError as error:
         raise BuildError(f"invalid IDNA domain at {location.describe()}: {value!r}") from error
     labels = encoded.split(".")
-    if any(not label or len(label) > 63 or not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?", label) for label in labels):
+    if any(
+        not label
+        or len(label) > 63
+        or not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?", label)
+        for label in labels
+    ):
         raise BuildError(f"invalid domain at {location.describe()}: {value!r}")
     return encoded
 
 
 def convert_entry(entry: ParsedEntry) -> Rule:
     if entry.kind == "regexp":
-        raise BuildError(f"unsupported v2fly regexp at {entry.location.describe()}: {entry.value!r}")
+        raise BuildError(
+            f"unsupported v2fly regexp at {entry.location.describe()}: {entry.value!r}"
+        )
     if entry.kind == "domain":
-        return Rule("DOMAIN-SUFFIX", normalize_domain(entry.value, entry.location), (), entry.location)
+        return Rule(
+            "DOMAIN-SUFFIX", normalize_domain(entry.value, entry.location), (), entry.location
+        )
     if entry.kind == "full":
         return Rule("DOMAIN", normalize_domain(entry.value, entry.location), (), entry.location)
     if entry.kind == "keyword":
         value = entry.value.lower()
         if not value or any(character in value for character in ",\r\n"):
-            raise BuildError(f"invalid domain keyword at {entry.location.describe()}: {entry.value!r}")
+            raise BuildError(
+                f"invalid domain keyword at {entry.location.describe()}: {entry.value!r}"
+            )
         return Rule("DOMAIN-KEYWORD", value, (), entry.location)
     raise BuildError(f"cannot convert v2fly entry {entry.kind!r} at {entry.location.describe()}")
 
@@ -292,7 +352,9 @@ def normalize_surge_rule(
         return Rule(kind, normalize_domain(value, location), (), location)
     if kind == "DOMAIN-KEYWORD":
         if options:
-            raise BuildError(f"unexpected option for DOMAIN-KEYWORD at {location.describe()}: {options!r}")
+            raise BuildError(
+                f"unexpected option for DOMAIN-KEYWORD at {location.describe()}: {options!r}"
+            )
         normalized = value.lower()
         if not normalized or any(character in normalized for character in ",\r\n\t"):
             raise BuildError(f"invalid domain keyword at {location.describe()}: {value!r}")
@@ -312,7 +374,9 @@ def normalize_surge_rule(
         raise BuildError(f"invalid IP rule at {location.describe()}: {value!r}") from error
     expected = "IP-CIDR6" if network.version == 6 else "IP-CIDR"
     if kind != expected:
-        raise BuildError(f"IP family does not match rule type at {location.describe()}: {kind},{value}")
+        raise BuildError(
+            f"IP family does not match rule type at {location.describe()}: {kind},{value}"
+        )
     return Rule(kind, str(network), options, location)
 
 
@@ -352,7 +416,9 @@ def parse_surge_rule_set_text(
     return rules
 
 
-def parse_excludes(items: Iterable[object], app_name: str) -> tuple[list[tuple[str, str]], set[str]]:
+def parse_excludes(
+    items: Iterable[object], app_name: str
+) -> tuple[list[tuple[str, str]], set[str]]:
     """Return concrete domain excludes plus rule kinds to skip at parse time.
 
     Domain entries use ``type:value`` syntax.  ``ip-asn:*`` and ``url-regex:*``
@@ -361,7 +427,11 @@ def parse_excludes(items: Iterable[object], app_name: str) -> tuple[list[tuple[s
     """
     excludes: list[tuple[str, str]] = []
     skipped_kinds: set[str] = set()
-    mappings = {"domain": "DOMAIN", "domain-suffix": "DOMAIN-SUFFIX", "domain-keyword": "DOMAIN-KEYWORD"}
+    mappings = {
+        "domain": "DOMAIN",
+        "domain-suffix": "DOMAIN-SUFFIX",
+        "domain-keyword": "DOMAIN-KEYWORD",
+    }
     type_only = {"ip-asn": "IP-ASN", "url-regex": "URL-REGEX"}
     for item in items:
         if not isinstance(item, str) or ":" not in item:
@@ -369,13 +439,17 @@ def parse_excludes(items: Iterable[object], app_name: str) -> tuple[list[tuple[s
         kind, value = item.split(":", 1)
         if kind in type_only:
             if value != "*":
-                raise BuildError(f"{app_name}: type-level exclude {kind!r} must use '*' as its value")
+                raise BuildError(
+                    f"{app_name}: type-level exclude {kind!r} must use '*' as its value"
+                )
             skipped_kinds.add(type_only[kind])
             continue
         if kind not in mappings or not value:
             raise BuildError(f"{app_name}: unsupported exclude {item!r}")
         location = SourceLocation(f"manifest:{app_name}", 0, (app_name,))
-        normalized = value.lower() if kind == "domain-keyword" else normalize_domain(value, location)
+        normalized = (
+            value.lower() if kind == "domain-keyword" else normalize_domain(value, location)
+        )
         excludes.append((mappings[kind], normalized))
     return excludes, skipped_kinds
 
@@ -405,7 +479,9 @@ def parse_supplement(path: Path, app_name: str) -> list[Rule]:
         raise BuildError(f"invalid supplement rule in {path}: {error}") from error
 
 
-def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = default_fetch_text) -> Compilation:
+def compile_app(
+    app_name: str, app: dict, root: Path, fetch_text: FetchText = default_fetch_text
+) -> Compilation:
     allow = set(app["include_policy"]["allow"])
     deny = set(app["include_policy"]["deny"])
     selected_attributes = set(app["attributes"]["include"])
@@ -435,7 +511,9 @@ def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = de
                 elif target in deny:
                     denied_includes.append((target, entry.location))
                 else:
-                    raise BuildError(f"{app_name}: include {target!r} is not declared in include_policy at {entry.location.describe()}")
+                    raise BuildError(
+                        f"{app_name}: include {target!r} is not declared in include_policy at {entry.location.describe()}"
+                    )
                 continue
             if entry.attributes and not (set(entry.attributes) & selected_attributes):
                 skipped_attributes.append(entry)
@@ -466,10 +544,14 @@ def compile_app(app_name: str, app: dict, root: Path, fetch_text: FetchText = de
     ordered = sorted(unique.values(), key=lambda rule: (SORT_ORDER[rule.kind], rule.value))
     if not ordered:
         raise BuildError(f"{app_name}: final output is empty")
-    return Compilation(app_name, ordered, skipped_attributes, denied_includes, dict(provenance), skipped_excluded)
+    return Compilation(
+        app_name, ordered, skipped_attributes, denied_includes, dict(provenance), skipped_excluded
+    )
 
 
-def rendered_outputs(compilation: Compilation, manifest: dict, root: Path) -> dict[str, tuple[Path, str, list[str]]]:
+def rendered_outputs(
+    compilation: Compilation, manifest: dict, root: Path
+) -> dict[str, tuple[Path, str, list[str]]]:
     """Render one compilation for every client and resolve output paths.
 
     The manifest ``output`` field keeps naming the Surge file (backward
@@ -514,8 +596,14 @@ def select_apps(manifest: dict, requested: list[str]) -> list[str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=Path("engine/sources/apps.yaml"))
-    parser.add_argument("--app", action="append", default=[], help="compile only this app; may be repeated")
-    parser.add_argument("--write", action="store_true", help="write all client outputs after every selected app compiles")
+    parser.add_argument(
+        "--app", action="append", default=[], help="compile only this app; may be repeated"
+    )
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="write all client outputs after every selected app compiles",
+    )
     arguments = parser.parse_args(argv)
     root = arguments.manifest.resolve().parent.parent.parent
     try:

@@ -51,11 +51,15 @@ if os.name == "nt":
 ROOT_URL = "https://example.invalid/data/root"
 
 
-def app_config(*, allow=None, deny=None, attributes=None, source_format="v2fly-domain-list", url=ROOT_URL) -> dict:
+def app_config(
+    *, allow=None, deny=None, attributes=None, source_format="v2fly-domain-list", url=ROOT_URL
+) -> dict:
     return {
         "enabled": True,
         "output": "Surge/Test.list",
-        "sources": [{"name": "test-source", "role": "primary", "format": source_format, "url": url}],
+        "sources": [
+            {"name": "test-source", "role": "primary", "format": source_format, "url": url}
+        ],
         "include_policy": {"mode": "explicit", "allow": allow or [], "deny": deny or []},
         "attributes": {"mode": "explicit", "include": attributes or []},
         "supplement": "engine/sources/supplement/Test.list",
@@ -130,10 +134,14 @@ class BuildTests(unittest.TestCase):
             compilation = build.Compilation("Test", [rule], [], [], {})
             build.write_outputs([compilation], {"apps": {"Test": config}}, root)
             surge = (root / "Surge" / "Test.list").read_text(encoding="utf-8")
-            self.assertEqual(surge, "# 规则名称: Test\n# 规则统计: 1\n\nDOMAIN-SUFFIX,example.com\n")
+            self.assertEqual(
+                surge, "# 规则名称: Test\n# 规则统计: 1\n\nDOMAIN-SUFFIX,example.com\n"
+            )
             # The three classical clients consume the exact same bytes.
             for directory in ("Loon", "Shadowrocket", "Stash"):
-                self.assertEqual((root / directory / "Test.list").read_text(encoding="utf-8"), surge)
+                self.assertEqual(
+                    (root / directory / "Test.list").read_text(encoding="utf-8"), surge
+                )
             # Egern gets its own YAML rule-set schema.
             self.assertEqual(
                 (root / "Egern" / "Test.yaml").read_text(encoding="utf-8"),
@@ -179,8 +187,7 @@ class BuildTests(unittest.TestCase):
             )
 
     def test_egern_yaml_covers_all_expressible_kinds(self) -> None:
-        with TemporaryDirectory() as temporary_directory:
-            root = Path(temporary_directory)
+        with TemporaryDirectory():
             location = build.SourceLocation("test", 1, ("Test",))
             rules = [
                 build.Rule("DOMAIN", "api.example.com", (), location),
@@ -244,7 +251,9 @@ class BuildTests(unittest.TestCase):
                 text = path.read_text(encoding="utf-8")
                 rules = build.parse_surge_rule_set_text(text, str(path), ("golden",))
                 unique = {rule.key: rule for rule in rules}
-                ordered = sorted(unique.values(), key=lambda rule: (build.SORT_ORDER[rule.kind], rule.value))
+                ordered = sorted(
+                    unique.values(), key=lambda rule: (build.SORT_ORDER[rule.kind], rule.value)
+                )
                 self.assertEqual(build.render_classical(ordered, path.stem), text)
 
     def test_explicit_include_allows_and_denies(self) -> None:
@@ -255,7 +264,10 @@ class BuildTests(unittest.TestCase):
                 "https://example.invalid/data/child": "child.example\n",
             },
         )
-        self.assertEqual(build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,child.example", "DOMAIN-SUFFIX,root.example"])
+        self.assertEqual(
+            build.render_classical_body(result.rules),
+            ["DOMAIN-SUFFIX,child.example", "DOMAIN-SUFFIX,root.example"],
+        )
         self.assertEqual([name for name, _ in result.denied_includes], ["other"])
 
     def test_unclassified_include_fails(self) -> None:
@@ -265,9 +277,14 @@ class BuildTests(unittest.TestCase):
     def test_attribute_selection_keeps_untagged_entries(self) -> None:
         texts = {ROOT_URL: "plain.example\ncn.example @cn\nads.example @ads\n"}
         without_attributes = self.compile(app_config(), texts)
-        self.assertEqual(build.render_classical_body(without_attributes.rules), ["DOMAIN-SUFFIX,plain.example"])
+        self.assertEqual(
+            build.render_classical_body(without_attributes.rules), ["DOMAIN-SUFFIX,plain.example"]
+        )
         with_cn = self.compile(app_config(attributes=["cn"]), texts)
-        self.assertEqual(build.render_classical_body(with_cn.rules), ["DOMAIN-SUFFIX,cn.example", "DOMAIN-SUFFIX,plain.example"])
+        self.assertEqual(
+            build.render_classical_body(with_cn.rules),
+            ["DOMAIN-SUFFIX,cn.example", "DOMAIN-SUFFIX,plain.example"],
+        )
 
     def test_negative_attributes_and_regexp_fail(self) -> None:
         with self.assertRaisesRegex(build.BuildError, "negative attributes"):
@@ -340,13 +357,19 @@ class BuildTests(unittest.TestCase):
             },
         )
         self.assertEqual(build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,example.com"])
-        self.assertEqual(result.skipped_excluded, ["IP-ASN,11983", "URL-REGEX,^https://example\\.com"])
+        self.assertEqual(
+            result.skipped_excluded, ["IP-ASN,11983", "URL-REGEX,^https://example\\.com"]
+        )
 
     def test_type_level_exclude_requires_wildcard_value(self) -> None:
-        config = app_config(source_format="surge-rule-set", url="https://example.invalid/Surge/Test.list")
+        config = app_config(
+            source_format="surge-rule-set", url="https://example.invalid/Surge/Test.list"
+        )
         config["exclude"] = ["ip-asn:11983"]
         with self.assertRaisesRegex(build.BuildError, "must use '\\*'"):
-            self.compile(config, {"https://example.invalid/Surge/Test.list": "DOMAIN-SUFFIX,example.com\n"})
+            self.compile(
+                config, {"https://example.invalid/Surge/Test.list": "DOMAIN-SUFFIX,example.com\n"}
+            )
 
     def test_supplement_only_app_builds_from_supplement(self) -> None:
         config = app_config()
@@ -355,9 +378,13 @@ class BuildTests(unittest.TestCase):
             root = Path(temporary_directory)
             supplement_dir = root / "engine" / "sources" / "supplement"
             supplement_dir.mkdir(parents=True)
-            (supplement_dir / "Test.list").write_text("DOMAIN-SUFFIX,example.com\n", encoding="utf-8")
+            (supplement_dir / "Test.list").write_text(
+                "DOMAIN-SUFFIX,example.com\n", encoding="utf-8"
+            )
             result = build.compile_app("Test", config, root, lambda url: "")
-            self.assertEqual(build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,example.com"])
+            self.assertEqual(
+                build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,example.com"]
+            )
 
     def test_supplement_only_app_without_rules_fails(self) -> None:
         config = app_config()
@@ -382,7 +409,9 @@ class BuildTests(unittest.TestCase):
         config["exclude"] = ["domain-suffix:blocked.com", "ip-asn:*"]
         result = self.compile(
             config,
-            {source_url: "DOMAIN-SUFFIX,example.com\nDOMAIN-SUFFIX,blocked.com\nIP-ASN,11983,no-resolve\n"},
+            {
+                source_url: "DOMAIN-SUFFIX,example.com\nDOMAIN-SUFFIX,blocked.com\nIP-ASN,11983,no-resolve\n"
+            },
         )
         self.assertEqual(build.render_classical_body(result.rules), ["DOMAIN-SUFFIX,example.com"])
         self.assertEqual(result.skipped_excluded, ["IP-ASN,11983"])
@@ -397,7 +426,9 @@ class BuildTests(unittest.TestCase):
             supplement_dir.mkdir(parents=True)
             (supplement_dir / "Test.list").write_text("IP-ASN,11983,no-resolve\n", encoding="utf-8")
             with self.assertRaisesRegex(build.BuildError, "invalid supplement rule"):
-                build.compile_app("Test", config, root, {source_url: "DOMAIN-SUFFIX,example.com\n"}.__getitem__)
+                build.compile_app(
+                    "Test", config, root, {source_url: "DOMAIN-SUFFIX,example.com\n"}.__getitem__
+                )
 
     def test_fetch_retries_transient_failures(self) -> None:
         class FakeHeaders:
@@ -443,7 +474,9 @@ class BuildTests(unittest.TestCase):
             root = Path(temporary_directory)
             supplement_dir = root / "engine" / "sources" / "supplement"
             supplement_dir.mkdir(parents=True)
-            (supplement_dir / "Demo.list").write_text("DOMAIN-SUFFIX,example.com\n", encoding="utf-8")
+            (supplement_dir / "Demo.list").write_text(
+                "DOMAIN-SUFFIX,example.com\n", encoding="utf-8"
+            )
             sources_dir = root / "engine" / "sources"
             manifest = sources_dir / "apps.yaml"
             manifest.write_text(

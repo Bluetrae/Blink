@@ -163,8 +163,9 @@ export function typeChips(app: AppEntry, client: ClientKey): { label: string; co
     const dropped = app.clients.egern.dropped ?? 0;
     return TYPE_GROUPS.map((group) => ({
       label: group.label,
-      count: group.kinds.reduce((sum, kind) => sum + (app.types[kind] ?? 0), 0)
-        - (group.label === "进程" ? dropped : 0),
+      count:
+        group.kinds.reduce((sum, kind) => sum + (app.types[kind] ?? 0), 0) -
+        (group.label === "进程" ? dropped : 0),
     })).filter((chip) => chip.count > 0);
   }
   return TYPE_GROUPS.map((group) => ({
@@ -206,7 +207,9 @@ export function clientSnippet(rawBase: string, app: AppEntry, client: ClientKey)
         `  - RULE-SET,${app.name},${app.policy}`,
       ].join("\n");
     case "egern":
-      return ["rules:", "  - rule_set:", `      match: ${url}`, `      policy: ${app.policy}`].join("\n");
+      return ["rules:", "  - rule_set:", `      match: ${url}`, `      policy: ${app.policy}`].join(
+        "\n",
+      );
     case "quantumultx":
       return `${url}, tag=${app.name}, force-policy=${app.policy}, update-interval=172800, opt-parser=false, enabled=true`;
   }

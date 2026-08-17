@@ -6,34 +6,64 @@ import Reveal from "./Reveal";
 
 const STEPS: Record<ClientKey, ReactNode[]> = {
   surge: [
-    <>打开 Surge 主配置，找到 <code>[Rule]</code> 段。</>,
-    <>复制下面的规则行，放在 <code>FINAL</code> 之前。</>,
+    <>
+      打开 Surge 主配置，找到 <code>[Rule]</code> 段。
+    </>,
+    <>
+      复制下面的规则行，放在 <code>FINAL</code> 之前。
+    </>,
     <>把策略名换成你自己的，保存并重载配置。</>,
   ],
   shadowrocket: [
-    <>打开 Shadowrocket 配置的 <code>[Rule]</code> 段（语法与 Surge 相同）。</>,
-    <>复制下面的规则行，放在 <code>FINAL</code> 之前。</>,
+    <>
+      打开 Shadowrocket 配置的 <code>[Rule]</code> 段（语法与 Surge 相同）。
+    </>,
+    <>
+      复制下面的规则行，放在 <code>FINAL</code> 之前。
+    </>,
     <>把策略名换成你自己的，保存并使用配置。</>,
   ],
   loon: [
-    <>打开 Loon 配置，找到 <code>[Remote Rule]</code> 段。</>,
+    <>
+      打开 Loon 配置，找到 <code>[Remote Rule]</code> 段。
+    </>,
     <>复制下面的规则行，一行一个 App。</>,
-    <>把 <code>policy</code> 换成你自己的策略组，保存并重载配置。</>,
+    <>
+      把 <code>policy</code> 换成你自己的策略组，保存并重载配置。
+    </>,
   ],
   stash: [
-    <>打开 Stash 配置，把下面整段复制进 <code>rule-providers</code> 与 <code>rules</code>。</>,
-    <>把每个 <code>RULE-SET</code> 行放在 <code>MATCH</code>/<code>FINAL</code> 之前合适的位置。</>,
-    <>策略名换成你自己的；<code>interval: 86400</code> 控制规则集更新周期。</>,
+    <>
+      打开 Stash 配置，把下面整段复制进 <code>rule-providers</code> 与 <code>rules</code>。
+    </>,
+    <>
+      把每个 <code>RULE-SET</code> 行放在 <code>MATCH</code>/<code>FINAL</code> 之前合适的位置。
+    </>,
+    <>
+      策略名换成你自己的；<code>interval: 86400</code> 控制规则集更新周期。
+    </>,
   ],
   egern: [
-    <>打开 Egern 配置，把下面整段复制进 <code>rules</code> 列表。</>,
-    <>按你的匹配顺序放置 <code>rule_set</code> 条目，<code>default</code> 之前。</>,
-    <>把 <code>policy</code> 换成你自己的策略组。</>,
+    <>
+      打开 Egern 配置，把下面整段复制进 <code>rules</code> 列表。
+    </>,
+    <>
+      按你的匹配顺序放置 <code>rule_set</code> 条目，<code>default</code> 之前。
+    </>,
+    <>
+      把 <code>policy</code> 换成你自己的策略组。
+    </>,
   ],
   quantumultx: [
-    <>打开 Quantumult X 配置，把下面整段复制进 <code>[filter_remote]</code> 段。</>,
-    <>一行一个 App；行尾的 <code>policy</code> 是占位符，实际策略由 <code>force-policy</code> 指定。</>,
-    <>把 <code>force-policy</code> 换成你自己的策略组，<code>update-interval</code> 控制更新周期。</>,
+    <>
+      打开 Quantumult X 配置，把下面整段复制进 <code>[filter_remote]</code> 段。
+    </>,
+    <>
+      一行一个 App；行尾的 <code>policy</code> 是占位符，实际策略由 <code>force-policy</code> 指定。
+    </>,
+    <>
+      把 <code>force-policy</code> 换成你自己的策略组，<code>update-interval</code> 控制更新周期。
+    </>,
   ],
 };
 
@@ -93,12 +123,7 @@ export default function Usage({ data }: { data: PortalData }) {
           </ol>
         </Reveal>
         <Reveal>
-          <CodeBlock
-            file={tab.fileLabel}
-            copyText={lines}
-            copyLabel="复制全部"
-            maxHeight
-          >
+          <CodeBlock file={tab.fileLabel} copyText={lines} copyLabel="复制全部" maxHeight>
             {lines}
           </CodeBlock>
           <p className="mt-4 text-center text-[13.5px] text-mute">{tab.note}</p>

@@ -51,7 +51,9 @@ function AppCard({
           </span>
           <div className="min-w-0 leading-tight">
             <div className="truncate text-sm font-semibold tracking-tight">{app.name}</div>
-            <div className="truncate text-[11px] text-mute">{CATEGORY_LABELS[app.category] ?? app.category}</div>
+            <div className="truncate text-[11px] text-mute">
+              {CATEGORY_LABELS[app.category] ?? app.category}
+            </div>
           </div>
         </div>
         <div className="flex items-baseline gap-1">
@@ -75,7 +77,8 @@ function AppCard({
         )}
         {dropped > 0 && (
           <p className="rounded-lg border border-line bg-paper px-1.5 py-1 text-[10px] leading-relaxed text-mute">
-            ⚠️ {dropped} 条 PROCESS-NAME 无法在 {client === "egern" ? "Egern" : "Quantumult X"} 无损表达，构建器已显式丢弃。
+            ⚠️ {dropped} 条 PROCESS-NAME 无法在 {client === "egern" ? "Egern" : "Quantumult X"}{" "}
+            无损表达，构建器已显式丢弃。
           </p>
         )}
         <p className="truncate text-[11px] text-mute" title={app.source.name || undefined}>
@@ -119,7 +122,10 @@ export default function Rulesets({ data }: { data: PortalData }) {
   const collapsible = visible.length > 10;
 
   return (
-    <section id="rulesets" className="scroll-mt-24 border-y border-line bg-paper px-6 py-16 sm:py-20">
+    <section
+      id="rulesets"
+      className="scroll-mt-24 border-y border-line bg-paper px-6 py-16 sm:py-20"
+    >
       <div className="mx-auto max-w-5xl">
         <Reveal>
           <div className="mx-auto mb-8 max-w-xl text-center">
@@ -180,7 +186,13 @@ export default function Rulesets({ data }: { data: PortalData }) {
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(175px,1fr))] gap-3">
           {shown.map((app, index) => (
-            <AppCard key={app.name} app={app} client={client} rawBase={data.raw_base} index={index} />
+            <AppCard
+              key={app.name}
+              app={app}
+              client={client}
+              rawBase={data.raw_base}
+              index={index}
+            />
           ))}
         </div>
         {collapsible && (

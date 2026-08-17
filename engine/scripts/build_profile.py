@@ -17,7 +17,6 @@ import argparse
 import re
 import sys
 from pathlib import Path
-from typing import Any
 
 import yaml
 
@@ -63,7 +62,9 @@ def validate_intent(intent: dict) -> None:
     subscription = intent.get("subscription")
     if not isinstance(subscription, dict):
         raise ProfileError("intent must define a subscription mapping")
-    if not isinstance(subscription.get("url"), str) or not subscription["url"].startswith("https://"):
+    if not isinstance(subscription.get("url"), str) or not subscription["url"].startswith(
+        "https://"
+    ):
         raise ProfileError("subscription.url must be an https placeholder URL")
     if not isinstance(subscription.get("name"), str) or not subscription["name"]:
         raise ProfileError("subscription.name is required")
@@ -91,7 +92,6 @@ def validate_intent(intent: dict) -> None:
         if group.get("filter") is not None and not isinstance(group["filter"], str):
             raise ProfileError(f"{name}: filter must be a string")
 
-    pool_name = subscription["name"]
     for group in groups:
         for member in group.get("members", []):
             if member not in names and member not in BUILTIN_POLICIES:
@@ -122,7 +122,9 @@ def validate_intent(intent: dict) -> None:
         if policy not in names and policy not in {"DIRECT", "REJECT"}:
             raise ProfileError(f"{app_name}: policy {policy!r} does not exist")
         source = app.get("source")
-        if source is not None and (not isinstance(source, str) or not source.startswith("https://")):
+        if source is not None and (
+            not isinstance(source, str) or not source.startswith("https://")
+        ):
             raise ProfileError(f"{app_name}: source must be an https URL")
 
     infra = intent.get("infrastructure", [])
@@ -170,6 +172,7 @@ def _infra_for_client(rule: dict, client: str) -> dict | None:
 # or omitted through the intent's per-client availability lists; nothing is
 # silently invented.
 # --------------------------------------------------------------------------
+
 
 def _render_surge(intent: dict) -> dict[str, str]:
     sub = intent["subscription"]
@@ -266,7 +269,7 @@ def _render_loon(intent: dict) -> dict[str, str]:
     groups: list[str] = []
     for group in intent["policy_groups"]:
         if group.get("filter") is not None:
-            filters.append(f'{group["name"]} = NameRegex, FilterKey = {group["filter"]}')
+            filters.append(f"{group['name']} = NameRegex, FilterKey = {group['filter']}")
             continue
         members = [m for m in group.get("members", []) if m != "Sub"]
         members = ",".join(members)
@@ -289,7 +292,9 @@ def _render_loon(intent: dict) -> dict[str, str]:
         elif entry.get("kind") == "domain":
             local_rules.append(f"DOMAIN,{entry['value']},{policy}")
         else:
-            remote_rules.append(f"{entry['url']}, policy = {policy}, tag = {entry['name']}, enabled = true")
+            remote_rules.append(
+                f"{entry['url']}, policy = {policy}, tag = {entry['name']}, enabled = true"
+            )
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         remote_rules.append(f"{source}, policy = {app['policy']}, tag = {app_name}, enabled = true")
@@ -322,19 +327,19 @@ def _render_stash(intent: dict) -> dict[str, str]:
     for group in intent["policy_groups"]:
         if group.get("filter") is not None:
             group_lines.append(
-                f'  - {{name: {group["name"]}, type: select, use: [{sub["name"]}],'
+                f"  - {{name: {group['name']}, type: select, use: [{sub['name']}],"
                 f" filter: '{group['filter']}', include-all: true}}"
             )
             continue
         members = ",".join(group.get("members", []))
         if group["type"] == "url-test":
             group_lines.append(
-                f'  - {{name: {group["name"]}, type: url-test, proxies: [{members}],'
-                f' url: http://cp.cloudflare.com/generate_204, interval: {group.get("interval", 600)},'
-                f' tolerance: {group.get("tolerance", 100)}}}'
+                f"  - {{name: {group['name']}, type: url-test, proxies: [{members}],"
+                f" url: http://cp.cloudflare.com/generate_204, interval: {group.get('interval', 600)},"
+                f" tolerance: {group.get('tolerance', 100)}}}"
             )
         else:
-            group_lines.append(f'  - {{name: {group["name"]}, type: select, proxies: [{members}]}}')
+            group_lines.append(f"  - {{name: {group['name']}, type: select, proxies: [{members}]}}")
     providers: dict[str, str] = {}
     rules: list[str] = ["rules:"]
     local_rules: list[str] = []
@@ -391,7 +396,12 @@ def _render_stash(intent: dict) -> dict[str, str]:
 
 def _render_egern(intent: dict) -> dict[str, str]:
     sub = intent["subscription"]
-    group_lines: list[str] = ["- external:", f"    name: {sub['name']}", "    type: select", "    urls:"]
+    group_lines: list[str] = [
+        "- external:",
+        f"    name: {sub['name']}",
+        "    type: select",
+        "    urls:",
+    ]
     group_lines.append(f"    - {sub['url']}")
     group_lines.append(f"    update_interval: {sub['update_interval']}")
     group_lines.append("    hidden: false")
@@ -400,7 +410,7 @@ def _render_egern(intent: dict) -> dict[str, str]:
             group_lines.extend(
                 [
                     "- select:",
-                    f'    name: {group["name"]}',
+                    f"    name: {group['name']}",
                     "    policies:",
                     f"    - {sub['name']}",
                     "    flatten: true",
@@ -410,13 +420,13 @@ def _render_egern(intent: dict) -> dict[str, str]:
             continue
         members = group.get("members", [])
         group_lines.append("- select:")
-        group_lines.append(f'    name: {group["name"]}')
+        group_lines.append(f"    name: {group['name']}")
         group_lines.append("    policies:")
         for member in members:
             group_lines.append(f"    - {member}")
         if group["type"] == "url-test":
             group_lines.append(
-                f'    # ADAPTED：Egern url-test 待真机验证（Needs Verification），暂以 select 呈现'
+                "    # ADAPTED：Egern url-test 待真机验证（Needs Verification），暂以 select 呈现"
             )
     rules: list[str] = []
     for rule in intent.get("infrastructure", []):
@@ -446,7 +456,7 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
     group_lines: list[str] = []
     for group in intent["policy_groups"]:
         if group.get("filter") is not None:
-            group_lines.append(f'static={group["name"]}, server-tag-regex={group["filter"]}')
+            group_lines.append(f"static={group['name']}, server-tag-regex={group['filter']}")
             continue
         members = [
             member.lower() if member in {"DIRECT", "REJECT", "REJECT-DROP"} else member
@@ -481,13 +491,18 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
         else:
             url = entry.get("qx_url")
             if url is None:
-                raise ProfileError(f"{entry['name']}: quantumultx requires an explicit qx_url (QX does not parse Surge-format rule lists)")
+                raise ProfileError(
+                    f"{entry['name']}: quantumultx requires an explicit qx_url (QX does not parse Surge-format rule lists)"
+                )
             remote_rules.append(
                 f"{url}, tag={entry['name']}, force-policy={policy},"
                 " update-interval=172800, opt-parser=false, enabled=true"
             )
     for app_name, app in intent["apps"].items():
-        source = app.get("qx_source") or f"https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/{app_name}.list"
+        source = (
+            app.get("qx_source")
+            or f"https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/{app_name}.list"
+        )
         remote_rules.append(
             f"{source}, tag={app_name}, force-policy={qx_policy(app['policy'])},"
             " update-interval=172800, opt-parser=false, enabled=true"
@@ -530,7 +545,9 @@ def render_client(client: str, intent: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--intent", type=Path, default=INTENT_PATH)
-    parser.add_argument("--write", action="store_true", help="write Profiles/ candidates (default: check only)")
+    parser.add_argument(
+        "--write", action="store_true", help="write Profiles/ candidates (default: check only)"
+    )
     arguments = parser.parse_args(argv)
     try:
         intent = load_intent(arguments.intent)

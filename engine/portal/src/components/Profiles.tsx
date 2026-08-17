@@ -1,12 +1,20 @@
 import { useState } from "react";
 import type { ClientKey, PortalData } from "../types";
-import { CLIENT_TABS, PROFILE_FILES, clientIcon, profileFileUrl, profileInstallScheme } from "../data";
+import {
+  CLIENT_TABS,
+  PROFILE_FILES,
+  clientIcon,
+  profileFileUrl,
+  profileInstallScheme,
+} from "../data";
 import { useCopy } from "../hooks";
 import Reveal from "./Reveal";
 
 const STEPS = [
   <>下载对应客户端的配置文件文件。</>,
-  <>用文本编辑器把 <code>https://YOUR-SUBSCRIPTION-URL</code> 替换成你的订阅链接。</>,
+  <>
+    用文本编辑器把 <code>https://YOUR-SUBSCRIPTION-URL</code> 替换成你的订阅链接。
+  </>,
   <>导入客户端并真机验证策略组与分流效果。</>,
 ];
 

@@ -34,29 +34,130 @@ RAW_BASE = "https://raw.githubusercontent.com/Bluetrae/Blink/main"
 # engine/portal/public/app-icons/ (AI uses the ChatGPT logo by request).
 PORTAL_META = {
     "OKX": {"category": "Finance", "emoji": "💠", "policy": "Finance", "icon": "app-icons/OKX.jpg"},
-    "PayPal": {"category": "Finance", "emoji": "💸", "policy": "Finance", "icon": "app-icons/PayPal.jpg"},
-    "SafePal": {"category": "Finance", "emoji": "🔐", "policy": "Finance", "icon": "app-icons/SafePal.jpg"},
-    "ZABank": {"category": "Finance", "emoji": "🏦", "policy": "Finance", "icon": "app-icons/ZABank.jpg"},
-    "WhatsApp": {"category": "Communication", "emoji": "💬", "policy": "Proxy", "icon": "app-icons/WhatsApp.jpg"},
-    "LINE": {"category": "Communication", "emoji": "💬", "policy": "Proxy", "icon": "app-icons/LINE.jpg"},
-    "Telegram": {"category": "Communication", "emoji": "✈️", "policy": "Proxy", "icon": "app-icons/Telegram.jpg"},
-    "GitHub": {"category": "Development", "emoji": "🐙", "policy": "GitHub", "icon": "app-icons/GitHub.jpg"},
-    "Steam": {"category": "Gaming", "emoji": "🎮", "policy": "Proxy", "icon": "app-icons/Steam.jpg"},
+    "PayPal": {
+        "category": "Finance",
+        "emoji": "💸",
+        "policy": "Finance",
+        "icon": "app-icons/PayPal.jpg",
+    },
+    "SafePal": {
+        "category": "Finance",
+        "emoji": "🔐",
+        "policy": "Finance",
+        "icon": "app-icons/SafePal.jpg",
+    },
+    "ZABank": {
+        "category": "Finance",
+        "emoji": "🏦",
+        "policy": "Finance",
+        "icon": "app-icons/ZABank.jpg",
+    },
+    "WhatsApp": {
+        "category": "Communication",
+        "emoji": "💬",
+        "policy": "Proxy",
+        "icon": "app-icons/WhatsApp.jpg",
+    },
+    "LINE": {
+        "category": "Communication",
+        "emoji": "💬",
+        "policy": "Proxy",
+        "icon": "app-icons/LINE.jpg",
+    },
+    "Telegram": {
+        "category": "Communication",
+        "emoji": "✈️",
+        "policy": "Proxy",
+        "icon": "app-icons/Telegram.jpg",
+    },
+    "GitHub": {
+        "category": "Development",
+        "emoji": "🐙",
+        "policy": "GitHub",
+        "icon": "app-icons/GitHub.jpg",
+    },
+    "Steam": {
+        "category": "Gaming",
+        "emoji": "🎮",
+        "policy": "Proxy",
+        "icon": "app-icons/Steam.jpg",
+    },
     "X": {"category": "Social", "emoji": "𝕏", "policy": "Proxy", "icon": "app-icons/X.jpg"},
-    "Instagram": {"category": "Social", "emoji": "📷", "policy": "Proxy", "icon": "app-icons/Instagram.jpg"},
-    "Threads": {"category": "Social", "emoji": "🧵", "policy": "Proxy", "icon": "app-icons/Threads.jpg"},
-    "Facebook": {"category": "Social", "emoji": "📘", "policy": "Proxy", "icon": "app-icons/Facebook.jpg"},
-    "YouTube": {"category": "Media", "emoji": "▶️", "policy": "Media", "icon": "app-icons/YouTube.jpg"},
-    "Netflix": {"category": "Media", "emoji": "🎬", "policy": "Media", "icon": "app-icons/Netflix.jpg"},
-    "TikTok": {"category": "Media", "emoji": "🎵", "policy": "Proxy", "icon": "app-icons/TikTok.jpg"},
-    "Spotify": {"category": "Media", "emoji": "🎧", "policy": "Proxy", "icon": "app-icons/Spotify.jpg"},
-    "APTV": {"category": "Media", "emoji": "📺", "policy": "Media", "icon": "app-icons/APTV.jpg", "self_use": True},
-    "Disney": {"category": "Media", "emoji": "🏰", "policy": "Media", "icon": "app-icons/Disney.jpg"},
-    "ParamountPlus": {"category": "Media", "emoji": "🎞️", "policy": "Media", "icon": "app-icons/ParamountPlus.jpg"},
-    "PrimeVideo": {"category": "Media", "emoji": "📦", "policy": "Media", "icon": "app-icons/PrimeVideo.jpg"},
+    "Instagram": {
+        "category": "Social",
+        "emoji": "📷",
+        "policy": "Proxy",
+        "icon": "app-icons/Instagram.jpg",
+    },
+    "Threads": {
+        "category": "Social",
+        "emoji": "🧵",
+        "policy": "Proxy",
+        "icon": "app-icons/Threads.jpg",
+    },
+    "Facebook": {
+        "category": "Social",
+        "emoji": "📘",
+        "policy": "Proxy",
+        "icon": "app-icons/Facebook.jpg",
+    },
+    "YouTube": {
+        "category": "Media",
+        "emoji": "▶️",
+        "policy": "Media",
+        "icon": "app-icons/YouTube.jpg",
+    },
+    "Netflix": {
+        "category": "Media",
+        "emoji": "🎬",
+        "policy": "Media",
+        "icon": "app-icons/Netflix.jpg",
+    },
+    "TikTok": {
+        "category": "Media",
+        "emoji": "🎵",
+        "policy": "Proxy",
+        "icon": "app-icons/TikTok.jpg",
+    },
+    "Spotify": {
+        "category": "Media",
+        "emoji": "🎧",
+        "policy": "Proxy",
+        "icon": "app-icons/Spotify.jpg",
+    },
+    "APTV": {
+        "category": "Media",
+        "emoji": "📺",
+        "policy": "Media",
+        "icon": "app-icons/APTV.jpg",
+        "self_use": True,
+    },
+    "Disney": {
+        "category": "Media",
+        "emoji": "🏰",
+        "policy": "Media",
+        "icon": "app-icons/Disney.jpg",
+    },
+    "ParamountPlus": {
+        "category": "Media",
+        "emoji": "🎞️",
+        "policy": "Media",
+        "icon": "app-icons/ParamountPlus.jpg",
+    },
+    "PrimeVideo": {
+        "category": "Media",
+        "emoji": "📦",
+        "policy": "Media",
+        "icon": "app-icons/PrimeVideo.jpg",
+    },
     "Hulu": {"category": "Media", "emoji": "💚", "policy": "Media", "icon": "app-icons/Hulu.jpg"},
     "HBO": {"category": "Media", "emoji": "🍿", "policy": "Media", "icon": "app-icons/HBO.jpg"},
-    "Twitch": {"category": "Media", "emoji": "🔴", "policy": "Media", "icon": "app-icons/Twitch.jpg"},
+    "Twitch": {
+        "category": "Media",
+        "emoji": "🔴",
+        "policy": "Media",
+        "icon": "app-icons/Twitch.jpg",
+    },
     "NBA": {"category": "Media", "emoji": "🏀", "policy": "Media", "icon": "app-icons/NBA.jpg"},
     "AI": {"category": "AI", "emoji": "🤖", "policy": "Proxy", "icon": "app-icons/AI.jpg"},
     "Suno": {"category": "AI", "emoji": "🎶", "policy": "AI", "icon": "app-icons/Suno.jpg"},
@@ -134,7 +235,9 @@ def build(root: Path) -> dict:
         output = root / app["output"]
         list_name, header_count, type_counts = parse_list(output)
         if list_name != app_name:
-            raise PortalError(f"{output}: header name {list_name!r} does not match app {app_name!r}")
+            raise PortalError(
+                f"{output}: header name {list_name!r} does not match app {app_name!r}"
+            )
         if header_count is None:
             raise PortalError(f"{output}: missing 规则统计 header")
         if header_count != sum(type_counts.values()):
@@ -155,7 +258,10 @@ def build(root: Path) -> dict:
                 entry["dropped"] = header_count - client_count
             clients[key] = entry
         sources = app.get("sources") or []
-        primary = next((item for item in sources if item.get("role") == "primary"), sources[0] if sources else {})
+        primary = next(
+            (item for item in sources if item.get("role") == "primary"),
+            sources[0] if sources else {},
+        )
         apps_out.append(
             {
                 "name": app_name,
@@ -183,7 +289,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest", type=Path, default=Path("engine/sources/apps.yaml"))
     parser.add_argument("--output", type=Path, default=Path("engine/portal/public/data/stats.json"))
-    parser.add_argument("--stdout", action="store_true", help="print the JSON instead of writing it")
+    parser.add_argument(
+        "--stdout", action="store_true", help="print the JSON instead of writing it"
+    )
     arguments = parser.parse_args(argv)
     root = arguments.manifest.resolve().parent.parent.parent
     try:

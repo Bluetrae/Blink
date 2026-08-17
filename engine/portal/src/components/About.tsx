@@ -8,7 +8,10 @@ const PIPELINE = [
   { title: "Source audit", text: "每个 App 记录候选、证据与结论" },
   { title: "build.py", text: "解析 / 转换 / 规范化 / 去重，异常即中止" },
   { title: "supplement", text: "只合并经 Surge 日志证实的上游缺口" },
-  { title: "多客户端渲染", text: "classical ×4 + Egern YAML + QX filter；无法表达的类型显式丢弃并计数" },
+  {
+    title: "多客户端渲染",
+    text: "classical ×4 + Egern YAML + QX filter；无法表达的类型显式丢弃并计数",
+  },
   { title: "配置迁移", text: "Canonical Profile Intent → 六客户端配置文件，人工审核 + 真机验证" },
   { title: "稳定 raw URL", text: "规则每日自动更新；配置人工维护后发布" },
 ];
@@ -51,7 +54,9 @@ export default function About({ repo }: AboutProps) {
               <ul className="space-y-3">
                 <li className="relative pl-5 text-sm">
                   <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-[2px] bg-accent" />
-                  每个 App 独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只作并列时的 tie-breaker。
+                  每个 App
+                  独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只作并列时的
+                  tie-breaker。
                 </li>
                 <li className="relative pl-5 text-sm">
                   <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-[2px] bg-accent" />
@@ -64,13 +69,22 @@ export default function About({ repo }: AboutProps) {
                 <li className="relative pl-5 text-sm">
                   <span className="absolute left-0 top-2 h-1.5 w-1.5 rounded-[2px] bg-accent" />
                   生成产物不附统一许可证，使用前请查看{" "}
-                  <a href={`${repo}/blob/main/THIRD_PARTY_NOTICES.md`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`${repo}/blob/main/THIRD_PARTY_NOTICES.md`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     第三方声明
                   </a>{" "}
                   与{" "}
-                  <a href={`${repo}/blob/main/DISCLAIMER.md`} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={`${repo}/blob/main/DISCLAIMER.md`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     免责说明
-                  </a>。
+                  </a>
+                  。
                 </li>
               </ul>
             </div>

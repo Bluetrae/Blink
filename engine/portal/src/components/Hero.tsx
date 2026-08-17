@@ -44,7 +44,10 @@ export default function Hero({ appsCount, totalRules }: HeroProps) {
         Egern / Quantumult X 六种输出；同时把同一份配置意图迁移为六客户端配置文件（单订阅池、
         占位符已内置），替换一条订阅即可复用。规则自动更新，配置人工维护、真机验证后发布。
       </p>
-      <div className="hero-enter mt-7 flex justify-center gap-3" style={{ animationDelay: "210ms" }}>
+      <div
+        className="hero-enter mt-7 flex justify-center gap-3"
+        style={{ animationDelay: "210ms" }}
+      >
         <span className="rotating-border inline-block rounded-full p-[1.5px]">
           <a
             href="#usage"

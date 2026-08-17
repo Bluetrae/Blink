@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import copy
 import sys
 import unittest
 from pathlib import Path
@@ -43,7 +42,13 @@ def sample_intent() -> dict:
             {"name": "Proxy", "type": "select", "members": ["HK", "Final", "Sub"]},
             {"name": "Final", "type": "select", "members": ["HK", "Auto", "DIRECT"]},
             {"name": "HK", "type": "select", "filter": "(?i)Hong\\s*Kong"},
-            {"name": "Auto", "type": "url-test", "members": ["HK"], "interval": 600, "tolerance": 80},
+            {
+                "name": "Auto",
+                "type": "url-test",
+                "members": ["HK"],
+                "interval": 600,
+                "tolerance": 80,
+            },
         ],
         "apps": {"YouTube": {"policy": "Proxy"}},
         "infrastructure": [
@@ -59,7 +64,9 @@ def sample_intent() -> dict:
 
 class ProfileEngineTests(unittest.TestCase):
     def render(self, intent: dict) -> dict[str, str]:
-        return {client: build_profile.render_client(client, intent) for client in build_profile.CLIENTS}
+        return {
+            client: build_profile.render_client(client, intent) for client in build_profile.CLIENTS
+        }
 
     def test_all_six_clients_render_without_leftover_markers(self) -> None:
         outputs = self.render(sample_intent())
@@ -134,7 +141,10 @@ class ProfileEngineTests(unittest.TestCase):
             build_profile.TEMPLATE_DIR = root / "sources" / "profile" / "templates"
             build_profile.OUTPUT_DIR = root / "Profiles"
             try:
-                outputs = {client: build_profile.render_client(client, intent) for client in build_profile.CLIENTS}
+                outputs = {
+                    client: build_profile.render_client(client, intent)
+                    for client in build_profile.CLIENTS
+                }
                 build_profile.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
                 for client, text in outputs.items():
                     _template, output_name = build_profile.CLIENTS[client]

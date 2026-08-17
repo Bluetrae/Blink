@@ -35,7 +35,9 @@ export default function Footer({ repo }: FooterProps) {
             </a>
           ))}
         </nav>
-        <p className="text-xs text-mute">本页数据随每日构建自动刷新 · 使用前请结合自己的客户端日志自行验证</p>
+        <p className="text-xs text-mute">
+          本页数据随每日构建自动刷新 · 使用前请结合自己的客户端日志自行验证
+        </p>
       </div>
     </footer>
   );
