@@ -37,7 +37,7 @@ _tempfile.mkdtemp = _mkdtemp
 if os.name == "nt":
     try:
         os.chmod(_WORKSPACE_TMP, 0o700)
-    except PermissionError:
+    except (PermissionError, FileNotFoundError):
         _real_chmod = os.chmod
 
         def _chmod_skip_directories(path, mode):
