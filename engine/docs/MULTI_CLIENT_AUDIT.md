@@ -217,7 +217,7 @@ QuantumultX/<App>.list   # QX filter 行（行尾占位符 policy，force-policy
 
 - **A · Smoke**：OKX（v2fly 转换路径）→ canonical → classical ×4 + Egern YAML + QX filter，人工核对结构。
 - **B · YouTube 跨端 E2E**：当前主源 Repcz 14 条不变；七端最小引用示例内置 README（Clash 示例含 UA 丢弃说明）；真机验证首页/搜索/播放/Shorts/图床/CDN/评论/API，观察落 Final、CDN 漏网与七端一致性。
-- **C · Complex Semantics**：GitHub（include allow/deny + attributes + exclude + provenance + dedup + nested source）跑全管线六端输出一致性。
+- **C · Complex Semantics**：GitHub（include allow/deny + attributes + exclude + provenance + dedup + nested source）跑全管线七端输出一致性。
 - 核心代码禁止 OKX/YouTube/GitHub 业务特例。
 
 ## 12. 后续阶段

@@ -2,7 +2,7 @@
 
 ## 项目目标
 
-自动生成个人使用的多客户端 App Rule-Sets：一份 source definition 与 canonical 规则，渲染为 Surge / Shadowrocket / Loon / Stash / Egern / Quantumult X 六个客户端的输出（格式事实与架构决策见 `engine/docs/MULTI_CLIENT_AUDIT.md`）。
+自动生成个人使用的多客户端 App Rule-Sets：一份 source definition 与 canonical 规则，渲染为 Surge / Shadowrocket / Loon / Stash / Clash / Egern / Quantumult X 七个客户端的输出（格式事实与架构决策见 `engine/docs/MULTI_CLIENT_AUDIT.md`）。
 
 ## 规则与来源规范
 
@@ -10,12 +10,12 @@
 - 补充规则只能放在 `engine/sources/supplement/`。`supplement` 只存放上游规则未覆盖、且通过 Surge 日志或实际使用确认需要补充的规则。
 - 不允许将上游已存在的规则重复放进 `supplement`；应先与选定上游比较，只加入真正缺失的规则。
 - `supplement` 文件按需创建；没有补充规则的 App 不需要空文件。
-- Generated `Surge/*.list`、`Loon/*.list`、`Shadowrocket/*.list`、`Stash/*.list`、`Egern/*.yaml`、`QuantumultX/*.list` 不允许手工维护或修改；Surge / Loon / Shadowrocket / Stash 四个 classical 目录必须保持逐字节相同。
+- Generated `Surge/*.list`、`Loon/*.list`、`Shadowrocket/*.list`、`Stash/*.list`、`Clash/*.list`、`Egern/*.yaml`、`QuantumultX/*.list` 不允许手工维护或修改；Surge / Loon / Shadowrocket / Stash 四个 classical 目录必须保持逐字节相同；`Clash/*.list` = 对应 Surge 文件去掉 `USER-AGENT,` 行（Clash 内核无此类型，构建器显式丢弃并计数，CI 有 golden-byte 断言）。
 - 每个 App 默认使用 1 个 primary source，最多 1 个 supplemental source，除非有明确理由。
 - 不追求规则数量最大化，避免无意义吞入共享 CDN。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施规则不纳入本仓库，继续直接引用成熟上游。
-- 输出规则不带策略名：Surge / Shadowrocket 由主配置 `RULE-SET`、Loon 由 `[Remote Rule]`、Stash 由 `rule-providers` + `RULE-SET`、Egern 由 `rule_set.match` 在引用处指定策略。Quantumult X 例外：filter 行尾必有策略字段，本仓库用字面占位符 `policy`，实际策略由 `[filter_remote]` 引用行的 `force-policy` 指定（QX 的 no-resolve 槽位无生产实证，渲染时统一省略并已记入 `engine/docs/MULTI_CLIENT_AUDIT.md`）。
-- 每个客户端渲染器只允许序列化该客户端可无损表达的规则；无法表达时必须显式丢弃并在构建报告计数（当前唯一降级项：PROCESS-NAME 对 Egern / Quantumult X 显式丢弃并计数；classical 输出保持 Surge / Loon / Shadowrocket / Stash 四端逐字节相同、保留该行——Loon / Shadowrocket 无此类型，客户端直接忽略），禁止静默转换。
+- 输出规则不带策略名：Surge / Shadowrocket 由主配置 `RULE-SET`、Loon 由 `[Remote Rule]`、Stash 由 `rule-providers` + `RULE-SET`、Clash 由 `rule-providers`（`behavior: classical, format: text`）+ `RULE-SET`、Egern 由 `rule_set.match` 在引用处指定策略。Quantumult X 例外：filter 行尾必有策略字段，本仓库用字面占位符 `policy`，实际策略由 `[filter_remote]` 引用行的 `force-policy` 指定（QX 的 no-resolve 槽位无生产实证，渲染时统一省略并已记入 `engine/docs/MULTI_CLIENT_AUDIT.md`）。
+- 每个客户端渲染器只允许序列化该客户端可无损表达的规则；无法表达时必须显式丢弃并在构建报告计数（降级项：PROCESS-NAME 对 Egern / Quantumult X 显式丢弃并计数，USER-AGENT 对 Clash 显式丢弃并计数；classical 输出保持 Surge / Loon / Shadowrocket / Stash 四端逐字节相同、保留 PROCESS-NAME 行——Loon / Shadowrocket 无此类型，客户端直接忽略），禁止静默转换。
 
 ## Upstream Source Selection Policy
 
@@ -45,7 +45,7 @@
 - 语义源是 `engine/sources/profile/intent.yaml`（Canonical Profile Intent），不是 Surge 配置文本；迁移的是配置意图。
 - 普适性原则：公开 Profile 只含**单一订阅池**（占位 URL `https://YOUR-SUBSCRIPTION-URL`，真实订阅地址绝不进入仓库）；用户个人专属内容（多订阅池、Emby 个人组、个人域名）保留在本地副本，不进入 intent 与公开输出。
 - 能力映射只允许 FULL / ADAPTED / UNSUPPORTED 三种结果；UNSUPPORTED 与 ADAPTED 必须在生成文件中以注释显式标注（例如 Egern url-test 暂以 select 呈现），禁止静默删除或伪造。
-- 采用横向切片开发：一次只做一个功能 × 六客户端，验证后再做下一个；实施顺序与决策依据见 `D:\Blink_Profile_Layer_实施细则.txt`（用户私有文件，不进入仓库）。
+- 采用横向切片开发：一次只做一个功能 × 七客户端，验证后再做下一个；实施顺序与决策依据见 `D:\Blink_Profile_Layer_实施细则.txt`（用户私有文件，不进入仓库）。
 - 配置文件输出 `Profiles/` 为生成产物（含占位符），修改入口是 intent 与 templates，改后运行 `engine/scripts/build_profile.py --write` 重建。
 
 ## 可用工具与 Git 规范
