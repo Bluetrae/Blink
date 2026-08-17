@@ -15,10 +15,7 @@ function fallbackCopy(text: string): void {
   document.body.removeChild(area);
 }
 
-export function useCopy(
-  text: string,
-  copiedMs = 1600,
-): { copied: boolean; copy: () => void } {
+export function useCopy(text: string, copiedMs = 1600): { copied: boolean; copy: () => void } {
   const [copied, setCopied] = useState(false);
   const timer = useRef<number | undefined>(undefined);
 
@@ -61,11 +58,6 @@ export function useTimedTheme(): void {
       document.documentElement.classList.toggle("dark", next === "dark");
     };
     apply();
-    try {
-      localStorage.removeItem("rulink-theme");
-    } catch {
-      /* ignore */
-    }
     const interval = window.setInterval(apply, 60_000);
     document.addEventListener("visibilitychange", apply);
     return () => {
