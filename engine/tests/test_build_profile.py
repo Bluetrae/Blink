@@ -75,6 +75,14 @@ class ProfileEngineTests(unittest.TestCase):
             for marker in build_profile.MARKERS:
                 self.assertNotIn(marker, text, f"{client} left marker {marker}")
 
+    def test_every_profile_exposes_single_subscription_placeholder(self) -> None:
+        outputs = self.render(sample_intent())
+        placeholder = "https://YOUR-SUBSCRIPTION-URL"
+        for client, text in outputs.items():
+            self.assertIn(placeholder, text, client)
+        for client in ("shadowrocket", "loon", "quantumultx"):
+            self.assertIn("ADAPTED", outputs[client], client)
+
     def test_yaml_clients_parse_as_valid_yaml(self) -> None:
         outputs = self.render(sample_intent())
         for client in ("stash", "egern", "clash"):

@@ -11,6 +11,7 @@
 - 不允许将上游已存在的规则重复放进 `supplement`；应先与选定上游比较，只加入真正缺失的规则。
 - `supplement` 文件按需创建；没有补充规则的 App 不需要空文件。
 - Generated `Surge/*.list`、`Loon/*.list`、`Shadowrocket/*.list`、`Stash/*.list`、`Clash/*.list`、`Egern/*.yaml`、`QuantumultX/*.list` 不允许手工维护或修改；Surge / Loon / Shadowrocket / Stash 四个 classical 目录必须保持逐字节相同；`Clash/*.list` = 对应 Surge 文件去掉 `USER-AGENT,` 行（Clash 内核无此类型，构建器显式丢弃并计数，CI 有 golden-byte 断言）。
+- 根目录 `manifest.json` 同样是 generated file，不允许手工维护；它必须确定性记录 source definition、实际上游输入、supplement、canonical 规则与七端产物 SHA256，且通过 `engine/scripts/verify_manifest.py` 校验。
 - 每个 App 默认使用 1 个 primary source，最多 1 个 supplemental source，除非有明确理由。
 - 不追求规则数量最大化，避免无意义吞入共享 CDN。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施规则不纳入本仓库，继续直接引用成熟上游。
@@ -45,7 +46,7 @@
 - 语义源是 `engine/sources/profile/intent.yaml`（Canonical Profile Intent），不是 Surge 配置文本；迁移的是配置意图。
 - 普适性原则：公开 Profile 只含**单一订阅池**（占位 URL `https://YOUR-SUBSCRIPTION-URL`，真实订阅地址绝不进入仓库）；用户个人专属内容（多订阅池、Emby 个人组、个人域名）保留在本地副本，不进入 intent 与公开输出。
 - 能力映射只允许 FULL / ADAPTED / UNSUPPORTED 三种结果；UNSUPPORTED 与 ADAPTED 必须在生成文件中以注释显式标注（例如 Egern url-test 暂以 select 呈现），禁止静默删除或伪造。
-- 采用横向切片开发：一次只做一个功能 × 七客户端，验证后再做下一个；实施顺序与决策依据见 `D:\Blink_Profile_Layer_实施细则.txt`（用户私有文件，不进入仓库）。
+- 采用横向切片开发：一次只做一个功能 × 七客户端，验证后再做下一个；实施顺序与决策依据见用户的仓库外私有实施细则（不进入仓库）。
 - 配置文件输出 `Profiles/` 为生成产物（含占位符），修改入口是 intent 与 templates，改后运行 `engine/scripts/build_profile.py --write` 重建。
 
 ## 可用工具与 Git 规范
@@ -69,3 +70,4 @@
 - 全量预检仍是必要的健康检查，但应放在 GitHub Actions、每日更新、发布前检查或明确的全仓库验证中；生成动作必须继续保持“所有选定 App 都成功后才写输出”的原子性。
 - 本地验证优先复用被 `.gitignore` 排除的 `.venv` 与锁定的 `requirements.txt`，避免重复下载依赖；`.venv` 绝不提交。
 - 不默认缓存上游规则文本。任何未来的缓存必须具有显式 TTL、内容指纹、失效策略，并确保 GitHub Actions 的发布构建仍从上游重新获取，避免缓存掩盖真实上游变化。
+- 全量写入默认启用供应链变化门禁：单 App 新增或删除超过 20 条、语义变化比例超过 20%、或出现新规则类型时，在写入前失败。只有完成人工 source audit 后才可显式使用 `--accept-large-change`；完整门禁与命令见 `engine/docs/MACHINE_GATES.md`。

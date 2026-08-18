@@ -33,6 +33,7 @@
 - [🚀 规则集快速开始](#rules-quickstart)
 - [🧭 配置文件快速开始](#profiles-quickstart)
 - [🌐 网页入口](#portal)
+- [🔎 完整性校验](#integrity)
 - [🧩 来源政策](#sources)
 - [⚖️ 使用与许可](#license)
 
@@ -148,6 +149,14 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
     <img src="engine/docs/images/portal-preview.png" alt="Blink 门户预览" width="720" />
   </a>
 </div>
+
+---
+
+<a id="integrity"></a>
+
+## 🔎 完整性校验
+
+根目录 [`manifest.json`](manifest.json) 为 28 个 App、七客户端共 196 个生成产物记录 SHA256、上游内容指纹、canonical 规则指纹和显式降级统计。push / PR 与每日更新会自动执行七端等价性、重复/空集/排序、跨 App overlap、Profile 引用及敏感模式门禁；完整命令与设计边界见 [`engine/docs/MACHINE_GATES.md`](engine/docs/MACHINE_GATES.md)。
 
 ---
 

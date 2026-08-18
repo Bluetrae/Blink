@@ -226,6 +226,7 @@ def _render_surge(intent: dict) -> dict[str, str]:
 
 
 def _render_shadowrocket(intent: dict) -> dict[str, str]:
+    sub = intent["subscription"]
     lines: list[str] = []
     for group in intent["policy_groups"]:
         if group.get("filter") is not None:
@@ -256,8 +257,8 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
         rules.append(f"RULE-SET,{source},{app['policy']}")
     rules.append("FINAL,Final")
     subscription = [
-        "# 在 App 内添加订阅；若订阅命名为 Sub，Proxy/Final 组即可直接引用。",
-        "# 或在此粘贴：<订阅名> = <订阅链接>",
+        "# ADAPTED：请在 Shadowrocket App 内添加下列唯一订阅，并将其命名为 Sub。",
+        f"# {sub['url']}",
     ]
     return {
         "__POLICY_GROUPS__": "\n".join(lines),
@@ -267,6 +268,7 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
 
 
 def _render_loon(intent: dict) -> dict[str, str]:
+    sub = intent["subscription"]
     filters: list[str] = []
     groups: list[str] = []
     for group in intent["policy_groups"]:
@@ -301,7 +303,10 @@ def _render_loon(intent: dict) -> dict[str, str]:
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         remote_rules.append(f"{source}, policy = {app['policy']}, tag = {app_name}, enabled = true")
     local_rules.append("FINAL,Final")
-    subscription = ["# 在 App 内添加订阅节点；地区组通过 [Remote Filter] 正则筛选全部节点。"]
+    subscription = [
+        "# ADAPTED：请在 Loon App 内添加下列唯一订阅；地区组通过 [Remote Filter] 筛选节点。",
+        f"# {sub['url']}",
+    ]
     return {
         "__FILTERS__": "\n".join(filters),
         "__POLICY_GROUPS__": "\n".join(groups),
@@ -550,6 +555,7 @@ def _render_egern(intent: dict) -> dict[str, str]:
 
 
 def _render_quantumultx(intent: dict) -> dict[str, str]:
+    sub = intent["subscription"]
     group_lines: list[str] = []
     for group in intent["policy_groups"]:
         if group.get("filter") is not None:
@@ -605,7 +611,10 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
             " update-interval=172800, opt-parser=false, enabled=true"
         )
     local_rules.append("final, Final")
-    subscription = ["# 在 App 内添加订阅节点；地区组通过 server-tag-regex 正则筛选全部节点。"]
+    subscription = [
+        "# ADAPTED：请在 Quantumult X App 内添加下列唯一订阅；地区组通过 server-tag-regex 筛选节点。",
+        f"# {sub['url']}",
+    ]
     return {
         "__POLICY_GROUPS__": "\n".join(group_lines),
         "__REMOTE_RULES__": "\n".join(remote_rules),

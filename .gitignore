@@ -6,8 +6,11 @@ Surge/*.tmp
 Loon/*.tmp
 Shadowrocket/*.tmp
 Stash/*.tmp
+Clash/*.tmp
 Egern/*.tmp
 QuantumultX/*.tmp
+manifest.json.tmp
+engine/reports/build_report.json
 .tmp-tests/
 engine/portal/node_modules/
 engine/portal/dist/

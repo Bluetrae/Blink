@@ -17,6 +17,10 @@ https://github.com/Bluetrae/Blink
 - `main` 跟踪 `origin/main`
 - working tree clean
 - `safe.directory` 已配置完成
+- **2026-08-18 机器门禁已落地**：根目录 `manifest.json` 确定性覆盖 28 App、25 个实际读取的上游输入（含 v2fly include）与 196 个七端产物 SHA256；`build.py --verify-only` 实时重建逐字节校验，`--write` 默认在 `+/-20` 条、20% 或新类型时阻断并要求人工审计后显式 `--accept-large-change`
+- `checks.yml` 的普通 push/PR 现运行 51 项单元/回归测试，以及 parity、health、overlap baseline、manifest checksum、Profiles drift/引用、敏感模式、golden-byte、Python lint 与 Portal 格式/typecheck；详细设计见 `engine/docs/MACHINE_GATES.md`
+- 当前 overlap 基线共 4 个 App 对、21 条：AI×X、Facebook×Instagram、Facebook×WhatsApp、Google×YouTube；任何新增交集都会阻断 CI
+- `update.yml` 在每日写入和提交之间重复运行全部产物门禁，并将 JSON build report 作为 artifact 保留 14 天；运行时报告不提交，Profiles 仍不进入每日写入范围
 - 根目录刻意不设置覆盖整个仓库的统一许可证：原创构建代码/文档与第三方上游及 generated Rule-Set 分开处理；`THIRD_PARTY_NOTICES.md` 记录来源和已知许可，`DISCLAIMER.md` 记录个人使用、无担保与责任边界
 - `engine/sources/apps.yaml` 已定义 28 个 App：OKX、WhatsApp、LINE、GitHub、SafePal、Threads 使用 v2fly primary source；PayPal、YouTube、X、Instagram、TikTok、Spotify、AI、Steam、Disney、PrimeVideo、HBO、Facebook、Google 使用 Repcz 原生 Surge primary source；Telegram 使用 SukkaW 原生 Surge primary source；Netflix、ParamountPlus、Hulu、Twitch 使用 blackmatrix7 原生 Surge primary source；ZABank、NBA、Suno 无可用上游、APTV 为用户自用直播源，均为 supplement-only App（`sources: []`）；均保留显式 parser policy
 - `requirements.txt` 将唯一第三方依赖锁定为 `PyYAML==6.0.3`
@@ -85,7 +89,7 @@ engine/
 - **Phase 1 已完成**：`engine/sources/profile/intent.yaml`（Canonical Profile Intent，单订阅池 `Sub` 占位符、策略组归一、App→策略路由、基础设施引用）+ 七客户端 Base Template（`engine/sources/profile/templates/`，General/DNS 骨架参考 Repcz/Tool）+ `engine/scripts/build_profile.py`（校验：悬空引用/循环引用/未知成员/QX 源缺失等；渲染七端配置文件）+ `Profiles/` 七个配置文件（`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Clash.yaml`、`Egern.yaml`、`QuantumultX.conf`；Clash.yaml 为 Mihomo 内核 Android 通用，`format: text` 显式、select 组 proxies 不含 Sub、`MATCH,Final` 收尾）。规则与 Profile 彻底分离：Profile 不进 `update.yml`，每次修改人工确认后提交。
 - 已确认决策：每客户端完整配置文件（占位符）；地区组保持 Surge select 意图；Emby 类个人组公开版移除；Egern url-test 按 Needs Verification 处理（当前 ADAPTED 为 select 并已注释标注）；`Profiles/` 提交进仓库。
 - **公开模板范围（已收敛）**：策略组只保留核心（Sub / Proxy / Final / 地区组 / Auto）+ 普遍常用场景组（Daily / Telegram / AI / AppleMusic），App 路由只保留 YouTube / X / Instagram / Telegram / AI / AppleMusic；APTV 等个人内容与其余 App（Google / GitHub / Finance / Threads / OKX / PayPal / SafePal / ZABank / TikTok / Netflix / Spotify / Steam / WhatsApp / LINE 及 2026-08-16 好友场景新增的 10 个 App）从公开配置文件中移除，由使用者按需自行添加。规则层不受影响（七端规则目录仍发布全部 28 个 App）。
-- 待办：Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按 `D:\Blink_Profile_Layer_实施细则.txt` 顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
+- 待办：Phase 2+ 横向切片（Region/Node Filters 细化、DNS、MITM 等）按用户的仓库外私有实施细则顺序推进；真机 E2E 验证清单（策略组显示/成员/切换/日志确认 + Egern url-test 验证）。
 - **仓库改名（已完成）**：仓库已由 `Rulink` 更名为 **`Blink`**（GitHub：`Bluetrae/Blink`），全部仓库内 URL/文案/生成数据已迁移为 Blink。用户已在 GitHub Settings 完成 Rename，本地 origin 已更新为 `Bluetrae/Blink`，Pages 新地址 `bluetrae.github.io/Blink/` 已生效；旧 Rulink raw URL 由 GitHub 301 重定向（旧 Pages 地址无重定向）。
 
 ## 已确定的规则源结论

@@ -29,6 +29,10 @@ jobs:
         run: |
           missing=0
           while read -r p; do
+            if [ "$p" = "engine/reports/build_report.json" ]; then
+              echo "runtime output: $p"
+              continue
+            fi
             if [ ! -e "$p" ]; then
               echo "::error::Path referenced in update.yml does not exist at checkout: $p"
               missing=1
@@ -52,16 +56,39 @@ jobs:
         run: python -m unittest discover -s engine/tests -v
 
       - name: Build all enabled Rule-Sets
-        run: python engine/scripts/build.py --write
+        shell: bash
+        run: |
+          set -o pipefail
+          python engine/scripts/build.py --write | tee engine/reports/build_report.json
+
+      - name: Verify generated Rule-Sets and provenance
+        run: |
+          python engine/scripts/parity_check.py --root . --strict
+          python engine/scripts/health_check.py --root .
+          python engine/scripts/overlap_check.py --root .
+          python engine/scripts/verify_manifest.py --root .
+          python engine/scripts/verify_profiles.py --root .
 
       - name: Refresh portal data
         run: python engine/scripts/gen_portal_stats.py
+
+      - name: Scan final repository state for sensitive patterns
+        run: python engine/scripts/secret_scan.py --root .
+
+      - name: Upload build report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-report
+          path: engine/reports/build_report.json
+          if-no-files-found: warn
+          retention-days: 14
 
       - name: Detect generated changes
         id: generated
         shell: bash
         run: |
-          if [ -n "$(git status --porcelain -- Surge Loon Shadowrocket Stash Clash Egern QuantumultX engine/portal/public/data)" ]; then
+          if [ -n "$(git status --porcelain -- Surge Loon Shadowrocket Stash Clash Egern QuantumultX engine/portal/public/data manifest.json)" ]; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -73,7 +100,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- Surge Loon Shadowrocket Stash Clash Egern QuantumultX engine/portal/public/data
+          git add -- Surge Loon Shadowrocket Stash Clash Egern QuantumultX engine/portal/public/data manifest.json
           git commit -m "chore: update generated rule-sets and portal data · $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-          git pull --rebase origin main
+          # Never rebase after validation. A concurrent main update must make
+          # this push fail so the next run rebuilds and revalidates from HEAD.
           git push

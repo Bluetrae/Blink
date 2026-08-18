@@ -2,15 +2,17 @@
 """Conservatively compile audited sources into canonical rules.
 
 The default mode is a read-only preflight that renders every client target.
-Files (Surge / Loon / Shadowrocket / Stash classical lists plus Egern YAML)
-are written only when ``--write`` is supplied after every selected app has
-compiled and rendered successfully.
+All seven client outputs and deterministic provenance are written only when
+``--write`` is supplied after every selected app has compiled, rendered, and
+passed the upstream semantic-change gate.
 """
 
 from __future__ import annotations
 
 import argparse
 import dataclasses
+import difflib
+import hashlib
 import ipaddress
 import json
 import re
@@ -63,6 +65,9 @@ ALLOWED_RULE_TYPES = (
 SORT_ORDER = {rule_type: position for position, rule_type in enumerate(ALLOWED_RULE_TYPES)}
 SAFE_INCLUDE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 SUPPORTED_SOURCE_FORMATS = {"v2fly-domain-list", "surge-rule-set"}
+PROVENANCE_SCHEMA_VERSION = 1
+PROVENANCE_FILENAME = "manifest.json"
+BUILDER_VERSION = "2.0.0"
 
 
 class BuildError(RuntimeError):
@@ -115,6 +120,8 @@ class Compilation:
     denied_includes: list[tuple[str, SourceLocation]]
     provenance: dict[tuple[str, str, tuple[str, ...]], list[SourceLocation]]
     skipped_excluded: list[str] = dataclasses.field(default_factory=list)
+    source_inputs: dict[str, str] = dataclasses.field(default_factory=dict)
+    input_rules: int = 0
 
 
 FetchText = Callable[[str], str]
@@ -494,7 +501,13 @@ def compile_app(
     skipped_attributes: list[ParsedEntry] = []
     denied_includes: list[tuple[str, SourceLocation]] = []
     skipped_excluded: list[str] = []
+    source_inputs: dict[str, str] = {}
     excludes, skip_kinds = parse_excludes(app["exclude"], app_name)
+
+    def fetch_recorded(url: str) -> str:
+        text = fetch_text(url)
+        source_inputs[url] = text
+        return text
 
     def resolve(url: str, list_name: str, chain: tuple[str, ...]) -> None:
         if list_name in stack:
@@ -502,7 +515,7 @@ def compile_app(
             raise BuildError(f"include cycle for {app_name}: {cycle}")
         stack.append(list_name)
         if url not in cached_entries:
-            cached_entries[url] = parse_v2fly_text(fetch_text(url), url, chain)
+            cached_entries[url] = parse_v2fly_text(fetch_recorded(url), url, chain)
         for parsed in cached_entries[url]:
             location = SourceLocation(parsed.location.source, parsed.location.line, chain)
             entry = dataclasses.replace(parsed, location=location)
@@ -531,11 +544,16 @@ def compile_app(
             source_url = source["url"]
             if source_url not in cached_surge_rules:
                 cached_surge_rules[source_url] = parse_surge_rule_set_text(
-                    fetch_text(source_url), source_url, (source_name,), skip_kinds, skipped_excluded
+                    fetch_recorded(source_url),
+                    source_url,
+                    (source_name,),
+                    skip_kinds,
+                    skipped_excluded,
                 )
             rules.extend(cached_surge_rules[source_url])
 
     rules.extend(parse_supplement(root / app["supplement"], app_name))
+    input_rules = len(rules)
     provenance: dict[tuple[str, str, tuple[str, ...]], list[SourceLocation]] = defaultdict(list)
     unique: dict[tuple[str, str, tuple[str, ...]], Rule] = {}
     for rule in rules:
@@ -547,7 +565,14 @@ def compile_app(
     if not ordered:
         raise BuildError(f"{app_name}: final output is empty")
     return Compilation(
-        app_name, ordered, skipped_attributes, denied_includes, dict(provenance), skipped_excluded
+        app_name,
+        ordered,
+        skipped_attributes,
+        denied_includes,
+        dict(provenance),
+        skipped_excluded,
+        source_inputs,
+        input_rules,
     )
 
 
@@ -577,13 +602,256 @@ def rendered_outputs(
     return outputs
 
 
-def write_outputs(compilations: Iterable[Compilation], manifest: dict, root: Path) -> None:
+def sha256_bytes(content: bytes) -> str:
+    return hashlib.sha256(content).hexdigest()
+
+
+def sha256_text(text: str) -> str:
+    return sha256_bytes(text.encode("utf-8"))
+
+
+def canonical_rules_sha256(rules: Iterable[Rule]) -> str:
+    payload = [list(rule.key) for rule in rules]
+    return sha256_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")))
+
+
+def _relative_path(path: Path, root: Path) -> str:
+    return path.resolve().relative_to(root.resolve()).as_posix()
+
+
+def app_provenance_record(
+    compilation: Compilation,
+    app: dict,
+    outputs: dict[str, tuple[Path, str, list[str]]],
+    root: Path,
+) -> dict:
+    """Build one deterministic provenance record from the exact build inputs."""
+    declared_sources = {source["url"]: source for source in app["sources"]}
+    sources = []
+    for url, text in sorted(compilation.source_inputs.items()):
+        declared = declared_sources.get(url)
+        source = {
+            "url": url,
+            "role": declared["role"] if declared else "include",
+            "format": declared["format"] if declared else "v2fly-domain-list",
+            "text_sha256": sha256_text(text),
+            "bytes": len(text.encode("utf-8")),
+            "lines": len(text.splitlines()),
+        }
+        if declared:
+            source["name"] = declared["name"]
+            source["author"] = declared.get("author", "")
+        sources.append(source)
+
+    supplement_path = root / app["supplement"]
+    supplement = None
+    if supplement_path.exists():
+        content = supplement_path.read_bytes()
+        supplement = {
+            "path": _relative_path(supplement_path, root),
+            "sha256": sha256_bytes(content),
+            "bytes": len(content),
+            "lines": len(content.decode("utf-8-sig").splitlines()),
+        }
+
+    output_records = {}
+    for client, (path, text, dropped) in outputs.items():
+        output_records[client] = {
+            "path": _relative_path(path, root),
+            "sha256": sha256_text(text),
+            "rules": len(compilation.rules) - len(dropped),
+            "dropped": dropped,
+        }
+
+    return {
+        "sources": sources,
+        "supplement": supplement,
+        "canonical": {
+            "rules": len(compilation.rules),
+            "sha256": canonical_rules_sha256(compilation.rules),
+            "input_rules": compilation.input_rules,
+            "skipped_attributes": len(compilation.skipped_attributes),
+            "skipped_excluded": compilation.skipped_excluded,
+            "denied_includes": sorted(name for name, _location in compilation.denied_includes),
+        },
+        "outputs": output_records,
+    }
+
+
+def build_provenance_manifest(
+    compilations: list[Compilation],
+    source_manifest: dict,
+    rendered: list[dict[str, tuple[Path, str, list[str]]]],
+    root: Path,
+    *,
+    preserve_unselected: bool,
+) -> dict:
+    """Return the deterministic repository-level artifact manifest."""
+    path = root / PROVENANCE_FILENAME
+    existing_apps: dict[str, object] = {}
+    if preserve_unselected:
+        if not path.exists():
+            raise BuildError(
+                "targeted --write requires an existing manifest.json; run a full --write once"
+            )
+        try:
+            existing = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as error:
+            raise BuildError(f"cannot preserve existing provenance manifest: {error}") from error
+        if not isinstance(existing, dict) or not isinstance(existing.get("apps"), dict):
+            raise BuildError("existing manifest.json has an invalid apps mapping")
+        existing_apps = dict(existing["apps"])
+
+    for compilation, client_outputs in zip(compilations, rendered):
+        existing_apps[compilation.app_name] = app_provenance_record(
+            compilation,
+            source_manifest["apps"][compilation.app_name],
+            client_outputs,
+            root,
+        )
+
+    enabled = {name for name, app in source_manifest["apps"].items() if app.get("enabled") is True}
+    existing_apps = {name: existing_apps[name] for name in sorted(existing_apps) if name in enabled}
+    if set(existing_apps) != enabled:
+        missing = ", ".join(sorted(enabled - set(existing_apps)))
+        raise BuildError(
+            f"provenance manifest would be incomplete; missing enabled apps: {missing}"
+        )
+
+    source_definition = root / "engine" / "sources" / "apps.yaml"
+    builder_path = Path(__file__).resolve()
+    renderer_path = builder_path.with_name("renderers.py")
+    return {
+        "schema_version": PROVENANCE_SCHEMA_VERSION,
+        "builder": {
+            "version": BUILDER_VERSION,
+            "files": {
+                "engine/scripts/build.py": sha256_bytes(builder_path.read_bytes()),
+                "engine/scripts/renderers.py": sha256_bytes(renderer_path.read_bytes()),
+            },
+        },
+        "source_definition": {
+            "path": _relative_path(source_definition, root),
+            "sha256": sha256_bytes(source_definition.read_bytes()),
+        },
+        "apps": existing_apps,
+    }
+
+
+def provenance_text(document: dict) -> str:
+    return json.dumps(document, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+
+
+def _current_rule_keys(path: Path, app_name: str) -> set[tuple[str, str, tuple[str, ...]]]:
+    if not path.exists():
+        return set()
+    rules = parse_surge_rule_set_text(
+        path.read_text(encoding="utf-8-sig"), str(path), (app_name, "committed")
+    )
+    return {rule.key for rule in rules}
+
+
+def assess_changes(
+    compilations: list[Compilation],
+    source_manifest: dict,
+    root: Path,
+    *,
+    threshold_lines: int,
+    threshold_ratio: float,
+) -> tuple[list[dict], list[str]]:
+    """Compare live canonical rules with committed Surge outputs before writing."""
+    report = []
+    violations = []
     for compilation in compilations:
-        for output, text, _dropped in rendered_outputs(compilation, manifest, root).values():
+        output = root / source_manifest["apps"][compilation.app_name]["output"]
+        existed = output.exists()
+        old = _current_rule_keys(output, compilation.app_name)
+        new = {rule.key for rule in compilation.rules}
+        added = sorted(new - old)
+        removed = sorted(old - new)
+        changed = len(added) + len(removed)
+        ratio = changed / max(len(old), 1)
+        new_kinds = sorted({key[0] for key in new} - {key[0] for key in old}) if existed else []
+        entry = {
+            "name": compilation.app_name,
+            "old_rules": len(old),
+            "new_rules": len(new),
+            "added": len(added),
+            "removed": len(removed),
+            "change_ratio": round(ratio, 6),
+            "new_rule_types": new_kinds,
+            "added_sample": [list(key) for key in added[:5]],
+            "removed_sample": [list(key) for key in removed[:5]],
+        }
+        report.append(entry)
+        if existed and (
+            max(len(added), len(removed)) > threshold_lines or ratio > threshold_ratio or new_kinds
+        ):
+            violations.append(
+                f"{compilation.app_name}: +{len(added)}/-{len(removed)} "
+                f"({ratio:.1%}), new types={new_kinds or 'none'}"
+            )
+    return report, violations
+
+
+def verify_rendered_outputs(
+    rendered: list[dict[str, tuple[Path, str, list[str]]]], expected_manifest: dict, root: Path
+) -> list[str]:
+    """Return concise byte-drift diagnostics without mutating the repository."""
+    errors = []
+    for client_outputs in rendered:
+        for path, expected, _dropped in client_outputs.values():
+            if not path.exists():
+                errors.append(f"missing generated output: {_relative_path(path, root)}")
+                continue
+            actual = path.read_text(encoding="utf-8")
+            if actual != expected:
+                diff = "\n".join(
+                    list(
+                        difflib.unified_diff(
+                            actual.splitlines(),
+                            expected.splitlines(),
+                            fromfile=f"committed/{_relative_path(path, root)}",
+                            tofile=f"rebuilt/{_relative_path(path, root)}",
+                            lineterm="",
+                        )
+                    )[:20]
+                )
+                errors.append(f"drift: {_relative_path(path, root)}\n{diff}")
+    manifest_path = root / PROVENANCE_FILENAME
+    expected_text = provenance_text(expected_manifest)
+    if not manifest_path.exists():
+        errors.append(f"missing generated provenance: {PROVENANCE_FILENAME}")
+    elif manifest_path.read_text(encoding="utf-8") != expected_text:
+        errors.append(f"drift: {PROVENANCE_FILENAME}")
+    return errors
+
+
+def write_outputs(
+    compilations: Iterable[Compilation],
+    manifest: dict,
+    root: Path,
+    rendered: Iterable[dict[str, tuple[Path, str, list[str]]]] | None = None,
+) -> None:
+    compilations = list(compilations)
+    client_outputs = (
+        list(rendered)
+        if rendered is not None
+        else [rendered_outputs(compilation, manifest, root) for compilation in compilations]
+    )
+    for outputs in client_outputs:
+        for output, text, _dropped in outputs.values():
             output.parent.mkdir(parents=True, exist_ok=True)
             temporary = output.with_suffix(output.suffix + ".tmp")
             temporary.write_text(text, encoding="utf-8", newline="\n")
             temporary.replace(output)
+
+
+def write_provenance(document: dict, root: Path) -> None:
+    output = root / PROVENANCE_FILENAME
+    temporary = output.with_suffix(output.suffix + ".tmp")
+    temporary.write_text(provenance_text(document), encoding="utf-8", newline="\n")
+    temporary.replace(output)
 
 
 def select_apps(manifest: dict, requested: list[str]) -> list[str]:
@@ -601,24 +869,98 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--app", action="append", default=[], help="compile only this app; may be repeated"
     )
-    parser.add_argument(
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
         "--write",
         action="store_true",
-        help="write all client outputs after every selected app compiles",
+        help="write outputs and deterministic provenance after every selected app compiles",
+    )
+    mode.add_argument(
+        "--verify-only",
+        action="store_true",
+        help="rebuild from live sources and fail if committed outputs or provenance drift",
+    )
+    parser.add_argument(
+        "--strict-diff",
+        action="store_true",
+        help="compatibility alias; verify-only always uses strict byte comparison",
+    )
+    parser.add_argument(
+        "--change-threshold-lines",
+        type=int,
+        default=20,
+        help="block --write when added or removed rules exceed this count (default: 20)",
+    )
+    parser.add_argument(
+        "--change-threshold-ratio",
+        type=float,
+        default=0.2,
+        help="block --write when semantic change ratio exceeds this value (default: 0.2)",
+    )
+    parser.add_argument(
+        "--accept-large-change",
+        action="store_true",
+        help="allow a reviewed upstream change that exceeds the write thresholds",
     )
     arguments = parser.parse_args(argv)
     root = arguments.manifest.resolve().parent.parent.parent
     try:
+        if arguments.verify_only and arguments.app:
+            raise BuildError(
+                "--verify-only is a full-repository gate and cannot be combined with --app"
+            )
+        if arguments.change_threshold_lines < 0:
+            raise BuildError("--change-threshold-lines must be non-negative")
+        if not 0 <= arguments.change_threshold_ratio <= 1:
+            raise BuildError("--change-threshold-ratio must be between 0 and 1")
         manifest = load_manifest(arguments.manifest)
         names = select_apps(manifest, arguments.app)
         compilations = [compile_app(name, manifest["apps"][name], root) for name in names]
         # Render for every client even in check mode: an app that only fails
         # in a non-Surge renderer must fail the preflight, never the CI write.
         rendered = [rendered_outputs(compilation, manifest, root) for compilation in compilations]
+        changes, violations = assess_changes(
+            compilations,
+            manifest,
+            root,
+            threshold_lines=arguments.change_threshold_lines,
+            threshold_ratio=arguments.change_threshold_ratio,
+        )
+        provenance = None
+        if arguments.write or arguments.verify_only:
+            enabled_names = {
+                name for name, app in manifest["apps"].items() if app.get("enabled") is True
+            }
+            provenance = build_provenance_manifest(
+                compilations,
+                manifest,
+                rendered,
+                root,
+                preserve_unselected=set(names) != enabled_names,
+            )
+        if arguments.verify_only:
+            assert provenance is not None
+            errors = verify_rendered_outputs(rendered, provenance, root)
+            if errors:
+                raise BuildError("verify-only failed:\n" + "\n".join(errors))
         if arguments.write:
-            write_outputs(compilations, manifest, root)
+            if violations and not arguments.accept_large_change:
+                raise BuildError(
+                    "upstream change gate blocked the write; audit the diff, then rerun with "
+                    "--accept-large-change if intentional:\n" + "\n".join(violations)
+                )
+            write_outputs(compilations, manifest, root, rendered)
+            assert provenance is not None
+            write_provenance(provenance, root)
         report = {
-            "mode": "write" if arguments.write else "check",
+            "mode": "write" if arguments.write else "verify" if arguments.verify_only else "check",
+            "change_gate": {
+                "threshold_lines": arguments.change_threshold_lines,
+                "threshold_ratio": arguments.change_threshold_ratio,
+                "accepted": bool(arguments.accept_large_change),
+                "violations": violations,
+                "apps": changes,
+            },
             "apps": [
                 {
                     "name": item.app_name,

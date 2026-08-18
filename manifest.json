@@ -1,0 +1,1917 @@
+{
+  "apps": {
+    "AI": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 50,
+        "rules": 50,
+        "sha256": "73d8f087cdfbc31930781ecac137e5eacd165f89acf210c9d0c8d72b80aa3ea5",
+        "skipped_attributes": 0,
+        "skipped_excluded": [
+          "URL-REGEX,https://www\\.google\\.com/.*continue=https://gemini\\.google\\.com.+"
+        ]
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/AI.list",
+          "rules": 50,
+          "sha256": "bf3b3568adf6a4b6a664d13f1bba4724c807858887c471973c7917020c967fce"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/AI.yaml",
+          "rules": 50,
+          "sha256": "5b9f32cada5190b838e1ee48e36ee9bdac0dee07506e17a82b4dec838a69dc0a"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/AI.list",
+          "rules": 50,
+          "sha256": "bf3b3568adf6a4b6a664d13f1bba4724c807858887c471973c7917020c967fce"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/AI.list",
+          "rules": 50,
+          "sha256": "fd6c3240156073d56b86268f71c21f4ca4311fb3c49437a30013ea80b76a85a7"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/AI.list",
+          "rules": 50,
+          "sha256": "bf3b3568adf6a4b6a664d13f1bba4724c807858887c471973c7917020c967fce"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/AI.list",
+          "rules": 50,
+          "sha256": "bf3b3568adf6a4b6a664d13f1bba4724c807858887c471973c7917020c967fce"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/AI.list",
+          "rules": 50,
+          "sha256": "bf3b3568adf6a4b6a664d13f1bba4724c807858887c471973c7917020c967fce"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 1584,
+          "format": "surge-rule-set",
+          "lines": 54,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "053cc270b262e514fe03a2123fdad0bc72096a7827ebecdb94583db29668cd9a",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AI.list"
+        }
+      ],
+      "supplement": null
+    },
+    "APTV": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 26,
+        "rules": 26,
+        "sha256": "2b12d91100295455c31721c6ee9d3d679c319e2ca0374ee411c9c5cdbc9962e4",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/APTV.list",
+          "rules": 26,
+          "sha256": "8a56a48d10e801e53457b7583db238dcedc14d6f407f5aff49596ef1a104177d"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/APTV.yaml",
+          "rules": 26,
+          "sha256": "616ce98b6f2956cc60ed354eabd169620d86a84ba3d64973d9175fce84baf49f"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/APTV.list",
+          "rules": 26,
+          "sha256": "8a56a48d10e801e53457b7583db238dcedc14d6f407f5aff49596ef1a104177d"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/APTV.list",
+          "rules": 26,
+          "sha256": "4cb308329caaf9f0024b8d319fc0a1761e8184924209da49f4f3bef42f727d44"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/APTV.list",
+          "rules": 26,
+          "sha256": "8a56a48d10e801e53457b7583db238dcedc14d6f407f5aff49596ef1a104177d"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/APTV.list",
+          "rules": 26,
+          "sha256": "8a56a48d10e801e53457b7583db238dcedc14d6f407f5aff49596ef1a104177d"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/APTV.list",
+          "rules": 26,
+          "sha256": "8a56a48d10e801e53457b7583db238dcedc14d6f407f5aff49596ef1a104177d"
+        }
+      },
+      "sources": [],
+      "supplement": {
+        "bytes": 1447,
+        "lines": 42,
+        "path": "engine/sources/supplement/APTV.list",
+        "sha256": "c3038f9abfe3c2a35f740cf6d4fe54771f9f831543b5c92fc4d6ee3305e99b52"
+      }
+    },
+    "Disney": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 174,
+        "rules": 174,
+        "sha256": "0e46580dbe2f494030e8f542339b2cbbfd46c0a5021d0040d1da8ee560a63534",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Disney.list",
+          "rules": 174,
+          "sha256": "dfb70c476af5bc043a8551a57d86683f3092be68c6261e82d7a7c8437b4532cb"
+        },
+        "egern": {
+          "dropped": [
+            "PROCESS-NAME,com.disney.datg.videoplatforms.android.abc",
+            "PROCESS-NAME,com.disney.disneyplus"
+          ],
+          "path": "Egern/Disney.yaml",
+          "rules": 172,
+          "sha256": "4daa609f3e8d2160ccfaa41cb37d7c715f9e9e5e7b40ed4fecb4da0362c0e0a6"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Disney.list",
+          "rules": 174,
+          "sha256": "dfb70c476af5bc043a8551a57d86683f3092be68c6261e82d7a7c8437b4532cb"
+        },
+        "quantumultx": {
+          "dropped": [
+            "PROCESS-NAME,com.disney.datg.videoplatforms.android.abc",
+            "PROCESS-NAME,com.disney.disneyplus"
+          ],
+          "path": "QuantumultX/Disney.list",
+          "rules": 172,
+          "sha256": "2fc0c0f3146c9c697f38b45b9632d5b0a9f43f27162be53e1be09f378c6e2788"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Disney.list",
+          "rules": 174,
+          "sha256": "dfb70c476af5bc043a8551a57d86683f3092be68c6261e82d7a7c8437b4532cb"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Disney.list",
+          "rules": 174,
+          "sha256": "dfb70c476af5bc043a8551a57d86683f3092be68c6261e82d7a7c8437b4532cb"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Disney.list",
+          "rules": 174,
+          "sha256": "dfb70c476af5bc043a8551a57d86683f3092be68c6261e82d7a7c8437b4532cb"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 5505,
+          "format": "surge-rule-set",
+          "lines": 177,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "dfb70c476af5bc043a8551a57d86683f3092be68c6261e82d7a7c8437b4532cb",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Disney.list"
+        }
+      ],
+      "supplement": null
+    },
+    "Facebook": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 580,
+        "rules": 580,
+        "sha256": "232fd90bce9ec0ea2308314b5199439ebf7ea790e553d0f02a6e9ed0a1716985",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Facebook.list",
+          "rules": 580,
+          "sha256": "961d04df45646298e0d488c8208781a608cb3f30f99629b6f2d1973d3e9b8918"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/Facebook.yaml",
+          "rules": 580,
+          "sha256": "15fd04c2577d58ac71c1dff3fd47a037f4607844ca0694202714553ab8e8ec81"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Facebook.list",
+          "rules": 580,
+          "sha256": "961d04df45646298e0d488c8208781a608cb3f30f99629b6f2d1973d3e9b8918"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/Facebook.list",
+          "rules": 580,
+          "sha256": "7a72987f995fd2a520c98940d9df992de46c719eb9ab898e33b400ffed50f009"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Facebook.list",
+          "rules": 580,
+          "sha256": "961d04df45646298e0d488c8208781a608cb3f30f99629b6f2d1973d3e9b8918"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Facebook.list",
+          "rules": 580,
+          "sha256": "961d04df45646298e0d488c8208781a608cb3f30f99629b6f2d1973d3e9b8918"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Facebook.list",
+          "rules": 580,
+          "sha256": "961d04df45646298e0d488c8208781a608cb3f30f99629b6f2d1973d3e9b8918"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 17619,
+          "format": "surge-rule-set",
+          "lines": 583,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "961d04df45646298e0d488c8208781a608cb3f30f99629b6f2d1973d3e9b8918",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Facebook.list"
+        }
+      ],
+      "supplement": null
+    },
+    "GitHub": {
+      "canonical": {
+        "denied_includes": [
+          "npmjs"
+        ],
+        "input_rules": 58,
+        "rules": 58,
+        "sha256": "87c554e7149b8b2ebedb7ece5b7b29a06d9766921c436a03f7bfb02c3263781e",
+        "skipped_attributes": 3,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/GitHub.list",
+          "rules": 58,
+          "sha256": "c29600d558cf3eb45e4d7ff081227007d7f71093b2183a2ddba13b379e1b7cd4"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/GitHub.yaml",
+          "rules": 58,
+          "sha256": "2a808a384d53b1963db3b1caf33e48d9000ae1086945922d7add96c8710d9bb6"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/GitHub.list",
+          "rules": 58,
+          "sha256": "c29600d558cf3eb45e4d7ff081227007d7f71093b2183a2ddba13b379e1b7cd4"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/GitHub.list",
+          "rules": 58,
+          "sha256": "0573eaa99acf7d48fcf50b6c94dda169e0fe420d9e26301f5a9a54f5c7bff6b7"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/GitHub.list",
+          "rules": 58,
+          "sha256": "c29600d558cf3eb45e4d7ff081227007d7f71093b2183a2ddba13b379e1b7cd4"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/GitHub.list",
+          "rules": 58,
+          "sha256": "c29600d558cf3eb45e4d7ff081227007d7f71093b2183a2ddba13b379e1b7cd4"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/GitHub.list",
+          "rules": 58,
+          "sha256": "c29600d558cf3eb45e4d7ff081227007d7f71093b2183a2ddba13b379e1b7cd4"
+        }
+      },
+      "sources": [
+        {
+          "author": "v2fly",
+          "bytes": 1837,
+          "format": "v2fly-domain-list",
+          "lines": 65,
+          "name": "v2fly-domain-list-community",
+          "role": "primary",
+          "text_sha256": "32c682a5437b3203fc8559cbf033f44ede2abb25f6358ab1a6fdc0decf5f479f",
+          "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/github"
+        },
+        {
+          "bytes": 294,
+          "format": "v2fly-domain-list",
+          "lines": 11,
+          "role": "include",
+          "text_sha256": "069a626c3c23ee63f82e26ce11a83477d8dbe9e27f81968e4b073acf496260f3",
+          "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/github-copilot"
+        }
+      ],
+      "supplement": null
+    },
+    "Google": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 25,
+        "rules": 25,
+        "sha256": "50a0f33cc4655653a50950c43ccb5c4d8473782d2cdb816f9b487606268b4fbf",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Google.list",
+          "rules": 25,
+          "sha256": "f8cd468437e9b9634690480e67ab262fe73041cfb57a80a4f8572d86ffaf6423"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/Google.yaml",
+          "rules": 25,
+          "sha256": "f984f41d162f73245d7e218d5d3e73e467329d231e76d66cc6ad0602811660cd"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Google.list",
+          "rules": 25,
+          "sha256": "f8cd468437e9b9634690480e67ab262fe73041cfb57a80a4f8572d86ffaf6423"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/Google.list",
+          "rules": 25,
+          "sha256": "ad96626172392cc0ad179daddc496fa00318e437a00d789f3e869668e204cabd"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Google.list",
+          "rules": 25,
+          "sha256": "f8cd468437e9b9634690480e67ab262fe73041cfb57a80a4f8572d86ffaf6423"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Google.list",
+          "rules": 25,
+          "sha256": "f8cd468437e9b9634690480e67ab262fe73041cfb57a80a4f8572d86ffaf6423"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Google.list",
+          "rules": 25,
+          "sha256": "f8cd468437e9b9634690480e67ab262fe73041cfb57a80a4f8572d86ffaf6423"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 680,
+          "format": "surge-rule-set",
+          "lines": 28,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "f8cd468437e9b9634690480e67ab262fe73041cfb57a80a4f8572d86ffaf6423",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Google.list"
+        }
+      ],
+      "supplement": null
+    },
+    "HBO": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 48,
+        "rules": 46,
+        "sha256": "fec182738b845432e878d12a884034298df289652fa2577ca149404fc4732d29",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/HBO.list",
+          "rules": 46,
+          "sha256": "cbaa5828cf74dc990e6ddef1da53dc9580fe94a14f8c0a1860ea80f6a9db6991"
+        },
+        "egern": {
+          "dropped": [
+            "PROCESS-NAME,com.hbo.hbonow"
+          ],
+          "path": "Egern/HBO.yaml",
+          "rules": 45,
+          "sha256": "0fdc32067de6d1ccf2824555b72943cb86bcde98b25d87d5b02520d5bc7e5bb8"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/HBO.list",
+          "rules": 46,
+          "sha256": "cbaa5828cf74dc990e6ddef1da53dc9580fe94a14f8c0a1860ea80f6a9db6991"
+        },
+        "quantumultx": {
+          "dropped": [
+            "PROCESS-NAME,com.hbo.hbonow"
+          ],
+          "path": "QuantumultX/HBO.list",
+          "rules": 45,
+          "sha256": "4fe053d77eadeef3edb157ee14367967abe9fdb2a9314533de940930c9e61759"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/HBO.list",
+          "rules": 46,
+          "sha256": "cbaa5828cf74dc990e6ddef1da53dc9580fe94a14f8c0a1860ea80f6a9db6991"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/HBO.list",
+          "rules": 46,
+          "sha256": "cbaa5828cf74dc990e6ddef1da53dc9580fe94a14f8c0a1860ea80f6a9db6991"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/HBO.list",
+          "rules": 46,
+          "sha256": "cbaa5828cf74dc990e6ddef1da53dc9580fe94a14f8c0a1860ea80f6a9db6991"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 1595,
+          "format": "surge-rule-set",
+          "lines": 51,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "50d3ab50fb65b1be5c651f53f1ed99b1e902a5583775fcca2643f4fee5d3e68f",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/HBO.list"
+        }
+      ],
+      "supplement": null
+    },
+    "Hulu": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 59,
+        "rules": 59,
+        "sha256": "08a861f8b682c6f133d075d8d2e58f629ffe8b867d67d4f7a5cc5f9915e9698f",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Hulu.list",
+          "rules": 59,
+          "sha256": "ff3065202da0f8741216cb88d7783256f999e42820067cb2fc453e32419c45c8"
+        },
+        "egern": {
+          "dropped": [
+            "PROCESS-NAME,com.hulu.plus"
+          ],
+          "path": "Egern/Hulu.yaml",
+          "rules": 58,
+          "sha256": "48b8ef9cc09e9a0e0c14ddb262b33b896b8d2bd9dc303115f8fb42ecdf1bb370"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Hulu.list",
+          "rules": 59,
+          "sha256": "ff3065202da0f8741216cb88d7783256f999e42820067cb2fc453e32419c45c8"
+        },
+        "quantumultx": {
+          "dropped": [
+            "PROCESS-NAME,com.hulu.plus"
+          ],
+          "path": "QuantumultX/Hulu.list",
+          "rules": 58,
+          "sha256": "fe1cec4a5a01dc5e63abdf7a23f140d3ba0417964a989721f9a5a0a16425b0d2"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Hulu.list",
+          "rules": 59,
+          "sha256": "ff3065202da0f8741216cb88d7783256f999e42820067cb2fc453e32419c45c8"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Hulu.list",
+          "rules": 59,
+          "sha256": "ff3065202da0f8741216cb88d7783256f999e42820067cb2fc453e32419c45c8"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Hulu.list",
+          "rules": 59,
+          "sha256": "ff3065202da0f8741216cb88d7783256f999e42820067cb2fc453e32419c45c8"
+        }
+      },
+      "sources": [
+        {
+          "author": "blackmatrix7",
+          "bytes": 1869,
+          "format": "surge-rule-set",
+          "lines": 67,
+          "name": "blackmatrix7-ios_rule_script",
+          "role": "primary",
+          "text_sha256": "c1efecf92e9b46a0c440471dbcc64a48f29d8d08efbb48a095723ca53d23c2ba",
+          "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Hulu/Hulu.list"
+        }
+      ],
+      "supplement": null
+    },
+    "Instagram": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 4,
+        "rules": 3,
+        "sha256": "5bdd2425ca70acc235c877e9e066951167d6356bf1a52184ee9f2e5ea5df7ad1",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Instagram.list",
+          "rules": 3,
+          "sha256": "10ce8682c38256e5ba5e15b6a6f69af38e7180409dd504db5efacbedede21c87"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/Instagram.yaml",
+          "rules": 3,
+          "sha256": "782a299f7de25226eda173c108c6b26ece34b4a074a96ce0e5c81997d12e2c4d"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Instagram.list",
+          "rules": 3,
+          "sha256": "10ce8682c38256e5ba5e15b6a6f69af38e7180409dd504db5efacbedede21c87"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/Instagram.list",
+          "rules": 3,
+          "sha256": "0473488317246b815b5c93a363605e6ccb56db31bc8f8f53b9c71fd64bbefd8c"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Instagram.list",
+          "rules": 3,
+          "sha256": "10ce8682c38256e5ba5e15b6a6f69af38e7180409dd504db5efacbedede21c87"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Instagram.list",
+          "rules": 3,
+          "sha256": "10ce8682c38256e5ba5e15b6a6f69af38e7180409dd504db5efacbedede21c87"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Instagram.list",
+          "rules": 3,
+          "sha256": "10ce8682c38256e5ba5e15b6a6f69af38e7180409dd504db5efacbedede21c87"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 154,
+          "format": "surge-rule-set",
+          "lines": 7,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "ae63500189748cccf13faa6c4966a7d1db78f5be874d84c698abe2aa1434e5e7",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Instagram.list"
+        }
+      ],
+      "supplement": null
+    },
+    "LINE": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 20,
+        "rules": 20,
+        "sha256": "c1e3ead73416e641ca88dadfbe0ed0d504f7c6968d6254ad5df34eba872028fe",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/LINE.list",
+          "rules": 20,
+          "sha256": "b55814cf9ebb07c5bafadf7b04a9eb55cdf3741d8d45b4f9af15b077365cf1b4"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/LINE.yaml",
+          "rules": 20,
+          "sha256": "fa304612d7a6928937a83bf1594b7bc130aa9fb708bb946ce1833e190aa9beb6"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/LINE.list",
+          "rules": 20,
+          "sha256": "b55814cf9ebb07c5bafadf7b04a9eb55cdf3741d8d45b4f9af15b077365cf1b4"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/LINE.list",
+          "rules": 20,
+          "sha256": "1bcadd023b2c9cb4db1e0215018aa014f2e4dfb1530269ff8d06996ff617999f"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/LINE.list",
+          "rules": 20,
+          "sha256": "b55814cf9ebb07c5bafadf7b04a9eb55cdf3741d8d45b4f9af15b077365cf1b4"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/LINE.list",
+          "rules": 20,
+          "sha256": "b55814cf9ebb07c5bafadf7b04a9eb55cdf3741d8d45b4f9af15b077365cf1b4"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/LINE.list",
+          "rules": 20,
+          "sha256": "b55814cf9ebb07c5bafadf7b04a9eb55cdf3741d8d45b4f9af15b077365cf1b4"
+        }
+      },
+      "sources": [
+        {
+          "author": "v2fly",
+          "bytes": 276,
+          "format": "v2fly-domain-list",
+          "lines": 20,
+          "name": "v2fly-domain-list-community",
+          "role": "primary",
+          "text_sha256": "32bcf614b506ec3f4751fc0dce128624bdc6aee28f36aeff31709b671f868a69",
+          "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/line"
+        }
+      ],
+      "supplement": null
+    },
+    "NBA": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 2,
+        "rules": 2,
+        "sha256": "99a59b6470d328c3a71667db6b1f1697a5b155370344c25187bd965d768de9d7",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/NBA.list",
+          "rules": 2,
+          "sha256": "78cb9de1965ea827c4f6732b2f8bc7e63f26631eb780936c70de1ac1aa6650b1"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/NBA.yaml",
+          "rules": 2,
+          "sha256": "83a511db4103ab7ce037cf21ae41e551aad0a75cbbe1e620afeb543a63b40e06"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/NBA.list",
+          "rules": 2,
+          "sha256": "78cb9de1965ea827c4f6732b2f8bc7e63f26631eb780936c70de1ac1aa6650b1"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/NBA.list",
+          "rules": 2,
+          "sha256": "8d9c227c246e4dfcbbc21975aa539d69f27ef6092fee790b1cf5046dbfcbbde5"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/NBA.list",
+          "rules": 2,
+          "sha256": "78cb9de1965ea827c4f6732b2f8bc7e63f26631eb780936c70de1ac1aa6650b1"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/NBA.list",
+          "rules": 2,
+          "sha256": "78cb9de1965ea827c4f6732b2f8bc7e63f26631eb780936c70de1ac1aa6650b1"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/NBA.list",
+          "rules": 2,
+          "sha256": "78cb9de1965ea827c4f6732b2f8bc7e63f26631eb780936c70de1ac1aa6650b1"
+        }
+      },
+      "sources": [],
+      "supplement": {
+        "bytes": 464,
+        "lines": 6,
+        "path": "engine/sources/supplement/NBA.list",
+        "sha256": "a933634cc01e45e06958ae5c3ee26ca43dffdc14408eca51459ef1fd070393e8"
+      }
+    },
+    "Netflix": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 1158,
+        "rules": 1158,
+        "sha256": "772a576120e9859ad104665a163671dd1ead6c7c0a9b59d0c90c4798665c1cfc",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [
+            "USER-AGENT,Argo*"
+          ],
+          "path": "Clash/Netflix.list",
+          "rules": 1157,
+          "sha256": "632842c0056f79e33b5fcebe2c173c40b254fd14f6982479570f97ee0b3c5d35"
+        },
+        "egern": {
+          "dropped": [
+            "PROCESS-NAME,com.netflix.mediaclient"
+          ],
+          "path": "Egern/Netflix.yaml",
+          "rules": 1157,
+          "sha256": "cae6a1bdcb9c21f63e9cf40e7931e4b9b15772d4111ae0dd85c39f55b24b8fd3"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Netflix.list",
+          "rules": 1158,
+          "sha256": "c057e338ea7925b87bce46606a61b58a5184920c5ff86992afa81f84ea1b1b55"
+        },
+        "quantumultx": {
+          "dropped": [
+            "PROCESS-NAME,com.netflix.mediaclient"
+          ],
+          "path": "QuantumultX/Netflix.list",
+          "rules": 1157,
+          "sha256": "f3a820741d459743147ac06974b88d1eb4d7b671d33da3bf7add67b58e1e7410"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Netflix.list",
+          "rules": 1158,
+          "sha256": "c057e338ea7925b87bce46606a61b58a5184920c5ff86992afa81f84ea1b1b55"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Netflix.list",
+          "rules": 1158,
+          "sha256": "c057e338ea7925b87bce46606a61b58a5184920c5ff86992afa81f84ea1b1b55"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Netflix.list",
+          "rules": 1158,
+          "sha256": "c057e338ea7925b87bce46606a61b58a5184920c5ff86992afa81f84ea1b1b55"
+        }
+      },
+      "sources": [
+        {
+          "author": "blackmatrix7",
+          "bytes": 40424,
+          "format": "surge-rule-set",
+          "lines": 1170,
+          "name": "blackmatrix7-ios_rule_script",
+          "role": "primary",
+          "text_sha256": "aa03f015949e8f6f981d90a7d8b1acf7e88472ee48601632bd964b0bb740f8aa",
+          "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Netflix/Netflix.list"
+        }
+      ],
+      "supplement": null
+    },
+    "OKX": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 9,
+        "rules": 9,
+        "sha256": "0345b1c0a0468a8f2254e0ee25b20b0ea4594fc8a8b4b68c2b211b12cb3d97cf",
+        "skipped_attributes": 1,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/OKX.list",
+          "rules": 9,
+          "sha256": "a1042d8b97875ab79f618b802d245b46d43090f0108805566acf1bbdc2c6de10"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/OKX.yaml",
+          "rules": 9,
+          "sha256": "cf22449b3f28588d5c08029137759e00af0df745106d06e4c5cd2d7db3d4e20b"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/OKX.list",
+          "rules": 9,
+          "sha256": "a1042d8b97875ab79f618b802d245b46d43090f0108805566acf1bbdc2c6de10"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/OKX.list",
+          "rules": 9,
+          "sha256": "c4e639824e2860d4dc3e67254a89190ad55d5a04f16aeb07e669826e6382f5dd"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/OKX.list",
+          "rules": 9,
+          "sha256": "a1042d8b97875ab79f618b802d245b46d43090f0108805566acf1bbdc2c6de10"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/OKX.list",
+          "rules": 9,
+          "sha256": "a1042d8b97875ab79f618b802d245b46d43090f0108805566acf1bbdc2c6de10"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/OKX.list",
+          "rules": 9,
+          "sha256": "a1042d8b97875ab79f618b802d245b46d43090f0108805566acf1bbdc2c6de10"
+        }
+      },
+      "sources": [
+        {
+          "author": "v2fly",
+          "bytes": 139,
+          "format": "v2fly-domain-list",
+          "lines": 12,
+          "name": "v2fly-domain-list-community",
+          "role": "primary",
+          "text_sha256": "b2c5efae97b921b7a2b5bd497292de9d306f4dce8a8f4cc2689a3ccca10196f3",
+          "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/okx"
+        }
+      ],
+      "supplement": null
+    },
+    "ParamountPlus": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 10,
+        "rules": 10,
+        "sha256": "98a1f6a5a858d29ef147ae8bd89f69eea490979c07397b1636bbf60d8780b0fe",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [
+            "USER-AGENT,PPlus*"
+          ],
+          "path": "Clash/ParamountPlus.list",
+          "rules": 9,
+          "sha256": "7b6b9697259f346b2a13a31ddbcad2ea9427608385d02ddc3e5b098031e421d1"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/ParamountPlus.yaml",
+          "rules": 10,
+          "sha256": "d02a3b09d454a4ae0d82149b6be4563c3a9863f0cf4cf23cfb3d49f2e2262635"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/ParamountPlus.list",
+          "rules": 10,
+          "sha256": "b8c1b1806a3f2e25155e806e2b64c995eb75aada80ed093be54d0d1c4533ea59"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/ParamountPlus.list",
+          "rules": 10,
+          "sha256": "998f60c0c4bfab6efe9df26d9d6d1048060ce6b67e40512cb2733cbab5110dd3"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/ParamountPlus.list",
+          "rules": 10,
+          "sha256": "b8c1b1806a3f2e25155e806e2b64c995eb75aada80ed093be54d0d1c4533ea59"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/ParamountPlus.list",
+          "rules": 10,
+          "sha256": "b8c1b1806a3f2e25155e806e2b64c995eb75aada80ed093be54d0d1c4533ea59"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/ParamountPlus.list",
+          "rules": 10,
+          "sha256": "b8c1b1806a3f2e25155e806e2b64c995eb75aada80ed093be54d0d1c4533ea59"
+        }
+      },
+      "sources": [
+        {
+          "author": "blackmatrix7",
+          "bytes": 486,
+          "format": "surge-rule-set",
+          "lines": 18,
+          "name": "blackmatrix7-ios_rule_script",
+          "role": "primary",
+          "text_sha256": "cac7d967e7bcb6ccb080451e43b6de264706f749ee1195446ef07d3ccd38e2a3",
+          "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/ParamountPlus/ParamountPlus.list"
+        }
+      ],
+      "supplement": null
+    },
+    "PayPal": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 248,
+        "rules": 248,
+        "sha256": "afba563d6d3e76c8bf1ea0013fc97957e5281bfc15b9cfd67c7cf932855c08c5",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [
+            "USER-AGENT,PayPal*"
+          ],
+          "path": "Clash/PayPal.list",
+          "rules": 247,
+          "sha256": "617a370f28791bbe1bbd6b081f6843ff21a557476becd16d6dc22f40cf8d9374"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/PayPal.yaml",
+          "rules": 248,
+          "sha256": "c03282ec3c5d89b27e957de99ea0978eab88595c3259d3f5f679a5179a262580"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/PayPal.list",
+          "rules": 248,
+          "sha256": "536e7791837573920b93416957093f428fdbe226d7bbad71e284feb28b1be3f4"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/PayPal.list",
+          "rules": 248,
+          "sha256": "c8d4c2990e0df7e9b11774cf6e61cebc7efe2267f2ae9b1d26db4cbe14da2c0c"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/PayPal.list",
+          "rules": 248,
+          "sha256": "536e7791837573920b93416957093f428fdbe226d7bbad71e284feb28b1be3f4"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/PayPal.list",
+          "rules": 248,
+          "sha256": "536e7791837573920b93416957093f428fdbe226d7bbad71e284feb28b1be3f4"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/PayPal.list",
+          "rules": 248,
+          "sha256": "536e7791837573920b93416957093f428fdbe226d7bbad71e284feb28b1be3f4"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 7708,
+          "format": "surge-rule-set",
+          "lines": 251,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "536e7791837573920b93416957093f428fdbe226d7bbad71e284feb28b1be3f4",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/PayPal.list"
+        }
+      ],
+      "supplement": null
+    },
+    "PrimeVideo": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 16,
+        "rules": 16,
+        "sha256": "493c83d1344ee112de9900672ea51dca2c446170b9a1e42d92a258e66c6076f4",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/PrimeVideo.list",
+          "rules": 16,
+          "sha256": "92503fa1523490a89779c0646431825972bae472a3025b3467f9e2424066b8bf"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/PrimeVideo.yaml",
+          "rules": 16,
+          "sha256": "f7fe1fe3c0b80ff2f40d00f37925405641d56cb36692182fb89f8ee74caa6bcd"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/PrimeVideo.list",
+          "rules": 16,
+          "sha256": "92503fa1523490a89779c0646431825972bae472a3025b3467f9e2424066b8bf"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/PrimeVideo.list",
+          "rules": 16,
+          "sha256": "6b1bf590cad2eec16f2e840a3e8ba7c2e0ba5afe2b69bb024f22f100171044e9"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/PrimeVideo.list",
+          "rules": 16,
+          "sha256": "92503fa1523490a89779c0646431825972bae472a3025b3467f9e2424066b8bf"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/PrimeVideo.list",
+          "rules": 16,
+          "sha256": "92503fa1523490a89779c0646431825972bae472a3025b3467f9e2424066b8bf"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/PrimeVideo.list",
+          "rules": 16,
+          "sha256": "92503fa1523490a89779c0646431825972bae472a3025b3467f9e2424066b8bf"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 534,
+          "format": "surge-rule-set",
+          "lines": 19,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "92503fa1523490a89779c0646431825972bae472a3025b3467f9e2424066b8bf",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/PrimeVideo.list"
+        }
+      ],
+      "supplement": null
+    },
+    "SafePal": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 2,
+        "rules": 2,
+        "sha256": "b276e8a779a5be7cca5bf763d85da7b073b9694b1c19f9e6791a02819624c3f6",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/SafePal.list",
+          "rules": 2,
+          "sha256": "0669a230ebac2478b0e3c8b7288c2ecb0018fba9ddca50a1d910864f5e2d71f2"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/SafePal.yaml",
+          "rules": 2,
+          "sha256": "0de0ea0929f04f0a5c287fa27bb9105c99ae79f547f4ed8e2f4f5290e2abef4d"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/SafePal.list",
+          "rules": 2,
+          "sha256": "0669a230ebac2478b0e3c8b7288c2ecb0018fba9ddca50a1d910864f5e2d71f2"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/SafePal.list",
+          "rules": 2,
+          "sha256": "21c06a57e781166119c62333d50f0ff6986bc3e5a58cc34d89eaee835980c53a"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/SafePal.list",
+          "rules": 2,
+          "sha256": "0669a230ebac2478b0e3c8b7288c2ecb0018fba9ddca50a1d910864f5e2d71f2"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/SafePal.list",
+          "rules": 2,
+          "sha256": "0669a230ebac2478b0e3c8b7288c2ecb0018fba9ddca50a1d910864f5e2d71f2"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/SafePal.list",
+          "rules": 2,
+          "sha256": "0669a230ebac2478b0e3c8b7288c2ecb0018fba9ddca50a1d910864f5e2d71f2"
+        }
+      },
+      "sources": [
+        {
+          "author": "v2fly",
+          "bytes": 25,
+          "format": "v2fly-domain-list",
+          "lines": 2,
+          "name": "v2fly-domain-list-community",
+          "role": "primary",
+          "text_sha256": "d98ef1b9bf52bba51677d3f7450dfeb6ab61299b275db9c6a15ee8e64bf84888",
+          "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/safepal"
+        }
+      ],
+      "supplement": null
+    },
+    "Spotify": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 21,
+        "rules": 21,
+        "sha256": "73c8effd59bba55321ce998114c2be4bd4a4eab52d556b4cadc4030306d9d469",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [
+            "USER-AGENT,Spotify*"
+          ],
+          "path": "Clash/Spotify.list",
+          "rules": 20,
+          "sha256": "f4db116aad2a71908a6d7406c5d2990fd203239518340f075beca374befc8abc"
+        },
+        "egern": {
+          "dropped": [
+            "PROCESS-NAME,com.spotify.music"
+          ],
+          "path": "Egern/Spotify.yaml",
+          "rules": 20,
+          "sha256": "3f008464cde321c0d8e2e42efdbac7302af4a88278fb32f820aad4181daa6f11"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Spotify.list",
+          "rules": 21,
+          "sha256": "ab4fa9036b902bca55e1664394cb68f9fdc347f6bb3bc091080a3adc5130cdd4"
+        },
+        "quantumultx": {
+          "dropped": [
+            "PROCESS-NAME,com.spotify.music"
+          ],
+          "path": "QuantumultX/Spotify.list",
+          "rules": 20,
+          "sha256": "4836a6ef1f456c8e7c90bc08f1ae76b23f04b058392e858062662ddadb0682f6"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Spotify.list",
+          "rules": 21,
+          "sha256": "ab4fa9036b902bca55e1664394cb68f9fdc347f6bb3bc091080a3adc5130cdd4"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Spotify.list",
+          "rules": 21,
+          "sha256": "ab4fa9036b902bca55e1664394cb68f9fdc347f6bb3bc091080a3adc5130cdd4"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Spotify.list",
+          "rules": 21,
+          "sha256": "ab4fa9036b902bca55e1664394cb68f9fdc347f6bb3bc091080a3adc5130cdd4"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 703,
+          "format": "surge-rule-set",
+          "lines": 24,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "f04b9842954fa11b7a6d8bbdec55d3c84720d8495c696aa05397122d1abd34a0",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Spotify.list"
+        }
+      ],
+      "supplement": null
+    },
+    "Steam": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 20,
+        "rules": 20,
+        "sha256": "4342273ec940d46efd0b1c6e6dee96ff8166bb5d13568a5a8ac2a33eb534ca69",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Steam.list",
+          "rules": 20,
+          "sha256": "0962fca87dfe8ba71642f06699471d0d5927fca900ba793784d46c09af3f28d5"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/Steam.yaml",
+          "rules": 20,
+          "sha256": "9bf2c8725853d20f1b980a87cf92a5aab6872ac40302439ae430accf2aa312e7"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Steam.list",
+          "rules": 20,
+          "sha256": "0962fca87dfe8ba71642f06699471d0d5927fca900ba793784d46c09af3f28d5"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/Steam.list",
+          "rules": 20,
+          "sha256": "535c511e012fc65c0af83508a1d61f888c3c34738e8b09f102a52153d5dc8e5b"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Steam.list",
+          "rules": 20,
+          "sha256": "0962fca87dfe8ba71642f06699471d0d5927fca900ba793784d46c09af3f28d5"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Steam.list",
+          "rules": 20,
+          "sha256": "0962fca87dfe8ba71642f06699471d0d5927fca900ba793784d46c09af3f28d5"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Steam.list",
+          "rules": 20,
+          "sha256": "0962fca87dfe8ba71642f06699471d0d5927fca900ba793784d46c09af3f28d5"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 642,
+          "format": "surge-rule-set",
+          "lines": 23,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "0962fca87dfe8ba71642f06699471d0d5927fca900ba793784d46c09af3f28d5",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Steam.list"
+        }
+      ],
+      "supplement": null
+    },
+    "Suno": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 2,
+        "rules": 2,
+        "sha256": "f05ec93a2fefbd9ae7e65a66f8aa73977fc689feaad1e7255e64c16d1bcb3264",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Suno.list",
+          "rules": 2,
+          "sha256": "2b1c240a56767ba7145b40f0c1ffd1b17817e616280a83a758d63e3572aca999"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/Suno.yaml",
+          "rules": 2,
+          "sha256": "47a769d2ad54a280455fde238896b2324fd6a426bd3ed8d59ac6e4c064522bca"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Suno.list",
+          "rules": 2,
+          "sha256": "2b1c240a56767ba7145b40f0c1ffd1b17817e616280a83a758d63e3572aca999"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/Suno.list",
+          "rules": 2,
+          "sha256": "14b154825df105a872466167380d7c701a96238c138e94e95933361f79ca4d51"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Suno.list",
+          "rules": 2,
+          "sha256": "2b1c240a56767ba7145b40f0c1ffd1b17817e616280a83a758d63e3572aca999"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Suno.list",
+          "rules": 2,
+          "sha256": "2b1c240a56767ba7145b40f0c1ffd1b17817e616280a83a758d63e3572aca999"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Suno.list",
+          "rules": 2,
+          "sha256": "2b1c240a56767ba7145b40f0c1ffd1b17817e616280a83a758d63e3572aca999"
+        }
+      },
+      "sources": [],
+      "supplement": {
+        "bytes": 456,
+        "lines": 6,
+        "path": "engine/sources/supplement/Suno.list",
+        "sha256": "38cb0782f845f4f514877dca19bf48692075c73637784d0df97e00c6a6e8cb72"
+      }
+    },
+    "Telegram": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 14,
+        "rules": 14,
+        "sha256": "80955a2d901c08d575864642f908d0f4778e0125b3c215f7051d706ec5067247",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Telegram.list",
+          "rules": 14,
+          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/Telegram.yaml",
+          "rules": 14,
+          "sha256": "2518b0b69b30c5dc1db39dbc931abed2fc6802cbafb78915d4b08673b2ff8ba8"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Telegram.list",
+          "rules": 14,
+          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/Telegram.list",
+          "rules": 14,
+          "sha256": "159fa010ac4aa614ff905078edc56e9ce09e9ab5e3e17824590462db5f26a897"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Telegram.list",
+          "rules": 14,
+          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Telegram.list",
+          "rules": 14,
+          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Telegram.list",
+          "rules": 14,
+          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+        }
+      },
+      "sources": [
+        {
+          "author": "SukkaW",
+          "bytes": 476,
+          "format": "surge-rule-set",
+          "lines": 17,
+          "name": "SukkaW-Surge",
+          "role": "primary",
+          "text_sha256": "8eab4b09048a3b0174c413290e0b036035e8a711aa340cda55a88bc260e124be",
+          "url": "https://raw.githubusercontent.com/SukkaW/Surge/master/Source/non_ip/telegram.conf"
+        }
+      ],
+      "supplement": null
+    },
+    "Threads": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 2,
+        "rules": 2,
+        "sha256": "4248dd94163993dc3d92e4154448d65aa70d5af4f7271bbde1cf3c46db0bb71f",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Threads.list",
+          "rules": 2,
+          "sha256": "3fca24abc3fdfad90cd7bdea7dad49204a86313723729858351c12ba94e80f90"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/Threads.yaml",
+          "rules": 2,
+          "sha256": "b12ee4551d236963a82655ee9f463582928ea35884271ecc67fde093faaebfc5"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Threads.list",
+          "rules": 2,
+          "sha256": "3fca24abc3fdfad90cd7bdea7dad49204a86313723729858351c12ba94e80f90"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/Threads.list",
+          "rules": 2,
+          "sha256": "ce4c8369d78ec1c07aa819f3b11c915845bc5f8c97ba05c65b64d808b9930a5d"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Threads.list",
+          "rules": 2,
+          "sha256": "3fca24abc3fdfad90cd7bdea7dad49204a86313723729858351c12ba94e80f90"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Threads.list",
+          "rules": 2,
+          "sha256": "3fca24abc3fdfad90cd7bdea7dad49204a86313723729858351c12ba94e80f90"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Threads.list",
+          "rules": 2,
+          "sha256": "3fca24abc3fdfad90cd7bdea7dad49204a86313723729858351c12ba94e80f90"
+        }
+      },
+      "sources": [
+        {
+          "author": "v2fly",
+          "bytes": 24,
+          "format": "v2fly-domain-list",
+          "lines": 2,
+          "name": "v2fly-domain-list-community",
+          "role": "primary",
+          "text_sha256": "89e3c90ee1900445f0a0acab799d399d9999e39fefd9239b61efb4ac128f7851",
+          "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/threads"
+        }
+      ],
+      "supplement": null
+    },
+    "TikTok": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 81,
+        "rules": 81,
+        "sha256": "cbcf2785121c14632602008e78507f23e48634aca73091c67955c1a25034141d",
+        "skipped_attributes": 0,
+        "skipped_excluded": [
+          "IP-ASN,11983",
+          "IP-ASN,138699"
+        ]
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/TikTok.list",
+          "rules": 81,
+          "sha256": "8255c11372cc7939407bf2a03ee5a7a77d067bf1a900fbedd87798cb934ee07c"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/TikTok.yaml",
+          "rules": 81,
+          "sha256": "a1d3a6fbb94aa7a541e8cccc533f7dc1715e3bd805977f04f188868fbfb7136e"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/TikTok.list",
+          "rules": 81,
+          "sha256": "8255c11372cc7939407bf2a03ee5a7a77d067bf1a900fbedd87798cb934ee07c"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/TikTok.list",
+          "rules": 81,
+          "sha256": "611048dbc71495ae7de58207dac211a944641c2431d1ce5b184dbd4a1b9a6f3d"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/TikTok.list",
+          "rules": 81,
+          "sha256": "8255c11372cc7939407bf2a03ee5a7a77d067bf1a900fbedd87798cb934ee07c"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/TikTok.list",
+          "rules": 81,
+          "sha256": "8255c11372cc7939407bf2a03ee5a7a77d067bf1a900fbedd87798cb934ee07c"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/TikTok.list",
+          "rules": 81,
+          "sha256": "8255c11372cc7939407bf2a03ee5a7a77d067bf1a900fbedd87798cb934ee07c"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 2415,
+          "format": "surge-rule-set",
+          "lines": 86,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "2c2404897acbcea735956152272e5a99eae41e690405ae52e77c00956c27909e",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/TikTok.list"
+        }
+      ],
+      "supplement": null
+    },
+    "Twitch": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 22,
+        "rules": 22,
+        "sha256": "6d0e456da6d849a92c556aaf6a7d220a83644b18caa75d20c2239a836f5dd979",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Twitch.list",
+          "rules": 22,
+          "sha256": "35a05e36460c22f625c27ec80b7c310aebca57eedf9196677c467616fba48d62"
+        },
+        "egern": {
+          "dropped": [
+            "PROCESS-NAME,tv.twitch.android.app"
+          ],
+          "path": "Egern/Twitch.yaml",
+          "rules": 21,
+          "sha256": "37a8e26b96173056132f374a8fe1ab7ff23f3d502b3df686b197f61f4a95e3fd"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Twitch.list",
+          "rules": 22,
+          "sha256": "35a05e36460c22f625c27ec80b7c310aebca57eedf9196677c467616fba48d62"
+        },
+        "quantumultx": {
+          "dropped": [
+            "PROCESS-NAME,tv.twitch.android.app"
+          ],
+          "path": "QuantumultX/Twitch.list",
+          "rules": 21,
+          "sha256": "2edc51f0c9d6cabf99c2a059c02eb7aec147f5751e295f0477529efa1276d6b7"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Twitch.list",
+          "rules": 22,
+          "sha256": "35a05e36460c22f625c27ec80b7c310aebca57eedf9196677c467616fba48d62"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Twitch.list",
+          "rules": 22,
+          "sha256": "35a05e36460c22f625c27ec80b7c310aebca57eedf9196677c467616fba48d62"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Twitch.list",
+          "rules": 22,
+          "sha256": "35a05e36460c22f625c27ec80b7c310aebca57eedf9196677c467616fba48d62"
+        }
+      },
+      "sources": [
+        {
+          "author": "blackmatrix7",
+          "bytes": 917,
+          "format": "surge-rule-set",
+          "lines": 32,
+          "name": "blackmatrix7-ios_rule_script",
+          "role": "primary",
+          "text_sha256": "5f1e5ba766fcef3196ea6f03e05c1859af7d1122338beaceaea2919b6c82f7a8",
+          "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/Twitch/Twitch.list"
+        }
+      ],
+      "supplement": null
+    },
+    "WhatsApp": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 11,
+        "rules": 11,
+        "sha256": "cf97dd978243bb1000cca47fcec241efeb04e56ae9bbcdb420b36bc30a9fc5a8",
+        "skipped_attributes": 2,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/WhatsApp.list",
+          "rules": 11,
+          "sha256": "079a7d3a88d23e6ce9179a8403dd76d26bf1f68ca6a9e4c928b1d9752f6c9efd"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/WhatsApp.yaml",
+          "rules": 11,
+          "sha256": "83dcab375434f15c4e3a32763431b111bb3f91d07c331ebd8cd424e685668419"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/WhatsApp.list",
+          "rules": 11,
+          "sha256": "079a7d3a88d23e6ce9179a8403dd76d26bf1f68ca6a9e4c928b1d9752f6c9efd"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/WhatsApp.list",
+          "rules": 11,
+          "sha256": "15ea7728d25a97ce267100721b983e34c469b9a872ec6b10e1c1c69e25233677"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/WhatsApp.list",
+          "rules": 11,
+          "sha256": "079a7d3a88d23e6ce9179a8403dd76d26bf1f68ca6a9e4c928b1d9752f6c9efd"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/WhatsApp.list",
+          "rules": 11,
+          "sha256": "079a7d3a88d23e6ce9179a8403dd76d26bf1f68ca6a9e4c928b1d9752f6c9efd"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/WhatsApp.list",
+          "rules": 11,
+          "sha256": "079a7d3a88d23e6ce9179a8403dd76d26bf1f68ca6a9e4c928b1d9752f6c9efd"
+        }
+      },
+      "sources": [
+        {
+          "author": "v2fly",
+          "bytes": 219,
+          "format": "v2fly-domain-list",
+          "lines": 15,
+          "name": "v2fly-domain-list-community",
+          "role": "primary",
+          "text_sha256": "d23fbe2f886bfbd52c3ae40e1fed05cbc4a721564e7eda76f226824d0b137dca",
+          "url": "https://raw.githubusercontent.com/v2fly/domain-list-community/master/data/whatsapp"
+        }
+      ],
+      "supplement": null
+    },
+    "X": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 34,
+        "rules": 34,
+        "sha256": "625269f9d57efe672521c40e6950b17d28a0992b2704e3c0998e5622e6b23f0c",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/X.list",
+          "rules": 34,
+          "sha256": "60584adccecce741cd3f26043d47c1a2484b275338dc05d18c25079e4d8740ee"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/X.yaml",
+          "rules": 34,
+          "sha256": "fbfbe19deacf1cf6caddfc8c686a8b0f23008550be2dbfbb30a48ac84a5afd52"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/X.list",
+          "rules": 34,
+          "sha256": "60584adccecce741cd3f26043d47c1a2484b275338dc05d18c25079e4d8740ee"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/X.list",
+          "rules": 34,
+          "sha256": "2da6629fc0606465164a5f5f47f5cc0fd53c33bdc5fc6cff6bb5d02cade74428"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/X.list",
+          "rules": 34,
+          "sha256": "60584adccecce741cd3f26043d47c1a2484b275338dc05d18c25079e4d8740ee"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/X.list",
+          "rules": 34,
+          "sha256": "60584adccecce741cd3f26043d47c1a2484b275338dc05d18c25079e4d8740ee"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/X.list",
+          "rules": 34,
+          "sha256": "60584adccecce741cd3f26043d47c1a2484b275338dc05d18c25079e4d8740ee"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 1016,
+          "format": "surge-rule-set",
+          "lines": 37,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "d33078dc5e2bddf1670c72a1dd6b4c6cad129c4c2408af7411a6d75fcf7fae0a",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Twitter.list"
+        }
+      ],
+      "supplement": null
+    },
+    "YouTube": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 14,
+        "rules": 14,
+        "sha256": "588f1ec5af4cb621dea5f0b383249b49be63975fc7aed703543639fec9d3bdc7",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/YouTube.list",
+          "rules": 14,
+          "sha256": "108b9fbf7e67aaad48b4dd8c1f05b999d37c0bea8e1a6f288b6dd9c514b8f4af"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/YouTube.yaml",
+          "rules": 14,
+          "sha256": "e2ff209980cd5b3c6bf54d9c84c4131fd7b4a339f961fdbdfdfa7862169fac28"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/YouTube.list",
+          "rules": 14,
+          "sha256": "108b9fbf7e67aaad48b4dd8c1f05b999d37c0bea8e1a6f288b6dd9c514b8f4af"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/YouTube.list",
+          "rules": 14,
+          "sha256": "5b480f7d8454527fc02a01ca9c618c2ad06070e34a22f9928fd7e8e3904f5f42"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/YouTube.list",
+          "rules": 14,
+          "sha256": "108b9fbf7e67aaad48b4dd8c1f05b999d37c0bea8e1a6f288b6dd9c514b8f4af"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/YouTube.list",
+          "rules": 14,
+          "sha256": "108b9fbf7e67aaad48b4dd8c1f05b999d37c0bea8e1a6f288b6dd9c514b8f4af"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/YouTube.list",
+          "rules": 14,
+          "sha256": "108b9fbf7e67aaad48b4dd8c1f05b999d37c0bea8e1a6f288b6dd9c514b8f4af"
+        }
+      },
+      "sources": [
+        {
+          "author": "Repcz",
+          "bytes": 427,
+          "format": "surge-rule-set",
+          "lines": 17,
+          "name": "Repcz-Tool",
+          "role": "primary",
+          "text_sha256": "108b9fbf7e67aaad48b4dd8c1f05b999d37c0bea8e1a6f288b6dd9c514b8f4af",
+          "url": "https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/YouTube.list"
+        }
+      ],
+      "supplement": null
+    },
+    "ZABank": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 3,
+        "rules": 3,
+        "sha256": "6eebaba519fb8817847abe75374368e7ffba4493e94f409b6cb4878620f0c62c",
+        "skipped_attributes": 0,
+        "skipped_excluded": []
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/ZABank.list",
+          "rules": 3,
+          "sha256": "cdddb023b14bdd13669b3482d170f7220c974b34483822d652c3d00214cc906a"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/ZABank.yaml",
+          "rules": 3,
+          "sha256": "d714b7d34107d76cc5f32d34c4af3816da4558bdf81daef96538a192d91591b2"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/ZABank.list",
+          "rules": 3,
+          "sha256": "cdddb023b14bdd13669b3482d170f7220c974b34483822d652c3d00214cc906a"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/ZABank.list",
+          "rules": 3,
+          "sha256": "276f3f37f5bec1e45f7559f2e79a66123463b01008f1160bc5a3a4cfc64bd334"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/ZABank.list",
+          "rules": 3,
+          "sha256": "cdddb023b14bdd13669b3482d170f7220c974b34483822d652c3d00214cc906a"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/ZABank.list",
+          "rules": 3,
+          "sha256": "cdddb023b14bdd13669b3482d170f7220c974b34483822d652c3d00214cc906a"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/ZABank.list",
+          "rules": 3,
+          "sha256": "cdddb023b14bdd13669b3482d170f7220c974b34483822d652c3d00214cc906a"
+        }
+      },
+      "sources": [],
+      "supplement": {
+        "bytes": 349,
+        "lines": 6,
+        "path": "engine/sources/supplement/ZABank.list",
+        "sha256": "83706e4f3ca032ad7104da879ab70fddc9c575bbbfe46495ed874d6903937383"
+      }
+    }
+  },
+  "builder": {
+    "files": {
+      "engine/scripts/build.py": "acea86cbe87e24a2785165274c4ee441393968ef4768860a5da568db3485b31e",
+      "engine/scripts/renderers.py": "a74e9104d626044f8326c6b50783f6006ab1d45fe36107e250aba11bb3a4660b"
+    },
+    "version": "2.0.0"
+  },
+  "schema_version": 1,
+  "source_definition": {
+    "path": "engine/sources/apps.yaml",
+    "sha256": "a047f609300747ed4e08ddbf88b21e65b48bf6dd3227d5fd3595f4c7b3d1929f"
+  }
+}
