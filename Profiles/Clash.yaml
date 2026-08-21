@@ -98,35 +98,47 @@ rule-providers:
     format: text
     url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/Telegram-ip.conf
     interval: 86400
-  X:
+  X_domainset:
     type: http
-    behavior: classical
+    behavior: domain
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/X.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/X-domainset.conf
     interval: 86400
-  YouTube:
+  X_ip:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/YouTube.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/X-ip.conf
     interval: 86400
-  Instagram:
+  YouTube_nonip:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/Instagram.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/YouTube-nonip.conf
     interval: 86400
-  Google:
+  Instagram_domainset:
     type: http
-    behavior: classical
+    behavior: domain
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/Google.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/Instagram-domainset.conf
     interval: 86400
-  GitHub:
+  Google_nonip:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/GitHub.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/Google-nonip.conf
+    interval: 86400
+  Google_ip:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/Google-ip.conf
+    interval: 86400
+  GitHub_domainset:
+    type: http
+    behavior: domain
+    format: text
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash/GitHub-domainset.conf
     interval: 86400
   telegram_ip:
     type: http
@@ -157,11 +169,13 @@ rules:
   # UNSUPPORTED: reject-domainset（Surge DOMAIN-SET 专属）本文件省略
   - RULE-SET,Telegram_domainset,Telegram
   - RULE-SET,Telegram_ip,Telegram
-  - RULE-SET,X,X
-  - RULE-SET,YouTube,Youtube
-  - RULE-SET,Instagram,Instagram
-  - RULE-SET,Google,Google
-  - RULE-SET,GitHub,Github
+  - RULE-SET,X_domainset,X
+  - RULE-SET,X_ip,X
+  - RULE-SET,YouTube_nonip,Youtube
+  - RULE-SET,Instagram_domainset,Instagram
+  - RULE-SET,Google_nonip,Google
+  - RULE-SET,Google_ip,Google
+  - RULE-SET,GitHub_domainset,Github
   - RULE-SET,telegram_ip,Telegram,no-resolve
   - RULE-SET,china_ip,DIRECT,no-resolve
   - RULE-SET,china_ip2,DIRECT,no-resolve

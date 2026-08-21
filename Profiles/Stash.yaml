@@ -94,35 +94,47 @@ rule-providers:
     format: text
     url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/Telegram-ip.conf
     interval: 86400
-  X:
+  X_domainset:
     type: http
-    behavior: classical
+    behavior: domain
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/X.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/X-domainset.conf
     interval: 86400
-  YouTube:
+  X_ip:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/YouTube.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/X-ip.conf
     interval: 86400
-  Instagram:
+  YouTube_nonip:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Instagram.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/YouTube-nonip.conf
     interval: 86400
-  Google:
+  Instagram_domainset:
     type: http
-    behavior: classical
+    behavior: domain
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Google.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/Instagram-domainset.conf
     interval: 86400
-  GitHub:
+  Google_nonip:
     type: http
     behavior: classical
     format: text
-    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/GitHub.list
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/Google-nonip.conf
+    interval: 86400
+  Google_ip:
+    type: http
+    behavior: classical
+    format: text
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/Google-ip.conf
+    interval: 86400
+  GitHub_domainset:
+    type: http
+    behavior: domain
+    format: text
+    url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/GitHub-domainset.conf
     interval: 86400
   telegram_ip:
     type: http
@@ -154,11 +166,13 @@ rules:
   # UNSUPPORTED: ntp-123（当前客户端不支持）本文件省略
   - RULE-SET,Telegram_domainset,Telegram
   - RULE-SET,Telegram_ip,Telegram
-  - RULE-SET,X,X
-  - RULE-SET,YouTube,Youtube
-  - RULE-SET,Instagram,Instagram
-  - RULE-SET,Google,Google
-  - RULE-SET,GitHub,Github
+  - RULE-SET,X_domainset,X
+  - RULE-SET,X_ip,X
+  - RULE-SET,YouTube_nonip,Youtube
+  - RULE-SET,Instagram_domainset,Instagram
+  - RULE-SET,Google_nonip,Google
+  - RULE-SET,Google_ip,Google
+  - RULE-SET,GitHub_domainset,Github
   - RULE-SET,telegram_ip,Telegram
   - RULE-SET,china_ip,DIRECT
   - RULE-SET,china_ip2,DIRECT

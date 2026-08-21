@@ -155,19 +155,25 @@ rules:
     match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/Telegram-ip.conf
     policy: Telegram
 - rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/X.list
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/X-domainset.conf
     policy: X
 - rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/YouTube.list
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/X-ip.conf
+    policy: X
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/YouTube-nonip.conf
     policy: Youtube
 - rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Instagram.list
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/Instagram-domainset.conf
     policy: Instagram
 - rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Google.list
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/Google-nonip.conf
     policy: Google
 - rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/GitHub.list
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/Google-ip.conf
+    policy: Google
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/GitHub-domainset.conf
     policy: Github
 - rule_set:
     match: https://ruleset.skk.moe/List/ip/telegram.conf

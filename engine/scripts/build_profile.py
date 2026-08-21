@@ -293,12 +293,15 @@ def _render_surge(intent: dict) -> dict[str, str]:
             rules.append(f"RULE-SET,{entry['url']},{policy}{suffix}")
     for app_name, app in intent["apps"].items():
         if app.get("views"):
-            # domain/IP 分文件引用（domain-first / IP-last）
-            domainset = app.get("domainset_source") or f"{BLINK_RAW}/{app_name}-domainset.conf"
-            ip_source = app.get("ip_source") or f"{BLINK_RAW}/{app_name}-ip.conf"
-            rules.append(f"DOMAIN-SET,{domainset},{app['policy']},extended-matching")
-            suffix = ",no-resolve" if app.get("ip_no_resolve", True) else ""
-            rules.append(f"RULE-SET,{ip_source},{app['policy']}{suffix}")
+            # 分文件引用（domain-first / IP-last），按 app 声明的 view 列表
+            for view_name in app["views"]:
+                url = app.get(f"{view_name}_source") or _view_url("surge", app_name, view_name)
+                if view_name == "domainset":
+                    rules.append(f"DOMAIN-SET,{url},{app['policy']},extended-matching")
+                elif view_name == "ip":
+                    rules.append(f"RULE-SET,{url},{app['policy']},no-resolve")
+                else:  # nonip
+                    rules.append(f"RULE-SET,{url},{app['policy']}")
             continue
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
@@ -349,10 +352,12 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
     rules.extend(_infra_unsupported_lines(intent, "shadowrocket", "domain", ""))
     for app_name, app in intent["apps"].items():
         if app.get("views"):
-            rules.append(
-                f"DOMAIN-SET,{_view_url('shadowrocket', app_name, 'domainset')},{app['policy']}"
-            )
-            rules.append(f"RULE-SET,{_view_url('shadowrocket', app_name, 'ip')},{app['policy']}")
+            for view_name in app["views"]:
+                url = _view_url("shadowrocket", app_name, view_name)
+                if view_name == "domainset":
+                    rules.append(f"DOMAIN-SET,{url},{app['policy']}")
+                else:
+                    rules.append(f"RULE-SET,{url},{app['policy']}")
             continue
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
@@ -409,14 +414,11 @@ def _render_loon(intent: dict) -> dict[str, str]:
     remote_rules.extend(_infra_unsupported_lines(intent, "loon", "domain", ""))
     for app_name, app in intent["apps"].items():
         if app.get("views"):
-            remote_rules.append(
-                f"{_view_url('loon', app_name, 'domainset')}, policy = {app['policy']}, "
-                f"tag = {app_name}-domainset, enabled = true"
-            )
-            remote_rules.append(
-                f"{_view_url('loon', app_name, 'ip')}, policy = {app['policy']}, "
-                f"tag = {app_name}-ip, enabled = true"
-            )
+            for view_name in app["views"]:
+                remote_rules.append(
+                    f"{_view_url('loon', app_name, view_name)}, policy = {app['policy']}, "
+                    f"tag = {app_name}-{view_name}, enabled = true"
+                )
             continue
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         remote_rules.append(f"{source}, policy = {app['policy']}, tag = {app_name}, enabled = true")
@@ -515,7 +517,7 @@ def _render_stash(intent: dict) -> dict[str, str]:
     rules.extend(_infra_unsupported_lines(intent, "stash", "domain", "  "))
     for app_name, app in intent["apps"].items():
         if app.get("views"):
-            for view_name in ("domainset", "ip"):
+            for view_name in app["views"]:
                 behavior = "domain" if view_name == "domainset" else "classical"
                 key = provider_name(f"{app_name}-{view_name}")
                 provider_lines.append(f"  {key}:")
@@ -626,7 +628,7 @@ def _render_clash(intent: dict) -> dict[str, str]:
     rules.extend(_infra_unsupported_lines(intent, "clash", "domain", "  "))
     for app_name, app in intent["apps"].items():
         if app.get("views"):
-            for view_name in ("domainset", "ip"):
+            for view_name in app["views"]:
                 behavior = "domain" if view_name == "domainset" else "classical"
                 key = provider_name(f"{app_name}-{view_name}")
                 provider_lines.append(f"  {key}:")
@@ -713,7 +715,7 @@ def _render_egern(intent: dict) -> dict[str, str]:
     rules.extend(_infra_unsupported_lines(intent, "egern", "domain", ""))
     for app_name, app in intent["apps"].items():
         if app.get("views"):
-            for view_name in ("domainset", "ip"):
+            for view_name in app["views"]:
                 rules.append("- rule_set:")
                 rules.append(f"    match: {_view_url('egern', app_name, view_name)}")
                 rules.append(f"    policy: {app['policy']}")
@@ -778,7 +780,7 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
         add_rule_entry(entry)
     for app_name, app in intent["apps"].items():
         if app.get("views"):
-            for view_name in ("domainset", "ip"):
+            for view_name in app["views"]:
                 remote_rules.append(
                     f"{_view_url('quantumultx', app_name, view_name)}, tag={app_name}-{view_name}, "
                     f"force-policy={qx_policy(app['policy'])},"
