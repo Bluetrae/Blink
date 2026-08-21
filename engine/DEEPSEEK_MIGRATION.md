@@ -103,6 +103,32 @@ origin: https://github.com/Bluetrae/Blink.git
 
 对新增 App，优先做定向预检；全量构建放在 GitHub Actions、每日更新、发布前健康检查或用户明确要求的全仓库验证中。构建写入必须保持原子性：所有选定 App 都成功后才更新输出。
 
+## 当前状态（2026-08-26 更新）
+
+2026-08-20 之后完成的大块变更（`git log origin/main..main` 可查最新提交；以 `git log` 为准）：
+
+- **规则层 multi-view**：`build.py` 新增 `PHASE_BY_KIND` / `phase_of` / `semantic_views`；每 App 从 canonical
+  派生 `-domainset.conf`（纯域名）/ `-nonip.conf`（含 keyword/UA/PROCESS）/ `-ip.conf`（IP 段）七端语义视图
+  （`.conf` 后缀、policy-free，`views: true` 开启）；IP 段恒置于域名段之后；`renderers.py` 提供
+  `render_surge_domainset` / `render_mihomo_domainset` / `render_view`（Surge/Shadowrocket 域名清单、
+  Stash/Clash `behavior:domain`、Loon/Egern classical、QX filter）。
+- **语义视图门禁 `engine/scripts/validate_views.py`**：校验视图种类合法（IP 不进 nonip、domain 不进 ip、
+  纯域名无空 IP 视图）、Surge 视图与 canonical 拆分一致、七端齐全、头统计（含各端显式丢弃）正确；
+  已同时接入 `checks.yml` 与每日 `update.yml`。
+- **Profile 层**：`intent.yaml` 收敛为普适八组（单订阅池 + 地区组/Auto + Proxy/Final + 6 App 路由），
+  General 按 skk 技术基线；7 端模板能力矩阵 FULL/ADAPTED/UNSUPPORTED 标注；6 路由 App 改用 domain/IP
+  分文件引用；`Profiles/` 由 `build_profile.py --write` 生成，人工确认后提交，不进入每日更新。
+- **portal**：规则卡片统一「复制规则链接」（点击弹出固定定位 + React Portal 的菜单，回弹动画、
+  选项 hover/选中反馈，不会被相邻卡片遮挡）；非 mihomo 复制 raw 链接到客户端前端导入、
+  Stash/Clash 复制配置文件写法；新增 App 搜索框（名称/中文分类/note/来源匹配 + 关键词高亮 +
+  空结果状态 + 与「接入你的客户端」全部复制区联动）；官方 App 图标资产（含 Starryblu）。
+- **新 App**：Starryblu（全球支付 App，supplement-only，根域 starryblu.com，2026-08-26）。
+- **文档**：README 更新（29 App / 203 产物、去标题 emoji、合并重复的顺序说明）；HANDOFF.md 已同步当前状态。
+
+现状数字：**29 App、26 上游源、203 个七端主产物**；单测 52 项；`manifest.json` 另记录每 App 的
+per-client 语义视图与 SHA。**敏感信息检查**：仓库不含真实订阅 URL / 凭据 / 机场链接 / 本地真实路径 /
+个人域名具体示例（个人化域名在文档中仅作泛化描述）。
+
 ## 已知待办与谨慎项
 
 - 后续计划中的 AI、TikTok、Spotify、ZABank 已于 2026-08-15 完成 source audit 并全部落地；完整档案见 `SOURCE_AUDITS.md`。原清单中的 Live（现命名 APTV）是用户自用直播源，同日以 supplement-only 形式迁入（26 条，注释自用）。

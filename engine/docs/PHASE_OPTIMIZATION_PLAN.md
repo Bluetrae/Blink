@@ -8,8 +8,8 @@
 ## 一、三条已确认原则
 
 1. **边界**：公开 Profile 只含单一订阅池 `Sub`（占位 URL `https://YOUR-SUBSCRIPTION-URL`）；
-   双订阅池、Emby 个人组、个人域名（`sub.store`/`xx-ai.uk`/`mobaiemby.site` 等）、银行域名（`abchina`/`icbc`/`95599` 等）
-   **不进意图与公开产物**。
+   双订阅池、个人专属分组与自用域名（自用 Emby / 工具站 / 银行与运营商 App 域名等）
+   **不进意图与公开产物**（未在仓库中列具体域名）。
 2. **能力矩阵**：Surge 强绑定能力跨端一律 `FULL / ADAPTED(注释标注) / UNSUPPORTED(注释标注)`，禁止静默省略或伪造。
 3. **普适化**：公开模板的**策略组 + App 规则只保留 8 个**，其余交由用户自行扩展，并在生成文件头部/README 提示。
 
