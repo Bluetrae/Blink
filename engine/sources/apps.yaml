@@ -10,6 +10,7 @@ apps:
   OKX:
     enabled: true
     output: Surge/OKX.list
+    views: true
     sources:
       - name: v2fly-domain-list-community
         author: v2fly
@@ -33,6 +34,7 @@ apps:
   WhatsApp:
     enabled: true
     output: Surge/WhatsApp.list
+    views: true
     sources:
       - name: v2fly-domain-list-community
         author: v2fly
@@ -56,6 +58,7 @@ apps:
   LINE:
     enabled: true
     output: Surge/LINE.list
+    views: true
     sources:
       - name: v2fly-domain-list-community
         author: v2fly
@@ -80,6 +83,7 @@ apps:
   GitHub:
     enabled: true
     output: Surge/GitHub.list
+    views: true
     sources:
       - name: v2fly-domain-list-community
         author: v2fly
@@ -107,6 +111,7 @@ apps:
   SafePal:
     enabled: true
     output: Surge/SafePal.list
+    views: true
     sources:
       - name: v2fly-domain-list-community
         author: v2fly
@@ -131,6 +136,7 @@ apps:
   PayPal:
     enabled: true
     output: Surge/PayPal.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -155,6 +161,7 @@ apps:
   Netflix:
     enabled: true
     output: Surge/Netflix.list
+    views: true
     sources:
       - name: blackmatrix7-ios_rule_script
         author: blackmatrix7
@@ -179,6 +186,7 @@ apps:
   YouTube:
     enabled: true
     output: Surge/YouTube.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -205,6 +213,7 @@ apps:
   X:
     enabled: true
     output: Surge/X.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -229,6 +238,7 @@ apps:
   Instagram:
     enabled: true
     output: Surge/Instagram.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -290,6 +300,7 @@ apps:
   Threads:
     enabled: true
     output: Surge/Threads.list
+    views: true
     sources:
       - name: v2fly-domain-list-community
         author: v2fly
@@ -313,6 +324,7 @@ apps:
   TikTok:
     enabled: true
     output: Surge/TikTok.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -341,6 +353,7 @@ apps:
   Spotify:
     enabled: true
     output: Surge/Spotify.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -367,6 +380,7 @@ apps:
   AI:
     enabled: true
     output: Surge/AI.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -395,6 +409,7 @@ apps:
   ZABank:
     enabled: true
     output: Surge/ZABank.list
+    views: true
     sources: []
     include_policy:
       mode: explicit
@@ -416,6 +431,7 @@ apps:
   Steam:
     enabled: true
     output: Surge/Steam.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -443,6 +459,7 @@ apps:
   APTV:
     enabled: true
     output: Surge/APTV.list
+    views: true
     sources: []
     include_policy:
       mode: explicit
@@ -466,6 +483,7 @@ apps:
   Disney:
     enabled: true
     output: Surge/Disney.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -493,6 +511,7 @@ apps:
   ParamountPlus:
     enabled: true
     output: Surge/ParamountPlus.list
+    views: true
     sources:
       - name: blackmatrix7-ios_rule_script
         author: blackmatrix7
@@ -518,6 +537,7 @@ apps:
   Hulu:
     enabled: true
     output: Surge/Hulu.list
+    views: true
     sources:
       - name: blackmatrix7-ios_rule_script
         author: blackmatrix7
@@ -544,6 +564,7 @@ apps:
   PrimeVideo:
     enabled: true
     output: Surge/PrimeVideo.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -569,6 +590,7 @@ apps:
   HBO:
     enabled: true
     output: Surge/HBO.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -596,6 +618,7 @@ apps:
   Twitch:
     enabled: true
     output: Surge/Twitch.list
+    views: true
     sources:
       - name: blackmatrix7-ios_rule_script
         author: blackmatrix7
@@ -623,6 +646,7 @@ apps:
   Facebook:
     enabled: true
     output: Surge/Facebook.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -648,6 +672,7 @@ apps:
   Google:
     enabled: true
     output: Surge/Google.list
+    views: true
     sources:
       - name: Repcz-Tool
         author: Repcz
@@ -675,6 +700,7 @@ apps:
   NBA:
     enabled: true
     output: Surge/NBA.list
+    views: true
     sources: []
     include_policy:
       mode: explicit
@@ -695,6 +721,7 @@ apps:
   Suno:
     enabled: true
     output: Surge/Suno.list
+    views: true
     sources: []
     include_policy:
       mode: explicit
