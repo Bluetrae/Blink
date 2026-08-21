@@ -38,13 +38,26 @@ export default function Nav({ repo, theme, toggleTheme }: NavProps) {
           href="#top"
           className="flex items-center gap-2 text-[17px] font-bold tracking-tight text-ink"
         >
-          <img
-            src="blink-logo.png"
-            alt=""
-            width={24}
-            height={24}
-            className="h-6 w-6 rounded-full border border-line bg-card object-cover"
-          />
+          <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-line bg-card">
+            <img
+              src="blink-logo.png"
+              alt=""
+              width={24}
+              height={24}
+              className={`absolute h-full w-full object-cover transition-all duration-300 ease-out ${
+                dark ? "rotate-0 scale-100 opacity-100" : "-rotate-180 scale-0 opacity-0"
+              }`}
+            />
+            <img
+              src="blink-logo-2.png"
+              alt=""
+              width={24}
+              height={24}
+              className={`absolute h-full w-full object-cover transition-all duration-300 ease-out ${
+                dark ? "rotate-180 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+              }`}
+            />
+          </span>
           Blink
         </a>
         <nav className="ml-auto hidden gap-5 sm:flex" aria-label="主导航">

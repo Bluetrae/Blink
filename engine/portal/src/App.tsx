@@ -72,7 +72,7 @@ export default function App() {
           <section className="px-6 py-24 text-center text-mute">正在加载规则数据…</section>
         )}
       </main>
-      <Footer repo={data?.repo ?? FALLBACK_REPO} />
+      <Footer repo={data?.repo ?? FALLBACK_REPO} theme={theme} />
     </>
   );
 }
