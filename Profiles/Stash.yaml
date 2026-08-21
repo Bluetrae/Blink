@@ -143,6 +143,9 @@ rules:
   - RULE-SET,lan,DIRECT
   - RULE-SET,domestic,DIRECT
   - RULE-SET,cdn,Proxy
+  # UNSUPPORTED: reject-drop（Surge pre-matching 专属）本文件省略
+  # UNSUPPORTED: reject-domainset（Surge DOMAIN-SET 专属）本文件省略
+  # UNSUPPORTED: ntp-123（当前客户端不支持）本文件省略
   - RULE-SET,Telegram,Telegram
   - RULE-SET,X,X
   - RULE-SET,YouTube,Youtube

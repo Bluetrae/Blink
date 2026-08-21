@@ -194,6 +194,33 @@ def _infra_for_phase(intent: dict, client: str, phase: str) -> list[dict]:
     ]
 
 
+def _unsupported_reason(rule: dict, client: str) -> str:
+    """Human-readable reason a Surge-bound infrastructure rule is unavailable client-side."""
+    surge_options = rule.get("surge_options") or []
+    if rule.get("kind") == "domain-set":
+        return "Surge DOMAIN-SET 专属"
+    if "pre-matching" in surge_options:
+        return "Surge pre-matching 专属"
+    if client == "quantumultx" and not rule.get("qx_url") and rule.get("kind", "rule-set") == "rule-set":
+        return "Quantumult X 无对应源"
+    if "extended-matching" in surge_options:
+        return "Surge extended-matching 专属"
+    return "当前客户端不支持"
+
+
+def _infra_unsupported_lines(intent: dict, client: str, phase: str, prefix: str) -> list[str]:
+    """Per-item UNSUPPORTED notes for infrastructure the client omits, for a given phase."""
+    lines: list[str] = []
+    for rule in intent.get("infrastructure", []):
+        if _phase(rule) != phase:
+            continue
+        if rule.get("clients") is not None and client not in rule["clients"]:
+            lines.append(
+                f"{prefix}# UNSUPPORTED: {rule['name']}（{_unsupported_reason(rule, client)}）本文件省略"
+            )
+    return lines
+
+
 # --------------------------------------------------------------------------
 # Per-client renderers.  Each returns a dict of marker -> text.  Anything a
 # client cannot express is either adapted (documented inline as a comment)
@@ -294,6 +321,7 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
             rules.append(f"DOMAIN,{entry['value']},{policy}")
         else:
             rules.append(f"RULE-SET,{entry['url']},{policy}")
+    rules.extend(_infra_unsupported_lines(intent, "shadowrocket", "domain", ""))
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
@@ -305,6 +333,7 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
             rules.append(f"DOMAIN,{entry['value']},{policy}")
         else:
             rules.append(f"RULE-SET,{entry['url']},{policy}")
+    rules.extend(_infra_unsupported_lines(intent, "shadowrocket", "ip", ""))
     rules.append("FINAL,Final")
     subscription = [
         "# ADAPTED：请在 Shadowrocket App 内添加下列唯一订阅，并将其命名为 Sub。",
@@ -346,6 +375,7 @@ def _render_loon(intent: dict) -> dict[str, str]:
             remote_rules.append(
                 f"{entry['url']}, policy = {policy}, tag = {entry['name']}, enabled = true"
             )
+    remote_rules.extend(_infra_unsupported_lines(intent, "loon", "domain", ""))
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         remote_rules.append(f"{source}, policy = {app['policy']}, tag = {app_name}, enabled = true")
@@ -359,6 +389,7 @@ def _render_loon(intent: dict) -> dict[str, str]:
             remote_rules.append(
                 f"{entry['url']}, policy = {policy}, tag = {entry['name']}, enabled = true"
             )
+    remote_rules.extend(_infra_unsupported_lines(intent, "loon", "ip", ""))
     local_rules.append("FINAL,Final")
     subscription = [
         "# ADAPTED：请在 Loon App 内添加下列唯一订阅；地区组通过 [Remote Filter] 筛选节点。",
@@ -440,6 +471,7 @@ def _render_stash(intent: dict) -> dict[str, str]:
 
     for entry in _infra_for_phase(intent, "stash", "domain"):
         add_rule_entry(entry)
+    rules.extend(_infra_unsupported_lines(intent, "stash", "domain", "  "))
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         key = provider_name(app_name)
@@ -452,6 +484,7 @@ def _render_stash(intent: dict) -> dict[str, str]:
         rules.append(f"  - RULE-SET,{key},{app['policy']}")
     for entry in _infra_for_phase(intent, "stash", "ip"):
         add_rule_entry(entry)
+    rules.extend(_infra_unsupported_lines(intent, "stash", "ip", "  "))
     rules.extend(local_rules)
     rules.append("  - MATCH,Final")
     return {
@@ -537,6 +570,7 @@ def _render_clash(intent: dict) -> dict[str, str]:
 
     for entry in _infra_for_phase(intent, "clash", "domain"):
         add_rule_entry(entry)
+    rules.extend(_infra_unsupported_lines(intent, "clash", "domain", "  "))
     for app_name, app in intent["apps"].items():
         # Blink 的 App 规则经 Clash/ 目录分发（classical 已去除 USER-AGENT）；
         # 显式指定外部 source 的 App（如 AppleMusic）按上游原样引用。
@@ -551,6 +585,7 @@ def _render_clash(intent: dict) -> dict[str, str]:
         rules.append(f"  - RULE-SET,{key},{app['policy']}")
     for entry in _infra_for_phase(intent, "clash", "ip"):
         add_rule_entry(entry)
+    rules.extend(_infra_unsupported_lines(intent, "clash", "ip", "  "))
     rules.extend(local_rules)
     rules.append("  - MATCH,Final")
     return {
@@ -610,6 +645,7 @@ def _render_egern(intent: dict) -> dict[str, str]:
 
     for entry in _infra_for_phase(intent, "egern", "domain"):
         add_rule_entry(entry)
+    rules.extend(_infra_unsupported_lines(intent, "egern", "domain", ""))
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append("- rule_set:")
@@ -617,6 +653,7 @@ def _render_egern(intent: dict) -> dict[str, str]:
         rules.append(f"    policy: {app['policy']}")
     for entry in _infra_for_phase(intent, "egern", "ip"):
         add_rule_entry(entry)
+    rules.extend(_infra_unsupported_lines(intent, "egern", "ip", ""))
     rules.append("- default:")
     rules.append("    policy: Final")
     return {"__POLICY_GROUPS__": "\n".join(group_lines), "__RULES__": "\n".join(rules)}
@@ -679,6 +716,8 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
         )
     for entry in _infra_for_phase(intent, "quantumultx", "ip"):
         add_rule_entry(entry)
+    local_rules.extend(_infra_unsupported_lines(intent, "quantumultx", "domain", ""))
+    local_rules.extend(_infra_unsupported_lines(intent, "quantumultx", "ip", ""))
     local_rules.append("final, Final")
     subscription = [
         "# ADAPTED：请在 Quantumult X App 内添加下列唯一订阅；地区组通过 server-tag-regex 筛选节点。",
