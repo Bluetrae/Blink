@@ -65,7 +65,7 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
         ref={triggerRef}
         type="button"
         onClick={toggle}
-        className="flex-1 min-w-[84px] rounded-lg bg-accent px-2 py-1.5 text-[12.5px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
+        className="flex-1 min-w-[80px] rounded-lg bg-accent px-2 py-1.5 text-center text-[13px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
       >
         {copied ? "已复制 ✓" : "复制规则链接"}
         {!single && (
@@ -192,7 +192,7 @@ function AppCard({
             href={clientFileUrl(rawBase, app, client)}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex-1 min-w-[64px] rounded-lg border border-line bg-card px-2 py-1.5 text-center text-[13px] text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-paper active:translate-y-0 active:scale-[0.96]"
+            className="group flex-1 min-w-[80px] rounded-lg border border-line bg-card px-2 py-1.5 text-center text-[13px] font-medium text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-paper active:translate-y-0 active:scale-[0.96]"
           >
             查看{" "}
             <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
