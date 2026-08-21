@@ -20,7 +20,7 @@ export default function Footer({ repo }: FooterProps) {
             height={24}
             className="h-6 w-6 rounded-full border border-line bg-card object-cover"
           />
-          Blink · 个人使用的多客户端规则与配置文件分发仓库
+          Blink · 多客户端规则与配置
         </p>
         <nav className="flex flex-wrap justify-center gap-4 text-[13.5px]" aria-label="页脚链接">
           {links.map((link) => (
