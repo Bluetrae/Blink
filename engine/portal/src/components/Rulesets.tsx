@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { AppEntry, ClientKey, PortalData } from "../types";
 import {
   CATEGORY_LABELS,
@@ -16,22 +16,56 @@ import {
 } from "../data";
 import Reveal from "./Reveal";
 
+const MENU_WIDTH = 168;
+
 function CopyRuleButton({ options }: { options: { label: string; snippet: string }[] }) {
   const [open, setOpen] = useState(false);
+  const [anchor, setAnchor] = useState<{ top: number; left: number } | null>(null);
   const [copied, setCopied] = useState("");
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const single = options.length === 1;
+
+  const close = () => {
+    setOpen(false);
+    setAnchor(null);
+  };
+
   const copy = async (option: { label: string; snippet: string }) => {
     await navigator.clipboard.writeText(option.snippet);
     setCopied(option.label);
     window.setTimeout(() => setCopied(""), 1200);
-    setOpen(false);
+    close();
   };
+
+  const toggle = () => {
+    if (single) {
+      copy(options[0]);
+      return;
+    }
+    if (open) {
+      close();
+      return;
+    }
+    const rect = triggerRef.current?.getBoundingClientRect();
+    const left = Math.max(8, Math.min(rect?.left ?? 8, window.innerWidth - MENU_WIDTH - 8));
+    setAnchor({ top: (rect?.bottom ?? 0) + 6, left });
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onScroll = () => close();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [open]);
+
   return (
-    <div className="relative flex-1 min-w-[84px]">
+    <>
       <button
+        ref={triggerRef}
         type="button"
-        onClick={() => (single ? copy(options[0]) : setOpen((value) => !value))}
-        className="w-full rounded-lg bg-accent px-2 py-1.5 text-[12.5px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
+        onClick={toggle}
+        className="flex-1 min-w-[84px] rounded-lg bg-accent px-2 py-1.5 text-[12.5px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
       >
         {copied ? "已复制 ✓" : "复制规则链接"}
         {!single && (
@@ -42,21 +76,30 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
           </span>
         )}
       </button>
-      {open && !single && (
-        <div className="menu-pop absolute right-0 top-full z-10 mt-1 w-max min-w-full rounded-lg border border-line bg-card p-1 shadow-lg">
-          {options.map((option) => (
-            <button
-              key={option.label}
-              type="button"
-              onClick={() => copy(option)}
-              className="block w-full rounded-md px-2 py-1.5 text-left text-[12px] text-ink transition-colors duration-150 hover:bg-paper"
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+      {open && anchor && !single && (
+        <>
+          {/* Transparent backdrop: closes on outside click and blocks the cards
+              below so the fixed menu never gets covered by adjacent cards. */}
+          <div className="fixed inset-0 z-[90]" onClick={close} aria-hidden="true" />
+          <div
+            className="menu-pop fixed z-[100] rounded-lg border border-line bg-card p-1 shadow-lg"
+            style={{ top: anchor.top, left: anchor.left, width: MENU_WIDTH }}
+            role="menu"
+          >
+            {options.map((option) => (
+              <button
+                key={option.label}
+                type="button"
+                onClick={() => copy(option)}
+                className="block w-full rounded-md px-2 py-1.5 text-left text-[12px] text-ink transition-colors duration-150 hover:bg-paper"
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </>
       )}
-    </div>
+    </>
   );
 }
 

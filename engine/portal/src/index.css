@@ -157,7 +157,7 @@ code:not(pre code) {
 }
 
 .menu-pop {
-  transform-origin: top right;
+  transform-origin: top;
   animation: menu-pop 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
