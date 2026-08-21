@@ -62,10 +62,10 @@ const STEPS: Record<ClientKey, ReactNode[]> = {
   ],
 };
 
-export default function Usage({ data }: { data: PortalData }) {
+export default function Usage({ data, query }: { data: PortalData; query: string }) {
   const [client, setClient] = useState<ClientKey>("surge");
   const tab = clientTab(client);
-  const lines = useMemo(() => allSnippets(data, client), [data, client]);
+  const lines = useMemo(() => allSnippets(data, client, query), [data, client, query]);
 
   return (
     <section id="usage" className="scroll-mt-24 px-6 py-16 sm:py-20">
@@ -77,6 +77,11 @@ export default function Usage({ data }: { data: PortalData }) {
               同一套规则，七种客户端各自的接入方式：非 Mihomo 客户端复制规则链接去前端导入， Stash /
               Clash 复制配置文件写法。
             </p>
+            {query.trim() && (
+              <p className="mt-3 inline-block rounded-full border border-accent-soft bg-accent-soft px-3.5 py-1 text-[12.5px] text-accent">
+                已按「{query.trim()}」过滤（与规则集搜索联动）
+              </p>
+            )}
           </div>
         </Reveal>
         <Reveal>

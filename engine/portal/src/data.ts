@@ -292,21 +292,44 @@ export function clientViewSnippet(
   return url;
 }
 
-function groupedApps(data: PortalData): Array<{ label: string; apps: AppEntry[] }> {
+/** Shared app search: name, Chinese category, note, and source metadata. */
+export function appMatchesQuery(app: AppEntry, query: string): boolean {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  const haystack = [
+    app.name,
+    CATEGORY_LABELS[app.category] ?? app.category,
+    app.note,
+    app.source.author,
+    app.source.name,
+    app.source.format,
+  ]
+    .join("\n")
+    .toLowerCase();
+  return haystack.includes(q);
+}
+
+function groupedApps(
+  data: PortalData,
+  apps?: AppEntry[],
+): Array<{ label: string; apps: AppEntry[] }> {
   const groups: Array<{ label: string; apps: AppEntry[] }> = [];
   for (const category of CATEGORY_ORDER) {
-    const apps = sortedApps(data.apps).filter((app) => app.category === category);
-    if (apps.length > 0) groups.push({ label: CATEGORY_LABELS[category] ?? category, apps });
+    const list = sortedApps(apps ?? data.apps).filter((app) => app.category === category);
+    if (list.length > 0) groups.push({ label: CATEGORY_LABELS[category] ?? category, apps: list });
   }
   return groups;
 }
 
-export function allSnippets(data: PortalData, client: ClientKey): string {
+export function allSnippets(data: PortalData, client: ClientKey, query = ""): string {
   const out: string[] = [];
+  const apps = query.trim()
+    ? sortedApps(data.apps).filter((app) => appMatchesQuery(app, query))
+    : sortedApps(data.apps);
   if (client === "stash" || client === "clash") {
     // mihomo 系：需在配置文件手写 rule-providers + RULE-SET，保留该写法。
     out.push("rule-providers:");
-    for (const app of sortedApps(data.apps)) {
+    for (const app of apps) {
       const views = appViews(app, client);
       const keys = views.length ? views : [null];
       for (const view of keys) {
@@ -324,7 +347,7 @@ export function allSnippets(data: PortalData, client: ClientKey): string {
       }
     }
     out.push("rules:");
-    for (const app of sortedApps(data.apps)) {
+    for (const app of apps) {
       const views = appViews(app, client);
       const keys = views.length ? views : [null];
       for (const view of keys)
@@ -333,7 +356,7 @@ export function allSnippets(data: PortalData, client: ClientKey): string {
     return out.join("\n");
   }
   // 非 mihomo：复制 raw 地址，用户在客户端前端导入；按容器分组。
-  for (const group of groupedApps(data)) {
+  for (const group of groupedApps(data, apps)) {
     out.push(`# ${group.label}`);
     for (const app of group.apps) {
       const views = appViews(app, client);

@@ -7,6 +7,7 @@ import {
   CLIENT_TABS,
   VIEW_LABELS,
   VIEW_ORDER,
+  appMatchesQuery,
   clientFileUrl,
   clientIcon,
   clientSnippet,
@@ -129,15 +130,32 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
   );
 }
 
+function highlightTag(text: string, query: string) {
+  if (!query) return text;
+  const index = text.toLowerCase().indexOf(query.toLowerCase());
+  if (index === -1) return text;
+  return (
+    <>
+      {text.slice(0, index)}
+      <mark className="rounded bg-accent-soft px-0.5 py-0 text-accent">
+        {text.slice(index, index + query.length)}
+      </mark>
+      {text.slice(index + query.length)}
+    </>
+  );
+}
+
 function AppCard({
   app,
   client,
   rawBase,
+  query,
   index,
 }: {
   app: AppEntry;
   client: ClientKey;
   rawBase: string;
+  query: string;
   index: number;
 }) {
   const stat = app.clients[client];
@@ -172,9 +190,11 @@ function AppCard({
             )}
           </span>
           <div className="min-w-0 leading-tight">
-            <div className="truncate text-sm font-semibold tracking-tight">{app.name}</div>
+            <div className="truncate text-sm font-semibold tracking-tight">
+              {highlightTag(app.name, query)}
+            </div>
             <div className="truncate text-[11px] text-mute">
-              {CATEGORY_LABELS[app.category] ?? app.category}
+              {highlightTag(CATEGORY_LABELS[app.category] ?? app.category, query)}
             </div>
           </div>
         </div>
@@ -231,22 +251,23 @@ function AppCard({
   );
 }
 
-export default function Rulesets({ data }: { data: PortalData }) {
+export default function Rulesets({
+  data,
+  query,
+  onQueryChange,
+}: {
+  data: PortalData;
+  query: string;
+  onQueryChange: (value: string) => void;
+}) {
   const [client, setClient] = useState<ClientKey>("surge");
   const [filter, setFilter] = useState("all");
-  const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState(false);
   const apps = useMemo(() => sortedApps(data.apps), [data.apps]);
   const present = useMemo(() => new Set(apps.map((app) => app.category)), [apps]);
   const filters = ["all", ...CATEGORY_ORDER.filter((category) => present.has(category))];
-  const query = search.trim().toLowerCase();
   const categoryApps = filter === "all" ? apps : apps.filter((app) => app.category === filter);
-  const results = categoryApps.filter(
-    (app) =>
-      !query ||
-      app.name.toLowerCase().includes(query) ||
-      (CATEGORY_LABELS[app.category] ?? app.category).toLowerCase().includes(query),
-  );
+  const results = categoryApps.filter((app) => appMatchesQuery(app, query));
   const activeNote = CLIENT_TABS.find((tab) => tab.key === client)?.note ?? "";
   const shown = expanded ? results : results.slice(0, 10);
   const collapsible = results.length > 10;
@@ -337,16 +358,16 @@ export default function Rulesets({ data }: { data: PortalData }) {
             </svg>
             <input
               type="text"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
+              value={query}
+              onChange={(event) => onQueryChange(event.target.value)}
               placeholder="搜索 App，如 YouTube / Netflix / Telegram…"
               aria-label="搜索 App 规则"
               className="peer w-full rounded-full border border-line bg-card py-2.5 pl-11 pr-10 text-sm text-ink shadow-sm outline-none transition-all duration-200 ease-out placeholder:text-mute/70 focus:-translate-y-px focus:border-accent focus:bg-paper focus:shadow-md focus:shadow-accent/15 focus:ring-2 focus:ring-accent/15"
             />
-            {search && (
+            {query && (
               <button
                 type="button"
-                onClick={() => setSearch("")}
+                onClick={() => onQueryChange("")}
                 aria-label="清空搜索"
                 className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-mute transition-all duration-150 ease-out hover:bg-paper hover:text-ink active:scale-90"
               >
@@ -354,7 +375,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
               </button>
             )}
           </div>
-          {query && (
+          {query.trim() && (
             <p className="mx-auto -mt-2 mb-5 text-center text-[12px] text-mute">
               共找到 <b className="text-ink">{results.length}</b> 个匹配 App
             </p>
@@ -386,7 +407,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
             <button
               type="button"
               onClick={() => {
-                setSearch("");
+                onQueryChange("");
                 setFilter("all");
               }}
               className="mt-5 rounded-full border border-accent-soft bg-accent-soft px-4 py-2 text-[13px] font-medium text-accent transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md hover:shadow-accent/20 active:translate-y-0 active:scale-[0.96]"
@@ -402,6 +423,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
                 app={app}
                 client={client}
                 rawBase={data.raw_base}
+                query={query}
                 index={index}
               />
             ))}

@@ -15,6 +15,7 @@ export default function App() {
   useTimedTheme();
   const [data, setData] = useState<PortalData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -62,8 +63,8 @@ export default function App() {
               appsCount={data.apps.length}
               totalRules={data.apps.reduce((sum, app) => sum + app.rules, 0)}
             />
-            <Rulesets data={data} />
-            <Usage data={data} />
+            <Rulesets data={data} query={search} onQueryChange={setSearch} />
+            <Usage data={data} query={search} />
             <Profiles data={data} />
             <About repo={data.repo} />
           </>
