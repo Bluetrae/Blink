@@ -1367,54 +1367,64 @@
     "Telegram": {
       "canonical": {
         "denied_includes": [],
-        "input_rules": 14,
-        "rules": 14,
-        "sha256": "80955a2d901c08d575864642f908d0f4778e0125b3c215f7051d706ec5067247",
+        "input_rules": 29,
+        "rules": 29,
+        "sha256": "69cdf43732faa0dbb4f4d884a7def83d951014afc755a2a874b605840ffa72b3",
         "skipped_attributes": 0,
-        "skipped_excluded": []
+        "skipped_excluded": [],
+        "views": [
+          {
+            "name": "domainset",
+            "rules": 15
+          },
+          {
+            "name": "ip",
+            "rules": 14
+          }
+        ]
       },
       "outputs": {
         "clash": {
           "dropped": [],
           "path": "Clash/Telegram.list",
-          "rules": 14,
-          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+          "rules": 29,
+          "sha256": "85f188f60b4693093173e20c367f055595c5bcc13979423bc94addd72751dc27"
         },
         "egern": {
           "dropped": [],
           "path": "Egern/Telegram.yaml",
-          "rules": 14,
-          "sha256": "2518b0b69b30c5dc1db39dbc931abed2fc6802cbafb78915d4b08673b2ff8ba8"
+          "rules": 29,
+          "sha256": "7f8f3c0d42077a1a5f78ab28ccdaf91e2a087a72ce549c42708e46b341a31a66"
         },
         "loon": {
           "dropped": [],
           "path": "Loon/Telegram.list",
-          "rules": 14,
-          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+          "rules": 29,
+          "sha256": "85f188f60b4693093173e20c367f055595c5bcc13979423bc94addd72751dc27"
         },
         "quantumultx": {
           "dropped": [],
           "path": "QuantumultX/Telegram.list",
-          "rules": 14,
-          "sha256": "159fa010ac4aa614ff905078edc56e9ce09e9ab5e3e17824590462db5f26a897"
+          "rules": 29,
+          "sha256": "47e116c28454d213905624e1c9bf570ec514ac0a100c2059a1b0506a608ea1bc"
         },
         "shadowrocket": {
           "dropped": [],
           "path": "Shadowrocket/Telegram.list",
-          "rules": 14,
-          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+          "rules": 29,
+          "sha256": "85f188f60b4693093173e20c367f055595c5bcc13979423bc94addd72751dc27"
         },
         "stash": {
           "dropped": [],
           "path": "Stash/Telegram.list",
-          "rules": 14,
-          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+          "rules": 29,
+          "sha256": "85f188f60b4693093173e20c367f055595c5bcc13979423bc94addd72751dc27"
         },
         "surge": {
           "dropped": [],
           "path": "Surge/Telegram.list",
-          "rules": 14,
-          "sha256": "69fc9e647ed7f36bd7e38d20daf8edebae23a920e49b77200899ed45171fb9a3"
+          "rules": 29,
+          "sha256": "85f188f60b4693093173e20c367f055595c5bcc13979423bc94addd72751dc27"
         }
       },
       "sources": [
@@ -1427,9 +1437,31 @@
           "role": "primary",
           "text_sha256": "8eab4b09048a3b0174c413290e0b036035e8a711aa340cda55a88bc260e124be",
           "url": "https://raw.githubusercontent.com/SukkaW/Surge/master/Source/non_ip/telegram.conf"
+        },
+        {
+          "author": "SukkaW",
+          "bytes": 1116,
+          "format": "surge-rule-set",
+          "lines": 31,
+          "name": "SukkaW-Surge-Telegram-IP",
+          "role": "supplemental",
+          "text_sha256": "27f6bab896e98ec9631fd187ff5147fb101260fc7a322c0dc994bbd27ed0a81f",
+          "url": "https://ruleset.skk.moe/List/ip/telegram.conf"
         }
       ],
-      "supplement": null
+      "supplement": null,
+      "views": {
+        "domainset": {
+          "path": "Surge/Telegram-domainset.conf",
+          "rules": 15,
+          "sha256": "b70ea77288058199acb97d42756065bd4a7580983fbe824e2167f17dafb16eb2"
+        },
+        "ip": {
+          "path": "Surge/Telegram-ip.conf",
+          "rules": 14,
+          "sha256": "ea9892c4bf0765d578c581951626640fcc347654ef7e74fce17a5c46ab0a04e1"
+        }
+      }
     },
     "Threads": {
       "canonical": {
@@ -1904,14 +1936,14 @@
   },
   "builder": {
     "files": {
-      "engine/scripts/build.py": "acea86cbe87e24a2785165274c4ee441393968ef4768860a5da568db3485b31e",
-      "engine/scripts/renderers.py": "a74e9104d626044f8326c6b50783f6006ab1d45fe36107e250aba11bb3a4660b"
+      "engine/scripts/build.py": "edec5fe89868424e09448823bac2ea26a832703acc92c9a4af9edabd95081d57",
+      "engine/scripts/renderers.py": "6e7abdd0de50603261d1aac5c60f34d8380af4f0270f6f040b01916b8eed0469"
     },
     "version": "2.0.0"
   },
   "schema_version": 1,
   "source_definition": {
     "path": "engine/sources/apps.yaml",
-    "sha256": "a047f609300747ed4e08ddbf88b21e65b48bf6dd3227d5fd3595f4c7b3d1929f"
+    "sha256": "c08d4cc969d0d469a5f37ca540be73d72f10a09be292d7bacc4c3e77af31f9c3"
   }
 }

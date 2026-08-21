@@ -171,6 +171,21 @@ def check(root: Path) -> dict:
                 raise ManifestError(f"{app_name}/{client}: rules + dropped != canonical count")
             verified_outputs += 1
 
+        views = record.get("views")
+        if views is not None:
+            if not isinstance(views, dict):
+                raise ManifestError(f"{app_name}: views must be a mapping")
+            for view_name, view in views.items():
+                context = f"{app_name}.views.{view_name}"
+                if view_name not in build.VIEW_TYPES:
+                    raise ManifestError(f"{app_name}: unknown view {view_name!r}")
+                view_path = verify_file(root, view, context)
+                expected_view = (root / "Surge" / f"{app_name}-{view_name}.conf").resolve()
+                if view_path != expected_view:
+                    raise ManifestError(f"{app_name}/{view_name}: view path differs from convention")
+                if not isinstance(view.get("rules"), int) or view["rules"] <= 0:
+                    raise ManifestError(f"{context}: invalid rules metadata")
+
     return {
         "apps": len(enabled),
         "sources": verified_sources,

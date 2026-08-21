@@ -35,6 +35,7 @@ from renderers import (
     render_egern_yaml,
     render_for_client,
     render_quantumultx,
+    render_surge_domainset,
 )
 
 # Re-exported on purpose: engine/tests asserts through the build.* namespace,
@@ -48,6 +49,7 @@ __all__ = [
     "render_egern_yaml",
     "render_for_client",
     "render_quantumultx",
+    "render_surge_domainset",
 ]
 
 
@@ -68,6 +70,44 @@ SUPPORTED_SOURCE_FORMATS = {"v2fly-domain-list", "surge-rule-set"}
 PROVENANCE_SCHEMA_VERSION = 1
 PROVENANCE_FILENAME = "manifest.json"
 BUILDER_VERSION = "2.0.0"
+
+# Semantic phase of each canonical kind.  domain rules may be rendered as a
+# DOMAIN-SET; nonip rules (user-agent / process-name / keyword) stay classical;
+# ip rules always come after the domain/non-ip rules (domain-first / IP-last).
+PHASE_BY_KIND = {
+    "DOMAIN": "domain",
+    "DOMAIN-SUFFIX": "domain",
+    "DOMAIN-KEYWORD": "domain",
+    "USER-AGENT": "nonip",
+    "PROCESS-NAME": "nonip",
+    "IP-CIDR": "ip",
+    "IP-CIDR6": "ip",
+}
+VIEW_TYPES = {"domainset", "nonip", "ip"}
+
+
+def phase_of(rule: Rule) -> str:
+    return PHASE_BY_KIND.get(rule.kind, "nonip")
+
+
+def semantic_views(rules: Iterable[Rule]) -> list[tuple[str, list[Rule]]]:
+    """Split a canonical rule set into its semantic views.
+
+    Returns ``(view_name, rules)`` pairs in matching order (non-ip before ip).
+    A pure-domain (DOMAIN / DOMAIN-SUFFIX only, no keyword/UA/process) non-ip
+    portion yields a ``domainset`` view; anything else yields a ``nonip``
+    (classical) view.  Empty views are omitted, so a domain-only app never
+    produces an empty IP file.
+    """
+    nonip = [rule for rule in rules if phase_of(rule) != "ip"]
+    ip_rules = [rule for rule in rules if phase_of(rule) == "ip"]
+    pure_domain = all(rule.kind in {"DOMAIN", "DOMAIN-SUFFIX"} for rule in nonip)
+    views: list[tuple[str, list[Rule]]] = []
+    if nonip:
+        views.append(("domainset" if pure_domain else "nonip", nonip))
+    if ip_rules:
+        views.append(("ip", ip_rules))
+    return views
 
 
 class BuildError(RuntimeError):
@@ -122,6 +162,7 @@ class Compilation:
     skipped_excluded: list[str] = dataclasses.field(default_factory=list)
     source_inputs: dict[str, str] = dataclasses.field(default_factory=dict)
     input_rules: int = 0
+    views: list[tuple[str, list[Rule]]] = dataclasses.field(default_factory=list)
 
 
 FetchText = Callable[[str], str]
@@ -573,6 +614,7 @@ def compile_app(
         skipped_excluded,
         source_inputs,
         input_rules,
+        semantic_views(ordered),
     )
 
 
@@ -599,6 +641,28 @@ def rendered_outputs(
         except RendererError as error:
             raise BuildError(f"{compilation.app_name}: {key} render failed: {error}") from error
         outputs[key] = (path, text, dropped)
+    return outputs
+
+
+def surge_view_outputs(
+    compilation: Compilation, root: Path, *, enabled: bool
+) -> dict[str, tuple[Path, str, int]]:
+    """Render the Surge semantic views (domainset / nonip / ip) for one app.
+
+    Views are produced only when ``enabled`` (an explicit ``views: true`` in
+    apps.yaml); the legacy ``Surge/<App>.list`` stays byte-for-byte from the
+    classical renderer.
+    """
+    if not enabled:
+        return {}
+    outputs: dict[str, tuple[Path, str, int]] = {}
+    for view_name, view_rules in compilation.views:
+        if view_name == "domainset":
+            text = render_surge_domainset(view_rules, compilation.app_name)
+        else:
+            text = render_classical(view_rules, compilation.app_name)
+        path = root / "Surge" / f"{compilation.app_name}-{view_name}.conf"
+        outputs[view_name] = (path, text, len(view_rules))
     return outputs
 
 
@@ -663,6 +727,16 @@ def app_provenance_record(
             "dropped": dropped,
         }
 
+    views = {}
+    for view_name, (path, text, count) in surge_view_outputs(
+        compilation, root, enabled=bool(app.get("views"))
+    ).items():
+        views[view_name] = {
+            "path": _relative_path(path, root),
+            "sha256": sha256_text(text),
+            "rules": count,
+        }
+
     return {
         "sources": sources,
         "supplement": supplement,
@@ -673,8 +747,12 @@ def app_provenance_record(
             "skipped_attributes": len(compilation.skipped_attributes),
             "skipped_excluded": compilation.skipped_excluded,
             "denied_includes": sorted(name for name, _location in compilation.denied_includes),
+            "views": [
+                {"name": name, "rules": len(rules)} for name, rules in compilation.views
+            ],
         },
         "outputs": output_records,
+        "views": views,
     }
 
 
@@ -847,6 +925,23 @@ def write_outputs(
             temporary.replace(output)
 
 
+def write_surge_views(
+    compilations: Iterable[Compilation], manifest: dict, root: Path
+) -> None:
+    """Write the Surge semantic-view files for apps that opted in via ``views: true``."""
+    for compilation in compilations:
+        app = manifest["apps"][compilation.app_name]
+        if not app.get("views"):
+            continue
+        for path, text, _count in surge_view_outputs(
+            compilation, root, enabled=True
+        ).values():
+            path.parent.mkdir(parents=True, exist_ok=True)
+            temporary = path.with_suffix(path.suffix + ".tmp")
+            temporary.write_text(text, encoding="utf-8", newline="\n")
+            temporary.replace(path)
+
+
 def write_provenance(document: dict, root: Path) -> None:
     output = root / PROVENANCE_FILENAME
     temporary = output.with_suffix(output.suffix + ".tmp")
@@ -950,6 +1045,7 @@ def main(argv: list[str] | None = None) -> int:
                     "--accept-large-change if intentional:\n" + "\n".join(violations)
                 )
             write_outputs(compilations, manifest, root, rendered)
+            write_surge_views(compilations, manifest, root)
             assert provenance is not None
             write_provenance(provenance, root)
         report = {
@@ -968,6 +1064,7 @@ def main(argv: list[str] | None = None) -> int:
                     "skipped_attributes": len(item.skipped_attributes),
                     "skipped_excluded": len(item.skipped_excluded),
                     "denied_includes": [name for name, _ in item.denied_includes],
+                    "views": {name: len(rules) for name, rules in item.views},
                     "clients": {
                         key: {
                             "rules": len(item.rules) - len(dropped),

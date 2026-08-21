@@ -89,6 +89,28 @@ def render_classical_body(rules: Iterable[object]) -> list[str]:
     return [",".join((rule.kind, rule.value, *rule.options)) for rule in rules]
 
 
+def render_surge_domainset(rules: Iterable[object], app_name: str) -> str:
+    """Serialize pure-domain rules into a Surge ``DOMAIN-SET`` payload.
+
+    A Surge DOMAIN-SET payload holds one domain per line: an exact ``DOMAIN``
+    value and a ``.+domain`` suffix for ``DOMAIN-SUFFIX``.  DOMAIN-KEYWORD,
+    USER-AGENT, PROCESS-NAME, and IP rules cannot be expressed here, so callers
+    must only pass a pure-domain view; any other kind fails loudly.
+    """
+    body: list[str] = []
+    for rule in rules:
+        if rule.kind == "DOMAIN":
+            body.append(rule.value)
+        elif rule.kind == "DOMAIN-SUFFIX":
+            body.append("." + rule.value)
+        else:
+            raise RendererError(f"surge domainset cannot express rule kind {rule.kind!r}")
+    if not body:
+        raise RendererError("surge domainset output is empty")
+    lines = [f"# 规则名称: {app_name}", f"# 规则统计: {len(body)}", "", *body]
+    return "\n".join(lines) + "\n"
+
+
 def render_classical(rules: Iterable[object], app_name: str) -> str:
     """Full classical file: two ``#`` header lines, blank line, rules.
 

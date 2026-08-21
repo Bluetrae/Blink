@@ -255,12 +255,18 @@ apps:
   Telegram:
     enabled: true
     output: Surge/Telegram.list
+    views: true
     sources:
       - name: SukkaW-Surge
         author: SukkaW
         role: primary
         format: surge-rule-set
         url: https://raw.githubusercontent.com/SukkaW/Surge/master/Source/non_ip/telegram.conf
+      - name: SukkaW-Surge-Telegram-IP
+        author: SukkaW
+        role: supplemental
+        format: surge-rule-set
+        url: https://ruleset.skk.moe/List/ip/telegram.conf
     include_policy:
       mode: explicit
       allow: []
@@ -275,7 +281,11 @@ apps:
       limited to core Telegram domains and fits the preferred source tier. Repcz
       currently includes unsupported IP-ASN rules plus third-party client and
       telemetry scope; v2fly adds TON and related ecosystem domains that are not
-      required for a conservative Telegram default.
+      required for a conservative Telegram default. A supplemental IP source
+      (ruleset.skk.moe/List/ip/telegram.conf, official Telegram CIDR list, 2026-08-13)
+      is added so the canonical set carries both the domain (non-IP) and IP phases,
+      enabling Blink to split Telegram into a non-IP view and an IP view for the
+      Rule-layer multi-view pilot (2026-08).
 
   Threads:
     enabled: true

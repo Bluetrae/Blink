@@ -50,7 +50,7 @@
 | YouTube | Repcz | surge-rule-set | 紧凑核心专项范围 |
 | X | Repcz | surge-rule-set | 保留 X/Twitter/Grok/媒体与已审计窄范围 IP |
 | Instagram | Repcz | surge-rule-set | 排除过宽 `DOMAIN-KEYWORD,instagram` |
-| Telegram | SukkaW | surge-rule-set | 仅核心域名；用户主配置保持 MTProto + Repcz 双列表（含 IP） |
+| Telegram | SukkaW | surge-rule-set | 仅核心域名；用户主配置保持 MTProto + Repcz 双列表（含 IP）。2026-08 起为 Rule 层 multi-view pilot 增加 supplemental IP 源 `ruleset.skk.moe/List/ip/telegram.conf`（官方 Telegram CIDR 15 条，2026-08-13，AGPL 3.0），使 canonical 兼具 domain 与 IP 两段 |
 | Threads | v2fly | v2fly-domain-list | `threads.com`/`threads.net` 窄集合 |
 
 ## 各 App 审计记录
