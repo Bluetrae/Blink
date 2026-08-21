@@ -111,6 +111,49 @@ def render_surge_domainset(rules: Iterable[object], app_name: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def render_mihomo_domainset(rules: Iterable[object], app_name: str) -> str:
+    """Serialize pure-domain rules into a Mihomo ``behavior: domain`` payload.
+
+    Mihomo's ``domain`` rule-provider expects one domain per line, with a
+    ``+.<domain>`` prefix for subdomain/suffix matches and a bare value for an
+    exact match (mirrors skk's ``ClashDomainSet``).
+    """
+    body: list[str] = []
+    for rule in rules:
+        if rule.kind == "DOMAIN":
+            body.append(rule.value)
+        elif rule.kind == "DOMAIN-SUFFIX":
+            body.append("+." + rule.value)
+        else:
+            raise RendererError(f"mihomo domainset cannot express rule kind {rule.kind!r}")
+    if not body:
+        raise RendererError("mihomo domainset output is empty")
+    lines = [f"# 规则名称: {app_name}", f"# 规则统计: {len(body)}", "", *body]
+    return "\n".join(lines) + "\n"
+
+
+# View serialization for the cross-client multi-view pilot.  View files are
+# policy-free rule-set payloads (the referencing profile supplies the policy),
+# so they reuse the existing classical / mihomo / QX renderers.
+def render_view(client_key: str, view_name: str, rules: Iterable[object], app_name: str) -> str:
+    if view_name == "domainset":
+        if client_key in {"surge", "shadowrocket"}:
+            return render_surge_domainset(rules, app_name)
+        if client_key in {"stash", "clash"}:
+            return render_mihomo_domainset(rules, app_name)
+        if client_key in {"loon", "egern"}:
+            return render_classical(rules, app_name)
+        if client_key == "quantumultx":
+            return render_quantumultx(rules, app_name)[0]
+    if view_name in {"nonip", "ip"}:
+        if client_key == "clash":
+            return render_classical_clash(rules, app_name)[0]
+        if client_key == "quantumultx":
+            return render_quantumultx(rules, app_name)[0]
+        return render_classical(rules, app_name)
+    raise RendererError(f"render_view: unknown view {view_name!r} for client {client_key!r}")
+
+
 def render_classical(rules: Iterable[object], app_name: str) -> str:
     """Full classical file: two ``#`` header lines, blank line, rules.
 

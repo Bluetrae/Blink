@@ -36,6 +36,7 @@ from renderers import (
     render_for_client,
     render_quantumultx,
     render_surge_domainset,
+    render_view,
 )
 
 # Re-exported on purpose: engine/tests asserts through the build.* namespace,
@@ -50,6 +51,7 @@ __all__ = [
     "render_for_client",
     "render_quantumultx",
     "render_surge_domainset",
+    "render_view",
 ]
 
 
@@ -644,25 +646,27 @@ def rendered_outputs(
     return outputs
 
 
-def surge_view_outputs(
+def client_view_outputs(
     compilation: Compilation, root: Path, *, enabled: bool
-) -> dict[str, tuple[Path, str, int]]:
-    """Render the Surge semantic views (domainset / nonip / ip) for one app.
+) -> dict[str, dict[str, tuple[Path, str, int]]]:
+    """Render per-client semantic views (domainset / nonip / ip) for one app.
 
-    Views are produced only when ``enabled`` (an explicit ``views: true`` in
-    apps.yaml); the legacy ``Surge/<App>.list`` stays byte-for-byte from the
-    classical renderer.
+    Views are produced for every client only when ``enabled`` (an explicit
+    ``views: true`` in apps.yaml).  View payloads are policy-free rule-set
+    content; the legacy per-client main output stays unchanged.  View files use
+    a ``.conf`` suffix so parity (which globs the main ``.list``/``.yaml``) does
+    not mistake them for the main output.
     """
     if not enabled:
         return {}
-    outputs: dict[str, tuple[Path, str, int]] = {}
-    for view_name, view_rules in compilation.views:
-        if view_name == "domainset":
-            text = render_surge_domainset(view_rules, compilation.app_name)
-        else:
-            text = render_classical(view_rules, compilation.app_name)
-        path = root / "Surge" / f"{compilation.app_name}-{view_name}.conf"
-        outputs[view_name] = (path, text, len(view_rules))
+    outputs: dict[str, dict[str, tuple[Path, str, int]]] = {}
+    for client_key, client in CLIENTS.items():
+        client_views: dict[str, tuple[Path, str, int]] = {}
+        for view_name, view_rules in compilation.views:
+            text = render_view(client_key, view_name, view_rules, compilation.app_name)
+            path = root / client.directory / f"{compilation.app_name}-{view_name}.conf"
+            client_views[view_name] = (path, text, len(view_rules))
+        outputs[client_key] = client_views
     return outputs
 
 
@@ -728,14 +732,16 @@ def app_provenance_record(
         }
 
     views = {}
-    for view_name, (path, text, count) in surge_view_outputs(
+    for client_key, client_views in client_view_outputs(
         compilation, root, enabled=bool(app.get("views"))
     ).items():
-        views[view_name] = {
-            "path": _relative_path(path, root),
-            "sha256": sha256_text(text),
-            "rules": count,
-        }
+        views[client_key] = {}
+        for view_name, (path, text, count) in client_views.items():
+            views[client_key][view_name] = {
+                "path": _relative_path(path, root),
+                "sha256": sha256_text(text),
+                "rules": count,
+            }
 
     return {
         "sources": sources,
@@ -925,21 +931,22 @@ def write_outputs(
             temporary.replace(output)
 
 
-def write_surge_views(
+def write_client_views(
     compilations: Iterable[Compilation], manifest: dict, root: Path
 ) -> None:
-    """Write the Surge semantic-view files for apps that opted in via ``views: true``."""
+    """Write the per-client semantic-view files for apps that opted in via ``views: true``."""
     for compilation in compilations:
         app = manifest["apps"][compilation.app_name]
         if not app.get("views"):
             continue
-        for path, text, _count in surge_view_outputs(
+        for client_views in client_view_outputs(
             compilation, root, enabled=True
         ).values():
-            path.parent.mkdir(parents=True, exist_ok=True)
-            temporary = path.with_suffix(path.suffix + ".tmp")
-            temporary.write_text(text, encoding="utf-8", newline="\n")
-            temporary.replace(path)
+            for path, text, _count in client_views.values():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                temporary = path.with_suffix(path.suffix + ".tmp")
+                temporary.write_text(text, encoding="utf-8", newline="\n")
+                temporary.replace(path)
 
 
 def write_provenance(document: dict, root: Path) -> None:
@@ -1045,7 +1052,7 @@ def main(argv: list[str] | None = None) -> int:
                     "--accept-large-change if intentional:\n" + "\n".join(violations)
                 )
             write_outputs(compilations, manifest, root, rendered)
-            write_surge_views(compilations, manifest, root)
+            write_client_views(compilations, manifest, root)
             assert provenance is not None
             write_provenance(provenance, root)
         report = {

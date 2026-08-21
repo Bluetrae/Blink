@@ -1451,15 +1451,89 @@
       ],
       "supplement": null,
       "views": {
-        "domainset": {
-          "path": "Surge/Telegram-domainset.conf",
-          "rules": 15,
-          "sha256": "b70ea77288058199acb97d42756065bd4a7580983fbe824e2167f17dafb16eb2"
+        "clash": {
+          "domainset": {
+            "path": "Clash/Telegram-domainset.conf",
+            "rules": 15,
+            "sha256": "5a1f563b66057756be7b26cb9ff678751de1018ca8df661b15bc75b64bd364a6"
+          },
+          "ip": {
+            "path": "Clash/Telegram-ip.conf",
+            "rules": 14,
+            "sha256": "ea9892c4bf0765d578c581951626640fcc347654ef7e74fce17a5c46ab0a04e1"
+          }
         },
-        "ip": {
-          "path": "Surge/Telegram-ip.conf",
-          "rules": 14,
-          "sha256": "ea9892c4bf0765d578c581951626640fcc347654ef7e74fce17a5c46ab0a04e1"
+        "egern": {
+          "domainset": {
+            "path": "Egern/Telegram-domainset.conf",
+            "rules": 15,
+            "sha256": "c56f09c647cf907668913d25b6af5230f81d95eb451d7023d6f027e1447d89d2"
+          },
+          "ip": {
+            "path": "Egern/Telegram-ip.conf",
+            "rules": 14,
+            "sha256": "ea9892c4bf0765d578c581951626640fcc347654ef7e74fce17a5c46ab0a04e1"
+          }
+        },
+        "loon": {
+          "domainset": {
+            "path": "Loon/Telegram-domainset.conf",
+            "rules": 15,
+            "sha256": "c56f09c647cf907668913d25b6af5230f81d95eb451d7023d6f027e1447d89d2"
+          },
+          "ip": {
+            "path": "Loon/Telegram-ip.conf",
+            "rules": 14,
+            "sha256": "ea9892c4bf0765d578c581951626640fcc347654ef7e74fce17a5c46ab0a04e1"
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "path": "QuantumultX/Telegram-domainset.conf",
+            "rules": 15,
+            "sha256": "599bc86feaef71ef849b6ab7aaee782f04c62faed8466b93803acae9ded68843"
+          },
+          "ip": {
+            "path": "QuantumultX/Telegram-ip.conf",
+            "rules": 14,
+            "sha256": "eaf69164631a74b69b3a65676ab25dd748a19f1f1e5115ba50e376468def894a"
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "path": "Shadowrocket/Telegram-domainset.conf",
+            "rules": 15,
+            "sha256": "b70ea77288058199acb97d42756065bd4a7580983fbe824e2167f17dafb16eb2"
+          },
+          "ip": {
+            "path": "Shadowrocket/Telegram-ip.conf",
+            "rules": 14,
+            "sha256": "ea9892c4bf0765d578c581951626640fcc347654ef7e74fce17a5c46ab0a04e1"
+          }
+        },
+        "stash": {
+          "domainset": {
+            "path": "Stash/Telegram-domainset.conf",
+            "rules": 15,
+            "sha256": "5a1f563b66057756be7b26cb9ff678751de1018ca8df661b15bc75b64bd364a6"
+          },
+          "ip": {
+            "path": "Stash/Telegram-ip.conf",
+            "rules": 14,
+            "sha256": "ea9892c4bf0765d578c581951626640fcc347654ef7e74fce17a5c46ab0a04e1"
+          }
+        },
+        "surge": {
+          "domainset": {
+            "path": "Surge/Telegram-domainset.conf",
+            "rules": 15,
+            "sha256": "b70ea77288058199acb97d42756065bd4a7580983fbe824e2167f17dafb16eb2"
+          },
+          "ip": {
+            "path": "Surge/Telegram-ip.conf",
+            "rules": 14,
+            "sha256": "ea9892c4bf0765d578c581951626640fcc347654ef7e74fce17a5c46ab0a04e1"
+          }
         }
       }
     },
@@ -1936,8 +2010,8 @@
   },
   "builder": {
     "files": {
-      "engine/scripts/build.py": "edec5fe89868424e09448823bac2ea26a832703acc92c9a4af9edabd95081d57",
-      "engine/scripts/renderers.py": "6e7abdd0de50603261d1aac5c60f34d8380af4f0270f6f040b01916b8eed0469"
+      "engine/scripts/build.py": "7b2f344e34f6aebf187280c7b6dd0ebe37276c07d2f5f70e681234e51b443dcd",
+      "engine/scripts/renderers.py": "5fece8062fee889c7fdb58d5a1b1bf6c87c4bc85f0211cd0bfc9d5d17976b2cf"
     },
     "version": "2.0.0"
   },

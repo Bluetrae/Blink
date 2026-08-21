@@ -175,16 +175,22 @@ def check(root: Path) -> dict:
         if views is not None:
             if not isinstance(views, dict):
                 raise ManifestError(f"{app_name}: views must be a mapping")
-            for view_name, view in views.items():
-                context = f"{app_name}.views.{view_name}"
-                if view_name not in build.VIEW_TYPES:
-                    raise ManifestError(f"{app_name}: unknown view {view_name!r}")
-                view_path = verify_file(root, view, context)
-                expected_view = (root / "Surge" / f"{app_name}-{view_name}.conf").resolve()
-                if view_path != expected_view:
-                    raise ManifestError(f"{app_name}/{view_name}: view path differs from convention")
-                if not isinstance(view.get("rules"), int) or view["rules"] <= 0:
-                    raise ManifestError(f"{context}: invalid rules metadata")
+            for client_key, client_views in views.items():
+                if client_key not in build.CLIENTS:
+                    raise ManifestError(f"{app_name}: unknown client in views {client_key!r}")
+                if not isinstance(client_views, dict):
+                    raise ManifestError(f"{app_name}.views.{client_key}: must be a mapping")
+                for view_name, view in client_views.items():
+                    context = f"{app_name}.views.{client_key}.{view_name}"
+                    if view_name not in build.VIEW_TYPES:
+                        raise ManifestError(f"{app_name}: unknown view {view_name!r}")
+                    view_path = verify_file(root, view, context)
+                    directory = build.CLIENTS[client_key].directory
+                    expected_view = (root / directory / f"{app_name}-{view_name}.conf").resolve()
+                    if view_path != expected_view:
+                        raise ManifestError(f"{app_name}/{client_key}/{view_name}: view path differs from convention")
+                    if not isinstance(view.get("rules"), int) or view["rules"] <= 0:
+                        raise ManifestError(f"{context}: invalid rules metadata")
 
     return {
         "apps": len(enabled),
