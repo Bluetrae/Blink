@@ -25,7 +25,7 @@ export default function Nav({ repo }: NavProps) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-6 pt-3">
       <div
-        className={`mx-auto flex h-14 max-w-5xl items-center gap-4 rounded-full px-5 transition-all duration-300 ease-out ${
+        className={`mx-auto flex h-14 max-w-5xl items-center gap-4 rounded-full px-5 transition-[border-color,background-color,box-shadow] duration-300 ease-out ${
           scrolled || menuOpen ? "nav-scrolled" : "border border-transparent bg-transparent"
         }`}
       >

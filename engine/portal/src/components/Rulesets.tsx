@@ -34,15 +34,22 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
         className="w-full rounded-lg bg-accent px-2 py-1.5 text-[12.5px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
       >
         {copied ? "已复制 ✓" : "复制规则链接"}
+        {!single && (
+          <span
+            className={`ml-1 inline-block text-[9px] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          >
+            ▾
+          </span>
+        )}
       </button>
       {open && !single && (
-        <div className="absolute right-0 top-full z-10 mt-1 w-max min-w-full rounded-lg border border-line bg-card p-1 shadow-lg">
+        <div className="menu-pop absolute right-0 top-full z-10 mt-1 w-max min-w-full rounded-lg border border-line bg-card p-1 shadow-lg">
           {options.map((option) => (
             <button
               key={option.label}
               type="button"
               onClick={() => copy(option)}
-              className="block w-full rounded-md px-2 py-1.5 text-left text-[12px] text-ink hover:bg-paper"
+              className="block w-full rounded-md px-2 py-1.5 text-left text-[12px] text-ink transition-colors duration-150 hover:bg-paper"
             >
               {option.label}
             </button>

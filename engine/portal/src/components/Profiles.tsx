@@ -11,7 +11,7 @@ import { useCopy } from "../hooks";
 import Reveal from "./Reveal";
 
 const STEPS = [
-  <>下载对应客户端的配置文件文件。</>,
+  <>下载对应客户端的配置文件。</>,
   <>
     用文本编辑器把 <code>https://YOUR-SUBSCRIPTION-URL</code> 替换成你的订阅链接。
   </>,
@@ -32,9 +32,7 @@ export default function Profiles({ data }: { data: PortalData }) {
           <div className="mx-auto mb-8 max-w-xl text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">配置文件</h2>
             <p className="mt-2.5 text-mute">
-              作者推荐的最小配置模板供选择使用。
-              提供的配置文件为作者考虑普适性之后的推荐的基础使用配置。
-              人工维护、真机验证后发布，不随规则每日更新。
+              按普适性维护的推荐配置模板，真机验证后发布；人工维护、不随规则每日更新。
             </p>
           </div>
         </Reveal>

@@ -6,31 +6,19 @@ import Reveal from "./Reveal";
 
 const STEPS: Record<ClientKey, ReactNode[]> = {
   surge: [
-    <>
-      打开 Surge 主配置，找到 <code>[Rule]</code> 段。
-    </>,
-    <>
-      复制下面的规则行，放在 <code>FINAL</code> 之前。
-    </>,
-    <>把策略名换成你自己的，保存并重载配置。</>,
+    <>在 Surge 里添加远程规则（规则集 / 订阅规则页面），粘贴下面的规则链接。</>,
+    <>带 IP 的 App 先粘贴域名段链接，再把 IP 段链接放在规则末尾。</>,
+    <>客户端按引用自动拉取更新，无需手动改规则文件。</>,
   ],
   shadowrocket: [
-    <>
-      打开 Shadowrocket 配置的 <code>[Rule]</code> 段（语法与 Surge 相同）。
-    </>,
-    <>
-      复制下面的规则行，放在 <code>FINAL</code> 之前。
-    </>,
-    <>把策略名换成你自己的，保存并使用配置。</>,
+    <>在 Shadowrocket 里添加远程规则，粘贴下面的规则链接（一行一个）。</>,
+    <>带 IP 的 App 先粘贴域名段链接，再把 IP 段链接放在规则末尾。</>,
+    <>客户端按引用自动拉取更新，无需手动改规则文件。</>,
   ],
   loon: [
-    <>
-      打开 Loon 配置，找到 <code>[Remote Rule]</code> 段。
-    </>,
-    <>复制下面的规则行，一行一个 App。</>,
-    <>
-      把 <code>policy</code> 换成你自己的策略组，保存并重载配置。
-    </>,
+    <>在 Loon 的远程规则（订阅规则）页面粘贴下面的规则链接（一行一个）。</>,
+    <>带 IP 的 App 先粘贴域名段链接，再把 IP 段链接放在规则末尾。</>,
+    <>客户端按引用自动拉取更新，无需手动改规则文件。</>,
   ],
   stash: [
     <>
@@ -58,24 +46,18 @@ const STEPS: Record<ClientKey, ReactNode[]> = {
   ],
   egern: [
     <>
-      打开 Egern 配置，把下面整段复制进 <code>rules</code> 列表。
+      在 Egern 的规则里导入下面的规则链接（远程规则 / <code>rule_set</code> 引用）。
     </>,
-    <>
-      按你的匹配顺序放置 <code>rule_set</code> 条目，<code>default</code> 之前。
-    </>,
-    <>
-      把 <code>policy</code> 换成你自己的策略组。
-    </>,
+    <>带 IP 的 App 先导入域名段链接，再把 IP 段链接放在规则末尾。</>,
+    <>客户端按引用自动拉取更新，无需手动改规则文件。</>,
   ],
   quantumultx: [
     <>
-      打开 Quantumult X 配置，把下面整段复制进 <code>[filter_remote]</code> 段。
+      在 Quantumult X 的 <code>[filter_remote]</code> 里粘贴下面的规则链接（一行一个）。
     </>,
+    <>带 IP 的 App 先粘贴域名段链接，再把 IP 段链接放在规则末尾。</>,
     <>
-      一行一个 App；行尾的 <code>policy</code> 是占位符，实际策略由 <code>force-policy</code> 指定。
-    </>,
-    <>
-      把 <code>force-policy</code> 换成你自己的策略组，<code>update-interval</code> 控制更新周期。
+      行尾 <code>force-policy</code> 换成你自己的策略组，<code>update-interval</code> 控制更新周期。
     </>,
   ],
 };
@@ -91,7 +73,10 @@ export default function Usage({ data }: { data: PortalData }) {
         <Reveal>
           <div className="mx-auto mb-10 max-w-xl text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">接入你的客户端</h2>
-            <p className="mt-2.5 text-mute">同一套规则，七种客户端各自的最小引用方式。</p>
+            <p className="mt-2.5 text-mute">
+              同一套规则，七种客户端各自的接入方式：非 Mihomo 客户端复制规则链接去前端导入， Stash /
+              Clash 复制配置文件写法。
+            </p>
           </div>
         </Reveal>
         <Reveal>
