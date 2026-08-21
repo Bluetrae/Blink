@@ -23,6 +23,7 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
   const [open, setOpen] = useState(false);
   const [anchor, setAnchor] = useState<{ top: number; left: number } | null>(null);
   const [copied, setCopied] = useState("");
+  const [picked, setPicked] = useState("");
   const triggerRef = useRef<HTMLButtonElement>(null);
   const single = options.length === 1;
 
@@ -34,8 +35,14 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
   const copy = async (option: { label: string; snippet: string }) => {
     await navigator.clipboard.writeText(option.snippet);
     setCopied(option.label);
+    // Keep the menu open briefly so the picked option visibly confirms
+    // ("✓ 已复制" highlight) before closing.
+    setPicked(option.label);
+    window.setTimeout(() => {
+      close();
+      setPicked("");
+    }, 320);
     window.setTimeout(() => setCopied(""), 1200);
-    close();
   };
 
   const toggle = () => {
@@ -66,7 +73,7 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
         ref={triggerRef}
         type="button"
         onClick={toggle}
-        className="flex-1 min-w-[80px] rounded-lg bg-accent px-2 py-1.5 text-center text-[13px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
+        className="flex-1 min-w-[80px] rounded-lg bg-accent px-2 py-1.5 text-center text-[13px] font-medium text-white transition-all duration-200 ease-out hover:-translate-y-px hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-95"
       >
         {copied ? "已复制 ✓" : "复制规则链接"}
         {!single && (
@@ -88,20 +95,32 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
                 cards cover it. */}
             <div className="fixed inset-0 z-[90]" onClick={close} aria-hidden="true" />
             <div
-              className="menu-pop fixed z-[100] rounded-lg border border-line bg-card p-1 shadow-lg"
+              className="menu-pop fixed z-[100] rounded-lg border border-line bg-card p-1.5 shadow-lg"
               style={{ top: anchor.top, left: anchor.left, width: MENU_WIDTH }}
               role="menu"
             >
-              {options.map((option) => (
-                <button
-                  key={option.label}
-                  type="button"
-                  onClick={() => copy(option)}
-                  className="block w-full rounded-md px-2 py-1.5 text-left text-[12px] text-ink transition-colors duration-150 hover:bg-paper"
-                >
-                  {option.label}
-                </button>
-              ))}
+              {options.map((option) => {
+                const isPicked = picked === option.label;
+                return (
+                  <button
+                    key={option.label}
+                    type="button"
+                    onClick={() => copy(option)}
+                    className={`group/item flex w-full items-center gap-1.5 rounded-md px-2 py-2 text-left text-[12.5px] transition-all duration-150 ease-out active:scale-[0.97] ${
+                      isPicked
+                        ? "bg-accent font-semibold text-white"
+                        : "text-ink hover:translate-x-0.5 hover:bg-accent-soft hover:text-accent"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-1.5 w-1.5 shrink-0 rounded-full transition-colors duration-150 ${
+                        isPicked ? "bg-white" : "bg-line group-hover/item:bg-accent"
+                      }`}
+                    />
+                    {isPicked ? "已复制 ✓" : option.label}
+                  </button>
+                );
+              })}
             </div>
           </>,
           document.body,
