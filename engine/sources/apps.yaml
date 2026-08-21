@@ -737,3 +737,26 @@ apps:
       source, so this app is supplement-only: two root domains (suno.com,
       suno.ai) cover the web app, mobile app, and studio API.
       It stays supplement-only unless usage reveals missing hosts.
+
+  Starryblu:
+    enabled: true
+    output: Surge/Starryblu.list
+    views: true
+    sources: []
+    include_policy:
+      mode: explicit
+      allow: []
+      deny: []
+    attributes:
+      mode: explicit
+      include: []
+    supplement: engine/sources/supplement/Starryblu.list
+    exclude: []
+    note: >-
+      Starryblu is a global payment app (starryblu.com, Singapore FinTech
+      exhibitor, App Store id 6736854716). The 2026-08-26 audit probed Repcz
+      (Surge/Rules/Starryblu.list), SukkaW (Source/non_ip/starryblu.conf),
+      v2fly (data/starryblu), and blackmatrix7 (rule/Surge/Starryblu) — all
+      404, no dedicated upstream, so this app is supplement-only: the root
+      domain starryblu.com covers the official site and app API subdomains.
+      It stays supplement-only unless usage reveals missing hosts.

@@ -686,7 +686,7 @@
         "egern": {
           "nonip": {
             "file": "Egern/Netflix-nonip.conf",
-            "rules": 39
+            "rules": 38
           },
           "ip": {
             "file": "Egern/Netflix-ip.conf",
@@ -1454,7 +1454,7 @@
         "egern": {
           "nonip": {
             "file": "Egern/Spotify-nonip.conf",
-            "rules": 20
+            "rules": 19
           },
           "ip": {
             "file": "Egern/Spotify-ip.conf",
@@ -1975,7 +1975,7 @@
         "egern": {
           "nonip": {
             "file": "Egern/Disney-nonip.conf",
-            "rules": 174
+            "rules": 172
           }
         },
         "quantumultx": {
@@ -2171,7 +2171,7 @@
         "egern": {
           "nonip": {
             "file": "Egern/Hulu-nonip.conf",
-            "rules": 59
+            "rules": 58
           }
         },
         "quantumultx": {
@@ -2366,7 +2366,7 @@
         "egern": {
           "nonip": {
             "file": "Egern/HBO-nonip.conf",
-            "rules": 46
+            "rules": 45
           }
         },
         "quantumultx": {
@@ -2486,7 +2486,7 @@
         "egern": {
           "nonip": {
             "file": "Egern/Twitch-nonip.conf",
-            "rules": 10
+            "rules": 9
           },
           "ip": {
             "file": "Egern/Twitch-ip.conf",
@@ -2953,6 +2953,102 @@
         "format": ""
       },
       "note": "The 2026-08-16 friend-scenario audit found no Suno rules in any audited source, so this app is supplement-only: two root domains (suno.com, suno.ai) cover the web app, mobile app, and studio API. It stays supplement-only unless usage reveals missing hosts."
+    },
+    {
+      "name": "Starryblu",
+      "category": "Finance",
+      "emoji": "💳",
+      "icon": null,
+      "self_use": false,
+      "policy": "Finance",
+      "file": "Surge/Starryblu.list",
+      "rules": 1,
+      "types": {
+        "DOMAIN-SUFFIX": 1
+      },
+      "clients": {
+        "surge": {
+          "file": "Surge/Starryblu.list",
+          "rules": 1
+        },
+        "loon": {
+          "file": "Loon/Starryblu.list",
+          "rules": 1
+        },
+        "shadowrocket": {
+          "file": "Shadowrocket/Starryblu.list",
+          "rules": 1
+        },
+        "stash": {
+          "file": "Stash/Starryblu.list",
+          "rules": 1
+        },
+        "clash": {
+          "file": "Clash/Starryblu.list",
+          "rules": 1,
+          "dropped": 0
+        },
+        "egern": {
+          "file": "Egern/Starryblu.yaml",
+          "rules": 1,
+          "dropped": 0
+        },
+        "quantumultx": {
+          "file": "QuantumultX/Starryblu.list",
+          "rules": 1,
+          "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/Starryblu-domainset.conf",
+            "rules": 1
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/Starryblu-domainset.conf",
+            "rules": 1
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/Starryblu-domainset.conf",
+            "rules": 1
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/Starryblu-domainset.conf",
+            "rules": 1
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/Starryblu-domainset.conf",
+            "rules": 1
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/Starryblu-domainset.conf",
+            "rules": 1
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/Starryblu-domainset.conf",
+            "rules": 1
+          }
+        }
+      },
+      "source": {
+        "author": "",
+        "name": "",
+        "format": ""
+      },
+      "note": "Starryblu is a global payment app (starryblu.com, Singapore FinTech exhibitor, App Store id 6736854716). The 2026-08-26 audit probed Repcz (Surge/Rules/Starryblu.list), SukkaW (Source/non_ip/starryblu.conf), v2fly (data/starryblu), and blackmatrix7 (rule/Surge/Starryblu) — all 404, no dedicated upstream, so this app is supplement-only: the root domain starryblu.com covers the official site and app API subdomains. It stays supplement-only unless usage reveals missing hosts."
     }
   ]
 }

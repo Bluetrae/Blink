@@ -1,0 +1,4 @@
+# Starryblu - 全球支付 App（starryblu.com，新加坡 FinTech，App Store id 6736854716）
+# supplement-only：2026-08-26 审计确认 Repcz / SukkaW / v2fly / blackmatrix7 均无专项规则
+# （四家对应路径全部 404），根域 starryblu.com 覆盖官网与 App API 子域。
+DOMAIN-SUFFIX,starryblu.com

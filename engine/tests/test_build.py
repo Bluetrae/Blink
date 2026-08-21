@@ -116,6 +116,7 @@ class BuildTests(unittest.TestCase):
                 "Google",
                 "NBA",
                 "Suno",
+                "Starryblu",
             },
         )
         for app_name, app in manifest["apps"].items():

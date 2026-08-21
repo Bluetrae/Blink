@@ -2457,6 +2457,124 @@
         }
       }
     },
+    "Starryblu": {
+      "canonical": {
+        "denied_includes": [],
+        "input_rules": 1,
+        "rules": 1,
+        "sha256": "79a401d119dec0c3e99beb1a60c45aed1488c50efbe5478c5a507374c59200d1",
+        "skipped_attributes": 0,
+        "skipped_excluded": [],
+        "views": [
+          {
+            "name": "domainset",
+            "rules": 1
+          }
+        ]
+      },
+      "outputs": {
+        "clash": {
+          "dropped": [],
+          "path": "Clash/Starryblu.list",
+          "rules": 1,
+          "sha256": "009cf9ea93c5edff677a9c5db4369ed6ebb305cd1b09b640d2efc8c5a2db9f35"
+        },
+        "egern": {
+          "dropped": [],
+          "path": "Egern/Starryblu.yaml",
+          "rules": 1,
+          "sha256": "d3e5759c5feed9bf7032fe1dde9c197c64faef68d0f48d14edd9a18e3d81a693"
+        },
+        "loon": {
+          "dropped": [],
+          "path": "Loon/Starryblu.list",
+          "rules": 1,
+          "sha256": "009cf9ea93c5edff677a9c5db4369ed6ebb305cd1b09b640d2efc8c5a2db9f35"
+        },
+        "quantumultx": {
+          "dropped": [],
+          "path": "QuantumultX/Starryblu.list",
+          "rules": 1,
+          "sha256": "d7190a3ab520a9bdc8160f4feddcc6a6f9ec036a55deda16d3aa3dad0372b046"
+        },
+        "shadowrocket": {
+          "dropped": [],
+          "path": "Shadowrocket/Starryblu.list",
+          "rules": 1,
+          "sha256": "009cf9ea93c5edff677a9c5db4369ed6ebb305cd1b09b640d2efc8c5a2db9f35"
+        },
+        "stash": {
+          "dropped": [],
+          "path": "Stash/Starryblu.list",
+          "rules": 1,
+          "sha256": "009cf9ea93c5edff677a9c5db4369ed6ebb305cd1b09b640d2efc8c5a2db9f35"
+        },
+        "surge": {
+          "dropped": [],
+          "path": "Surge/Starryblu.list",
+          "rules": 1,
+          "sha256": "009cf9ea93c5edff677a9c5db4369ed6ebb305cd1b09b640d2efc8c5a2db9f35"
+        }
+      },
+      "sources": [],
+      "supplement": {
+        "bytes": 319,
+        "lines": 4,
+        "path": "engine/sources/supplement/Starryblu.list",
+        "sha256": "7593c2fe50d450c0a8b38bf9d72908530fcc66526fb1b7260c652b1077a6762b"
+      },
+      "views": {
+        "clash": {
+          "domainset": {
+            "path": "Clash/Starryblu-domainset.conf",
+            "rules": 1,
+            "sha256": "affc1af0f0b52c8efdee5457c52d8ed871aecf6016b373743e1e42972334a00b"
+          }
+        },
+        "egern": {
+          "domainset": {
+            "path": "Egern/Starryblu-domainset.conf",
+            "rules": 1,
+            "sha256": "009cf9ea93c5edff677a9c5db4369ed6ebb305cd1b09b640d2efc8c5a2db9f35"
+          }
+        },
+        "loon": {
+          "domainset": {
+            "path": "Loon/Starryblu-domainset.conf",
+            "rules": 1,
+            "sha256": "009cf9ea93c5edff677a9c5db4369ed6ebb305cd1b09b640d2efc8c5a2db9f35"
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "path": "QuantumultX/Starryblu-domainset.conf",
+            "rules": 1,
+            "sha256": "d7190a3ab520a9bdc8160f4feddcc6a6f9ec036a55deda16d3aa3dad0372b046"
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "path": "Shadowrocket/Starryblu-domainset.conf",
+            "rules": 1,
+            "sha256": "f05e86adb2d8a1d25c610e11318d4303553cccd17ceb7e7df09ebb94face1eeb"
+          }
+        },
+        "stash": {
+          "domainset": {
+            "path": "Stash/Starryblu-domainset.conf",
+            "rules": 1,
+            "sha256": "affc1af0f0b52c8efdee5457c52d8ed871aecf6016b373743e1e42972334a00b"
+          }
+        },
+        "surge": {
+          "domainset": {
+            "path": "Surge/Starryblu-domainset.conf",
+            "rules": 1,
+            "sha256": "f05e86adb2d8a1d25c610e11318d4303553cccd17ceb7e7df09ebb94face1eeb"
+          }
+        }
+      }
+    },
     "Steam": {
       "canonical": {
         "denied_includes": [],
@@ -3830,6 +3948,6 @@
   "schema_version": 1,
   "source_definition": {
     "path": "engine/sources/apps.yaml",
-    "sha256": "e7e083db27fa92b826c1a72fce33a316b1a6a069f854396a4d3f497775bb3e55"
+    "sha256": "494ff98a7ef2285d02243458b2f2631ef4b29ba8d6299ea3c87b66fd7acfa0be"
   }
 }

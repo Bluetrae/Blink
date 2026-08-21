@@ -275,6 +275,12 @@ Repcz / SukkaW / blackmatrix7 / v2fly / MetaCubeX / RuleGo 六家均无 NBA 专�
 
 决议：supplement-only（`sources: []`）。`DOMAIN-SUFFIX,suno.com` + `DOMAIN-SUFFIX,suno.ai` 覆盖官网、移动 App 与 API（studio-api.suno.ai 为 suno.ai 子域）。若日后使用暴露缺失域名，按 supplement 政策（先与上游比较、只补真正缺口）追加。
 
+### Starryblu（supplement-only，2026-08-26）
+
+Starryblu 是全球支付 App（官网 starryblu.com，新加坡 FinTech 2025 参展方，App Store id 6736854716），与 ZABank 同类 Finance 场景。审计探测一梯队：Repcz `Surge/Rules/Starryblu.list` 404、SukkaW `Source/non_ip/starryblu.conf` 404、v2fly `data/starryblu` 404、blackmatrix7 `rule/Surge/Starryblu` 404 —— 四家均无专项规则。
+
+决议：supplement-only（`sources: []`）。`DOMAIN-SUFFIX,starryblu.com` 覆盖官网与 App API 子域。若日后使用暴露缺失域名，按 supplement 政策追加。
+
 ### 落地决议汇总（2026-08-16）
 
 - 8 个有上游的 App 全部按上表 primary 落地，均无需 supplemental；manifest `note` 已写入选择理由。
