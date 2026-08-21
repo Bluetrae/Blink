@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { AppEntry, ClientKey, PortalData } from "../types";
 import {
   CATEGORY_LABELS,
@@ -76,29 +77,35 @@ function CopyRuleButton({ options }: { options: { label: string; snippet: string
           </span>
         )}
       </button>
-      {open && anchor && !single && (
-        <>
-          {/* Transparent backdrop: closes on outside click and blocks the cards
-              below so the fixed menu never gets covered by adjacent cards. */}
-          <div className="fixed inset-0 z-[90]" onClick={close} aria-hidden="true" />
-          <div
-            className="menu-pop fixed z-[100] rounded-lg border border-line bg-card p-1 shadow-lg"
-            style={{ top: anchor.top, left: anchor.left, width: MENU_WIDTH }}
-            role="menu"
-          >
-            {options.map((option) => (
-              <button
-                key={option.label}
-                type="button"
-                onClick={() => copy(option)}
-                className="block w-full rounded-md px-2 py-1.5 text-left text-[12px] text-ink transition-colors duration-150 hover:bg-paper"
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
+      {open &&
+        anchor &&
+        !single &&
+        createPortal(
+          <>
+            {/* Portal to document.body: the menu must escape the card's
+                transformed ancestors (Reveal keeps translate-y-0), which
+                would otherwise recapture a fixed element and let sibling
+                cards cover it. */}
+            <div className="fixed inset-0 z-[90]" onClick={close} aria-hidden="true" />
+            <div
+              className="menu-pop fixed z-[100] rounded-lg border border-line bg-card p-1 shadow-lg"
+              style={{ top: anchor.top, left: anchor.left, width: MENU_WIDTH }}
+              role="menu"
+            >
+              {options.map((option) => (
+                <button
+                  key={option.label}
+                  type="button"
+                  onClick={() => copy(option)}
+                  className="block w-full rounded-md px-2 py-1.5 text-left text-[12px] text-ink transition-colors duration-150 hover:bg-paper"
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          </>,
+          document.body,
+        )}
     </>
   );
 }
