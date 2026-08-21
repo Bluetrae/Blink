@@ -1,6 +1,6 @@
 <div align="center">
 
-# <img src="engine/docs/images/avatar.png" width="36" height="36" alt="" style="vertical-align:middle" /> Blink
+# <img src="engine/docs/images/avatar.png" width="36" height="36" alt="" style="vertical-align:middle;border-radius:50%" /> Blink
 
 **多客户端规则与配置 · 自动构建 · 稳定分发**
 
