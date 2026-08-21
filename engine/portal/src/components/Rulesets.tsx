@@ -171,8 +171,32 @@ export default function Rulesets({ data }: { data: PortalData }) {
           <div className="mx-auto mb-8 max-w-xl text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">规则集</h2>
             <p className="mt-2.5 text-mute">
-              全部由构建器生成，绝不手工维护；范围优先于数量，不为覆盖而吞入无关 CDN。 带 IP 的 App
-              已按域名→IP 拆分（域名段恒在 IP 段之前），避免提前触发 DNS。
+              全部由构建器生成，绝不手工维护；范围优先于数量，不为覆盖而吞入无关 CDN。
+            </p>
+          </div>
+        </Reveal>
+        <Reveal>
+          <div className="mx-auto mb-8 max-w-3xl rounded-2xl border border-line bg-card p-4 text-[13px] leading-relaxed text-mute">
+            <p className="mb-2 font-semibold text-ink">规则分两类，因 App 而异</p>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <div className="rounded-xl border border-line bg-paper p-3">
+                <p className="font-medium text-ink">① 域名 / 非 IP 段</p>
+                <p className="mt-0.5">
+                  匹配域名，<b>不触发 DNS</b>，应放在规则的<em>最前</em>。多数 App 只有这一段。
+                </p>
+              </div>
+              <div className="rounded-xl border border-line bg-paper p-3">
+                <p className="font-medium text-ink">② IP 段</p>
+                <p className="mt-0.5">
+                  仅部分 App 含（如 Netflix / X / Telegram），匹配境外网段，<b>触发 DNS</b>，
+                  应放在规则<em>末尾</em>。
+                </p>
+              </div>
+            </div>
+            <p className="mt-3 border-t border-line pt-2">
+              用法：只含①段 → 直接复制接入即可；同时含①②两段的 App → <b>两个段都导入</b>，
+              ①在前、②在后。多段卡片用下拉切换段复制，非 mihomo 复制 raw 地址到客户端前端导入，
+              Stash / Clash 复制的是配置文件写法（rule-providers + RULE-SET）。
             </p>
           </div>
         </Reveal>
@@ -208,11 +232,6 @@ export default function Rulesets({ data }: { data: PortalData }) {
             ))}
           </div>
           <p className="mx-auto mb-7 max-w-2xl text-center text-[13px] text-mute">{activeNote}</p>
-          <p className="mx-auto -mt-4 mb-7 max-w-2xl text-center text-[12px] text-mute">
-            {client === "stash" || client === "clash"
-              ? "Stash / Clash 复制的是配置文件写法（rule-providers + RULE-SET），需手写进配置。"
-              : "复制的是规则文件的 raw 地址，到客户端前端导入即可；带 IP 的 App 请把域名段放在 IP 段之前。"}
-          </p>
         </Reveal>
         <div className="mb-7 flex flex-wrap justify-center gap-2">
           {filters.map((key) => (
