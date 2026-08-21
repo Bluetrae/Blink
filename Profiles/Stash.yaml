@@ -136,12 +136,6 @@ rule-providers:
     format: text
     url: https://raw.githubusercontent.com/Bluetrae/Blink/main/Stash/GitHub-domainset.conf
     interval: 86400
-  telegram_ip:
-    type: http
-    behavior: classical
-    format: text
-    url: https://ruleset.skk.moe/List/ip/telegram.conf
-    interval: 86400
   china_ip:
     type: http
     behavior: classical
@@ -173,7 +167,6 @@ rules:
   - RULE-SET,Google_nonip,Google
   - RULE-SET,Google_ip,Google
   - RULE-SET,GitHub_domainset,Github
-  - RULE-SET,telegram_ip,Telegram
   - RULE-SET,china_ip,DIRECT
   - RULE-SET,china_ip2,DIRECT
   - MATCH,Final

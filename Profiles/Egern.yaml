@@ -176,9 +176,6 @@ rules:
     match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Egern/GitHub-domainset.conf
     policy: Github
 - rule_set:
-    match: https://ruleset.skk.moe/List/ip/telegram.conf
-    policy: Telegram
-- rule_set:
     match: https://ruleset.skk.moe/List/ip/domestic.conf
     policy: DIRECT
 - rule_set:

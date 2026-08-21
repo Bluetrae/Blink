@@ -150,13 +150,6 @@ infrastructure:
     qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/CDN.list
 
   # ---- IP（no-resolve；置于所有域名规则之后）----
-  - name: telegram-ip
-    url: https://ruleset.skk.moe/List/ip/telegram.conf
-    policy: Telegram
-    phase: ip
-    clients: [surge, shadowrocket, loon, stash, egern, clash]
-    options: {surge: no-resolve, clash: no-resolve}
-
   - name: china-ip
     url: https://ruleset.skk.moe/List/ip/domestic.conf
     policy: DIRECT
