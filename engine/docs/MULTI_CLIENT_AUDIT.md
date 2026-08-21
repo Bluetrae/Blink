@@ -227,3 +227,4 @@ QuantumultX/<App>.list   # QX filter 行（行尾占位符 policy，force-policy
 > ✅ 已完成（commit `77ebe22`，QX 于六客户端扩展时加入）：portal 规则集与接入区均带客户端切换与官方 App 图标，`gen_portal_stats.py` 输出每 App 的 `clients` 统计（Egern / Quantumult X 含显式 dropped 计数）。
 
 - 2026-08：第 7 客户端 **Clash（Mihomo 内核 / Android 通用）**审计落地（见 §2.8，内核源码级证据）；`Clash/` 目录（去 USER-AGENT 显式丢弃）与 portal / Profiles / 文档同步扩展中。
+- 2026-08-21+：**语义多视图落地**（skk 式 domainset / non_ip / ip 拆分，见 `build.py` 的 `semantic_views` / `phase_of` 与 `engine/scripts/validate_views.py` 门禁）：每个 App 按语义派生出 `-domainset.conf`（纯域名，Surge/Shadowrocket 域名清单、Stash/Clash behavior:domain）/ `-nonip.conf`（含 keyword/UA/PROCESS，classical）/ `-ip.conf`（IP 段，classical/QX filter）七端视图，IP 段恒置于域名段之后；主输出 `.list`/`.yaml` 与各客户端格式事实保持本文件所述不变。

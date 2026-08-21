@@ -9,6 +9,10 @@ const PIPELINE = [
   { title: "build.py", text: "解析 / 转换 / 规范化 / 去重，异常即中止" },
   { title: "supplement", text: "只合并经 Surge 日志证实的上游缺口" },
   {
+    title: "语义拆分",
+    text: "domainset / nonip / ip 三段视图（IP 段恒在后），域名类规则不提前触发 DNS",
+  },
+  {
     title: "多客户端渲染",
     text: "classical ×4 + Clash 变体（去 UA）+ Egern YAML + QX filter；无法表达的类型显式丢弃并计数",
   },
