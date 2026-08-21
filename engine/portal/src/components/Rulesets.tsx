@@ -14,19 +14,42 @@ import {
   sourceLine,
   typeChips,
 } from "../data";
-import { useCopy } from "../hooks";
 import Reveal from "./Reveal";
 
-function CopyButton({ snippet, label }: { snippet: string; label: string }) {
-  const { copied, copy } = useCopy(snippet);
+function CopyRuleButton({ options }: { options: { label: string; snippet: string }[] }) {
+  const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState("");
+  const single = options.length === 1;
+  const copy = async (option: { label: string; snippet: string }) => {
+    await navigator.clipboard.writeText(option.snippet);
+    setCopied(option.label);
+    window.setTimeout(() => setCopied(""), 1200);
+    setOpen(false);
+  };
   return (
-    <button
-      type="button"
-      onClick={copy}
-      className="flex-1 min-w-[84px] rounded-lg bg-accent px-2 py-1.5 text-[12.5px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
-    >
-      {copied ? "已复制 ✓" : label}
-    </button>
+    <div className="relative flex-1 min-w-[84px]">
+      <button
+        type="button"
+        onClick={() => (single ? copy(options[0]) : setOpen((value) => !value))}
+        className="w-full rounded-lg bg-accent px-2 py-1.5 text-[12.5px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
+      >
+        {copied ? "已复制 ✓" : "复制规则链接"}
+      </button>
+      {open && !single && (
+        <div className="absolute right-0 top-full z-10 mt-1 w-max min-w-full rounded-lg border border-line bg-card p-1 shadow-lg">
+          {options.map((option) => (
+            <button
+              key={option.label}
+              type="button"
+              onClick={() => copy(option)}
+              className="block w-full rounded-md px-2 py-1.5 text-left text-[12px] text-ink hover:bg-paper"
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -43,10 +66,13 @@ function AppCard({
 }) {
   const stat = app.clients[client];
   const viewNames = VIEW_ORDER.filter((view) => view in (app.views?.[client] ?? {}));
-  const [selectedView, setSelectedView] = useState("");
-  const activeView: string = (viewNames as string[]).includes(selectedView)
-    ? selectedView
-    : viewNames[0];
+  const copyOptions =
+    viewNames.length > 0
+      ? viewNames.map((view) => ({
+          label: `${VIEW_LABELS[view]}段规则`,
+          snippet: clientViewSnippet(rawBase, app, client, view),
+        }))
+      : [{ label: "规则", snippet: clientSnippet(rawBase, app, client) }];
   const dropped =
     client === "egern" || client === "quantumultx" || client === "clash" ? (stat.dropped ?? 0) : 0;
   return (
@@ -92,7 +118,7 @@ function AppCard({
         </div>
         {viewNames.length > 1 && (
           <p className="rounded-lg border border-accent-soft bg-accent-soft px-1.5 py-1 text-[10px] text-accent">
-            分文件 · {viewNames.map((view) => VIEW_LABELS[view]).join(" + ")}
+            域名 + IP 两段
           </p>
         )}
         {app.self_use && (
@@ -111,27 +137,7 @@ function AppCard({
           {sourceLine(app)}
         </p>
         <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-0.5">
-          {viewNames.length > 1 && (
-            <select
-              value={activeView}
-              onChange={(event) => setSelectedView(event.target.value)}
-              className="rounded-lg border border-line bg-card px-1.5 py-1.5 text-[12px] text-ink"
-            >
-              {viewNames.map((view) => (
-                <option key={view} value={view}>
-                  {VIEW_LABELS[view]}段
-                </option>
-              ))}
-            </select>
-          )}
-          <CopyButton
-            label="复制接入"
-            snippet={
-              viewNames.length > 0
-                ? clientViewSnippet(rawBase, app, client, activeView)
-                : clientSnippet(rawBase, app, client)
-            }
-          />
+          <CopyRuleButton options={copyOptions} />
           <a
             href={clientFileUrl(rawBase, app, client)}
             target="_blank"
@@ -177,26 +183,23 @@ export default function Rulesets({ data }: { data: PortalData }) {
         </Reveal>
         <Reveal>
           <div className="mx-auto mb-8 max-w-3xl rounded-2xl border border-line bg-card p-4 text-[13px] leading-relaxed text-mute">
-            <p className="mb-2 font-semibold text-ink">规则分两类，因 App 而异</p>
+            <p className="mb-2 font-semibold text-ink">规则怎么用，看 App 而定</p>
             <div className="grid gap-2 sm:grid-cols-2">
               <div className="rounded-xl border border-line bg-paper p-3">
-                <p className="font-medium text-ink">① 域名 / 非 IP 段</p>
-                <p className="mt-0.5">
-                  匹配域名，<b>不触发 DNS</b>，应放在规则的<em>最前</em>。多数 App 只有这一段。
-                </p>
+                <p className="font-medium text-ink">只有域名规则</p>
+                <p className="mt-0.5">多数 App 只有域名规则，直接点「复制规则链接」导入即可。</p>
               </div>
               <div className="rounded-xl border border-line bg-paper p-3">
-                <p className="font-medium text-ink">② IP 段</p>
+                <p className="font-medium text-ink">域名 + IP</p>
                 <p className="mt-0.5">
-                  仅部分 App 含（如 Netflix / X / Telegram），匹配境外网段，<b>触发 DNS</b>，
-                  应放在规则<em>末尾</em>。
+                  部分 App（如 Netflix / X / Telegram）分「域名段」「IP 段」两块，点「复制规则链接」
+                  会弹出两个选项，分别复制这两段。
                 </p>
               </div>
             </div>
             <p className="mt-3 border-t border-line pt-2">
-              用法：只含①段 → 直接复制接入即可；同时含①②两段的 App → <b>两个段都导入</b>，
-              ①在前、②在后。多段卡片用下拉切换段复制，非 mihomo 复制 raw 地址到客户端前端导入，
-              Stash / Clash 复制的是配置文件写法（rule-providers + RULE-SET）。
+              导出方式：非 mihomo 复制的是规则链接，去客户端前端导入；Stash / Clash 复制的是
+              配置文件写法（rule-providers + RULE-SET），需写进配置。
             </p>
           </div>
         </Reveal>
@@ -204,7 +207,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
           <div className="mb-4 flex justify-center">
             <span className="inline-flex items-center gap-2 rounded-full border border-accent-soft bg-accent-soft px-5 py-2 text-[13.5px] font-bold tracking-wide text-accent shadow-sm">
               <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
-              先选择你要导入的客户端，再复制接入
+              先选择你要导入的客户端，再复制规则链接
             </span>
           </div>
           <div className="mb-4 flex flex-wrap justify-center gap-2.5">
