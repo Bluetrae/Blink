@@ -13,6 +13,11 @@ export interface AppClientStat {
   dropped?: number;
 }
 
+export interface AppViewEntry {
+  file: string;
+  rules: number;
+}
+
 export interface AppEntry {
   name: string;
   category: string;
@@ -24,6 +29,7 @@ export interface AppEntry {
   rules: number;
   types: Record<string, number>;
   clients: Record<ClientKey, AppClientStat>;
+  views: Record<ClientKey, Record<string, AppViewEntry>>;
   source: SourceInfo;
   note: string;
 }

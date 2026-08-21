@@ -97,3 +97,29 @@ Final:    FINAL → Final, dns-failed
 - `always-real-ip`/`always-raw-tcp-hosts`/`skip-proxy` 只在 Profile 层，不进规则源。
 - 不引入 MTProto secret / `dc-config-url` / 双订阅池 / 个人域名。
 - 本次不含 Rule 层 `matching_phase` / 多 view（单独切片）。
+
+## 九、落地记录（2026-08-22）
+
+配置文件层（Profile + Ruleset 语义化）已按上文全部落地并提交：
+
+**① Rule 层 multi-view（matching_phase + 分文件）**
+- `build.py`：新增 `PHASE_BY_KIND`（domain/nonip/ip）+ `semantic_views()`，把每 App canonical 拆成
+  domainset / nonip / ip 三段（domain-first / IP-last；纯域名 App 不生成空 IP view）。
+- `renderers.py`：新增 `render_surge_domainset`、`render_mihomo_domainset`、统一 `render_view`；
+  各端 view 文件（`.conf` 后缀，避开 parity 的 `.list`/`.yaml` glob）：Surge/Shadowrocket 域名清单、
+  Stash/Clash `behavior:domain`、Loon/Egern classical、QX `HOST*` filter；均 policy-free。
+- 全部 28 App 开启 `views:true`，产出七端 domainset/nonip/ip view 文件（主输出 `.list`/`.yaml` 零改动）。
+- `verify_manifest.py`：`views` 字段校验（per-client + 各端目录路径约定）。
+
+**② Profile 层分文件引用**
+- `intent.yaml`：6 个路由 App 声明 `views: [...]`（Telegram/X `[domainset,ip]`、YouTube `[nonip]`、
+  Instagram/GitHub `[domainset]`、Google `[nonip,ip]`）。
+- `build_profile.py`：7 端 App 路由按 app 声明 views 生成分文件引用（domainset→DOMAIN-SET/behavior:domain、
+  ip→RULE-SET,no-resolve、nonip→classical）。
+- 已移除与各 App ip view 重复的 infra `telegram-ip` 条目。
+
+**③ portal**：`gen_portal_stats.py`/`types.ts`/`data.ts`/`Rulesets.tsx` 展示每 App 的 view 分段、
+按 view 生成复制接入，并更新各客户端引导文案（说明域名→IP 拆分）。
+
+**使用**：主输出 `.list`/`.yaml` 与公开 URL 稳定；带 IP 的 App 可改用
+`<App>-domainset.conf` / `<App>-nonip.conf` / `<App>-ip.conf` 分文件引用达成 domain-first/IP-last。

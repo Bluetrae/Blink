@@ -4,6 +4,8 @@ import {
   CATEGORY_LABELS,
   CATEGORY_ORDER,
   CLIENT_TABS,
+  VIEW_LABELS,
+  VIEW_ORDER,
   clientFileUrl,
   clientIcon,
   clientSnippet,
@@ -71,6 +73,15 @@ function AppCard({
             </span>
           ))}
         </div>
+        {VIEW_ORDER.filter((view) => view in (app.views?.[client] ?? {})).length > 0 && (
+          <p className="rounded-lg border border-accent-soft bg-accent-soft px-1.5 py-1 text-[10px] leading-relaxed text-accent">
+            分文件 ·{" "}
+            {VIEW_ORDER.filter((view) => view in (app.views?.[client] ?? {}))
+              .map((view) => VIEW_LABELS[view])
+              .join(" + ")}
+            两段，接入已按域名→IP 拆分
+          </p>
+        )}
         {app.self_use && (
           <p className="rounded-lg border border-accent-soft bg-accent-soft px-1.5 py-1 text-[10px] leading-relaxed text-accent">
             ⚠️ 作者自用直播源 · 请按自身直播源自行配置
@@ -133,7 +144,8 @@ export default function Rulesets({ data }: { data: PortalData }) {
           <div className="mx-auto mb-8 max-w-xl text-center">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">规则集</h2>
             <p className="mt-2.5 text-mute">
-              全部由构建器生成，绝不手工维护；范围优先于数量，不为覆盖而吞入无关 CDN。
+              全部由构建器生成，绝不手工维护；范围优先于数量，不为覆盖而吞入无关 CDN。 带 IP 的 App
+              已按域名→IP 拆分（域名段恒在 IP 段之前），避免提前触发 DNS。
             </p>
           </div>
         </Reveal>

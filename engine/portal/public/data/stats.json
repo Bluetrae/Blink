@@ -47,6 +47,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/OKX-domainset.conf",
+            "rules": 9
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/OKX-domainset.conf",
+            "rules": 9
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/OKX-domainset.conf",
+            "rules": 9
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/OKX-domainset.conf",
+            "rules": 9
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/OKX-domainset.conf",
+            "rules": 9
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/OKX-domainset.conf",
+            "rules": 9
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/OKX-domainset.conf",
+            "rules": 9
+          }
+        }
+      },
       "source": {
         "author": "v2fly",
         "name": "v2fly-domain-list-community",
@@ -99,6 +143,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/WhatsApp-domainset.conf",
+            "rules": 11
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/WhatsApp-domainset.conf",
+            "rules": 11
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/WhatsApp-domainset.conf",
+            "rules": 11
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/WhatsApp-domainset.conf",
+            "rules": 11
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/WhatsApp-domainset.conf",
+            "rules": 11
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/WhatsApp-domainset.conf",
+            "rules": 11
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/WhatsApp-domainset.conf",
+            "rules": 11
+          }
+        }
+      },
       "source": {
         "author": "v2fly",
         "name": "v2fly-domain-list-community",
@@ -149,6 +237,50 @@
           "file": "QuantumultX/LINE.list",
           "rules": 20,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/LINE-domainset.conf",
+            "rules": 20
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/LINE-domainset.conf",
+            "rules": 20
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/LINE-domainset.conf",
+            "rules": 20
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/LINE-domainset.conf",
+            "rules": 20
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/LINE-domainset.conf",
+            "rules": 20
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/LINE-domainset.conf",
+            "rules": 20
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/LINE-domainset.conf",
+            "rules": 20
+          }
         }
       },
       "source": {
@@ -204,6 +336,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/GitHub-domainset.conf",
+            "rules": 58
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/GitHub-domainset.conf",
+            "rules": 58
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/GitHub-domainset.conf",
+            "rules": 58
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/GitHub-domainset.conf",
+            "rules": 58
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/GitHub-domainset.conf",
+            "rules": 58
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/GitHub-domainset.conf",
+            "rules": 58
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/GitHub-domainset.conf",
+            "rules": 58
+          }
+        }
+      },
       "source": {
         "author": "v2fly",
         "name": "v2fly-domain-list-community",
@@ -254,6 +430,50 @@
           "file": "QuantumultX/SafePal.list",
           "rules": 2,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/SafePal-domainset.conf",
+            "rules": 2
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/SafePal-domainset.conf",
+            "rules": 2
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/SafePal-domainset.conf",
+            "rules": 2
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/SafePal-domainset.conf",
+            "rules": 2
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/SafePal-domainset.conf",
+            "rules": 2
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/SafePal-domainset.conf",
+            "rules": 2
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/SafePal-domainset.conf",
+            "rules": 2
+          }
         }
       },
       "source": {
@@ -308,6 +528,50 @@
           "file": "QuantumultX/PayPal.list",
           "rules": 248,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/PayPal-nonip.conf",
+            "rules": 248
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/PayPal-nonip.conf",
+            "rules": 248
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/PayPal-nonip.conf",
+            "rules": 248
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/PayPal-nonip.conf",
+            "rules": 248
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/PayPal-nonip.conf",
+            "rules": 247
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/PayPal-nonip.conf",
+            "rules": 248
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/PayPal-nonip.conf",
+            "rules": 248
+          }
         }
       },
       "source": {
@@ -368,6 +632,78 @@
           "dropped": 1
         }
       },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/Netflix-nonip.conf",
+            "rules": 39
+          },
+          "ip": {
+            "file": "Surge/Netflix-ip.conf",
+            "rules": 1119
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/Netflix-nonip.conf",
+            "rules": 39
+          },
+          "ip": {
+            "file": "Loon/Netflix-ip.conf",
+            "rules": 1119
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/Netflix-nonip.conf",
+            "rules": 39
+          },
+          "ip": {
+            "file": "Shadowrocket/Netflix-ip.conf",
+            "rules": 1119
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/Netflix-nonip.conf",
+            "rules": 39
+          },
+          "ip": {
+            "file": "Stash/Netflix-ip.conf",
+            "rules": 1119
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/Netflix-nonip.conf",
+            "rules": 38
+          },
+          "ip": {
+            "file": "Clash/Netflix-ip.conf",
+            "rules": 1119
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/Netflix-nonip.conf",
+            "rules": 39
+          },
+          "ip": {
+            "file": "Egern/Netflix-ip.conf",
+            "rules": 1119
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/Netflix-nonip.conf",
+            "rules": 38
+          },
+          "ip": {
+            "file": "QuantumultX/Netflix-ip.conf",
+            "rules": 1119
+          }
+        }
+      },
       "source": {
         "author": "blackmatrix7",
         "name": "blackmatrix7-ios_rule_script",
@@ -420,6 +756,50 @@
           "file": "QuantumultX/YouTube.list",
           "rules": 14,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/YouTube-nonip.conf",
+            "rules": 14
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/YouTube-nonip.conf",
+            "rules": 14
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/YouTube-nonip.conf",
+            "rules": 14
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/YouTube-nonip.conf",
+            "rules": 14
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/YouTube-nonip.conf",
+            "rules": 14
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/YouTube-nonip.conf",
+            "rules": 14
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/YouTube-nonip.conf",
+            "rules": 14
+          }
         }
       },
       "source": {
@@ -475,6 +855,78 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/X-domainset.conf",
+            "rules": 26
+          },
+          "ip": {
+            "file": "Surge/X-ip.conf",
+            "rules": 8
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/X-domainset.conf",
+            "rules": 26
+          },
+          "ip": {
+            "file": "Loon/X-ip.conf",
+            "rules": 8
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/X-domainset.conf",
+            "rules": 26
+          },
+          "ip": {
+            "file": "Shadowrocket/X-ip.conf",
+            "rules": 8
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/X-domainset.conf",
+            "rules": 26
+          },
+          "ip": {
+            "file": "Stash/X-ip.conf",
+            "rules": 8
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/X-domainset.conf",
+            "rules": 26
+          },
+          "ip": {
+            "file": "Clash/X-ip.conf",
+            "rules": 8
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/X-domainset.conf",
+            "rules": 26
+          },
+          "ip": {
+            "file": "Egern/X-ip.conf",
+            "rules": 8
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/X-domainset.conf",
+            "rules": 26
+          },
+          "ip": {
+            "file": "QuantumultX/X-ip.conf",
+            "rules": 8
+          }
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -527,6 +979,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/Instagram-domainset.conf",
+            "rules": 3
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/Instagram-domainset.conf",
+            "rules": 3
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/Instagram-domainset.conf",
+            "rules": 3
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/Instagram-domainset.conf",
+            "rules": 3
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/Instagram-domainset.conf",
+            "rules": 3
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/Instagram-domainset.conf",
+            "rules": 3
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/Instagram-domainset.conf",
+            "rules": 3
+          }
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -542,41 +1038,116 @@
       "self_use": false,
       "policy": "Proxy",
       "file": "Surge/Telegram.list",
-      "rules": 14,
+      "rules": 29,
       "types": {
-        "DOMAIN-SUFFIX": 14
+        "DOMAIN": 1,
+        "DOMAIN-SUFFIX": 14,
+        "IP-CIDR": 9,
+        "IP-CIDR6": 5
       },
       "clients": {
         "surge": {
           "file": "Surge/Telegram.list",
-          "rules": 14
+          "rules": 29
         },
         "loon": {
           "file": "Loon/Telegram.list",
-          "rules": 14
+          "rules": 29
         },
         "shadowrocket": {
           "file": "Shadowrocket/Telegram.list",
-          "rules": 14
+          "rules": 29
         },
         "stash": {
           "file": "Stash/Telegram.list",
-          "rules": 14
+          "rules": 29
         },
         "clash": {
           "file": "Clash/Telegram.list",
-          "rules": 14,
+          "rules": 29,
           "dropped": 0
         },
         "egern": {
           "file": "Egern/Telegram.yaml",
-          "rules": 14,
+          "rules": 29,
           "dropped": 0
         },
         "quantumultx": {
           "file": "QuantumultX/Telegram.list",
-          "rules": 14,
+          "rules": 29,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/Telegram-domainset.conf",
+            "rules": 15
+          },
+          "ip": {
+            "file": "Surge/Telegram-ip.conf",
+            "rules": 14
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/Telegram-domainset.conf",
+            "rules": 15
+          },
+          "ip": {
+            "file": "Loon/Telegram-ip.conf",
+            "rules": 14
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/Telegram-domainset.conf",
+            "rules": 15
+          },
+          "ip": {
+            "file": "Shadowrocket/Telegram-ip.conf",
+            "rules": 14
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/Telegram-domainset.conf",
+            "rules": 15
+          },
+          "ip": {
+            "file": "Stash/Telegram-ip.conf",
+            "rules": 14
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/Telegram-domainset.conf",
+            "rules": 15
+          },
+          "ip": {
+            "file": "Clash/Telegram-ip.conf",
+            "rules": 14
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/Telegram-domainset.conf",
+            "rules": 15
+          },
+          "ip": {
+            "file": "Egern/Telegram-ip.conf",
+            "rules": 14
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/Telegram-domainset.conf",
+            "rules": 15
+          },
+          "ip": {
+            "file": "QuantumultX/Telegram-ip.conf",
+            "rules": 14
+          }
         }
       },
       "source": {
@@ -584,7 +1155,7 @@
         "name": "SukkaW-Surge",
         "format": "surge-rule-set"
       },
-      "note": "SukkaW is selected because its actively maintained native Surge source is limited to core Telegram domains and fits the preferred source tier. Repcz currently includes unsupported IP-ASN rules plus third-party client and telemetry scope; v2fly adds TON and related ecosystem domains that are not required for a conservative Telegram default."
+      "note": "SukkaW is selected because its actively maintained native Surge source is limited to core Telegram domains and fits the preferred source tier. Repcz currently includes unsupported IP-ASN rules plus third-party client and telemetry scope; v2fly adds TON and related ecosystem domains that are not required for a conservative Telegram default. A supplemental IP source (ruleset.skk.moe/List/ip/telegram.conf, official Telegram CIDR list, 2026-08-13) is added so the canonical set carries both the domain (non-IP) and IP phases, enabling Blink to split Telegram into a non-IP view and an IP view for the Rule-layer multi-view pilot (2026-08)."
     },
     {
       "name": "Threads",
@@ -629,6 +1200,50 @@
           "file": "QuantumultX/Threads.list",
           "rules": 2,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/Threads-domainset.conf",
+            "rules": 2
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/Threads-domainset.conf",
+            "rules": 2
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/Threads-domainset.conf",
+            "rules": 2
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/Threads-domainset.conf",
+            "rules": 2
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/Threads-domainset.conf",
+            "rules": 2
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/Threads-domainset.conf",
+            "rules": 2
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/Threads-domainset.conf",
+            "rules": 2
+          }
         }
       },
       "source": {
@@ -683,6 +1298,50 @@
           "file": "QuantumultX/TikTok.list",
           "rules": 81,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/TikTok-nonip.conf",
+            "rules": 81
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/TikTok-nonip.conf",
+            "rules": 81
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/TikTok-nonip.conf",
+            "rules": 81
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/TikTok-nonip.conf",
+            "rules": 81
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/TikTok-nonip.conf",
+            "rules": 81
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/TikTok-nonip.conf",
+            "rules": 81
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/TikTok-nonip.conf",
+            "rules": 81
+          }
         }
       },
       "source": {
@@ -741,6 +1400,78 @@
           "dropped": 1
         }
       },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/Spotify-nonip.conf",
+            "rules": 20
+          },
+          "ip": {
+            "file": "Surge/Spotify-ip.conf",
+            "rules": 1
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/Spotify-nonip.conf",
+            "rules": 20
+          },
+          "ip": {
+            "file": "Loon/Spotify-ip.conf",
+            "rules": 1
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/Spotify-nonip.conf",
+            "rules": 20
+          },
+          "ip": {
+            "file": "Shadowrocket/Spotify-ip.conf",
+            "rules": 1
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/Spotify-nonip.conf",
+            "rules": 20
+          },
+          "ip": {
+            "file": "Stash/Spotify-ip.conf",
+            "rules": 1
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/Spotify-nonip.conf",
+            "rules": 19
+          },
+          "ip": {
+            "file": "Clash/Spotify-ip.conf",
+            "rules": 1
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/Spotify-nonip.conf",
+            "rules": 20
+          },
+          "ip": {
+            "file": "Egern/Spotify-ip.conf",
+            "rules": 1
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/Spotify-nonip.conf",
+            "rules": 19
+          },
+          "ip": {
+            "file": "QuantumultX/Spotify-ip.conf",
+            "rules": 1
+          }
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -795,6 +1526,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/AI-nonip.conf",
+            "rules": 50
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/AI-nonip.conf",
+            "rules": 50
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/AI-nonip.conf",
+            "rules": 50
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/AI-nonip.conf",
+            "rules": 50
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/AI-nonip.conf",
+            "rules": 50
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/AI-nonip.conf",
+            "rules": 50
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/AI-nonip.conf",
+            "rules": 50
+          }
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -847,6 +1622,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/ZABank-domainset.conf",
+            "rules": 3
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/ZABank-domainset.conf",
+            "rules": 3
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/ZABank-domainset.conf",
+            "rules": 3
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/ZABank-domainset.conf",
+            "rules": 3
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/ZABank-domainset.conf",
+            "rules": 3
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/ZABank-domainset.conf",
+            "rules": 3
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/ZABank-domainset.conf",
+            "rules": 3
+          }
+        }
+      },
       "source": {
         "author": "",
         "name": "",
@@ -897,6 +1716,50 @@
           "file": "QuantumultX/Steam.list",
           "rules": 20,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/Steam-domainset.conf",
+            "rules": 20
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/Steam-domainset.conf",
+            "rules": 20
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/Steam-domainset.conf",
+            "rules": 20
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/Steam-domainset.conf",
+            "rules": 20
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/Steam-domainset.conf",
+            "rules": 20
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/Steam-domainset.conf",
+            "rules": 20
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/Steam-domainset.conf",
+            "rules": 20
+          }
         }
       },
       "source": {
@@ -953,6 +1816,78 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/APTV-domainset.conf",
+            "rules": 21
+          },
+          "ip": {
+            "file": "Surge/APTV-ip.conf",
+            "rules": 5
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/APTV-domainset.conf",
+            "rules": 21
+          },
+          "ip": {
+            "file": "Loon/APTV-ip.conf",
+            "rules": 5
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/APTV-domainset.conf",
+            "rules": 21
+          },
+          "ip": {
+            "file": "Shadowrocket/APTV-ip.conf",
+            "rules": 5
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/APTV-domainset.conf",
+            "rules": 21
+          },
+          "ip": {
+            "file": "Stash/APTV-ip.conf",
+            "rules": 5
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/APTV-domainset.conf",
+            "rules": 21
+          },
+          "ip": {
+            "file": "Clash/APTV-ip.conf",
+            "rules": 5
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/APTV-domainset.conf",
+            "rules": 21
+          },
+          "ip": {
+            "file": "Egern/APTV-ip.conf",
+            "rules": 5
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/APTV-domainset.conf",
+            "rules": 21
+          },
+          "ip": {
+            "file": "QuantumultX/APTV-ip.conf",
+            "rules": 5
+          }
+        }
+      },
       "source": {
         "author": "",
         "name": "",
@@ -1004,6 +1939,50 @@
           "file": "QuantumultX/Disney.list",
           "rules": 172,
           "dropped": 2
+        }
+      },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/Disney-nonip.conf",
+            "rules": 174
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/Disney-nonip.conf",
+            "rules": 174
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/Disney-nonip.conf",
+            "rules": 174
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/Disney-nonip.conf",
+            "rules": 174
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/Disney-nonip.conf",
+            "rules": 174
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/Disney-nonip.conf",
+            "rules": 174
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/Disney-nonip.conf",
+            "rules": 172
+          }
         }
       },
       "source": {
@@ -1060,6 +2039,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/ParamountPlus-nonip.conf",
+            "rules": 10
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/ParamountPlus-nonip.conf",
+            "rules": 10
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/ParamountPlus-nonip.conf",
+            "rules": 10
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/ParamountPlus-nonip.conf",
+            "rules": 10
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/ParamountPlus-nonip.conf",
+            "rules": 9
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/ParamountPlus-nonip.conf",
+            "rules": 10
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/ParamountPlus-nonip.conf",
+            "rules": 10
+          }
+        }
+      },
       "source": {
         "author": "blackmatrix7",
         "name": "blackmatrix7-ios_rule_script",
@@ -1112,6 +2135,50 @@
           "file": "QuantumultX/Hulu.list",
           "rules": 58,
           "dropped": 1
+        }
+      },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/Hulu-nonip.conf",
+            "rules": 59
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/Hulu-nonip.conf",
+            "rules": 59
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/Hulu-nonip.conf",
+            "rules": 59
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/Hulu-nonip.conf",
+            "rules": 59
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/Hulu-nonip.conf",
+            "rules": 59
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/Hulu-nonip.conf",
+            "rules": 59
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/Hulu-nonip.conf",
+            "rules": 58
+          }
         }
       },
       "source": {
@@ -1168,6 +2235,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/PrimeVideo-nonip.conf",
+            "rules": 16
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/PrimeVideo-nonip.conf",
+            "rules": 16
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/PrimeVideo-nonip.conf",
+            "rules": 16
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/PrimeVideo-nonip.conf",
+            "rules": 16
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/PrimeVideo-nonip.conf",
+            "rules": 16
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/PrimeVideo-nonip.conf",
+            "rules": 16
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/PrimeVideo-nonip.conf",
+            "rules": 16
+          }
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -1219,6 +2330,50 @@
           "file": "QuantumultX/HBO.list",
           "rules": 45,
           "dropped": 1
+        }
+      },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/HBO-nonip.conf",
+            "rules": 46
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/HBO-nonip.conf",
+            "rules": 46
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/HBO-nonip.conf",
+            "rules": 46
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/HBO-nonip.conf",
+            "rules": 46
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/HBO-nonip.conf",
+            "rules": 46
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/HBO-nonip.conf",
+            "rules": 46
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/HBO-nonip.conf",
+            "rules": 45
+          }
         }
       },
       "source": {
@@ -1277,6 +2432,78 @@
           "dropped": 1
         }
       },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/Twitch-nonip.conf",
+            "rules": 10
+          },
+          "ip": {
+            "file": "Surge/Twitch-ip.conf",
+            "rules": 12
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/Twitch-nonip.conf",
+            "rules": 10
+          },
+          "ip": {
+            "file": "Loon/Twitch-ip.conf",
+            "rules": 12
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/Twitch-nonip.conf",
+            "rules": 10
+          },
+          "ip": {
+            "file": "Shadowrocket/Twitch-ip.conf",
+            "rules": 12
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/Twitch-nonip.conf",
+            "rules": 10
+          },
+          "ip": {
+            "file": "Stash/Twitch-ip.conf",
+            "rules": 12
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/Twitch-nonip.conf",
+            "rules": 10
+          },
+          "ip": {
+            "file": "Clash/Twitch-ip.conf",
+            "rules": 12
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/Twitch-nonip.conf",
+            "rules": 10
+          },
+          "ip": {
+            "file": "Egern/Twitch-ip.conf",
+            "rules": 12
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/Twitch-nonip.conf",
+            "rules": 9
+          },
+          "ip": {
+            "file": "QuantumultX/Twitch-ip.conf",
+            "rules": 12
+          }
+        }
+      },
       "source": {
         "author": "blackmatrix7",
         "name": "blackmatrix7-ios_rule_script",
@@ -1328,6 +2555,78 @@
           "file": "QuantumultX/Facebook.list",
           "rules": 580,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/Facebook-domainset.conf",
+            "rules": 545
+          },
+          "ip": {
+            "file": "Surge/Facebook-ip.conf",
+            "rules": 35
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/Facebook-domainset.conf",
+            "rules": 545
+          },
+          "ip": {
+            "file": "Loon/Facebook-ip.conf",
+            "rules": 35
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/Facebook-domainset.conf",
+            "rules": 545
+          },
+          "ip": {
+            "file": "Shadowrocket/Facebook-ip.conf",
+            "rules": 35
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/Facebook-domainset.conf",
+            "rules": 545
+          },
+          "ip": {
+            "file": "Stash/Facebook-ip.conf",
+            "rules": 35
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/Facebook-domainset.conf",
+            "rules": 545
+          },
+          "ip": {
+            "file": "Clash/Facebook-ip.conf",
+            "rules": 35
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/Facebook-domainset.conf",
+            "rules": 545
+          },
+          "ip": {
+            "file": "Egern/Facebook-ip.conf",
+            "rules": 35
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/Facebook-domainset.conf",
+            "rules": 545
+          },
+          "ip": {
+            "file": "QuantumultX/Facebook-ip.conf",
+            "rules": 35
+          }
         }
       },
       "source": {
@@ -1384,6 +2683,78 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "nonip": {
+            "file": "Surge/Google-nonip.conf",
+            "rules": 23
+          },
+          "ip": {
+            "file": "Surge/Google-ip.conf",
+            "rules": 2
+          }
+        },
+        "loon": {
+          "nonip": {
+            "file": "Loon/Google-nonip.conf",
+            "rules": 23
+          },
+          "ip": {
+            "file": "Loon/Google-ip.conf",
+            "rules": 2
+          }
+        },
+        "shadowrocket": {
+          "nonip": {
+            "file": "Shadowrocket/Google-nonip.conf",
+            "rules": 23
+          },
+          "ip": {
+            "file": "Shadowrocket/Google-ip.conf",
+            "rules": 2
+          }
+        },
+        "stash": {
+          "nonip": {
+            "file": "Stash/Google-nonip.conf",
+            "rules": 23
+          },
+          "ip": {
+            "file": "Stash/Google-ip.conf",
+            "rules": 2
+          }
+        },
+        "clash": {
+          "nonip": {
+            "file": "Clash/Google-nonip.conf",
+            "rules": 23
+          },
+          "ip": {
+            "file": "Clash/Google-ip.conf",
+            "rules": 2
+          }
+        },
+        "egern": {
+          "nonip": {
+            "file": "Egern/Google-nonip.conf",
+            "rules": 23
+          },
+          "ip": {
+            "file": "Egern/Google-ip.conf",
+            "rules": 2
+          }
+        },
+        "quantumultx": {
+          "nonip": {
+            "file": "QuantumultX/Google-nonip.conf",
+            "rules": 23
+          },
+          "ip": {
+            "file": "QuantumultX/Google-ip.conf",
+            "rules": 2
+          }
+        }
+      },
       "source": {
         "author": "Repcz",
         "name": "Repcz-Tool",
@@ -1436,6 +2807,50 @@
           "dropped": 0
         }
       },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/NBA-domainset.conf",
+            "rules": 2
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/NBA-domainset.conf",
+            "rules": 2
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/NBA-domainset.conf",
+            "rules": 2
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/NBA-domainset.conf",
+            "rules": 2
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/NBA-domainset.conf",
+            "rules": 2
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/NBA-domainset.conf",
+            "rules": 2
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/NBA-domainset.conf",
+            "rules": 2
+          }
+        }
+      },
       "source": {
         "author": "",
         "name": "",
@@ -1486,6 +2901,50 @@
           "file": "QuantumultX/Suno.list",
           "rules": 2,
           "dropped": 0
+        }
+      },
+      "views": {
+        "surge": {
+          "domainset": {
+            "file": "Surge/Suno-domainset.conf",
+            "rules": 2
+          }
+        },
+        "loon": {
+          "domainset": {
+            "file": "Loon/Suno-domainset.conf",
+            "rules": 2
+          }
+        },
+        "shadowrocket": {
+          "domainset": {
+            "file": "Shadowrocket/Suno-domainset.conf",
+            "rules": 2
+          }
+        },
+        "stash": {
+          "domainset": {
+            "file": "Stash/Suno-domainset.conf",
+            "rules": 2
+          }
+        },
+        "clash": {
+          "domainset": {
+            "file": "Clash/Suno-domainset.conf",
+            "rules": 2
+          }
+        },
+        "egern": {
+          "domainset": {
+            "file": "Egern/Suno-domainset.conf",
+            "rules": 2
+          }
+        },
+        "quantumultx": {
+          "domainset": {
+            "file": "QuantumultX/Suno-domainset.conf",
+            "rules": 2
+          }
         }
       },
       "source": {

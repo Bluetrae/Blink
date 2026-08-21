@@ -177,6 +177,7 @@ CLIENTS = (
 
 HEADER_NAME = re.compile(r"^# 规则名称:\s*(.+?)\s*$")
 HEADER_COUNT = re.compile(r"^# 规则统计:\s*(\d+)\s*$")
+VIEW_TYPES = ("domainset", "nonip", "ip")
 
 
 class PortalError(RuntimeError):
@@ -259,6 +260,18 @@ def build(root: Path) -> dict:
                 entry["rules"] = client_count
                 entry["dropped"] = header_count - client_count
             clients[key] = entry
+        views = {}
+        for key, directory, _suffix in CLIENTS:
+            view_map = {}
+            for view_name in VIEW_TYPES:
+                vpath = root / directory / f"{stem}-{view_name}.conf"
+                if vpath.is_file():
+                    view_map[view_name] = {
+                        "file": f"{directory}/{stem}-{view_name}.conf",
+                        "rules": parse_header_count(vpath),
+                    }
+            if view_map:
+                views[key] = view_map
         sources = app.get("sources") or []
         primary = next(
             (item for item in sources if item.get("role") == "primary"),
@@ -276,6 +289,7 @@ def build(root: Path) -> dict:
                 "rules": header_count,
                 "types": type_counts,
                 "clients": clients,
+                "views": views,
                 "source": {
                     "author": primary.get("author", ""),
                     "name": primary.get("name", ""),
