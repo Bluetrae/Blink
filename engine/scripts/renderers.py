@@ -150,6 +150,12 @@ def render_view(client_key: str, view_name: str, rules: Iterable[object], app_na
             return render_classical_clash(rules, app_name)[0]
         if client_key == "quantumultx":
             return render_quantumultx(rules, app_name)[0]
+        if client_key == "egern":
+            # Egern cannot express PROCESS-NAME (mirrors the Egern YAML output's
+            # explicit drop); keep the classical payload honest.
+            return render_classical(
+                [rule for rule in rules if rule.kind != "PROCESS-NAME"], app_name
+            )
         return render_classical(rules, app_name)
     raise RendererError(f"render_view: unknown view {view_name!r} for client {client_key!r}")
 

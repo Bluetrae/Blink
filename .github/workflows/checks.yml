@@ -33,6 +33,8 @@ jobs:
         run: python engine/scripts/parity_check.py --root . --strict
       - name: Verify generated output health
         run: python engine/scripts/health_check.py --root .
+      - name: Verify semantic multi-view invariants
+        run: python engine/scripts/validate_views.py --root .
       - name: Verify cross-App overlap baseline
         run: python engine/scripts/overlap_check.py --root .
       - name: Verify provenance and artifact checksums

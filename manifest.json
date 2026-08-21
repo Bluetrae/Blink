@@ -373,7 +373,7 @@
           "nonip": {
             "path": "Egern/Disney-nonip.conf",
             "rules": 174,
-            "sha256": "dfb70c476af5bc043a8551a57d86683f3092be68c6261e82d7a7c8437b4532cb"
+            "sha256": "77be9cc566532b3256872da35799d3d5c241c88e314feb9be189474e5229d8af"
           }
         },
         "loon": {
@@ -961,7 +961,7 @@
           "nonip": {
             "path": "Egern/HBO-nonip.conf",
             "rules": 46,
-            "sha256": "cbaa5828cf74dc990e6ddef1da53dc9580fe94a14f8c0a1860ea80f6a9db6991"
+            "sha256": "e780cf91c9d1ee31fc6cfa075c32659760a12acf3aff19dd6afdc0440acb94fe"
           }
         },
         "loon": {
@@ -1089,7 +1089,7 @@
           "nonip": {
             "path": "Egern/Hulu-nonip.conf",
             "rules": 59,
-            "sha256": "ff3065202da0f8741216cb88d7783256f999e42820067cb2fc453e32419c45c8"
+            "sha256": "a6d7b54670bdb660f1352499b0a37b581965d1d02392cf9b82320f1169cf53a6"
           }
         },
         "loon": {
@@ -1599,7 +1599,7 @@
           "nonip": {
             "path": "Egern/Netflix-nonip.conf",
             "rules": 39,
-            "sha256": "bc934647c8910ca6b0b3f37529ba6155364814e997774ec6f7097c20742a3e4f"
+            "sha256": "d9321061d3ab1e6e875c4203d62921cd6344d918ff5d3d418b4ab0079feb23fa"
           }
         },
         "loon": {
@@ -2392,7 +2392,7 @@
           "nonip": {
             "path": "Egern/Spotify-nonip.conf",
             "rules": 20,
-            "sha256": "b61b37481bdf05524cd7c9eecbf8c656f7f571dcee648e38e573423f23b04dad"
+            "sha256": "4363111148907b75bc759692bb299c1d116d04d62e4456ba9a25cd5f57580672"
           }
         },
         "loon": {
@@ -3225,7 +3225,7 @@
           "nonip": {
             "path": "Egern/Twitch-nonip.conf",
             "rules": 10,
-            "sha256": "62b03ccaace92feb0f011d7cb4c52aba6d7ecdf919f7aa29110366829f3cc94b"
+            "sha256": "54e4d739935279814d67fb2d922d5a9c9857420ba9b8231863463b0e767391cc"
           }
         },
         "loon": {
@@ -3823,7 +3823,7 @@
   "builder": {
     "files": {
       "engine/scripts/build.py": "7b2f344e34f6aebf187280c7b6dd0ebe37276c07d2f5f70e681234e51b443dcd",
-      "engine/scripts/renderers.py": "5fece8062fee889c7fdb58d5a1b1bf6c87c4bc85f0211cd0bfc9d5d17976b2cf"
+      "engine/scripts/renderers.py": "2d46b1a4991bada108c0fa2e0cd6b483253d1fac8e8b4c793e7313fdd87a9c83"
     },
     "version": "2.0.0"
   },
