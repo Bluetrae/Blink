@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { PortalData } from "./types";
-import { useTimedTheme } from "./hooks";
+import { useTheme } from "./hooks";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Rulesets from "./components/Rulesets";
@@ -12,7 +12,7 @@ import Footer from "./components/Footer";
 const FALLBACK_REPO = "https://github.com/Bluetrae/Blink";
 
 export default function App() {
-  useTimedTheme();
+  const { theme, toggle } = useTheme();
   const [data, setData] = useState<PortalData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
@@ -40,7 +40,7 @@ export default function App() {
 
   return (
     <>
-      <Nav repo={data?.repo ?? FALLBACK_REPO} />
+      <Nav repo={data?.repo ?? FALLBACK_REPO} theme={theme} toggleTheme={toggle} />
       <main>
         {error ? (
           <section className="px-6 py-24 text-center">

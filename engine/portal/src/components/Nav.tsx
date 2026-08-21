@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+import type { Theme } from "../hooks";
 
 interface NavProps {
   repo: string;
+  theme: Theme;
+  toggleTheme: () => void;
 }
 
 const NAV_LINKS = [
@@ -11,9 +14,11 @@ const NAV_LINKS = [
   { href: "#about", label: "构建与来源" },
 ];
 
-export default function Nav({ repo }: NavProps) {
+export default function Nav({ repo, theme, toggleTheme }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const dark = theme === "dark";
+  const themeLabel = dark ? "切换到浅色主题" : "切换到深色主题";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -63,6 +68,33 @@ export default function Nav({ repo }: NavProps) {
         </a>
         <button
           type="button"
+          onClick={toggleTheme}
+          aria-label={themeLabel}
+          title={themeLabel}
+          className="relative ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-line-strong hover:bg-paper hover:shadow-md active:scale-90 sm:ml-0"
+        >
+          {/* dark = white cat on black; light = white dog on blue */}
+          <img
+            src="blink-logo.png"
+            alt=""
+            width={20}
+            height={20}
+            className={`absolute h-5 w-5 rounded-full object-cover transition-all duration-300 ease-out ${
+              dark ? "rotate-0 scale-100 opacity-100" : "-rotate-180 scale-0 opacity-0"
+            }`}
+          />
+          <img
+            src="blink-logo-2.png"
+            alt=""
+            width={20}
+            height={20}
+            className={`absolute h-5 w-5 rounded-full object-cover transition-all duration-300 ease-out ${
+              dark ? "rotate-180 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+            }`}
+          />
+        </button>
+        <button
+          type="button"
           onClick={() => setMenuOpen((open) => !open)}
           aria-label={menuOpen ? "关闭菜单" : "打开菜单"}
           aria-expanded={menuOpen}
@@ -88,6 +120,23 @@ export default function Nav({ repo }: NavProps) {
               {link.label}
             </a>
           ))}
+          <button
+            type="button"
+            onClick={() => {
+              toggleTheme();
+              setMenuOpen(false);
+            }}
+            className="flex w-full items-center gap-2.5 border-t border-line px-6 py-3.5 text-left text-sm text-mute transition hover:bg-paper"
+          >
+            <span className="flex h-5 w-5 items-center justify-center rounded-full border border-line bg-card">
+              {dark ? (
+                <span className="text-[11px] leading-none">☀️</span>
+              ) : (
+                <span className="text-[11px] leading-none">🌙</span>
+              )}
+            </span>
+            {themeLabel}
+          </button>
           <a
             href={repo}
             target="_blank"

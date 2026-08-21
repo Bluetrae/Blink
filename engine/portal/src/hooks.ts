@@ -44,25 +44,54 @@ export function useCopy(text: string, copiedMs = 1600): { copied: boolean; copy:
   return { copied, copy };
 }
 
-/* Time-based theme: 08:00–22:00 light, 22:00–08:00 dark. Re-checks every
-   minute and when the tab becomes visible again, so the page flips
-   automatically across the boundary even while it stays open. */
-function themeForHour(hour: number): "light" | "dark" {
-  return hour >= 8 && hour < 22 ? "light" : "dark";
+/* Manual theme: persisted in localStorage, falling back to the system
+   preference. No time-of-day auto switching. */
+export type Theme = "light" | "dark";
+
+function initialTheme(): Theme {
+  try {
+    const stored = localStorage.getItem("blink-theme");
+    if (stored === "light" || stored === "dark") return stored;
+  } catch {
+    /* storage unavailable (private mode etc.) */
+  }
+  // Default to dark; light only when the user explicitly switches.
+  return "dark";
 }
 
-export function useTimedTheme(): void {
+function applyTheme(next: Theme): void {
+  document.documentElement.classList.toggle("dark", next === "dark");
+}
+
+export function useTheme(): { theme: Theme; toggle: () => void } {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
+
   useEffect(() => {
+    applyTheme(theme);
+    try {
+      localStorage.setItem("blink-theme", theme);
+    } catch {
+      /* ignore */
+    }
+  }, [theme]);
+
+  const toggle = useCallback(() => {
+    const next: Theme = theme === "dark" ? "light" : "dark";
     const apply = () => {
-      const next = themeForHour(new Date().getHours());
-      document.documentElement.classList.toggle("dark", next === "dark");
+      applyTheme(next);
+      setTheme(next);
     };
-    apply();
-    const interval = window.setInterval(apply, 60_000);
-    document.addEventListener("visibilitychange", apply);
-    return () => {
-      window.clearInterval(interval);
-      document.removeEventListener("visibilitychange", apply);
-    };
-  }, []);
+    // Smooth whole-page cross-fade where the View Transitions API exists;
+    // otherwise fall back to the CSS color transition on <body>.
+    const viewTransition = (
+      document as Document & { startViewTransition?: (cb: () => void) => unknown }
+    ).startViewTransition;
+    if (typeof viewTransition === "function") {
+      viewTransition.call(document, apply);
+    } else {
+      apply();
+    }
+  }, [theme]);
+
+  return { theme, toggle };
 }
