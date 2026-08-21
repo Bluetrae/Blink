@@ -222,10 +222,11 @@ function appViews(app: AppEntry, client: ClientKey): string[] {
 /** Reference lines for one app in one client; uses split domain/IP files when views exist. */
 export function appReferenceLines(rawBase: string, app: AppEntry, client: ClientKey): string[] {
   const viewNames = appViews(app, client);
-  if (viewNames.length > 0) {
-    const lines: string[] = [];
-    if (client === "stash" || client === "clash") {
-      lines.push("rule-providers:");
+  const mihomo = client === "stash" || client === "clash";
+  if (mihomo) {
+    // mihomo 系（Stash/Clash）：需在配置文件里手写 rule-providers + RULE-SET，保留该写法。
+    if (viewNames.length > 0) {
+      const lines: string[] = ["rule-providers:"];
       for (const view of viewNames) {
         lines.push(`  ${app.name}-${view}:`);
         lines.push("    type: http");
@@ -239,66 +240,24 @@ export function appReferenceLines(rawBase: string, app: AppEntry, client: Client
       for (const view of viewNames) lines.push(`  - RULE-SET,${app.name}-${view},${app.policy}`);
       return lines;
     }
-    if (client === "egern") {
-      lines.push("rules:");
-      for (const view of viewNames) {
-        lines.push("  - rule_set:");
-        lines.push(`      match: ${clientViewFileUrl(rawBase, app, client, view)}`);
-        lines.push(`      policy: ${app.policy}`);
-      }
-      return lines;
-    }
-    for (const view of viewNames) {
-      const url = clientViewFileUrl(rawBase, app, client, view);
-      if (client === "surge") {
-        lines.push(
-          view === "domainset"
-            ? `DOMAIN-SET,${url},${app.policy},extended-matching`
-            : `RULE-SET,${url},${app.policy}${view === "ip" ? ",no-resolve" : ""}`,
-        );
-      } else if (client === "shadowrocket") {
-        lines.push(
-          view === "domainset"
-            ? `DOMAIN-SET,${url},${app.policy}`
-            : `RULE-SET,${url},${app.policy}`,
-        );
-      } else if (client === "loon") {
-        lines.push(`${url}, policy=${app.policy}, tag=${app.name}-${view}, enabled=true`);
-      } else if (client === "quantumultx") {
-        lines.push(
-          `${url}, tag=${app.name}-${view}, force-policy=${app.policy}, update-interval=172800, opt-parser=false, enabled=true`,
-        );
-      }
-    }
-    return lines;
+    const url = clientFileUrl(rawBase, app, client);
+    return [
+      "rule-providers:",
+      `  ${app.name}:`,
+      "    type: http",
+      "    behavior: classical",
+      "    format: text",
+      `    url: ${url}`,
+      "    interval: 86400",
+      "rules:",
+      `  - RULE-SET,${app.name},${app.policy}`,
+    ];
   }
-  const url = clientFileUrl(rawBase, app, client);
-  switch (client) {
-    case "surge":
-    case "shadowrocket":
-      return [`RULE-SET,${url},${app.policy}`];
-    case "loon":
-      return [`${url}, policy=${app.policy}, tag=${app.name}, enabled=true`];
-    case "stash":
-    case "clash":
-      return [
-        "rule-providers:",
-        `  ${app.name}:`,
-        "    type: http",
-        "    behavior: classical",
-        "    format: text",
-        `    url: ${url}`,
-        "    interval: 86400",
-        "rules:",
-        `  - RULE-SET,${app.name},${app.policy}`,
-      ];
-    case "egern":
-      return ["rules:", "  - rule_set:", `      match: ${url}`, `      policy: ${app.policy}`];
-    case "quantumultx":
-      return [
-        `${url}, tag=${app.name}, force-policy=${app.policy}, update-interval=172800, opt-parser=false, enabled=true`,
-      ];
+  // 非 mihomo：卡片复制 raw 地址，用户在客户端前端导入。
+  if (viewNames.length > 0) {
+    return viewNames.map((view) => clientViewFileUrl(rawBase, app, client, view));
   }
+  return [clientFileUrl(rawBase, app, client)];
 }
 
 export function clientSnippet(rawBase: string, app: AppEntry, client: ClientKey): string {
@@ -316,6 +275,7 @@ export function clientViewSnippet(
   if (!entry) return clientSnippet(rawBase, app, client);
   const url = clientViewFileUrl(rawBase, app, client, view);
   if (client === "stash" || client === "clash") {
+    // mihomo 系：保留配置文件写法（rule-providers + RULE-SET）。
     return [
       "rule-providers:",
       `  ${app.name}-${view}:`,
@@ -328,28 +288,8 @@ export function clientViewSnippet(
       `  - RULE-SET,${app.name}-${view},${app.policy}`,
     ].join("\n");
   }
-  if (client === "egern") {
-    return ["rules:", "  - rule_set:", `      match: ${url}`, `      policy: ${app.policy}`].join(
-      "\n",
-    );
-  }
-  if (client === "surge") {
-    return view === "domainset"
-      ? `DOMAIN-SET,${url},${app.policy},extended-matching`
-      : `RULE-SET,${url},${app.policy}${view === "ip" ? ",no-resolve" : ""}`;
-  }
-  if (client === "shadowrocket") {
-    return view === "domainset"
-      ? `DOMAIN-SET,${url},${app.policy}`
-      : `RULE-SET,${url},${app.policy}`;
-  }
-  if (client === "loon") {
-    return `${url}, policy=${app.policy}, tag=${app.name}-${view}, enabled=true`;
-  }
-  if (client === "quantumultx") {
-    return `${url}, tag=${app.name}-${view}, force-policy=${app.policy}, update-interval=172800, opt-parser=false, enabled=true`;
-  }
-  return "";
+  // 非 mihomo：复制这个视图的 raw 地址，供客户端前端导入。
+  return url;
 }
 
 function groupedApps(data: PortalData): Array<{ label: string; apps: AppEntry[] }> {
@@ -364,6 +304,7 @@ function groupedApps(data: PortalData): Array<{ label: string; apps: AppEntry[] 
 export function allSnippets(data: PortalData, client: ClientKey): string {
   const out: string[] = [];
   if (client === "stash" || client === "clash") {
+    // mihomo 系：需在配置文件手写 rule-providers + RULE-SET，保留该写法。
     out.push("rule-providers:");
     for (const app of sortedApps(data.apps)) {
       const views = appViews(app, client);
@@ -391,33 +332,17 @@ export function allSnippets(data: PortalData, client: ClientKey): string {
     }
     return out.join("\n");
   }
-  if (client === "egern") {
-    out.push("rules:");
-    for (const app of sortedApps(data.apps)) {
-      const views = appViews(app, client);
-      if (views.length) {
-        for (const view of views) {
-          out.push("  - rule_set:");
-          out.push(`      match: ${clientViewFileUrl(data.raw_base, app, client, view)}`);
-          out.push(`      policy: ${app.policy}`);
-        }
-      } else {
-        out.push("  - rule_set:");
-        out.push(`      match: ${clientFileUrl(data.raw_base, app, client)}`);
-        out.push(`      policy: ${app.policy}`);
-      }
-    }
-    return out.join("\n");
-  }
-  if (client === "quantumultx") {
-    out.push("[filter_remote]");
-    for (const app of sortedApps(data.apps))
-      out.push(...appReferenceLines(data.raw_base, app, client));
-    return out.join("\n");
-  }
+  // 非 mihomo：复制 raw 地址，用户在客户端前端导入；按容器分组。
   for (const group of groupedApps(data)) {
     out.push(`# ${group.label}`);
-    for (const app of group.apps) out.push(...appReferenceLines(data.raw_base, app, client));
+    for (const app of group.apps) {
+      const views = appViews(app, client);
+      if (views.length) {
+        for (const view of views) out.push(clientViewFileUrl(data.raw_base, app, client, view));
+      } else {
+        out.push(clientFileUrl(data.raw_base, app, client));
+      }
+    }
     out.push("");
   }
   return out.join("\n").replace(/\n+$/, "");

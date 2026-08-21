@@ -43,6 +43,10 @@ function AppCard({
 }) {
   const stat = app.clients[client];
   const viewNames = VIEW_ORDER.filter((view) => view in (app.views?.[client] ?? {}));
+  const [selectedView, setSelectedView] = useState("");
+  const activeView: string = (viewNames as string[]).includes(selectedView)
+    ? selectedView
+    : viewNames[0];
   const dropped =
     client === "egern" || client === "quantumultx" || client === "clash" ? (stat.dropped ?? 0) : 0;
   return (
@@ -86,10 +90,9 @@ function AppCard({
             </span>
           ))}
         </div>
-        {viewNames.length > 0 && (
-          <p className="rounded-lg border border-accent-soft bg-accent-soft px-1.5 py-1 text-[10px] leading-relaxed text-accent">
-            分文件 · {viewNames.map((view) => VIEW_LABELS[view]).join(" + ")}。skk 用法：域名/非 IP
-            段放在所有 IP 段之前；IP 段会触发 DNS，置于规则末尾。
+        {viewNames.length > 1 && (
+          <p className="rounded-lg border border-accent-soft bg-accent-soft px-1.5 py-1 text-[10px] text-accent">
+            分文件 · {viewNames.map((view) => VIEW_LABELS[view]).join(" + ")}
           </p>
         )}
         {app.self_use && (
@@ -107,18 +110,28 @@ function AppCard({
         <p className="truncate text-[11px] text-mute" title={app.source.name || undefined}>
           {sourceLine(app)}
         </p>
-        <div className="mt-auto flex flex-wrap gap-1.5 pt-0.5">
-          {viewNames.length > 0 ? (
-            viewNames.map((view) => (
-              <CopyButton
-                key={view}
-                label={view === "ip" ? "复制 IP 段" : `复制 ${VIEW_LABELS[view]} 段`}
-                snippet={clientViewSnippet(rawBase, app, client, view)}
-              />
-            ))
-          ) : (
-            <CopyButton label="复制接入" snippet={clientSnippet(rawBase, app, client)} />
+        <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-0.5">
+          {viewNames.length > 1 && (
+            <select
+              value={activeView}
+              onChange={(event) => setSelectedView(event.target.value)}
+              className="rounded-lg border border-line bg-card px-1.5 py-1.5 text-[12px] text-ink"
+            >
+              {viewNames.map((view) => (
+                <option key={view} value={view}>
+                  {VIEW_LABELS[view]}段
+                </option>
+              ))}
+            </select>
           )}
+          <CopyButton
+            label="复制接入"
+            snippet={
+              viewNames.length > 0
+                ? clientViewSnippet(rawBase, app, client, activeView)
+                : clientSnippet(rawBase, app, client)
+            }
+          />
           <a
             href={clientFileUrl(rawBase, app, client)}
             target="_blank"
@@ -195,6 +208,11 @@ export default function Rulesets({ data }: { data: PortalData }) {
             ))}
           </div>
           <p className="mx-auto mb-7 max-w-2xl text-center text-[13px] text-mute">{activeNote}</p>
+          <p className="mx-auto -mt-4 mb-7 max-w-2xl text-center text-[12px] text-mute">
+            {client === "stash" || client === "clash"
+              ? "Stash / Clash 复制的是配置文件写法（rule-providers + RULE-SET），需手写进配置。"
+              : "复制的是规则文件的 raw 地址，到客户端前端导入即可；带 IP 的 App 请把域名段放在 IP 段之前。"}
+          </p>
         </Reveal>
         <div className="mb-7 flex flex-wrap justify-center gap-2">
           {filters.map((key) => (
