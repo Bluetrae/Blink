@@ -53,6 +53,18 @@ RULE-SET,https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/<App>.list,
 
 Shadowrocket 语法与 Surge 相同，也可直接用 `Shadowrocket/` 目录 URL。
 
+Blink 的每个 App 除完整 `.list` 外，还按**语义分段**提供三个视图（需要 domain-first / IP-last 时用）：
+
+- `<App>-domainset.conf` — 纯域名段（`DOMAIN` / `DOMAIN-SUFFIX`，**不触发 DNS**）；
+- `<App>-nonip.conf` — 非 IP 段（含 `DOMAIN-KEYWORD` / `USER-AGENT` / `PROCESS-NAME`，**不触发 DNS**）；
+- `<App>-ip.conf` — IP 段（`IP-CIDR` / `IP-CIDR6`，**触发 DNS**，需置于规则末尾）。
+
+> 顺序借鉴 [skk 用法](https://github.com/SukkaW/Surge)：把所有 `domainset` / `non_ip` 及你自己加的
+> `DOMAIN` / `DOMAIN-SUFFIX` / `DOMAIN-KEYWORD` 规则放在所有 `ip` 段、`IP-CIDR` / `IP-CIDR6` /
+> `IP-ASN` / `GEOIP` 规则**之前，没有任何例外**。自上而下匹配的客户端只在做 IP 类规则匹配、
+> 命中 `FINAL` 或 direct 策略时才触发 DNS 解析；顺序颠倒会让待代理域名被提前解析，失去 DNS
+> 防污染保护。
+
 ### Loon
 
 在 `[Remote Rule]` 段添加一行：

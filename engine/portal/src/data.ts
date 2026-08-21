@@ -305,6 +305,53 @@ export function clientSnippet(rawBase: string, app: AppEntry, client: ClientKey)
   return appReferenceLines(rawBase, app, client).join("\n");
 }
 
+/** Reference for a single semantic view (for the per-view copy buttons). */
+export function clientViewSnippet(
+  rawBase: string,
+  app: AppEntry,
+  client: ClientKey,
+  view: string,
+): string {
+  const entry = app.views?.[client]?.[view];
+  if (!entry) return clientSnippet(rawBase, app, client);
+  const url = clientViewFileUrl(rawBase, app, client, view);
+  if (client === "stash" || client === "clash") {
+    return [
+      "rule-providers:",
+      `  ${app.name}-${view}:`,
+      "    type: http",
+      `    behavior: ${view === "domainset" ? "domain" : "classical"}`,
+      "    format: text",
+      `    url: ${url}`,
+      "    interval: 86400",
+      "rules:",
+      `  - RULE-SET,${app.name}-${view},${app.policy}`,
+    ].join("\n");
+  }
+  if (client === "egern") {
+    return ["rules:", "  - rule_set:", `      match: ${url}`, `      policy: ${app.policy}`].join(
+      "\n",
+    );
+  }
+  if (client === "surge") {
+    return view === "domainset"
+      ? `DOMAIN-SET,${url},${app.policy},extended-matching`
+      : `RULE-SET,${url},${app.policy}${view === "ip" ? ",no-resolve" : ""}`;
+  }
+  if (client === "shadowrocket") {
+    return view === "domainset"
+      ? `DOMAIN-SET,${url},${app.policy}`
+      : `RULE-SET,${url},${app.policy}`;
+  }
+  if (client === "loon") {
+    return `${url}, policy=${app.policy}, tag=${app.name}-${view}, enabled=true`;
+  }
+  if (client === "quantumultx") {
+    return `${url}, tag=${app.name}-${view}, force-policy=${app.policy}, update-interval=172800, opt-parser=false, enabled=true`;
+  }
+  return "";
+}
+
 function groupedApps(data: PortalData): Array<{ label: string; apps: AppEntry[] }> {
   const groups: Array<{ label: string; apps: AppEntry[] }> = [];
   for (const category of CATEGORY_ORDER) {

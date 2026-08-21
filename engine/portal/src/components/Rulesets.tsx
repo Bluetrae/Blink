@@ -9,12 +9,26 @@ import {
   clientFileUrl,
   clientIcon,
   clientSnippet,
+  clientViewSnippet,
   sortedApps,
   sourceLine,
   typeChips,
 } from "../data";
 import { useCopy } from "../hooks";
 import Reveal from "./Reveal";
+
+function CopyButton({ snippet, label }: { snippet: string; label: string }) {
+  const { copied, copy } = useCopy(snippet);
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      className="flex-1 min-w-[84px] rounded-lg bg-accent px-2 py-1.5 text-[12.5px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
+    >
+      {copied ? "已复制 ✓" : label}
+    </button>
+  );
+}
 
 function AppCard({
   app,
@@ -27,9 +41,8 @@ function AppCard({
   rawBase: string;
   index: number;
 }) {
-  const snippet = clientSnippet(rawBase, app, client);
-  const { copied, copy } = useCopy(snippet);
   const stat = app.clients[client];
+  const viewNames = VIEW_ORDER.filter((view) => view in (app.views?.[client] ?? {}));
   const dropped =
     client === "egern" || client === "quantumultx" || client === "clash" ? (stat.dropped ?? 0) : 0;
   return (
@@ -73,13 +86,10 @@ function AppCard({
             </span>
           ))}
         </div>
-        {VIEW_ORDER.filter((view) => view in (app.views?.[client] ?? {})).length > 0 && (
+        {viewNames.length > 0 && (
           <p className="rounded-lg border border-accent-soft bg-accent-soft px-1.5 py-1 text-[10px] leading-relaxed text-accent">
-            分文件 ·{" "}
-            {VIEW_ORDER.filter((view) => view in (app.views?.[client] ?? {}))
-              .map((view) => VIEW_LABELS[view])
-              .join(" + ")}
-            两段，接入已按域名→IP 拆分
+            分文件 · {viewNames.map((view) => VIEW_LABELS[view]).join(" + ")}。skk 用法：域名/非 IP
+            段放在所有 IP 段之前；IP 段会触发 DNS，置于规则末尾。
           </p>
         )}
         {app.self_use && (
@@ -97,19 +107,23 @@ function AppCard({
         <p className="truncate text-[11px] text-mute" title={app.source.name || undefined}>
           {sourceLine(app)}
         </p>
-        <div className="mt-auto flex gap-1.5 pt-0.5">
-          <button
-            type="button"
-            onClick={copy}
-            className="flex-1 rounded-lg bg-accent px-2 py-1.5 text-[13px] font-medium text-white transition-all duration-200 ease-out hover:bg-accent-strong hover:shadow-md hover:shadow-accent/30 active:scale-[0.96]"
-          >
-            {copied ? "已复制 ✓" : "复制接入"}
-          </button>
+        <div className="mt-auto flex flex-wrap gap-1.5 pt-0.5">
+          {viewNames.length > 0 ? (
+            viewNames.map((view) => (
+              <CopyButton
+                key={view}
+                label={view === "ip" ? "复制 IP 段" : `复制 ${VIEW_LABELS[view]} 段`}
+                snippet={clientViewSnippet(rawBase, app, client, view)}
+              />
+            ))
+          ) : (
+            <CopyButton label="复制接入" snippet={clientSnippet(rawBase, app, client)} />
+          )}
           <a
             href={clientFileUrl(rawBase, app, client)}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex-1 rounded-lg border border-line bg-card px-2 py-1.5 text-center text-[13px] text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-paper active:translate-y-0 active:scale-[0.96]"
+            className="group flex-1 min-w-[64px] rounded-lg border border-line bg-card px-2 py-1.5 text-center text-[13px] text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-paper active:translate-y-0 active:scale-[0.96]"
           >
             查看{" "}
             <span className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
