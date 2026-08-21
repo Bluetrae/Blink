@@ -34,11 +34,11 @@ export default function Nav({ repo }: NavProps) {
           className="flex items-center gap-2 text-[17px] font-bold tracking-tight text-ink"
         >
           <img
-            src="https://github.com/Bluetrae.png"
+            src="blink-logo.png"
             alt=""
             width={24}
             height={24}
-            className="h-6 w-6 rounded-full border border-line"
+            className="h-6 w-6 rounded-full border border-line bg-card object-cover"
           />
           Blink
         </a>

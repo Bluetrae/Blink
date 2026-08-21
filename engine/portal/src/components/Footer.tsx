@@ -14,11 +14,11 @@ export default function Footer({ repo }: FooterProps) {
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 text-center">
         <p className="flex items-center justify-center gap-2 text-sm font-semibold">
           <img
-            src="https://github.com/Bluetrae.png"
+            src="blink-logo.png"
             alt=""
             width={24}
             height={24}
-            className="h-6 w-6 rounded-full border border-line"
+            className="h-6 w-6 rounded-full border border-line bg-card object-cover"
           />
           Blink · 个人使用的多客户端规则与配置文件分发仓库
         </p>
