@@ -234,14 +234,22 @@ function AppCard({
 export default function Rulesets({ data }: { data: PortalData }) {
   const [client, setClient] = useState<ClientKey>("surge");
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState(false);
   const apps = useMemo(() => sortedApps(data.apps), [data.apps]);
   const present = useMemo(() => new Set(apps.map((app) => app.category)), [apps]);
   const filters = ["all", ...CATEGORY_ORDER.filter((category) => present.has(category))];
-  const visible = filter === "all" ? apps : apps.filter((app) => app.category === filter);
+  const query = search.trim().toLowerCase();
+  const categoryApps = filter === "all" ? apps : apps.filter((app) => app.category === filter);
+  const results = categoryApps.filter(
+    (app) =>
+      !query ||
+      app.name.toLowerCase().includes(query) ||
+      (CATEGORY_LABELS[app.category] ?? app.category).toLowerCase().includes(query),
+  );
   const activeNote = CLIENT_TABS.find((tab) => tab.key === client)?.note ?? "";
-  const shown = expanded ? visible : visible.slice(0, 10);
-  const collapsible = visible.length > 10;
+  const shown = expanded ? results : results.slice(0, 10);
+  const collapsible = results.length > 10;
 
   return (
     <section
@@ -312,6 +320,46 @@ export default function Rulesets({ data }: { data: PortalData }) {
           </div>
           <p className="mx-auto mb-7 max-w-2xl text-center text-[13px] text-mute">{activeNote}</p>
         </Reveal>
+        <Reveal>
+          <div className="relative mx-auto mb-6 max-w-md">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-mute transition-colors duration-200 peer-focus:text-accent"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <input
+              type="text"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="搜索 App，如 YouTube / Netflix / Telegram…"
+              aria-label="搜索 App 规则"
+              className="peer w-full rounded-full border border-line bg-card py-2.5 pl-11 pr-10 text-sm text-ink shadow-sm outline-none transition-all duration-200 ease-out placeholder:text-mute/70 focus:-translate-y-px focus:border-accent focus:bg-paper focus:shadow-md focus:shadow-accent/15 focus:ring-2 focus:ring-accent/15"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch("")}
+                aria-label="清空搜索"
+                className="absolute right-3 top-1/2 flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-mute transition-all duration-150 ease-out hover:bg-paper hover:text-ink active:scale-90"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+          {query && (
+            <p className="mx-auto -mt-2 mb-5 text-center text-[12px] text-mute">
+              共找到 <b className="text-ink">{results.length}</b> 个匹配 App
+            </p>
+          )}
+        </Reveal>
         <div className="mb-7 flex flex-wrap justify-center gap-2">
           {filters.map((key) => (
             <button
@@ -328,17 +376,37 @@ export default function Rulesets({ data }: { data: PortalData }) {
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(175px,1fr))] gap-3">
-          {shown.map((app, index) => (
-            <AppCard
-              key={app.name}
-              app={app}
-              client={client}
-              rawBase={data.raw_base}
-              index={index}
-            />
-          ))}
-        </div>
+        {results.length === 0 ? (
+          <div className="rounded-2xl border border-line bg-card px-6 py-14 text-center">
+            <p className="text-2xl">🔍</p>
+            <p className="mt-3 font-medium text-ink">没有匹配的 App</p>
+            <p className="mt-1 text-[13px] text-mute">
+              把关键词换成 App 名称（如 Netflix）或分类（如 社交 / 媒体 / AI）再试。
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSearch("");
+                setFilter("all");
+              }}
+              className="mt-5 rounded-full border border-accent-soft bg-accent-soft px-4 py-2 text-[13px] font-medium text-accent transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md hover:shadow-accent/20 active:translate-y-0 active:scale-[0.96]"
+            >
+              清除搜索与分类
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(175px,1fr))] gap-3">
+            {shown.map((app, index) => (
+              <AppCard
+                key={app.name}
+                app={app}
+                client={client}
+                rawBase={data.raw_base}
+                index={index}
+              />
+            ))}
+          </div>
+        )}
         {collapsible && (
           <div className="mt-7 flex justify-center">
             <button
@@ -346,7 +414,7 @@ export default function Rulesets({ data }: { data: PortalData }) {
               onClick={() => setExpanded((value) => !value)}
               className="inline-flex items-center gap-2 rounded-full border border-line bg-card px-6 py-2.5 text-sm text-ink transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-line-strong hover:shadow-sm active:translate-y-0 active:scale-[0.96]"
             >
-              {expanded ? "收起" : `展开全部 ${visible.length} 个 App`}
+              {expanded ? "收起" : `展开全部 ${results.length} 个 App`}
               <span
                 className={`inline-block text-xs transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
               >
