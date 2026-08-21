@@ -15,10 +15,10 @@
 
 个人使用的**多客户端规则与配置文件**仓库，分两层：
 
-- **规则层（自动维护）**：把经过审计的上游 App 规则保守转换为一份 Canonical Rule Model，渲染为 **Surge / Shadowrocket / Loon / Stash / Clash / Egern / Quantumult X** 七种客户端格式，每日自动更新，不是为每个客户端维护一套独立规则。
+- **规则层（自动维护）**：把经过审计的上游规则转换为一份 Canonical Rule Model，渲染为 **Surge / Shadowrocket / Loon / Stash / Clash / Egern / Quantumult X** 七种客户端格式，每日更新，不是为每个客户端维护一套独立规则。
 - **配置层（人工维护）**：把同一份配置意图（策略组 / 规则引用 / 通用设置）迁移为七客户端**完整配置文件**，单一订阅池组织、占位符已内置，替换一条订阅即可复用。
 
-<sub>生成目录由构建器自动维护、绝不手工修改；仓库不含任何订阅 URL、token、密码或证书等敏感信息。</sub>
+生成目录由构建器自动维护、绝不手工修改；仓库不含任何订阅 URL、token、密码或证书等敏感信息。
 
 > [!NOTE]
 > 配置文件是**人工维护层**，不随规则每日更新；导入前把 `https://YOUR-SUBSCRIPTION-URL` 替换为你的订阅链接，并真机验证策略组与分流效果。
@@ -28,32 +28,22 @@
 
 ---
 
-## 📑 目录
+## 目录
 
-- [🚀 规则集快速开始](#rules-quickstart)
-- [🧭 配置文件快速开始](#profiles-quickstart)
-- [🌐 网页入口](#portal)
-- [🔎 完整性校验](#integrity)
-- [🧩 来源政策](#sources)
-- [⚖️ 使用与许可](#license)
+- [规则集快速开始](#rules-quickstart)
+- [配置文件快速开始](#profiles-quickstart)
+- [网页入口](#portal)
+- [完整性校验](#integrity)
+- [来源政策](#sources)
+- [使用与许可](#license)
 
 ---
 
 <a id="rules-quickstart"></a>
 
-## 🚀 规则集快速开始
+## 规则集快速开始
 
-### Surge / Shadowrocket
-
-在 `[Rule]` 段、`FINAL` 之前加一行（policy 由你的主配置指定）：
-
-```ini
-RULE-SET,https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/<App>.list,<你的策略>
-```
-
-Shadowrocket 语法与 Surge 相同，也可直接用 `Shadowrocket/` 目录 URL。
-
-Blink 的每个 App 除完整 `.list` 外，还按**语义分段**提供三个视图（需要 domain-first / IP-last 时用）：
+每个 App 默认提供完整 `.list`；需要 domain-first / IP-last 时另有**语义分段**视图：
 
 - `<App>-domainset.conf` — 纯域名段（`DOMAIN` / `DOMAIN-SUFFIX`，**不触发 DNS**）；
 - `<App>-nonip.conf` — 非 IP 段（含 `DOMAIN-KEYWORD` / `USER-AGENT` / `PROCESS-NAME`，**不触发 DNS**）；
@@ -61,9 +51,20 @@ Blink 的每个 App 除完整 `.list` 外，还按**语义分段**提供三个�
 
 > 顺序借鉴 [skk 用法](https://github.com/SukkaW/Surge)：把所有 `domainset` / `non_ip` 及你自己加的
 > `DOMAIN` / `DOMAIN-SUFFIX` / `DOMAIN-KEYWORD` 规则放在所有 `ip` 段、`IP-CIDR` / `IP-CIDR6` /
-> `IP-ASN` / `GEOIP` 规则**之前，没有任何例外**。自上而下匹配的客户端只在做 IP 类规则匹配、
-> 命中 `FINAL` 或 direct 策略时才触发 DNS 解析；顺序颠倒会让待代理域名被提前解析，失去 DNS
-> 防污染保护。
+> `IP-ASN` / `GEOIP` 规则**之前，没有例外**。自上而下匹配的客户端只在做 IP 类规则匹配、命中
+> `FINAL` 或 direct 策略时才触发 DNS 解析；顺序颠倒会让待代理域名被提前解析，失去 DNS 防污染保护。
+
+规则文件**不带策略名**，policy 由引用处指定。各客户端引用写法如下。
+
+### Surge / Shadowrocket
+
+在 `[Rule]` 段、`FINAL` 之前加一行：
+
+```ini
+RULE-SET,https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/<App>.list,<你的策略>
+```
+
+Shadowrocket 语法与 Surge 相同，也可直接用 `Shadowrocket/` 目录 URL。
 
 ### Loon
 
@@ -124,16 +125,13 @@ rules:
 https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, tag=<App>, force-policy=<你的策略>, update-interval=172800, opt-parser=false, enabled=true
 ```
 
-> [!IMPORTANT]
-> **规则顺序**：域名类规则集必须放在 IP 类规则（如 China IPv4）**之前**。自上而下匹配的客户端（Surge / Shadowrocket / Loon / Stash / Clash / Egern / Quantumult X）都只有 IP 类规则与 `FINAL` 才触发 DNS 解析；顺序颠倒会让待代理域名被提前解析，失去 DNS 防污染保护。
-
 <sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Blink@main/Surge/<App>.list`。</sub>
 
 ---
 
 <a id="profiles-quickstart"></a>
 
-## 🧭 配置文件快速开始
+## 配置文件快速开始
 
 七客户端**完整配置文件**位于 [`Profiles/`](Profiles/)：`Surge.conf`、`Shadowrocket.conf`、`Loon.conf`、`Stash.yaml`、`Clash.yaml`（Android）、`Egern.yaml`、`QuantumultX.conf`。
 
@@ -147,11 +145,11 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 <a id="portal"></a>
 
-## 🌐 网页入口
+## 网页入口
 
 无需域名即可访问：[`https://bluetrae.github.io/Blink/`](https://bluetrae.github.io/Blink/)，页面板块：
 
-- **规则集**：切换七客户端标签查看每个 App 的规则数与对应接入行，一键复制；
+- **规则集**：切换七客户端标签查看每个 App 的规则数与接入方式，一键复制；
 - **接入指南**：七客户端全量接入片段，一键复制；
 - **配置文件**：七客户端配置文件的下载 / 复制 / **iOS 一键导入**（支持 URL Scheme 的客户端；Clash 为 Android，手动导入）与导入指引；
 - **构建与来源**：构建管线与选源原则。
@@ -166,7 +164,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 <a id="integrity"></a>
 
-## 🔎 完整性校验
+## 完整性校验
 
 根目录 [`manifest.json`](manifest.json) 为 28 个 App、七客户端共 196 个生成产物记录 SHA256、上游内容指纹、canonical 规则指纹和显式降级统计。push / PR 与每日更新会自动执行七端等价性、重复/空集/排序、跨 App overlap、Profile 引用及敏感模式门禁；完整命令与设计边界见 [`engine/docs/MACHINE_GATES.md`](engine/docs/MACHINE_GATES.md)。
 
@@ -174,7 +172,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 <a id="sources"></a>
 
-## 🧩 来源政策
+## 来源政策
 
 - 每个 App 独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只作并列时的 tie-breaker；每 App 恰好 1 个 primary、至多 1 个 supplemental。完整的候选、证据与结论档案见 [`engine/SOURCE_AUDITS.md`](engine/SOURCE_AUDITS.md)。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施**不复制进本仓库**，继续直接引用成熟上游。
@@ -183,7 +181,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 <a id="license"></a>
 
-## ⚖️ 使用与许可
+## 使用与许可
 
 感谢 Repcz、SukkaW、blackmatrix7、v2fly 等上游作者对规则集的长期维护（各 App 的来源明细与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）。
 
