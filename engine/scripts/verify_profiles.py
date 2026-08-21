@@ -13,7 +13,8 @@ import build_profile
 
 BLINK_RAW = re.compile(
     r"https://raw\.githubusercontent\.com/Bluetrae/Blink/main/"
-    r"(Surge|Clash|QuantumultX)/([A-Za-z0-9._-]+\.(?:list|yaml))"
+    r"(Surge|Loon|Shadowrocket|Stash|Clash|Egern|QuantumultX)/"
+    r"([A-Za-z0-9._-]+\.(?:list|yaml|conf))"
 )
 PLACEHOLDER = "https://YOUR-SUBSCRIPTION-URL"
 APP_MANAGED_SUBSCRIPTION_CLIENTS = {"shadowrocket", "loon", "quantumultx"}

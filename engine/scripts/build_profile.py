@@ -39,6 +39,23 @@ BUILTIN_POLICIES = {"DIRECT", "REJECT", "REJECT-DROP", "Sub"}
 BLINK_RAW = "https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge"
 BLINK_RAW_CLASH = "https://raw.githubusercontent.com/Bluetrae/Blink/main/Clash"
 
+# Per-client view file directory for the multi-view pilot (view payloads are
+# policy-free rule-set content, referenced at use site).
+BLINK_RAW_VIEW = "https://raw.githubusercontent.com/Bluetrae/Blink/main"
+VIEW_DIR = {
+    "surge": "Surge",
+    "shadowrocket": "Shadowrocket",
+    "loon": "Loon",
+    "stash": "Stash",
+    "clash": "Clash",
+    "egern": "Egern",
+    "quantumultx": "QuantumultX",
+}
+
+
+def _view_url(client: str, app_name: str, view_name: str) -> str:
+    return f"{BLINK_RAW_VIEW}/{VIEW_DIR[client]}/{app_name}-{view_name}.conf"
+
 # Placeholders the templates may carry.  Each renderer fills the ones that
 # make sense for its client; leftover markers fail the build loudly.
 MARKERS = ("__SUBSCRIPTION__", "__POLICY_GROUPS__", "__FILTERS__", "__RULES__", "__REMOTE_RULES__")
@@ -275,6 +292,14 @@ def _render_surge(intent: dict) -> dict[str, str]:
         else:
             rules.append(f"RULE-SET,{entry['url']},{policy}{suffix}")
     for app_name, app in intent["apps"].items():
+        if app.get("views"):
+            # domain/IP 分文件引用（domain-first / IP-last）
+            domainset = app.get("domainset_source") or f"{BLINK_RAW}/{app_name}-domainset.conf"
+            ip_source = app.get("ip_source") or f"{BLINK_RAW}/{app_name}-ip.conf"
+            rules.append(f"DOMAIN-SET,{domainset},{app['policy']},extended-matching")
+            suffix = ",no-resolve" if app.get("ip_no_resolve", True) else ""
+            rules.append(f"RULE-SET,{ip_source},{app['policy']}{suffix}")
+            continue
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
     for entry in _infra_for_phase(intent, "surge", "ip"):
@@ -323,6 +348,12 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
             rules.append(f"RULE-SET,{entry['url']},{policy}")
     rules.extend(_infra_unsupported_lines(intent, "shadowrocket", "domain", ""))
     for app_name, app in intent["apps"].items():
+        if app.get("views"):
+            rules.append(
+                f"DOMAIN-SET,{_view_url('shadowrocket', app_name, 'domainset')},{app['policy']}"
+            )
+            rules.append(f"RULE-SET,{_view_url('shadowrocket', app_name, 'ip')},{app['policy']}")
+            continue
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
     for entry in _infra_for_phase(intent, "shadowrocket", "ip"):
@@ -377,6 +408,16 @@ def _render_loon(intent: dict) -> dict[str, str]:
             )
     remote_rules.extend(_infra_unsupported_lines(intent, "loon", "domain", ""))
     for app_name, app in intent["apps"].items():
+        if app.get("views"):
+            remote_rules.append(
+                f"{_view_url('loon', app_name, 'domainset')}, policy = {app['policy']}, "
+                f"tag = {app_name}-domainset, enabled = true"
+            )
+            remote_rules.append(
+                f"{_view_url('loon', app_name, 'ip')}, policy = {app['policy']}, "
+                f"tag = {app_name}-ip, enabled = true"
+            )
+            continue
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         remote_rules.append(f"{source}, policy = {app['policy']}, tag = {app_name}, enabled = true")
     for entry in _infra_for_phase(intent, "loon", "ip"):
@@ -473,6 +514,18 @@ def _render_stash(intent: dict) -> dict[str, str]:
         add_rule_entry(entry)
     rules.extend(_infra_unsupported_lines(intent, "stash", "domain", "  "))
     for app_name, app in intent["apps"].items():
+        if app.get("views"):
+            for view_name in ("domainset", "ip"):
+                behavior = "domain" if view_name == "domainset" else "classical"
+                key = provider_name(f"{app_name}-{view_name}")
+                provider_lines.append(f"  {key}:")
+                provider_lines.append("    type: http")
+                provider_lines.append(f"    behavior: {behavior}")
+                provider_lines.append("    format: text")
+                provider_lines.append(f"    url: {_view_url('stash', app_name, view_name)}")
+                provider_lines.append("    interval: 86400")
+                rules.append(f"  - RULE-SET,{key},{app['policy']}")
+            continue
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         key = provider_name(app_name)
         provider_lines.append(f"  {key}:")
@@ -572,6 +625,18 @@ def _render_clash(intent: dict) -> dict[str, str]:
         add_rule_entry(entry)
     rules.extend(_infra_unsupported_lines(intent, "clash", "domain", "  "))
     for app_name, app in intent["apps"].items():
+        if app.get("views"):
+            for view_name in ("domainset", "ip"):
+                behavior = "domain" if view_name == "domainset" else "classical"
+                key = provider_name(f"{app_name}-{view_name}")
+                provider_lines.append(f"  {key}:")
+                provider_lines.append("    type: http")
+                provider_lines.append(f"    behavior: {behavior}")
+                provider_lines.append("    format: text")
+                provider_lines.append(f"    url: {_view_url('clash', app_name, view_name)}")
+                provider_lines.append("    interval: 86400")
+                rules.append(f"  - RULE-SET,{key},{app['policy']}")
+            continue
         # Blink 的 App 规则经 Clash/ 目录分发（classical 已去除 USER-AGENT）；
         # 显式指定外部 source 的 App（如 AppleMusic）按上游原样引用。
         source = app.get("source") or f"{BLINK_RAW_CLASH}/{app_name}.list"
@@ -647,6 +712,12 @@ def _render_egern(intent: dict) -> dict[str, str]:
         add_rule_entry(entry)
     rules.extend(_infra_unsupported_lines(intent, "egern", "domain", ""))
     for app_name, app in intent["apps"].items():
+        if app.get("views"):
+            for view_name in ("domainset", "ip"):
+                rules.append("- rule_set:")
+                rules.append(f"    match: {_view_url('egern', app_name, view_name)}")
+                rules.append(f"    policy: {app['policy']}")
+            continue
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append("- rule_set:")
         rules.append(f"    match: {source}")
@@ -706,6 +777,14 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
     for entry in _infra_for_phase(intent, "quantumultx", "domain"):
         add_rule_entry(entry)
     for app_name, app in intent["apps"].items():
+        if app.get("views"):
+            for view_name in ("domainset", "ip"):
+                remote_rules.append(
+                    f"{_view_url('quantumultx', app_name, view_name)}, tag={app_name}-{view_name}, "
+                    f"force-policy={qx_policy(app['policy'])},"
+                    " update-interval=172800, opt-parser=false, enabled=true"
+                )
+            continue
         source = (
             app.get("qx_source")
             or f"https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/{app_name}.list"

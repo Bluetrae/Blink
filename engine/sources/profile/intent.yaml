@@ -84,8 +84,9 @@ policy_groups:
 
 # App → 策略组 路由意图（公开模板只保留 6 个；其余按需自行添加对应策略组）。
 # 默认 source 为 Blink 已发布 URL；Clash 走 Clash/ 目录（已去 USER-AGENT）。
+# views: true 表示该 App 用 domain/ip 分文件引用（需对应 Rule 层已产出 view 文件）。
 apps:
-  Telegram:  {policy: Telegram}
+  Telegram:  {policy: Telegram, views: true}
   X:         {policy: X}
   YouTube:   {policy: Youtube}
   Instagram: {policy: Instagram}
