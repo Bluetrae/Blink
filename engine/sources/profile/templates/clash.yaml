@@ -7,6 +7,9 @@
 # 等 Meta 扩展字段，导入时可能被忽略。
 # Blink 规则经 Clash/ 目录分发：classical 已显式去除 USER-AGENT（内核无此类型），
 # 构建报告计数，绝不让内核静默跳过。
+# ADAPTED：always-real-ip / always-raw-tcp-hosts / proxy-test-udp / http-api 为 Surge 专属，
+#   本文件用 fake-ip + IP rule 兜底。
+# UNSUPPORTED：extended-matching / pre-matching / DOMAIN-SET 为 Surge 专属，本文件省略。
 # ============================================================
 
 mixed-port: 7890

@@ -2,14 +2,27 @@
 # Blink 配置文件 · Stash
 # 单订阅池（Sub）：导入前把 https://YOUR-SUBSCRIPTION-URL 替换为你的订阅链接。
 # 策略组与规则引用由 Blink 统一维护；本文件为人工维护层，不随规则每日自动更新。
+# 公开模板只保留核心策略组与 App 规则，其余个性化场景请按需自行扩展。
+# ADAPTED：always-real-ip / always-raw-tcp-hosts / proxy-test-udp / http-api 为 Surge 专属，
+#   本文件无对应字段，IP 分流经 fake-ip 与 IP rule 兜底实现。
+# UNSUPPORTED：extended-matching / pre-matching / DOMAIN-SET 为 Surge 专属，本文件省略。
 # ============================================================
 
 mode: rule
 log-level: info
+ipv6: false
 
 dns:
-  nameserver: [223.5.5.5, 119.29.29.29]
-  fake-ip-filter: ['+.lan', '*', '+.local']
+  enable: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fake-ip-filter:
+    - '+.lan'
+    - '*.local'
+    - '+.*'
 
 __SUBSCRIPTION__
 

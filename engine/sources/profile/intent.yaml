@@ -1,15 +1,16 @@
-# Blink Canonical Profile Intent —— Phase 1: Policy Groups + Rule References
+# Blink Canonical Profile Intent —— 配置文件层唯一语义源（人工维护，绝不进入 update.yml）。
 #
-# 本文件是配置文件层的唯一语义源（人工维护，绝不进入 update.yml 每日任务）。
+# 规则层（Rule Engine / build.py）与 Profile 层彻底分离：规则每日自动更新，Profile 人工演进。
+# 本文件描述「配置意图」，由 engine/scripts/build_profile.py 渲染为七客户端 Profiles/。
+#
 # 普适性原则：
-#   - 单一订阅池 Sub（占位 URL），替换一条订阅即可复用；
-#   - 不含任何个人专属内容（用户个人双订阅池、Emby 关键词组、个人域名等
-#     均保留在用户本地配置中，不进入本文件与公开输出）。
+#   - 单一订阅池 Sub（占位 URL），替换一条订阅即可复用。
+#   - 不含任何个人专属内容（双订阅池、Emby 关键词组、个人域名、银行域名等保留在用户本地配置）。
+#   - 公开模板策略组与 App 规则只保留核心；其余交由用户按需自行扩展，并在生成文件头部提示。
 #
-# 策略组语义（Surge 为 Reference，意图归一）：
-#   select   —— 手动选择
-#   url-test —— 自动测速选择
-# 成员可为：其他策略组名、DIRECT / REJECT / REJECT-DROP 内置策略、订阅池 Sub。
+# 能力约定（Surge 强绑定能力跨端一律 FULL / ADAPTED(注释) / UNSUPPORTED(注释)，禁止静默省略或伪造）：
+#   extended-matching / pre-matching / DOMAIN-SET / REJECT-DROP 为 Surge 专属或强绑定；
+#   no-resolve 为 Surge/Shadowrocket/Loon/Stash/Mihomo 支持（QX 无槽位省略、Egern set 级）。
 
 version: 1
 
@@ -19,32 +20,7 @@ subscription:
   update_interval: 86400  # 秒；各客户端映射到自己的更新周期字段
 
 policy_groups:
-  - name: Proxy
-    type: select
-    members: [HK, TW, JP, US, SG, Final, Sub]
-
-  - name: Final
-    type: select
-    members: [HK, TW, JP, US, SG, Auto, Sub, DIRECT]
-
-  # 常用场景组（公开模板只保留普遍常用项；其余按使用习惯自行添加）
-  - name: Daily
-    type: select
-    members: [HK, TW, JP, US, SG, Final]
-
-  - name: Telegram
-    type: select
-    members: [SG, HK, JP, TW, US, Final]
-
-  - name: AI
-    type: select
-    members: [HK, TW, JP, US, Final]
-
-  - name: AppleMusic
-    type: select
-    members: [DIRECT, HK, TW, JP, US]
-
-  # 地区组：select（保持 Surge 意图），正则筛选订阅池内节点
+  # ---- 出口骨架：地区组 + Auto（核心分流基础设施，非场景组）----
   - name: HK
     type: select
     filter: '(?i)(香港|🇭🇰|Hong\s*Kong|HongKong|HKG|(?:^|[^A-Za-z])HK(?:G)?(?:[^A-Za-z]|$))'
@@ -72,90 +48,123 @@ policy_groups:
     tolerance: 80
     hidden: true
 
-# App → 策略组 路由意图。默认 source 为 Blink 已发布 URL；个别 App 显式指定上游。
-# 公开模板只保留普遍常用的 App；其余按使用习惯自行添加（对应策略组也自行创建）。
-apps:
-  YouTube:   {policy: Daily}
-  X:         {policy: Daily}
-  Instagram: {policy: Daily}
-  Telegram:  {policy: Telegram}
-  AI:        {policy: AI}
-  AppleMusic: {policy: AppleMusic, source: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AppleMusic.list, qx_source: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/AppleMusic.list}
+  # ---- 主 / 兜底 ----
+  - name: Proxy
+    type: select
+    members: [HK, TW, JP, US, SG, Final]
 
-# 基础设施规则（沿用成熟上游，不复制进仓库；每客户端策略与可用性在此声明）。
-# policy 缺省表示七端一致；options 为客户端专属引用参数；qx_url 为 QX 专用
-# 源（QX 不消费 Surge 格式远程规则）。
+  - name: Final
+    type: select
+    members: [HK, TW, JP, US, SG, Auto, Sub, DIRECT]
+
+  # ---- App 场景组（公开模板只保留普遍常用；成员统一 select, Proxy, Final, DIRECT）----
+  - name: Telegram
+    type: select
+    members: [Proxy, Final, DIRECT]
+
+  - name: X
+    type: select
+    members: [Proxy, Final, DIRECT]
+
+  - name: Youtube
+    type: select
+    members: [Proxy, Final, DIRECT]
+
+  - name: Instagram
+    type: select
+    members: [Proxy, Final, DIRECT]
+
+  - name: Google
+    type: select
+    members: [Proxy, Final, DIRECT]
+
+  - name: Github
+    type: select
+    members: [Proxy, Final, DIRECT]
+
+# App → 策略组 路由意图（公开模板只保留 6 个；其余按需自行添加对应策略组）。
+# 默认 source 为 Blink 已发布 URL；Clash 走 Clash/ 目录（已去 USER-AGENT）。
+apps:
+  Telegram:  {policy: Telegram}
+  X:         {policy: X}
+  YouTube:   {policy: Youtube}
+  Instagram: {policy: Instagram}
+  Google:    {policy: Google}
+  GitHub:    {policy: Github}
+
+# 基础设施规则 = 普适核心（沿用成熟上游，不复制进仓库）。
+# policy 缺省表示七端一致；options / surge_options / qx_url / clients 为客户端专属。
 infrastructure:
+  # ---- Reject（Ad block / 隐私拦截）----
+  # pre-matching + REJECT-DROP 为 Surge 专属，其余端 UNSUPPORTED（切片 3 细化标注）。
   - name: reject-drop
     url: https://ruleset.skk.moe/List/non_ip/reject-drop.conf
-    policy: {surge: REJECT-DROP, shadowrocket: REJECT-DROP, loon: REJECT-DROP, stash: REJECT-DROP, egern: REJECT, clash: REJECT-DROP}
-    clients: [surge, shadowrocket, loon, stash, egern, clash]
+    policy: REJECT-DROP
+    clients: [surge]
+    surge_options: [pre-matching]
+
+  # DOMAIN-SET（纯域名文件）仅 Surge 用 DOMAIN-SET 引用；其余端 UNSUPPORTED。
+  - name: reject-domainset
+    url: https://ruleset.skk.moe/List/domainset/reject.conf
+    policy: REJECT
+    kind: domain-set
+    clients: [surge]
+    surge_options: [extended-matching]
 
   - name: reject
     url: https://ruleset.skk.moe/List/non_ip/reject.conf
     policy: REJECT
+    surge_options: [extended-matching]
     qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/Reject.list
 
   - name: tracking
     url: https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Reject/Tracking.list
     policy: REJECT
     clients: [surge, shadowrocket, loon, stash, egern, clash]
+    surge_options: [extended-matching]
 
-  - name: lan
-    url: https://ruleset.skk.moe/List/non_ip/lan.conf
-    policy: DIRECT
-    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/Lan.list
-
+  # ---- Infrastructure ----
   - name: ntp-123
     kind: dest-port
     value: "123"
     policy: DIRECT
     clients: [surge, shadowrocket, loon, clash]
 
-  - name: apple-association
-    kind: domain
-    value: app-site-association.cdn-apple.com
-    policy: REJECT
-
-  - name: apple-cn
-    url: https://ruleset.skk.moe/List/non_ip/apple_cn.conf
+  - name: lan
+    url: https://ruleset.skk.moe/List/non_ip/lan.conf
     policy: DIRECT
-    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/AppleCN.list
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/Lan.list
 
-  - name: apple
-    url: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Apple.list
-    policy: DIRECT
-    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/Apple.list
-
-  - name: wechat
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list
-    policy: DIRECT
-    qx_url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/WeChat/WeChat.list
-
-  - name: douyin
-    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/DouYin/DouYin.list
-    policy: DIRECT
-    qx_url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/QuantumultX/DouYin/DouYin.list
-
+  # ---- Domestic（国内直连）----
   - name: domestic
     url: https://ruleset.skk.moe/List/non_ip/domestic.conf
     policy: DIRECT
     qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/ChinaDomain.list
 
+  # ---- CDN（公共静态资源走代理；不与 App 专项规则抢）----
   - name: cdn
     url: https://ruleset.skk.moe/List/non_ip/cdn.conf
     policy: Proxy
     qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/CDN.list
 
+  # ---- IP（no-resolve；置于所有域名规则之后）----
+  - name: telegram-ip
+    url: https://ruleset.skk.moe/List/ip/telegram.conf
+    policy: Telegram
+    phase: ip
+    clients: [surge, shadowrocket, loon, stash, egern, clash]
+    options: {surge: no-resolve, clash: no-resolve}
+
   - name: china-ip
     url: https://ruleset.skk.moe/List/ip/domestic.conf
     policy: DIRECT
-    clients: [surge, shadowrocket, loon, stash, egern, clash]
-    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/ChinaIP.list
+    phase: ip
     options: {surge: no-resolve, clash: no-resolve}
+    qx_url: https://raw.githubusercontent.com/Repcz/Tool/X/QuantumultX/Rules/ChinaIP.list
 
   - name: china-ip2
     url: https://ruleset.skk.moe/List/ip/china_ip.conf
     policy: DIRECT
+    phase: ip
     clients: [surge, shadowrocket, loon, stash, egern, clash]
-    options: {surge: no-resolve}
+    options: {surge: no-resolve, clash: no-resolve}

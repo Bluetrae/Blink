@@ -2,6 +2,10 @@
 # Blink 配置文件 · Egern
 # 单订阅池（Sub）：导入前把 https://YOUR-SUBSCRIPTION-URL 替换为你的订阅链接。
 # 策略组与规则引用由 Blink 统一维护；本文件为人工维护层，不随规则每日自动更新。
+# 公开模板只保留核心策略组与 App 规则，其余个性化场景请按需自行扩展。
+# ADAPTED：url-test 无生产实证暂以 select 呈现；no-resolve 为 rule-set 级。
+# UNSUPPORTED：extended-matching / pre-matching / DOMAIN-SET / always-real-ip /
+#   always-raw-tcp-hosts / proxy-test-udp / http-api 为 Surge 专属，本文件省略或需在 App 内配置。
 # ============================================================
 
 ipv6: false
@@ -29,61 +33,6 @@ policy_groups:
     - https://YOUR-SUBSCRIPTION-URL
     update_interval: 86400
     hidden: false
-- select:
-    name: Proxy
-    policies:
-    - HK
-    - TW
-    - JP
-    - US
-    - SG
-    - Final
-    - Sub
-- select:
-    name: Final
-    policies:
-    - HK
-    - TW
-    - JP
-    - US
-    - SG
-    - Auto
-    - Sub
-    - DIRECT
-- select:
-    name: Daily
-    policies:
-    - HK
-    - TW
-    - JP
-    - US
-    - SG
-    - Final
-- select:
-    name: Telegram
-    policies:
-    - SG
-    - HK
-    - JP
-    - TW
-    - US
-    - Final
-- select:
-    name: AI
-    policies:
-    - HK
-    - TW
-    - JP
-    - US
-    - Final
-- select:
-    name: AppleMusic
-    policies:
-    - DIRECT
-    - HK
-    - TW
-    - JP
-    - US
 - select:
     name: HK
     policies:
@@ -123,11 +72,64 @@ policy_groups:
     - US
     - SG
     # ADAPTED：Egern url-test 待真机验证（Needs Verification），暂以 select 呈现
+- select:
+    name: Proxy
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Final
+- select:
+    name: Final
+    policies:
+    - HK
+    - TW
+    - JP
+    - US
+    - SG
+    - Auto
+    - Sub
+    - DIRECT
+- select:
+    name: Telegram
+    policies:
+    - Proxy
+    - Final
+    - DIRECT
+- select:
+    name: X
+    policies:
+    - Proxy
+    - Final
+    - DIRECT
+- select:
+    name: Youtube
+    policies:
+    - Proxy
+    - Final
+    - DIRECT
+- select:
+    name: Instagram
+    policies:
+    - Proxy
+    - Final
+    - DIRECT
+- select:
+    name: Google
+    policies:
+    - Proxy
+    - Final
+    - DIRECT
+- select:
+    name: Github
+    policies:
+    - Proxy
+    - Final
+    - DIRECT
 
 rules:
-- rule_set:
-    match: https://ruleset.skk.moe/List/non_ip/reject-drop.conf
-    policy: REJECT
 - rule_set:
     match: https://ruleset.skk.moe/List/non_ip/reject.conf
     policy: REJECT
@@ -137,21 +139,6 @@ rules:
 - rule_set:
     match: https://ruleset.skk.moe/List/non_ip/lan.conf
     policy: DIRECT
-- domain:
-    match: app-site-association.cdn-apple.com
-    policy: REJECT
-- rule_set:
-    match: https://ruleset.skk.moe/List/non_ip/apple_cn.conf
-    policy: DIRECT
-- rule_set:
-    match: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/Apple.list
-    policy: DIRECT
-- rule_set:
-    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/WeChat/WeChat.list
-    policy: DIRECT
-- rule_set:
-    match: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Surge/DouYin/DouYin.list
-    policy: DIRECT
 - rule_set:
     match: https://ruleset.skk.moe/List/non_ip/domestic.conf
     policy: DIRECT
@@ -159,28 +146,31 @@ rules:
     match: https://ruleset.skk.moe/List/non_ip/cdn.conf
     policy: Proxy
 - rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Telegram.list
+    policy: Telegram
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/X.list
+    policy: X
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/YouTube.list
+    policy: Youtube
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Instagram.list
+    policy: Instagram
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Google.list
+    policy: Google
+- rule_set:
+    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/GitHub.list
+    policy: Github
+- rule_set:
+    match: https://ruleset.skk.moe/List/ip/telegram.conf
+    policy: Telegram
+- rule_set:
     match: https://ruleset.skk.moe/List/ip/domestic.conf
     policy: DIRECT
 - rule_set:
     match: https://ruleset.skk.moe/List/ip/china_ip.conf
     policy: DIRECT
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/YouTube.list
-    policy: Daily
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/X.list
-    policy: Daily
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Instagram.list
-    policy: Daily
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/Telegram.list
-    policy: Telegram
-- rule_set:
-    match: https://raw.githubusercontent.com/Bluetrae/Blink/main/Surge/AI.list
-    policy: AI
-- rule_set:
-    match: https://raw.githubusercontent.com/Repcz/Tool/X/Surge/Rules/AppleMusic.list
-    policy: AppleMusic
 - default:
     policy: Final

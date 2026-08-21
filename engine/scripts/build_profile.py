@@ -144,8 +144,18 @@ def validate_intent(intent: dict) -> None:
             raise ProfileError(f"{rule['name']}: unknown client in clients {clients!r}")
         if rule.get("policy") is None:
             raise ProfileError(f"{rule['name']}: policy is required")
-        if rule.get("kind", "rule-set") not in {"rule-set", "dest-port", "domain"}:
+        if rule.get("kind", "rule-set") not in {"rule-set", "dest-port", "domain", "domain-set"}:
             raise ProfileError(f"{rule['name']}: unsupported kind {rule.get('kind')!r}")
+        surge_options = rule.get("surge_options")
+        if surge_options is not None and (
+            not isinstance(surge_options, list)
+            or not all(isinstance(option, str) and option for option in surge_options)
+        ):
+            raise ProfileError(f"{rule['name']}: surge_options must be a list of strings")
+        if rule.get("phase") not in {None, "domain", "ip"}:
+            raise ProfileError(f"{rule['name']}: phase must be 'domain' or 'ip'")
+        if rule.get("kind", "rule-set") in {"rule-set", "domain-set"} and not rule.get("url"):
+            raise ProfileError(f"{rule['name']}: kind {rule.get('kind')!r} requires url")
 
 
 def _policy_for(rule: dict, client: str) -> str:
@@ -166,6 +176,22 @@ def _infra_for_client(rule: dict, client: str) -> dict | None:
     if clients is not None and client not in clients:
         return None
     return rule
+
+
+def _phase(rule: dict) -> str:
+    """domain-first / IP-last: the phase an infrastructure rule belongs to."""
+    phase = rule.get("phase")
+    return phase if phase in {"domain", "ip"} else "domain"
+
+
+def _infra_for_phase(intent: dict, client: str, phase: str) -> list[dict]:
+    """Return the client-visible infrastructure entries of a given phase, in order."""
+    return [
+        entry
+        for rule in intent.get("infrastructure", [])
+        if _phase(rule) == phase
+        and (entry := _infra_for_client(rule, client)) is not None
+    ]
 
 
 # --------------------------------------------------------------------------
@@ -205,22 +231,41 @@ def _render_surge(intent: dict) -> dict[str, str]:
                 " include-all-proxies=0"
             )
     rules: list[str] = []
-    for rule in intent.get("infrastructure", []):
-        entry = _infra_for_client(rule, "surge")
-        if entry is None:
-            continue
+    for entry in _infra_for_phase(intent, "surge", "domain"):
         policy = _policy_for(entry, "surge")
-        options = (entry.get("options") or {}).get("surge")
-        suffix = f",{options}" if options else ""
+        option_parts: list[str] = []
+        option = (entry.get("options") or {}).get("surge")
+        if option:
+            option_parts.append(option)
+        option_parts.extend(entry.get("surge_options") or [])
+        suffix = "," + ",".join(option_parts) if option_parts else ""
         if entry.get("kind") == "dest-port":
             rules.append(f"DEST-PORT,{entry['value']},{policy}")
         elif entry.get("kind") == "domain":
             rules.append(f"DOMAIN,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain-set":
+            rules.append(f"DOMAIN-SET,{entry['url']},{policy}{suffix}")
         else:
             rules.append(f"RULE-SET,{entry['url']},{policy}{suffix}")
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
+    for entry in _infra_for_phase(intent, "surge", "ip"):
+        policy = _policy_for(entry, "surge")
+        option_parts: list[str] = []
+        option = (entry.get("options") or {}).get("surge")
+        if option:
+            option_parts.append(option)
+        option_parts.extend(entry.get("surge_options") or [])
+        suffix = "," + ",".join(option_parts) if option_parts else ""
+        if entry.get("kind") == "dest-port":
+            rules.append(f"DEST-PORT,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain":
+            rules.append(f"DOMAIN,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain-set":
+            rules.append(f"DOMAIN-SET,{entry['url']},{policy}{suffix}")
+        else:
+            rules.append(f"RULE-SET,{entry['url']},{policy}{suffix}")
     rules.append("FINAL,Final,dns-failed")
     return {"__POLICY_GROUPS__": "\n".join(lines), "__RULES__": "\n".join(rules)}
 
@@ -241,10 +286,7 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
         else:
             lines.append(f"{group['name']} = select, {members}")
     rules: list[str] = []
-    for rule in intent.get("infrastructure", []):
-        entry = _infra_for_client(rule, "shadowrocket")
-        if entry is None:
-            continue
+    for entry in _infra_for_phase(intent, "shadowrocket", "domain"):
         policy = _policy_for(entry, "shadowrocket")
         if entry.get("kind") == "dest-port":
             rules.append(f"DEST-PORT,{entry['value']},{policy}")
@@ -255,6 +297,14 @@ def _render_shadowrocket(intent: dict) -> dict[str, str]:
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append(f"RULE-SET,{source},{app['policy']}")
+    for entry in _infra_for_phase(intent, "shadowrocket", "ip"):
+        policy = _policy_for(entry, "shadowrocket")
+        if entry.get("kind") == "dest-port":
+            rules.append(f"DEST-PORT,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain":
+            rules.append(f"DOMAIN,{entry['value']},{policy}")
+        else:
+            rules.append(f"RULE-SET,{entry['url']},{policy}")
     rules.append("FINAL,Final")
     subscription = [
         "# ADAPTED：请在 Shadowrocket App 内添加下列唯一订阅，并将其命名为 Sub。",
@@ -286,10 +336,7 @@ def _render_loon(intent: dict) -> dict[str, str]:
             groups.append(f"{group['name']} = select, {members}")
     local_rules: list[str] = []
     remote_rules: list[str] = []
-    for rule in intent.get("infrastructure", []):
-        entry = _infra_for_client(rule, "loon")
-        if entry is None:
-            continue
+    for entry in _infra_for_phase(intent, "loon", "domain"):
         policy = _policy_for(entry, "loon")
         if entry.get("kind") == "dest-port":
             local_rules.append(f"DEST-PORT,{entry['value']},{policy}")
@@ -302,6 +349,16 @@ def _render_loon(intent: dict) -> dict[str, str]:
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         remote_rules.append(f"{source}, policy = {app['policy']}, tag = {app_name}, enabled = true")
+    for entry in _infra_for_phase(intent, "loon", "ip"):
+        policy = _policy_for(entry, "loon")
+        if entry.get("kind") == "dest-port":
+            local_rules.append(f"DEST-PORT,{entry['value']},{policy}")
+        elif entry.get("kind") == "domain":
+            local_rules.append(f"DOMAIN,{entry['value']},{policy}")
+        else:
+            remote_rules.append(
+                f"{entry['url']}, policy = {policy}, tag = {entry['name']}, enabled = true"
+            )
     local_rules.append("FINAL,Final")
     subscription = [
         "# ADAPTED：请在 Loon App 内添加下列唯一订阅；地区组通过 [Remote Filter] 筛选节点。",
@@ -363,24 +420,26 @@ def _render_stash(intent: dict) -> dict[str, str]:
         return unique
 
     provider_lines: list[str] = ["rule-providers:"]
-    for rule in intent.get("infrastructure", []):
-        entry = _infra_for_client(rule, "stash")
-        if entry is None:
-            continue
+
+    def add_rule_entry(entry: dict) -> None:
         policy = _policy_for(entry, "stash")
         if entry.get("kind") == "dest-port":
             local_rules.append(f"  - DST-PORT,{entry['value']},{policy}")
-        elif entry.get("kind") == "domain":
+            return
+        if entry.get("kind") == "domain":
             local_rules.append(f"  - DOMAIN,{entry['value']},{policy}")
-        else:
-            key = provider_name(entry["name"])
-            provider_lines.append(f"  {key}:")
-            provider_lines.append("    type: http")
-            provider_lines.append("    behavior: classical")
-            provider_lines.append("    format: text")
-            provider_lines.append(f"    url: {entry['url']}")
-            provider_lines.append("    interval: 86400")
-            rules.append(f"  - RULE-SET,{key},{policy}")
+            return
+        key = provider_name(entry["name"])
+        provider_lines.append(f"  {key}:")
+        provider_lines.append("    type: http")
+        provider_lines.append("    behavior: classical")
+        provider_lines.append("    format: text")
+        provider_lines.append(f"    url: {entry['url']}")
+        provider_lines.append("    interval: 86400")
+        rules.append(f"  - RULE-SET,{key},{policy}")
+
+    for entry in _infra_for_phase(intent, "stash", "domain"):
+        add_rule_entry(entry)
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         key = provider_name(app_name)
@@ -391,6 +450,8 @@ def _render_stash(intent: dict) -> dict[str, str]:
         provider_lines.append(f"    url: {source}")
         provider_lines.append("    interval: 86400")
         rules.append(f"  - RULE-SET,{key},{app['policy']}")
+    for entry in _infra_for_phase(intent, "stash", "ip"):
+        add_rule_entry(entry)
     rules.extend(local_rules)
     rules.append("  - MATCH,Final")
     return {
@@ -454,26 +515,28 @@ def _render_clash(intent: dict) -> dict[str, str]:
         return unique
 
     provider_lines: list[str] = ["rule-providers:"]
-    for rule in intent.get("infrastructure", []):
-        entry = _infra_for_client(rule, "clash")
-        if entry is None:
-            continue
+
+    def add_rule_entry(entry: dict) -> None:
         policy = _policy_for(entry, "clash")
         options = (entry.get("options") or {}).get("clash")
         suffix = f",{options}" if options else ""
         if entry.get("kind") == "dest-port":
             local_rules.append(f"  - DST-PORT,{entry['value']},{policy}")
-        elif entry.get("kind") == "domain":
+            return
+        if entry.get("kind") == "domain":
             local_rules.append(f"  - DOMAIN,{entry['value']},{policy}")
-        else:
-            key = provider_name(entry["name"])
-            provider_lines.append(f"  {key}:")
-            provider_lines.append("    type: http")
-            provider_lines.append("    behavior: classical")
-            provider_lines.append("    format: text")
-            provider_lines.append(f"    url: {entry['url']}")
-            provider_lines.append("    interval: 86400")
-            rules.append(f"  - RULE-SET,{key},{policy}{suffix}")
+            return
+        key = provider_name(entry["name"])
+        provider_lines.append(f"  {key}:")
+        provider_lines.append("    type: http")
+        provider_lines.append("    behavior: classical")
+        provider_lines.append("    format: text")
+        provider_lines.append(f"    url: {entry['url']}")
+        provider_lines.append("    interval: 86400")
+        rules.append(f"  - RULE-SET,{key},{policy}{suffix}")
+
+    for entry in _infra_for_phase(intent, "clash", "domain"):
+        add_rule_entry(entry)
     for app_name, app in intent["apps"].items():
         # Blink 的 App 规则经 Clash/ 目录分发（classical 已去除 USER-AGENT）；
         # 显式指定外部 source 的 App（如 AppleMusic）按上游原样引用。
@@ -486,6 +549,8 @@ def _render_clash(intent: dict) -> dict[str, str]:
         provider_lines.append(f"    url: {source}")
         provider_lines.append("    interval: 86400")
         rules.append(f"  - RULE-SET,{key},{app['policy']}")
+    for entry in _infra_for_phase(intent, "clash", "ip"):
+        add_rule_entry(entry)
     rules.extend(local_rules)
     rules.append("  - MATCH,Final")
     return {
@@ -531,10 +596,8 @@ def _render_egern(intent: dict) -> dict[str, str]:
                 "    # ADAPTED：Egern url-test 待真机验证（Needs Verification），暂以 select 呈现"
             )
     rules: list[str] = []
-    for rule in intent.get("infrastructure", []):
-        entry = _infra_for_client(rule, "egern")
-        if entry is None:
-            continue
+
+    def add_rule_entry(entry: dict) -> None:
         policy = _policy_for(entry, "egern")
         if entry.get("kind") == "domain":
             rules.append("- domain:")
@@ -544,11 +607,16 @@ def _render_egern(intent: dict) -> dict[str, str]:
             rules.append("- rule_set:")
             rules.append(f"    match: {entry['url']}")
             rules.append(f"    policy: {policy}")
+
+    for entry in _infra_for_phase(intent, "egern", "domain"):
+        add_rule_entry(entry)
     for app_name, app in intent["apps"].items():
         source = app.get("source") or f"{BLINK_RAW}/{app_name}.list"
         rules.append("- rule_set:")
         rules.append(f"    match: {source}")
         rules.append(f"    policy: {app['policy']}")
+    for entry in _infra_for_phase(intent, "egern", "ip"):
+        add_rule_entry(entry)
     rules.append("- default:")
     rules.append("    policy: Final")
     return {"__POLICY_GROUPS__": "\n".join(group_lines), "__RULES__": "\n".join(rules)}
@@ -582,25 +650,24 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
         # QX 内置策略为小写（direct/reject），策略组名保持原大小写。
         return policy.lower() if policy in {"DIRECT", "REJECT", "REJECT-DROP"} else policy
 
-    for rule in intent.get("infrastructure", []):
-        entry = _infra_for_client(rule, "quantumultx")
-        if entry is None:
-            continue
+    def add_rule_entry(entry: dict) -> None:
         policy = qx_policy(_policy_for(entry, "quantumultx"))
         if entry.get("kind") == "domain":
             local_rules.append(f"host, {entry['value']}, {policy}")
         elif entry.get("kind") == "dest-port":
-            continue
-        else:
-            url = entry.get("qx_url")
-            if url is None:
-                raise ProfileError(
-                    f"{entry['name']}: quantumultx requires an explicit qx_url (QX does not parse Surge-format rule lists)"
-                )
-            remote_rules.append(
-                f"{url}, tag={entry['name']}, force-policy={policy},"
-                " update-interval=172800, opt-parser=false, enabled=true"
+            return
+        url = entry.get("qx_url")
+        if url is None:
+            raise ProfileError(
+                f"{entry['name']}: quantumultx requires an explicit qx_url (QX does not parse Surge-format rule lists)"
             )
+        remote_rules.append(
+            f"{url}, tag={entry['name']}, force-policy={policy},"
+            " update-interval=172800, opt-parser=false, enabled=true"
+        )
+
+    for entry in _infra_for_phase(intent, "quantumultx", "domain"):
+        add_rule_entry(entry)
     for app_name, app in intent["apps"].items():
         source = (
             app.get("qx_source")
@@ -610,6 +677,8 @@ def _render_quantumultx(intent: dict) -> dict[str, str]:
             f"{source}, tag={app_name}, force-policy={qx_policy(app['policy'])},"
             " update-interval=172800, opt-parser=false, enabled=true"
         )
+    for entry in _infra_for_phase(intent, "quantumultx", "ip"):
+        add_rule_entry(entry)
     local_rules.append("final, Final")
     subscription = [
         "# ADAPTED：请在 Quantumult X App 内添加下列唯一订阅；地区组通过 server-tag-regex 筛选节点。",

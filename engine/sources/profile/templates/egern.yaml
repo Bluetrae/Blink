@@ -2,6 +2,10 @@
 # Blink 配置文件 · Egern
 # 单订阅池（Sub）：导入前把 https://YOUR-SUBSCRIPTION-URL 替换为你的订阅链接。
 # 策略组与规则引用由 Blink 统一维护；本文件为人工维护层，不随规则每日自动更新。
+# 公开模板只保留核心策略组与 App 规则，其余个性化场景请按需自行扩展。
+# ADAPTED：url-test 无生产实证暂以 select 呈现；no-resolve 为 rule-set 级。
+# UNSUPPORTED：extended-matching / pre-matching / DOMAIN-SET / always-real-ip /
+#   always-raw-tcp-hosts / proxy-test-udp / http-api 为 Surge 专属，本文件省略或需在 App 内配置。
 # ============================================================
 
 ipv6: false
