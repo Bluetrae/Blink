@@ -163,7 +163,12 @@ PORTAL_META = {
     "AI": {"category": "AI", "emoji": "🤖", "policy": "Proxy", "icon": "app-icons/AI.jpg"},
     "Suno": {"category": "AI", "emoji": "🎶", "policy": "AI", "icon": "app-icons/Suno.jpg"},
     "Google": {"category": "Web", "emoji": "🔍", "policy": "Proxy", "icon": "app-icons/Google.jpg"},
-    "Starryblu": {"category": "Finance", "emoji": "💳", "policy": "Finance", "icon": "app-icons/Starryblu.jpg"},
+    "Starryblu": {
+        "category": "Finance",
+        "emoji": "💳",
+        "policy": "Finance",
+        "icon": "app-icons/Starryblu.jpg",
+    },
 }
 
 CLIENTS = (

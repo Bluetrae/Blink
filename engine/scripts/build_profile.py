@@ -56,6 +56,7 @@ VIEW_DIR = {
 def _view_url(client: str, app_name: str, view_name: str) -> str:
     return f"{BLINK_RAW_VIEW}/{VIEW_DIR[client]}/{app_name}-{view_name}.conf"
 
+
 # Placeholders the templates may carry.  Each renderer fills the ones that
 # make sense for its client; leftover markers fail the build loudly.
 MARKERS = ("__SUBSCRIPTION__", "__POLICY_GROUPS__", "__FILTERS__", "__RULES__", "__REMOTE_RULES__")
@@ -206,8 +207,7 @@ def _infra_for_phase(intent: dict, client: str, phase: str) -> list[dict]:
     return [
         entry
         for rule in intent.get("infrastructure", [])
-        if _phase(rule) == phase
-        and (entry := _infra_for_client(rule, client)) is not None
+        if _phase(rule) == phase and (entry := _infra_for_client(rule, client)) is not None
     ]
 
 
@@ -218,7 +218,11 @@ def _unsupported_reason(rule: dict, client: str) -> str:
         return "Surge DOMAIN-SET 专属"
     if "pre-matching" in surge_options:
         return "Surge pre-matching 专属"
-    if client == "quantumultx" and not rule.get("qx_url") and rule.get("kind", "rule-set") == "rule-set":
+    if (
+        client == "quantumultx"
+        and not rule.get("qx_url")
+        and rule.get("kind", "rule-set") == "rule-set"
+    ):
         return "Quantumult X 无对应源"
     if "extended-matching" in surge_options:
         return "Surge extended-matching 专属"

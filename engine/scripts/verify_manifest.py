@@ -188,7 +188,9 @@ def check(root: Path) -> dict:
                     directory = build.CLIENTS[client_key].directory
                     expected_view = (root / directory / f"{app_name}-{view_name}.conf").resolve()
                     if view_path != expected_view:
-                        raise ManifestError(f"{app_name}/{client_key}/{view_name}: view path differs from convention")
+                        raise ManifestError(
+                            f"{app_name}/{client_key}/{view_name}: view path differs from convention"
+                        )
                     if not isinstance(view.get("rules"), int) or view["rules"] <= 0:
                         raise ManifestError(f"{context}: invalid rules metadata")
 

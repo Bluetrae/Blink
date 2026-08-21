@@ -753,9 +753,7 @@ def app_provenance_record(
             "skipped_attributes": len(compilation.skipped_attributes),
             "skipped_excluded": compilation.skipped_excluded,
             "denied_includes": sorted(name for name, _location in compilation.denied_includes),
-            "views": [
-                {"name": name, "rules": len(rules)} for name, rules in compilation.views
-            ],
+            "views": [{"name": name, "rules": len(rules)} for name, rules in compilation.views],
         },
         "outputs": output_records,
         "views": views,
@@ -931,17 +929,13 @@ def write_outputs(
             temporary.replace(output)
 
 
-def write_client_views(
-    compilations: Iterable[Compilation], manifest: dict, root: Path
-) -> None:
+def write_client_views(compilations: Iterable[Compilation], manifest: dict, root: Path) -> None:
     """Write the per-client semantic-view files for apps that opted in via ``views: true``."""
     for compilation in compilations:
         app = manifest["apps"][compilation.app_name]
         if not app.get("views"):
             continue
-        for client_views in client_view_outputs(
-            compilation, root, enabled=True
-        ).values():
+        for client_views in client_view_outputs(compilation, root, enabled=True).values():
             for path, text, _count in client_views.values():
                 path.parent.mkdir(parents=True, exist_ok=True)
                 temporary = path.with_suffix(path.suffix + ".tmp")

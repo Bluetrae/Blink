@@ -52,17 +52,27 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6
-      - name: Assert four classical dirs are byte-identical
+      - name: Assert four classical dirs are byte-identical (main .list outputs)
         shell: bash
         run: |
           set -euo pipefail
+          # Only the main *.list outputs must stay byte-identical across
+          # Surge / Loon / Shadowrocket / Stash. The *.conf files are the
+          # per-client semantic views (domainset / nonip / ip), intentionally
+          # serialized differently per client, and are validated separately by
+          # engine/scripts/validate_views.py.
           for d in Loon Shadowrocket Stash; do
-            if ! diff -rq Surge "$d" > /dev/null; then
-              echo "::error::$d differs from Surge — the four classical dirs must stay byte-identical"
-              diff -r Surge "$d" | head -50
-              exit 1
-            fi
-            echo "ok: Surge == $d"
+            mismatch=0
+            for f in Surge/*.list; do
+              base="$(basename "$f")"
+              if ! diff -q "$f" "$d/$base" > /dev/null; then
+                echo "::error::$d/$base differs from Surge/$base — classical dirs must stay byte-identical"
+                diff -u "$f" "$d/$base" | head -50
+                mismatch=1
+              fi
+            done
+            if [ "$mismatch" = "1" ]; then exit 1; fi
+            echo "ok: Surge == $d (main .list outputs)"
           done
       - name: Assert Clash equals Surge minus USER-AGENT
         shell: bash
