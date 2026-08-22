@@ -47,7 +47,7 @@ QuantumultX/                # QX filter 行（行尾占位符 policy，由 force
 Profiles/                   # 七客户端完整配置文件（人工维护层，订阅占位符）
 
 # 根文件
-README.md · AGENTS.md · DISCLAIMER.md · THIRD_PARTY_NOTICES.md · manifest.json · .gitignore · .github/
+README.md · LICENSE · AGENTS.md · DISCLAIMER.md · THIRD_PARTY_NOTICES.md · manifest.json · .gitignore · .github/
 
 # 构建引擎与开发侧（全部收敛于此）
 engine/

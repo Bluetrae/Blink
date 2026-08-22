@@ -8,6 +8,7 @@
 [![Stars](https://img.shields.io/github/stars/Bluetrae/Blink?style=flat-square&label=Stars&color=ffcb2e)](https://github.com/Bluetrae/Blink/stargazers)
 [![Updated](https://img.shields.io/github/last-commit/Bluetrae/Blink/main?style=flat-square&label=Updated&color=3178c6)](https://github.com/Bluetrae/Blink/commits/main)
 [![Portal](https://img.shields.io/badge/Portal-网页入口-4d6bfe?style=flat-square)](https://bluetrae.github.io/Blink/)
+[![License: MIT](https://img.shields.io/github/license/Bluetrae/Blink?style=flat-square)](LICENSE)
 
 </div>
 
@@ -185,7 +186,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 感谢 Repcz、SukkaW、blackmatrix7、v2fly 等上游作者对规则集的长期维护（各 App 的来源明细与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)）。
 
-本仓库为个人规则分发与学习维护而设，无任何担保；请结合自己的代理客户端策略与日志自行验证，并遵守适用法律、服务条款与上游许可。根目录**不设统一许可证**：构建代码与文档是原创内容，`Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Clash/`、`Egern/`、`QuantumultX/`、`Profiles/` 是多上游生成的产物，不得被统一标记为 MIT 等单一许可证 —— 详情见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+本仓库为个人规则分发与学习维护而设，无任何担保；请结合自己的代理客户端策略与日志自行验证，并遵守适用法律、服务条款与上游许可。**原创部分（构建代码、测试、工作流、门户源码与文档）以 [MIT License](LICENSE) 授权**；`Surge/`、`Loon/`、`Shadowrocket/`、`Stash/`、`Clash/`、`Egern/`、`QuantumultX/` 与 `Profiles/` 等生成产物**不在 MIT 覆盖范围内**，逐文件遵循 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 记载的上游许可。
 
 > [!WARNING]
 > 任何以任何方式查看此项目的人或直接或间接使用该项目的使用者都应仔细阅读此声明。

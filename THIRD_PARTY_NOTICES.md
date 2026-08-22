@@ -14,6 +14,12 @@ not legal advice and not a replacement for the full upstream terms.
 relicense upstream rules, nor does this repository grant permissions beyond
 those available from the applicable upstream authors and licenses.
 
+The `LICENSE` file in the repository root (MIT License) covers only Blink's
+original build code, tests, workflow configuration, portal source, and
+documentation. It does **not** cover generated Rule-Sets, derived `Profiles/`,
+or any upstream material, which remain subject to the terms recorded in this
+file.
+
 ## Generated Rule-Set provenance
 
 The `Surge/<App>.list` table below is the canonical provenance record.
@@ -92,9 +98,10 @@ this notice must be reviewed whenever a source is added or replaced.
   personal use, review the full terms of every applicable upstream source.
 - The Apache, MIT, GPL, AGPL, or other terms of one source do not automatically
   apply to files derived from another source.
-- A future license for Blink original code and documentation must clearly
-  exclude upstream material and generated Rule-Sets unless a separate license
-  audit establishes that broader licensing is appropriate.
+- The root `LICENSE` (MIT) covers only Blink's original code and documentation;
+  it must not be read as covering generated Rule-Sets, derived Profiles, or
+  upstream material, which remain subject to the terms recorded above unless a
+  separate license audit establishes that broader licensing is appropriate.
 
 ## Source access and reproducibility
 
