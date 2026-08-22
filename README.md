@@ -71,6 +71,19 @@
 > [DNS 泄漏、CDN 访问优化与 Fake IP](https://blog.skk.moe/post/lets-talk-about-dns-cdn-fake-ip/) ·
 > [生活在字典树上](https://blog.skk.moe/post/how-to-store-way-too-many-domains-and-ips-101/)。
 
+> [!WARNING]
+> **复制前必读：文件后缀名就是引用方式的答案，写反了会"静默失效"**
+>
+> | 你要引用的文件 | 正确写法（Surge / Shadowrocket） |
+> | --- | --- |
+> | `<App>-domainset.conf`（内容为 `.example.com` 这类裸域名清单） | `DOMAIN-SET,<URL>,<策略>,extended-matching` |
+> | `<App>-nonip.conf`（内容为 `DOMAIN,` / `DOMAIN-SUFFIX,` 等完整规则行） | `RULE-SET,<URL>,<策略>` |
+> | `<App>-ip.conf`（内容为 `IP-CIDR,` / `IP-CIDR6,` 规则行） | `RULE-SET,<URL>,<策略>,no-resolve` |
+>
+> 引用方式写反后 Surge **不会报错**，只是该规则集不生效、流量悄悄落到 `FINAL`——如果发现分流没有按预期走，请先检查这一项。
+> 一句话口诀：**`-domainset.conf` 配 `DOMAIN-SET`，`-nonip.conf` / `-ip.conf` 配 `RULE-SET`，IP 段记得加 `no-resolve`**。
+> 最省事的方式是直接复制门户给出的接入片段，不要自行改写类型。
+
 规则文件**不带策略名**，policy 由引用处指定。各客户端引用写法如下。
 
 ### Surge / Shadowrocket

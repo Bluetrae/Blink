@@ -126,6 +126,29 @@ export default function Usage({ data, query }: { data: PortalData; query: string
           </ol>
         </Reveal>
         <Reveal>
+          <div className="mx-auto mb-6 max-w-3xl rounded-2xl border border-accent-soft bg-accent-soft px-5 py-4 text-[13.5px] leading-relaxed">
+            <p className="font-semibold text-ink">
+              复制前先看：文件后缀就是引用方式，用错不会报错但规则会静默失效
+            </p>
+            <ul className="mt-2 space-y-1.5 text-mute">
+              <li>
+                <code>-domainset.conf</code>（裸域名清单，如 <code>.example.com</code>）→{" "}
+                <code>DOMAIN-SET,&lt;URL&gt;,&lt;策略&gt;,extended-matching</code>
+              </li>
+              <li>
+                <code>-nonip.conf</code> / <code>-ip.conf</code>（带类型的规则行）→{" "}
+                <code>RULE-SET,&lt;URL&gt;,&lt;策略&gt;</code>；IP 段末尾再加{" "}
+                <code>,no-resolve</code>
+              </li>
+              <li>以 Surge / Shadowrocket 为例；其他客户端照抄页面片段即可，不要自己改类型。</li>
+              <li>
+                写反了 Surge 不报错，只是规则不生效、流量落到 <code>FINAL</code> —— 分流没按预期走，
+                先查这里。
+              </li>
+            </ul>
+          </div>
+        </Reveal>
+        <Reveal>
           <CodeBlock file={tab.fileLabel} copyText={lines} copyLabel="复制全部" maxHeight>
             {lines}
           </CodeBlock>
