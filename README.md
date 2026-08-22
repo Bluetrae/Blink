@@ -200,23 +200,29 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 ## 常见问题
 
-**Q1：这是什么？**
-一个把"分流规则"做成数据管道的仓库：同一份 canonical 规则，每天自动渲染成 Surge / Shadowrocket / Loon / Stash / Clash / Egern / Quantumult X 七种客户端格式的规则集；另有**一层人工维护的完整配置文件**（`Profiles/`，见[配置文件快速开始](#profiles-quickstart)）。它**不是**代理客户端，也**不负责你的策略**——你只负责取走产物，并决定"谁走哪个策略"。
+**这是什么？**
 
-**Q2：为什么规则文件里没有策略名？**
-规则集只描述"命中什么"，策略由**引用处**指定（Surge `RULE-SET,URL,policy` / Loon `policy=` / Egern `rule_set.policy` / QX `force-policy`），同一份产物可被任何人以自己的策略复用。Quantumult X 行尾的 `policy` 是占位符，实际策略由引用行的 `force-policy` 覆盖。
+一个把"分流规则"做成数据管道的仓库：同一份 canonical 规则，每天自动渲染成七种客户端格式的规则集，另有一层人工维护的完整配置文件（`Profiles/`）。它**不是**代理客户端，也**不负责你的策略**——你取走产物，自己决定"谁走哪个策略"。
 
-**Q3：为什么我的客户端比其他端少几条规则？**
-这是**显式降级**，不是缺漏：Egern / Quantumult X 丢弃 `PROCESS-NAME`、Clash 丢弃 `USER-AGENT`（内核无此类型），每端的丢弃数量会展示在门户卡片与构建报告；Surge / Loon / Shadowrocket / Stash 四端逐字节相同。
+**为什么规则文件里没有策略名？**
 
-**Q4：规则多久更新？为什么我这边是旧版？**
-每日自动更新（北京时间约 00:01），有变化才提交；客户端侧刷新节奏由引用行决定——Stash / Clash 1 天、Quantumult X 2 天、Surge / Loon / Shadowrocket 由 App 自动更新（jsDelivr 镜像缓存最长 12 小时）。
+策略由引用处指定（`RULE-SET,URL,policy` / Loon `policy=` / Egern `rule_set.policy` / QX `force-policy`），规则集本身只描述"命中什么"。QX 行尾的 `policy` 是占位符，实际策略由引用行 `force-policy` 覆盖。
 
-**Q5：我用了你的规则，出问题了，怎么反馈？**
-请按三步自检后再反馈：① 策略与顺序是否设置正确（规则集本身不带策略）；② 目标是否属于 Reject / Domestic / CDN / China IP / LAN 等基础设施（仓库有意不收录）；③ 确认为 App 漏网时，请附上：客户端、代理日志断言归属的域名、该域名与选定上游的比较结果（也可直接按 [规则反馈模板](.github/ISSUE_TEMPLATE/rule-feedback.md) 填写）。个人仓库，不承诺响应时长，但**带证据的反馈会得到最快修复**——只报告"不行"的话，定位会很漫长。
+**为什么我的客户端比其他端少几条规则？**
 
-**Q6：我能参与维护 / 修复问题吗？**
-规则内容由仓库作者本人维护，修改权不在别处——但**建议与反馈永远欢迎**：发现漏网或错误时，请按 Q5 的方式附上证据（客户端、日志确认的域名、与选定上游的比较结果）反馈；评估确认真实的缺口后，由维护者走审计与构建流程落地。这类规则库不是社区协作项目（与 SukkaW 的"个人自用"运行模式一致），你贡献的是**证据**，不是代码——证据越好，采纳越快。若你直接提交 Pull Request，被我在通知里看到的话，我会 Review——但请知悉：是否采纳、何时响应，由我决定。
+显式降级，不是缺漏：Egern / Quantumult X 丢弃 `PROCESS-NAME`，Clash 丢弃 `USER-AGENT`（内核无此类型），丢弃数量在门户卡片与构建报告可见；Surge / Loon / Shadowrocket / Stash 四端逐字节相同。
+
+**规则多久更新？**
+
+每日自动更新（北京时间约 00:01），有变化才提交。刷新节奏由引用行决定：Stash / Clash 1 天，Quantumult X 2 天，Surge / Loon / Shadowrocket 由 App 自动更新（jsDelivr 镜像缓存最长 12 小时）。
+
+**出问题了，怎么反馈？**
+
+先自检：① 策略与顺序设置；② 目标是否属于 Reject / Domestic / CDN / China IP / LAN 等基础设施（有意不收录）。确认为 App 漏网时，请附上：客户端、日志确认的域名、与选定上游的比较结果（也可直接按 [规则反馈模板](.github/ISSUE_TEMPLATE/rule-feedback.md) 填写）。个人仓库不承诺响应时长，但**带证据的反馈会最快修复**。
+
+**我能参与维护吗？**
+
+规则内容由作者本人维护，修改权不在别处——建议与反馈永远欢迎（证据越好，采纳越快）。若你直接提交 Pull Request，被我在通知里看到的话，我会 Review——是否采纳、何时响应，由我决定。
 
 ---
 
