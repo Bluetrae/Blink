@@ -36,6 +36,7 @@
 - [网页入口](#portal)
 - [完整性校验](#integrity)
 - [来源政策](#sources)
+- [常见问题](#faq)
 - [使用与许可](#license)
 
 ---
@@ -192,6 +193,36 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 - 每个 App 独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只作并列时的 tie-breaker；每 App 恰好 1 个 primary、至多 1 个 supplemental。完整的候选、证据与结论档案见 [`engine/SOURCE_AUDITS.md`](engine/SOURCE_AUDITS.md)。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施**不复制进本仓库**，继续直接引用成熟上游。
+
+---
+
+<a id="faq"></a>
+
+## 常见问题
+
+**Q1：为什么规则文件里没有策略名？**
+规则集只描述"命中什么"，策略由**引用处**指定（Surge `RULE-SET,URL,policy` / Loon `policy=` / Egern `rule_set.policy` / QX `force-policy`）。
+这样同一份产物可以被任何人以自己的策略复用；Quantumult X 行尾的 `policy` 是占位符，实际策略会被引用行的 `force-policy` 覆盖，语义相同。
+
+**Q2：为什么我的客户端比其他端少几条规则？**
+客户端能力不同，无法无损表达的类型会被**显式丢弃并计数**：Egern / Quantumult X 丢弃 `PROCESS-NAME`、Clash 丢弃 `USER-AGENT`（内核无此类型）；
+Surge / Loon / Shadowrocket / Stash 四端则逐字节相同。构建报告与门户卡片都会展示每端的丢弃数量，这不是 bug，是特性。
+
+**Q3：规则多久更新一次？为什么我这边总是旧版？**
+每日自动更新（北京时间约 00:01），有变化才提交、无变化零提交；客户端侧的刷新节奏由引用行决定——Stash / Clash `interval: 86400`（1 天）、Quantumult X `update-interval=172800`（2 天）、Surge / Loon / Shadowrocket 由 App 自动更新。
+raw 直连不稳时可用 jsDelivr 镜像（缓存最长 12 小时，更新会相应延迟）。
+
+**Q4：有 App 漏网 / 想要更多规则怎么办？**
+先区分两类：① 基础设施（Reject / Domestic / CDN / China IP / LAN）——仓库**有意不收录**，继续直接引用成熟上游；
+② App 专项缺口——先在 Surge 日志确认归属，再与选定上游比较，确认真缺失后补充（`engine/sources/supplement/`）。
+仓库不追求规则数量最大化：不吞共享 CDN、不引入过宽关键字，具体取舍记录在 `engine/SOURCE_AUDITS.md`。
+
+**Q5：配置文件里的 `https://YOUR-SUBSCRIPTION-URL` 是什么？**
+占位符。用你自己的订阅链接整段替换即可——公开配置文件采用**单一订阅池**设计：所有策略组与地区筛选只依赖这一条订阅，规则全部通过远程 URL 引用（本仓库规则 + 成熟上游基础设施），不复制规则内容。配置层不随规则每日更新，导入后请真机验证。
+
+**Q6：可以转载 / 商用吗？**
+仅供个人学习研究使用，**禁止任何形式的转载或发布至国内平台**（详见顶部提示与 [DISCLAIMER.md](DISCLAIMER.md)）。
+原创部分（构建代码 / 测试 / 工作流 / 门户源码 / 文档）以 [MIT License](LICENSE) 授权；生成规则与配置文件逐文件遵循 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 记载的上游许可，请勿以单一许可覆盖它们。
 
 ---
 
