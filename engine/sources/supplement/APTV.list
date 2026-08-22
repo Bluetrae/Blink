@@ -1,7 +1,6 @@
-# 自用直播源规则（APTV）—— 仅个人使用，未经上游审计。
-# 配合 APTV 前端 App 观看直播使用；2026-08-15 自用户私有仓库
-# 用户私有仓库的 LiveStreaming.list 迁入（garyshare 直播源，原文件版本 2026-02-22，26 条）。
-# 内容仅含域名与 IP，不含订阅 URL 或 token；他人复用本仓库请自行移除本文件相关规则。
+# APTV 直播源规则——个人维护清单（原为私有保存，2026-08-15 迁入；未经上游审计）。
+# 配合 APTV 前端 App 观看直播使用；原始内容为 garyshare 直播源（原文件版本 2026-02-22，26 条）。
+# 仅含域名与 IP，不含订阅 URL 或 token；他人复用本仓库时请自行评估是否使用本文件。
 
 # ==== APTV: entry =====
 DOMAIN,fast-tv-proxy.sharewithyou.dpdns.org

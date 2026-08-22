@@ -49,7 +49,7 @@
 - `<App>-nonip.conf` — 非 IP 段（含 `DOMAIN-KEYWORD` / `USER-AGENT` / `PROCESS-NAME`，**不触发 DNS**）；
 - `<App>-ip.conf` — IP 段（`IP-CIDR` / `IP-CIDR6`，**触发 DNS**，需置于规则末尾）。
 
-> 顺序借鉴 [skk 用法](https://github.com/SukkaW/Surge)：把所有 `domainset` / `non_ip` 及你自己加的
+> 顺序借鉴 [SukkaW 用法](https://github.com/SukkaW/Surge)：把所有 `domainset` / `non_ip` 及你自己加的
 > `DOMAIN` / `DOMAIN-SUFFIX` / `DOMAIN-KEYWORD` 规则放在所有 `ip` 段、`IP-CIDR` / `IP-CIDR6` /
 > `IP-ASN` / `GEOIP` 规则**之前，没有例外**。自上而下匹配的客户端只在做 IP 类规则匹配、命中
 > `FINAL` 或 direct 策略时才触发 DNS 解析；顺序颠倒会让待代理域名被提前解析，失去 DNS 防污染保护。
@@ -150,7 +150,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 无需域名即可访问：[`https://bluetrae.github.io/Blink/`](https://bluetrae.github.io/Blink/)，页面板块：
 
 - **规则集**：切换七客户端标签查看每个 App 的规则数与接入方式，一键复制；
-- **接入指南**：七客户端全量接入片段，一键复制；
+- **接入你的客户端**：七客户端全量接入片段，一键复制；
 - **配置文件**：七客户端配置文件的下载 / 复制 / **iOS 一键导入**（支持 URL Scheme 的客户端；Clash 为 Android，手动导入）与导入指引；
 - **构建与来源**：构建管线与选源原则。
 

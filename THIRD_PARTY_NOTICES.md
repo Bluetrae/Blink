@@ -18,10 +18,15 @@ those available from the applicable upstream authors and licenses.
 
 The `Surge/<App>.list` table below is the canonical provenance record.
 `Loon/<App>.list`, `Shadowrocket/<App>.list`, and `Stash/<App>.list` are
-byte-identical copies of the Surge output, while `Egern/<App>.yaml` and
-`QuantumultX/<App>.list` are rendered from the same canonical rule set; all
-six inherit the provenance and license attribution of the corresponding
-`Surge/<App>.list` row without any additional upstream source.
+byte-identical copies of the Surge output; `Clash/<App>.list` is the same
+classical output with `USER-AGENT` lines removed (the Clash family has no
+such rule type; the builder drops and counts them explicitly);
+`Egern/<App>.yaml` and `QuantumultX/<App>.list` are rendered from the same
+canonical rule set; all of them inherit the provenance and license
+attribution of the corresponding `Surge/<App>.list` row without any
+additional upstream source. The semantic view files
+(`<App>-domainset.conf` / `<App>-nonip.conf` / `<App>-ip.conf`) are likewise
+derived from the same canonical rules and inherit the same attribution.
 
 The candidate configs under `Profiles/` reference the same upstream rule
 URLs (no rule content is copied), and their General/DNS skeletons follow
@@ -41,14 +46,25 @@ repository owner's own configuration.
 | `Surge/YouTube.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/X.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/Instagram.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
-| `Surge/Telegram.list` | SukkaW/Surge | https://github.com/SukkaW/Surge | AGPL-3.0 for this non-IP rule source; see upstream README for exceptions |
+| `Surge/Telegram.list` | SukkaW/Surge (non-IP rules) + SukkaW ruleset service `List/ip/telegram.conf` (IP segment) | https://github.com/SukkaW/Surge | AGPL-3.0 for these rule sources; see upstream README for exceptions |
 | `Surge/Netflix.list` | blackmatrix7/ios_rule_script | https://github.com/blackmatrix7/ios_rule_script | GPL-2.0 |
 | `Surge/TikTok.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/Spotify.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/AI.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/Steam.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
 | `Surge/ZABank.list` | Blink repo-maintained supplement | `engine/sources/supplement/ZABank.list` | No upstream source; original repo-maintained rules |
-| `Surge/APTV.list` | Blink repo-maintained supplement (self-use) | `engine/sources/supplement/APTV.list` | Personal rules migrated from the user's private repository; no third-party license |
+| `Surge/APTV.list` | Blink repo-maintained supplement (personal list) | `engine/sources/supplement/APTV.list` | Rules maintained by the repository owner (originally kept in a private list); no third-party license |
+| `Surge/Disney.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/PrimeVideo.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/HBO.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/Facebook.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/Google.list` | Repcz/Tool | https://github.com/Repcz/Tool | MIT License |
+| `Surge/ParamountPlus.list` | blackmatrix7/ios_rule_script | https://github.com/blackmatrix7/ios_rule_script | GPL-2.0 |
+| `Surge/Hulu.list` | blackmatrix7/ios_rule_script | https://github.com/blackmatrix7/ios_rule_script | GPL-2.0 |
+| `Surge/Twitch.list` | blackmatrix7/ios_rule_script | https://github.com/blackmatrix7/ios_rule_script | GPL-2.0 |
+| `Surge/NBA.list` | Blink repo-maintained supplement | `engine/sources/supplement/NBA.list` | No upstream source; original repo-maintained rules |
+| `Surge/Suno.list` | Blink repo-maintained supplement | `engine/sources/supplement/Suno.list` | No upstream source; original repo-maintained rules |
+| `Surge/Starryblu.list` | Blink repo-maintained supplement | `engine/sources/supplement/Starryblu.list` | No upstream source; original repo-maintained rules |
 
 The exact source URL, format, and selection rationale for each App are kept in
 [`engine/sources/apps.yaml`](engine/sources/apps.yaml). Upstream projects may change their
@@ -59,8 +75,8 @@ this notice must be reviewed whenever a source is added or replaced.
 
 | Asset | Origin | Notice |
 | --- | --- | --- |
-| `engine/portal/public/favicon.svg` | https://www.deepseek.com/harness/favicon.svg | DeepSeek official logo asset; DeepSeek trademark, all rights reserved by DeepSeek. Used for browser-tab identification only and is not covered by this repository's terms. Replace with your own icon for any broader use. |
 | `engine/portal/public/blink-logo.png` | Repository owner (original IP mascot) | Blink brand mascot (white cat, lower-left composition), created by the repository owner for identifying Blink in the portal navigation, footer, and browser tab. Owned by the repository owner; not covered by any third-party license. |
+| `engine/portal/public/blink-logo-2.png` | Repository owner (original IP mascot) | Light-theme variant of the Blink mascot (blue dog, upper-right composition), used when the portal theme is light. Owned by the repository owner; not covered by any third-party license. |
 | `engine/docs/images/avatar.png` | 仓库所有者原创 IP mascot（白猫，与 portal `blink-logo.png` 相同图源） | Used as the README title mark. Owned by the repository owner; not covered by any third-party license. |
 | `engine/portal/public/icons/*.jpg` | Apple App Store artwork (iTunes Search API) | Official app icons of Surge, Shadowrocket, Loon, Stash, Egern, and Quantumult X, downloaded from the App Store and used only to identify each supported client in the portal. Trademarks and icons belong to their respective owners; not covered by this repository's terms. |
 | `engine/portal/public/icons/clash.jpg` | https://github.com/MetaCubeX/ClashMetaForAndroid (`app/src/main/res/mipmap-xxxhdpi/ic_launcher.png`) | Clash Meta for Android app icon (GPL-3.0), re-encoded to JPEG and used only to identify the Clash client in the portal. Icon and trademark belong to the Clash Meta project; not covered by this repository's terms. |

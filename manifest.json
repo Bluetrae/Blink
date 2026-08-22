@@ -191,10 +191,10 @@
       },
       "sources": [],
       "supplement": {
-        "bytes": 1447,
-        "lines": 42,
+        "bytes": 1410,
+        "lines": 41,
         "path": "engine/sources/supplement/APTV.list",
-        "sha256": "c3038f9abfe3c2a35f740cf6d4fe54771f9f831543b5c92fc4d6ee3305e99b52"
+        "sha256": "32d9ae0651493407cc5897f1492c5096311ca7beca7c13cafc71461c440073b2"
       },
       "views": {
         "clash": {
@@ -1438,10 +1438,10 @@
       },
       "sources": [],
       "supplement": {
-        "bytes": 464,
+        "bytes": 448,
         "lines": 6,
         "path": "engine/sources/supplement/NBA.list",
-        "sha256": "a933634cc01e45e06958ae5c3ee26ca43dffdc14408eca51459ef1fd070393e8"
+        "sha256": "53712555d8212c5b01383208e41d6aeccec82ca04b1d109720506c315f985f4b"
       },
       "views": {
         "clash": {
@@ -2760,10 +2760,10 @@
       },
       "sources": [],
       "supplement": {
-        "bytes": 456,
+        "bytes": 440,
         "lines": 6,
         "path": "engine/sources/supplement/Suno.list",
-        "sha256": "38cb0782f845f4f514877dca19bf48692075c73637784d0df97e00c6a6e8cb72"
+        "sha256": "6a346a962e22fa7da9e1c982f50959187f54cfb1f44e546260533c790600288d"
       },
       "views": {
         "clash": {
@@ -3948,6 +3948,6 @@
   "schema_version": 1,
   "source_definition": {
     "path": "engine/sources/apps.yaml",
-    "sha256": "494ff98a7ef2285d02243458b2f2631ef4b29ba8d6299ea3c87b66fd7acfa0be"
+    "sha256": "92fc10a37dcbd3b299ae5102c3229652c0c05959284d24f91ea618fdfcf4e2db"
   }
 }

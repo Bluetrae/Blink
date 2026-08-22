@@ -471,14 +471,14 @@ apps:
     supplement: engine/sources/supplement/APTV.list
     exclude: []
     note: >-
-      APTV (planned as "Live") is the user's personal live-streaming source,
-      watched through the APTV frontend app. It is supplement-only by design:
-      the rules (self-use, annotated in the supplement file) were migrated
-      from the user's private repository on 2026-08-15,
-      contain no subscription URLs or tokens, and are not upstream-audited.
-      Others reusing this repository should replace or remove these rules.
+      APTV (planned as "Live") is a personal live-streaming Rule-Set watched
+      through the APTV frontend app. It is supplement-only by design: the rules
+      are maintained by the repository owner (originally kept in a private
+      list; migrated on 2026-08-15), contain no subscription URLs or tokens,
+      and are not upstream-audited. Others reusing this repository should
+      evaluate and replace these rules as needed.
 
-  # --- Friend usage-scenario additions (2026-08-16 source audit) ---
+  # --- Additional coverage (2026-08-16 source audit) ---
 
   Disney:
     enabled: true
@@ -712,10 +712,10 @@ apps:
     supplement: engine/sources/supplement/NBA.list
     exclude: []
     note: >-
-      The 2026-08-16 friend-scenario audit found no NBA rules in Repcz,
-      SukkaW, blackmatrix7, v2fly, MetaCubeX, or RuleGo, so this app is
-      supplement-only: two root domains (nba.com, nba.net) cover the official
-      site and the NBA app (api/cdn/stats subdomains live under nba.com).
+      The 2026-08-16 audit found no NBA rules in Repcz, SukkaW, blackmatrix7,
+      v2fly, MetaCubeX, or RuleGo, so this app is supplement-only: two root
+      domains (nba.com, nba.net) cover the official site and the NBA app
+      (api/cdn/stats subdomains live under nba.com).
       It stays supplement-only unless usage reveals missing hosts.
 
   Suno:
@@ -733,9 +733,9 @@ apps:
     supplement: engine/sources/supplement/Suno.list
     exclude: []
     note: >-
-      The 2026-08-16 friend-scenario audit found no Suno rules in any audited
-      source, so this app is supplement-only: two root domains (suno.com,
-      suno.ai) cover the web app, mobile app, and studio API.
+      The 2026-08-16 audit found no Suno rules in any audited source, so this
+      app is supplement-only: two root domains (suno.com, suno.ai) cover the
+      web app, mobile app, and studio API.
       It stays supplement-only unless usage reveals missing hosts.
 
   Starryblu:

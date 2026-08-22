@@ -22,7 +22,7 @@
 | Spotify | 已落地 | Repcz `Spotify.list`（21 条），零转换风险，无需 supplemental |
 | ZABank | 已落地 | supplement-only（`sources: []` + 3 条根域名），上游 5+ 家全部缺失 |
 | Steam | 已落地 | Repcz `Steam.list`（20 条核心域名），零转换风险，无需 supplemental |
-| APTV | 已落地 | supplement-only 自用直播源（26 条，迁自用户私有仓库，已注释自用；原计划名 Live） |
+| APTV | 已落地 | supplement-only 个人维护直播清单（26 条，2026-08-15 迁入；原计划名 Live） |
 | Disney | 已落地 | Repcz `Disney.list`（174 条；2 条 PROCESS-NAME 对 Egern/QX 显式丢弃） |
 | ParamountPlus | 已落地 | blackmatrix7 `ParamountPlus.list`（10 条，全网唯一专项源） |
 | Hulu | 已落地 | blackmatrix7 `Hulu.list`（59 条；v2fly 2022 陈旧，Repcz/SukkaW 无专项） |
@@ -36,7 +36,7 @@
 
 ## 早期 12 个 App 的审计结论索引
 
-以下 App 在本档案建立（2026-08-15）之前完成审计与落地，未逐 App 分节；精简理由见 `engine/sources/apps.yaml` 各 App 的 `note`，演进历史见 `HANDOFF.md`。
+以下 App 在本档案建立（2026-08-15）之前完成审计与落地，未逐 App 分节；精简理由见 `engine/sources/apps.yaml` 各 App 的 `note`，演进历史见 `STATUS.md`。
 
 | App | Primary | 格式 | 要点 |
 | --- | --- | --- | --- |
@@ -50,14 +50,14 @@
 | YouTube | Repcz | surge-rule-set | 紧凑核心专项范围 |
 | X | Repcz | surge-rule-set | 保留 X/Twitter/Grok/媒体与已审计窄范围 IP |
 | Instagram | Repcz | surge-rule-set | 排除过宽 `DOMAIN-KEYWORD,instagram` |
-| Telegram | SukkaW | surge-rule-set | 仅核心域名；用户主配置保持 MTProto + Repcz 双列表（含 IP）。2026-08 起为 Rule 层 multi-view pilot 增加 supplemental IP 源 `ruleset.skk.moe/List/ip/telegram.conf`（官方 Telegram CIDR 15 条，2026-08-13，AGPL 3.0），使 canonical 兼具 domain 与 IP 两段 |
+| Telegram | SukkaW | surge-rule-set | 仅核心域名（主配置保持 MTProto + Repcz 双列表，含 IP 覆盖）。2026-08 起为 Rule 层 multi-view pilot 增加 supplemental IP 源 `ruleset.skk.moe/List/ip/telegram.conf`（官方 Telegram CIDR 15 条，2026-08-13，AGPL 3.0），使 canonical 兼具 domain 与 IP 两段 |
 | Threads | v2fly | v2fly-domain-list | `threads.com`/`threads.net` 窄集合 |
 
 ## 各 App 审计记录
 
 ### TikTok
 
-审计日期：2026-08-15。以下 URL 与正文均为当日直接抓取验证（Node.js fetch；本环境 pwsh/curl 因沙箱 Schannel 限制不可用）。
+审计日期：2026-08-15。以下 URL 与正文均为当日直接抓取验证（Node.js fetch）。
 
 候选来源：
 
@@ -114,13 +114,13 @@ supplemental：**不需要**。其他源中非冗余条目（spotify.map.fastly.
 supplemental：**不需要**。
 
 其他注意事项：
-- **DeepSeek 未覆盖**：Repcz/SukkaW 聚合均不含 deepseek.com（v2fly `data/deepseek` 仅 1 行 `deepseek.com`；blackmatrix7 无）。推测原因是 DeepSeek 为国内服务、通常直连。是否需要纳入 AI 聚合需用户确认；若纳入，在 primary 之外需另做决策（supplement 按政策要求日志确认缺口）。
+- **DeepSeek 未覆盖**：Repcz/SukkaW 聚合均不含 deepseek.com（v2fly `data/deepseek` 仅 1 行 `deepseek.com`；blackmatrix7 无）。推测原因是 DeepSeek 为国内服务、通常直连；是否纳入 AI 聚合另行决策（若纳入，在 primary 之外需另做决策——supplement 按政策要求日志确认缺口）。
 - **与既有输出的重叠**：AI 聚合含 grok.com/x.ai（与 X.list 的 Grok 覆盖重叠）与 api.github.com（与 GitHub.list 的 copilot 覆盖重叠）。Surge 中不同 RULE-SET 按顺序命中，重叠无害；仅在此记录。
 - 决议（2026-08-15）：build.py 已增加类型级 exclude，manifest 使用 `exclude: ["url-regex:*"]` 显式丢弃 1 条 URL-REGEX；输出 50 条，`skipped_excluded: 1`。DeepSeek 未纳入（国内直连默认；须日志确认缺口后才可进 supplement）。
 
 ### ZABank
 
-审计日期：2026-08-15。以下 URL 与状态码均为当日直接抓取验证（Node.js fetch；部分经本地代理 CONNECT 隧道）。
+审计日期：2026-08-15。以下 URL 与状态码均为当日直接抓取验证（Node.js fetch）。
 
 候选来源：**全部缺失**。
 
@@ -141,11 +141,11 @@ supplemental：**不需要**。
 
 推荐方案：无成熟上游可作 primary。以 3 条根域名 `DOMAIN-SUFFIX,za.group` / `DOMAIN-SUFFIX,zainvest.group` / `DOMAIN-SUFFIX,zajourney.com` 建立最小规则集，即可覆盖全部 9 个候选域名；纯 DOMAIN-SUFFIX，零转换风险，兼容 build.py 两种格式。
 
-决议（2026-08-15）：采用方案 (a) —— build.py 允许 `sources: []`（supplement-only），manifest 已落地：`engine/sources/supplement/ZABank.list` 写入三条根域名，输出 3 条规则。9 个候选域名来自用户实际使用记录（此前交接文档中的候选清单），若与实际使用不符请告知，可随时移除。
+决议（2026-08-15）：采用方案 (a) —— build.py 允许 `sources: []`（supplement-only），manifest 已落地：`engine/sources/supplement/ZABank.list` 写入三条根域名，输出 3 条规则。9 个候选域名来自实际使用记录（此前交接文档中的候选清单）；如与实测不符可随时调整。
 
 ### Steam
 
-审计日期：2026-08-15。触发原因：用户 Surge 主配置仍引用 blackmatrix7 Steam，是当时唯一未被 Blink 覆盖的非国内 App。以下 URL 与正文均为当日直接抓取验证（Node.js fetch；GitHub API 本轮被限流，维护时间沿用同日对同仓库的实测）。
+审计日期：2026-08-15。触发原因：维护者主配置仍引用 blackmatrix7 Steam，是当时唯一未被 Blink 覆盖的非国内 App。以下 URL 与正文均为当日直接抓取验证（Node.js fetch；GitHub API 本轮被限流，维护时间沿用同日对同仓库的实测）。
 
 | 候选 | 作者 | URL | 格式 | Surge 原生 | 规模/覆盖 | 维护证据 | 过宽/无关条目 | 格式风险 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -157,18 +157,18 @@ supplemental：**不需要**。
 
 推荐 primary：**Repcz Steam.list**。理由：一梯队、Surge 原生、20 条核心域名零转换风险、每日更新；v2fly 偏宽（地区 CDN），blackmatrix7 陈旧且含无关域名。无需 supplemental、无需任何构建器改动。
 
-### APTV（自用直播源）
+### APTV（个人维护直播清单）
 
-审计日期：2026-08-15。原计划名“Live”，因用户实际通过 APTV 前端 App 观看直播而命名 APTV；此前决定“不纳入”，用户随后要求迁入本仓库。
+审计日期：2026-08-15。原计划名“Live”，因实际通过 APTV 前端 App 观看直播而命名 APTV。
 
-- **来源**：用户私有仓库的 `Surge/Rules/LiveStreaming.list`（garyshare 直播源，原文件版本 2026-02-22），26 条（17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），全部 policy-free 且在 build.py v1 白名单内，无需转换。
-- **落地方式**：supplement-only（`sources: []` + `engine/sources/supplement/APTV.list`），与 ZABank 同一模式；supplement 文件头部注明“自用”，manifest note 记录迁移来源与免责说明。
-- **安全**：内容仅含域名与 IP，不含订阅 URL 或 token；若他人复用本仓库需自行移除。
-- **主配置**：由 Bridge 仓库 URL 改为引用 `Surge/APTV.list`，策略（US）仍由主配置指定。
+- **来源**：此前私有保存的 `Surge/Rules/LiveStreaming.list`（garyshare 直播源，原文件版本 2026-02-22），26 条（17 DOMAIN + 4 DOMAIN-SUFFIX + 5 IP-CIDR,no-resolve），全部 policy-free 且在 build.py v1 白名单内，无需转换。
+- **落地方式**：supplement-only（`sources: []` + `engine/sources/supplement/APTV.list`），与 ZABank 同一模式；supplement 文件头部注明个人维护，manifest note 记录迁移来源与免责说明。
+- **安全**：内容仅含域名与 IP，不含订阅 URL 或 token；他人复用本仓库时请自行评估是否移除本 App。
+- **主配置**：已改为引用 `Surge/APTV.list`，策略仍由主配置指定。
 
-## 用户 Surge 主配置对照（2026-08-15）
+## 与维护者 Surge 主配置的对照（2026-08-15，已脱敏）
 
-对用户 iOS 端主配置 `[Rule]` 段与仓库输出做了一次完整对照。本记录已脱敏，不含主配置中的个人域名与订阅相关条目。
+对维护者 iOS 端主配置 `[Rule]` 段与仓库输出做了一次完整对照。本记录已脱敏，不含主配置中的个人域名与订阅相关条目。
 
 - **ZA Bank**：主配置有 9 条手工 `DOMAIN`（za.group / zainvest.group / zajourney.com 子域）。Blink `ZABank.list` 的三条根域名完整覆盖，可删除 9 条手工行。
 - **SafePal**：主配置只有 `isafepal.com`；Blink `SafePal.list` 额外补上 `safepal.com`，替换更完整。
@@ -177,14 +177,14 @@ supplemental：**不需要**。
 - **Steam**：主配置引用 blackmatrix7 Steam；本次审计后 Blink 已新增 `Steam.list`（Repcz），可替换。
 - **Apple Music / Apple 全套**：主配置直引 Repcz AppleMusic + SukkaW apple_cn/apple_cdn + 手工 Apple 补充；按既定政策暂缓，保持现状。
 - **Google/Gmail、WeChat、DouYin、Emby、sub-store 等**：属基础设施、国内 App 或个人影音项，不在 Blink 范围，保持现状。
-- **APTV（自用直播源，原计划名 Live）**：2026-08-15 已迁入 Blink（supplement-only，26 条，注释自用，迁自用户私有仓库）；主配置可改为引用 `Surge/APTV.list`，策略仍由主配置指定。
+- **APTV（个人维护直播清单，原计划名 Live）**：2026-08-15 已迁入 Blink（supplement-only，26 条，迁自私有保存清单）；主配置可改为引用 `Surge/APTV.list`，策略仍由主配置指定。
 - **Reject / LAN / domestic / CDN / China IP 等基础设施**：继续直接引用成熟上游，不纳入本仓库。
 
 supplemental：不适用（本身即无 primary 上游）。
 
-## 好友使用场景新增 10 App（2026-08-16）
+## 使用场景扩展新增 10 App（2026-08-16）
 
-触发原因：用户提供好友的使用场景 App 清单，逐项对照后发现 Disney、Paramount+、Hulu、Amazon Prime Video、HBO(Max)、Twitch、NBA、Suno、Facebook、Google(含 Gmail) 尚未覆盖。清单中的 YouTube TV 无需新增：`YouTube.list` 的 `DOMAIN-SUFFIX,youtube.com` 已覆盖 tv.youtube.com（已在 manifest note 记录）；Gemini/ChatGPT 由 `AI.list` 覆盖。以下候选证据均为当日从上游仓库直接抓取（本地 shallow clone），Repcz 与 v2fly 的维护时间以仓库分支 head / GitHub API 实测为准。
+触发原因：按使用场景清单逐项对照后，发现 Disney、Paramount+、Hulu、Amazon Prime Video、HBO(Max)、Twitch、NBA、Suno、Facebook、Google(含 Gmail) 尚未覆盖。清单中的 YouTube TV 无需新增：`YouTube.list` 的 `DOMAIN-SUFFIX,youtube.com` 已覆盖 tv.youtube.com（已在 manifest note 记录）；Gemini/ChatGPT 由 `AI.list` 覆盖。以下候选证据均为当日从上游仓库直接抓取（本地 shallow clone），Repcz 与 v2fly 的维护时间以仓库分支 head / GitHub API 实测为准。
 
 ### Disney
 
@@ -286,4 +286,4 @@ Starryblu 是全球支付 App（官网 starryblu.com，新加坡 FinTech 2025 �
 - 8 个有上游的 App 全部按上表 primary 落地，均无需 supplemental；manifest `note` 已写入选择理由。
 - 构建报告：Disney 174 / ParamountPlus 10 / Hulu 59 / PrimeVideo 16 / HBO 46（排除 2 条）/ Twitch 22 / Facebook 580 / Google 25 / NBA 2 / Suno 2；PROCESS-NAME 丢弃仅发生在 Egern/QX（Disney 2、Hulu 1、Twitch 1、HBO 1、Netflix 1、Spotify 1）。
 - Portal：新增“网页(Web)”类别承载 Google；图标取 iTunes App Store 官方 artwork（HBO 取现行 Max 应用图标）。
-- NBA/Suno 为无上游的 supplement-only App，维持两条核心根域（2026-08-16 用户确认无需专门等待真机反馈）；如日后使用暴露缺失域名，按 supplement 政策追加。
+- NBA/Suno 为无上游的 supplement-only App，维持两条核心根域（2026-08-16 定稿：无需专门等待真机反馈）；如日后使用暴露缺失域名，按 supplement 政策追加。

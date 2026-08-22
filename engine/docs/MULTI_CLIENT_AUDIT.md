@@ -6,7 +6,7 @@
 
 ## 1. 审计方法与证据层级
 
-沙箱环境禁止直连 HTTP，证据分三层，优先级从高到低：
+开发环境无法直连 HTTP，证据分三层，优先级从高到低：
 
 1. **官方文档**：
    - Surge：[官方手册](https://manual.nssurge.com/rule/ruleset.html) + 官方手册汉化仓库 [lockcp/SurgeHandbook](https://github.com/lockcp/SurgeHandbook)（内容可核对）。
@@ -120,7 +120,7 @@
 - 证据：① 官方 [MetaCubeX/Meta-Docs](https://github.com/MetaCubeX/Meta-Docs)（rule-providers / rules / proxy-groups / proxy-providers / dns 章节）+ ① 内核源码逐行核对（[MetaCubeX/Clash.Meta](https://github.com/MetaCubeX/Clash.Meta) `rules/parser.go`、`rules/provider/classical_strategy.go`；[Kuingsmile/clash-core](https://github.com/Kuingsmile/clash-core) `constant/rule.go`、`constant/provider/interface.go`）；② 生产实证：[Repcz/Tool `mihomo/`](https://github.com/Repcz/Tool)（`mihomo/Rules/*.list` classical 含 PROCESS-NAME、全目录无 USER-AGENT；`mihomo/Client/config.yaml` 完整配置范式）、[Paxxs/clash-skk](https://github.com/Paxxs/clash-skk)（classical txt → mihomo rule-provider 生产流水线）。
 - rule-providers schema：`type: http`、`behavior: classical`、**`format: text`（必填：默认是 yaml）**、`url`、`interval`（秒；0/省略 = 仅启动加载一次；生产惯例 86400）、`path`（缺省 = url 的 MD5，可选）、`size-limit`（默认 0 不限）。
 - 规则类型（classical payload）：`DOMAIN`、`DOMAIN-SUFFIX`、`DOMAIN-KEYWORD`（keyword 小写归一、大小写不敏感）、`IP-CIDR`、`IP-CIDR6`（等价别名）、`PROCESS-NAME`（Android 匹配包名，官方明文 + `component/process` 源码）、`DST-PORT`、`GEOIP`、`MATCH`；**`USER-AGENT` ❌ 内核无此类型**——classical 内 `USER-AGENT` 行被加载器打 warning 后静默跳过（`classical_strategy.go` `Insert()` 不 append、不 count）。
-- **Blink 7 种 canonical 类型：6/7 无损，USER-AGENT 为唯一降级项**（受影响 4 条：Netflix / ParamountPlus / PayPal / Spotify 各 1）→ 独立 `Clash/` 目录**显式丢弃并计数**（与 Egern/QX 对 PROCESS-NAME 的先例一致；2026-08 用户批准）。
+- **Blink 7 种 canonical 类型：6/7 无损，USER-AGENT 为唯一降级项**（受影响 4 条：Netflix / ParamountPlus / PayPal / Spotify 各 1）→ 独立 `Clash/` 目录**显式丢弃并计数**（与 Egern/QX 对 PROCESS-NAME 的先例一致；2026-08 定稿）。
 - 引用：`rules:` 段 `- RULE-SET,<name>,<policy>`（支持尾随 `no-resolve`），与内联规则自上而下混排；`MATCH` 为 FINAL 等价尾规则。
 - proxy-groups：`select` / `url-test` 原生（`interval`/`tolerance`/`lazy`）；`filter` 正则 + `include-all` 官方支持；**select 组的 `proxies` 数组不引用 provider 名**（订阅池由地区 filter 组覆盖，与 Loon 渲染器同构处理）。
 - 主配置：YAML；`mixed-port` / `mode` / `log-level` / `unified-delay` / `keep-alive-interval`（移动端省电，官方建议 15）/ `dns.enhanced-mode: fake-ip`（Android 推荐，默认 redir-host）。
@@ -227,4 +227,4 @@ QuantumultX/<App>.list   # QX filter 行（行尾占位符 policy，force-policy
 > ✅ 已完成（commit `77ebe22`，QX 于六客户端扩展时加入）：portal 规则集与接入区均带客户端切换与官方 App 图标，`gen_portal_stats.py` 输出每 App 的 `clients` 统计（Egern / Quantumult X 含显式 dropped 计数）。
 
 - 2026-08：第 7 客户端 **Clash（Mihomo 内核 / Android 通用）**审计落地（见 §2.8，内核源码级证据）；`Clash/` 目录（去 USER-AGENT 显式丢弃）与 portal / Profiles / 文档同步扩展中。
-- 2026-08-21+：**语义多视图落地**（skk 式 domainset / non_ip / ip 拆分，见 `build.py` 的 `semantic_views` / `phase_of` 与 `engine/scripts/validate_views.py` 门禁）：每个 App 按语义派生出 `-domainset.conf`（纯域名，Surge/Shadowrocket 域名清单、Stash/Clash behavior:domain）/ `-nonip.conf`（含 keyword/UA/PROCESS，classical）/ `-ip.conf`（IP 段，classical/QX filter）七端视图，IP 段恒置于域名段之后；主输出 `.list`/`.yaml` 与各客户端格式事实保持本文件所述不变。
+- 2026-08-21+：**语义多视图落地**（SukkaW 式 domainset / non_ip / ip 拆分，见 `build.py` 的 `semantic_views` / `phase_of` 与 `engine/scripts/validate_views.py` 门禁）：每个 App 按语义派生出 `-domainset.conf`（纯域名，Surge/Shadowrocket 域名清单、Stash/Clash behavior:domain）/ `-nonip.conf`（含 keyword/UA/PROCESS，classical）/ `-ip.conf`（IP 段，classical/QX filter）七端视图，IP 段恒置于域名段之后；主输出 `.list`/`.yaml` 与各客户端格式事实保持本文件所述不变。

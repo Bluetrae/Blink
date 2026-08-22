@@ -1,9 +1,9 @@
 # Blink 配置文件层优化 · 执行蓝图
 
-> 状态：**待审批执行**。本文是配置文件层（Profile Engine）多客户端迁移的执行依据。
-> 以用户提供的「已经 skk 技术思想路线优化」的 Surge 完整配置为事实基准，结合 SukkaW/Surge 仓库一手源码
+> 状态：**已执行（2026-08-22 全部落地并提交，见第九节）**。本文保留为配置文件层的设计蓝图与决策依据。
+> 以遵循 SukkaW 技术思想优化后的 Surge 完整配置为事实基准，结合 SukkaW/Surge 仓库一手源码
 > （`Build/lib/rules/base.ts`、`ruleset.ts`、`writing-strategy/{surge,clash}.ts`、`README.md`）提炼的技术思想。
-> 规则层（Rule Engine）的 `matching_phase` / 多 view 优化见交接文档，**不在本次范围**（单独切片推进）。
+> 规则层（Rule Engine）的 `matching_phase` / 多 view 优化见 `engine/STATUS.md`，**不在本次范围**（单独切片推进）。
 
 ## 一、三条已确认原则
 
@@ -13,11 +13,11 @@
 2. **能力矩阵**：Surge 强绑定能力跨端一律 `FULL / ADAPTED(注释标注) / UNSUPPORTED(注释标注)`，禁止静默省略或伪造。
 3. **普适化**：公开模板的**策略组 + App 规则只保留 8 个**，其余交由用户自行扩展，并在生成文件头部/README 提示。
 
-## 二、skk 技术思想（SukkaW/Surge 源码证据）
+## 二、SukkaW 技术思想（SukkaW/Surge 源码证据）
 
 1. **三类规则集 = 三种 DNS 触发行为**：`domainset`（`DOMAIN-SET`，纯域名，不触发 DNS）、`non_ip`（classical `RULE-SET`，
    不触发 DNS）、`ip`（classical `RULE-SET` 或 `ipcidr`，触发 DNS）。
-2. **domain-first / IP-last 是强制不变式**：所有 `domainset`/`non_ip` 与自加 `DOMAIN`/`DOWN-SUFFIX`/`DOMAIN-KEYWORD`
+2. **domain-first / IP-last 是强制不变式**：所有 `domainset`/`non_ip` 与自加 `DOMAIN`/`DOMAIN-SUFFIX`/`DOMAIN-KEYWORD`
    必须放在所有 `ip` 规则组与自加 `IP-CIDR`/`IP-CIDR6`/`IP-ASN`/`GEOIP` 之前，**没有例外**；违反即失去 DNS 污染保护。
 3. **canonical 数据 → 多客户端 writing strategy**：`FileOutput`（type 桶）→ `SurgeRuleSet`/`ClashClassicRuleSet`/
    `ClashDomainSet`/`ClashIPSet`/`ClashPremium`/`Surfboard`/`sing-box`。同一份数据派生所有客户端，format 只由 strategy 决定。
@@ -45,7 +45,7 @@ Telegram / X / Youtube / Instagram / Google / Github
 WhatsApp / LINE / OKX / PayPal / SafePal / ZABank / Disney / HBO / Hulu / PrimeVideo / Twitch / ParamountPlus /
 Facebook / NBA / Suno）**移出公开模板**，生成文件注释提示「按需自行扩展」。
 
-## 四、General 技术基线（skk 思想）
+## 四、General 技术基线（SukkaW 思想）
 
 | 类别 | 项 | 跨端呈现 |
 |---|---|---|
@@ -93,7 +93,7 @@ Final:    FINAL → Final, dns-failed
 
 - 不改规则产物与公开 URL（`Surge/<App>.list` 逐字节不变）。
 - 不改行为、不重写 parser；只扩展 Profile 层。
-- 不复刻 skk 大规模 domainset（引用其 URL）。
+- 不复刻 SukkaW 的大规模 domainset（引用其 URL）。
 - `always-real-ip`/`always-raw-tcp-hosts`/`skip-proxy` 只在 Profile 层，不进规则源。
 - 不引入 MTProto secret / `dc-config-url` / 双订阅池 / 个人域名。
 - 本次不含 Rule 层 `matching_phase` / 多 view（单独切片）。
@@ -108,7 +108,7 @@ Final:    FINAL → Final, dns-failed
 - `renderers.py`：新增 `render_surge_domainset`、`render_mihomo_domainset`、统一 `render_view`；
   各端 view 文件（`.conf` 后缀，避开 parity 的 `.list`/`.yaml` glob）：Surge/Shadowrocket 域名清单、
   Stash/Clash `behavior:domain`、Loon/Egern classical、QX `HOST*` filter；均 policy-free。
-- 全部 28 App 开启 `views:true`，产出七端 domainset/nonip/ip view 文件（主输出 `.list`/`.yaml` 零改动）。
+- 全部 29 App 开启 `views:true`，产出七端 domainset/nonip/ip view 文件（主输出 `.list`/`.yaml` 零改动）。
 - `verify_manifest.py`：`views` 字段校验（per-client + 各端目录路径约定）。
 
 **② Profile 层分文件引用**

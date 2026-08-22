@@ -3,13 +3,13 @@
 ## Purpose and scope
 
 Blink is a personal-use repository for building and distributing multi-client
-App Rule-Sets (Surge, Shadowrocket, Loon, Stash, Egern) from reviewed public
-sources. It is provided for learning, personal configuration maintenance, and
-rule-format automation.
+App Rule-Sets (Surge, Shadowrocket, Loon, Stash, Clash, Egern, Quantumult X)
+from reviewed public sources. It is provided for learning, personal
+configuration maintenance, and rule-format automation.
 
 The repository is not an official product, service, endorsement, or
-representation of Surge, Shadowrocket, Loon, Stash, Egern, any application
-named by a Rule-Set, or any upstream rule author.
+representation of Surge, Shadowrocket, Loon, Stash, Clash, Egern, Quantumult X,
+any application named by a Rule-Set, or any upstream rule author.
 
 ## No warranty
 

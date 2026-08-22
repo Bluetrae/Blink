@@ -20,7 +20,7 @@
 
 ## Upstream Source Selection Policy
 
-- 用户的长期信任优先偏好为：Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX。
+- 上游优先偏好（长期验证的信任顺序）为：Repcz > SukkaW > 其他长期验证过的成熟作者 > v2fly / MetaCubeX。
 - Repcz 与 SukkaW 均属于一梯队可信上游。Repcz 的 App 专项规则先审；SukkaW 的专项或可直接适用的窄范围规则随后必审，不能在执行中被降为普通 fallback。
 - SukkaW 的基础设施规则和配置方法本身具有长期价值；但 Reject / Domestic / China IP / CDN / LAN 等通用基础设施仍应直接引用成熟上游，不能为了 App 覆盖把通用规则集复制或误归类为 App 专项规则。
 - 此排序是优先偏好，而非绝对规则。每个 App 的最终主源必须基于 freshness（更新活跃度）、completeness（覆盖完整度）、scope（是否精准属于该 App）、format suitability（是否适合 Surge 或能稳定转换）及 maintenance quality（维护质量）综合决定。
@@ -32,7 +32,7 @@
 
 ### Source audit 范围与记录项
 
-- Source audit 至少覆盖当前计划中的 YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub；原清单中的 Live（现命名 APTV）是用户自用直播源，2026-08-15 起以 supplement-only 形式纳入（`sources: []`，内容已注释自用、未经上游审计）。2026-08-16 好友使用场景新增的 Disney、ParamountPlus、Hulu、PrimeVideo、HBO、Twitch、Facebook、Google、NBA、Suno 已按同一流程完成审计并落地（NBA/Suno 无上游，supplement-only；完整档案见 `engine/SOURCE_AUDITS.md`）。
+- Source audit 至少覆盖当前计划中的 YouTube、X、Instagram、Threads、Telegram、AI、TikTok、Spotify、Netflix、OKX、PayPal、SafePal、ZABank、WhatsApp、LINE、GitHub；原清单中的 Live（现命名 APTV）为个人维护的直播源，2026-08-15 起以 supplement-only 形式纳入（`sources: []`，未经过上游审计）。2026-08-16 使用场景扩展新增的 Disney、ParamountPlus、Hulu、PrimeVideo、HBO、Twitch、Facebook、Google、NBA、Suno 已按同一流程完成审计并落地（NBA/Suno 无上游，supplement-only；完整档案见 `engine/SOURCE_AUDITS.md`）。
 - 每个 App 的 audit 必须记录：候选来源、作者、URL、最近维护情况、规则规模或覆盖特点、是否 Surge 原生、是否需要转换、是否存在明显过宽规则、推荐 primary、是否需要 supplemental，以及选择理由。
 
 ## 安全规范
@@ -42,18 +42,17 @@
 
 ## Profile 层规范（配置迁移）
 
-- Rules 自动更新（每日 Actions），Profiles 人工演进：`engine/sources/profile/` 与 `Profiles/` **绝不加入** `update.yml` 定时任务，Profile 修改不自动 Commit，每次提交由用户确认。
+- Rules 自动更新（每日 Actions），Profiles 人工演进：`engine/sources/profile/` 与 `Profiles/` **绝不加入** `update.yml` 定时任务，Profile 修改不自动 Commit，每次提交由维护者人工确认。
 - 语义源是 `engine/sources/profile/intent.yaml`（Canonical Profile Intent），不是 Surge 配置文本；迁移的是配置意图。
-- 普适性原则：公开 Profile 只含**单一订阅池**（占位 URL `https://YOUR-SUBSCRIPTION-URL`，真实订阅地址绝不进入仓库）；用户个人专属内容（多订阅池、Emby 个人组、个人域名）保留在本地副本，不进入 intent 与公开输出。
+- 普适性原则：公开 Profile 只含**单一订阅池**（占位 URL `https://YOUR-SUBSCRIPTION-URL`，真实订阅地址绝不进入仓库）；个人专属内容（多订阅池、个人域名等）保留在本地副本，不进入 intent 与公开输出。
 - 能力映射只允许 FULL / ADAPTED / UNSUPPORTED 三种结果；UNSUPPORTED 与 ADAPTED 必须在生成文件中以注释显式标注（例如 Egern url-test 暂以 select 呈现），禁止静默删除或伪造。
-- 采用横向切片开发：一次只做一个功能 × 七客户端，验证后再做下一个；实施顺序与决策依据见用户的仓库外私有实施细则（不进入仓库）。
+- 采用横向切片开发：一次只做一个功能 × 七客户端，验证后再做下一个；实施顺序与决策依据见 `engine/docs/PHASE_OPTIMIZATION_PLAN.md` 与 `engine/STATUS.md`。
 - 配置文件输出 `Profiles/` 为生成产物（含占位符），修改入口是 intent 与 templates，改后运行 `engine/scripts/build_profile.py --write` 重建。
 
 ## 可用工具与 Git 规范
 
-- GitHub Plugin 在当前 Edu 工作区不可用，不要依赖它。
-- 可使用本地 filesystem、terminal、Git CLI、Chrome。
-- 用户正在重新熟悉 Git；执行会修改 Git repository 状态的命令前，先用一句话解释该命令用途。
+- 开发验证使用本地 filesystem、terminal、Git CLI 与 Chrome；不依赖在线插件。
+- 执行会修改 Git repository 状态的命令前，先说明该命令用途。
 - 禁止未经确认使用 `git reset --hard`、force push、改写已发布历史。
 
 ## 开发顺序

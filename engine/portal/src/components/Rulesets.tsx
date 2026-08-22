@@ -219,7 +219,7 @@ function AppCard({
         )}
         {app.self_use && (
           <p className="rounded-lg border border-accent-soft bg-accent-soft px-1.5 py-1 text-[10px] leading-relaxed text-accent">
-            ⚠️ 作者自用直播源 · 请按自身直播源自行配置
+            ⚠️ 个人维护的直播源 · 请按自身直播源自行配置
           </p>
         )}
         {dropped > 0 && (
