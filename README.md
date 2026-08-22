@@ -191,7 +191,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 ## 来源政策
 
-- 每个 App 独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只作并列时的 tie-breaker；每 App 恰好 1 个 primary、至多 1 个 supplemental。完整的候选、证据与结论档案见 [`engine/SOURCE_AUDITS.md`](engine/SOURCE_AUDITS.md)。
+- 每个 App 独立审计选源：以更新活跃度、覆盖、范围、格式与维护质量为证据，作者偏好只在候选规范化后等价时作 tie-breaker（顺序：SukkaW > Repcz > 其他长期验证的成熟作者）；每 App 恰好 1 个 primary、至多 1 个 supplemental。完整的候选、证据与结论档案见 [`engine/SOURCE_AUDITS.md`](engine/SOURCE_AUDITS.md)。
 - Reject / Domestic / China IP / CDN / LAN 等基础设施**不复制进本仓库**，继续直接引用成熟上游。
 
 ---

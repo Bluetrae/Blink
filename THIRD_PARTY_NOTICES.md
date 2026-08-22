@@ -38,7 +38,12 @@ The candidate configs under `Profiles/` reference the same upstream rule
 URLs (no rule content is copied), and their General/DNS skeletons follow
 the layout of the [Repcz/Tool](https://github.com/Repcz/Tool) client
 templates (MIT License); policy-group semantics originate from the
-repository owner's own configuration.
+repository owner's own configuration. Beyond the per-App URLs, `Profiles/`
+also references shared infrastructure Rule-Sets hosted by
+`ruleset.skk.moe` (SukkaW's ruleset service, AGPL-3.0),
+Repcz/Tool Quantumult X Rule-Sets (MIT), and ConnersHua/RuleGo
+(license as declared in that repository). All of these remain remote
+references — no rule content is copied into `Profiles/`.
 
 | Generated file | Upstream project | Upstream URL | Known license or project notice |
 | --- | --- | --- | --- |
