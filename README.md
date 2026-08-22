@@ -142,7 +142,7 @@ rules:
 https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, tag=<App>, force-policy=<你的策略>, update-interval=172800, opt-parser=false, enabled=true
 ```
 
-<sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Blink@main/Surge/<App>.list`。</sub>
+<sub>raw 直连不稳时，可改用 jsDelivr 加速地址（缓存最长 12 小时，规则更新会相应延迟）：`https://cdn.jsdelivr.net/gh/Bluetrae/Blink@main/Surge/<App>.list`（其余客户端同理替换目录，如 `Clash/`、`QuantumultX/`）。</sub>
 
 ---
 
@@ -201,7 +201,7 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 ## 常见问题
 
 **Q1：这是什么？**
-一个把"分流规则"做成数据管道的仓库：同一份 canonical 规则，每天自动渲染成 Surge / Shadowrocket / Loon / Stash / Clash / Egern / Quantumult X 七份产物。它**不是**代理客户端，**不是**完整配置模板，也**不负责你的策略**——你只负责取走产物，并决定"谁走哪个策略"。
+一个把"分流规则"做成数据管道的仓库：同一份 canonical 规则，每天自动渲染成 Surge / Shadowrocket / Loon / Stash / Clash / Egern / Quantumult X 七种客户端格式的规则集；另有**一层人工维护的完整配置文件**（`Profiles/`，见[配置文件快速开始](#profiles-quickstart)）。它**不是**代理客户端，也**不负责你的策略**——你只负责取走产物，并决定"谁走哪个策略"。
 
 **Q2：为什么规则文件里没有策略名？**
 规则集只描述"命中什么"，策略由**引用处**指定（Surge `RULE-SET,URL,policy` / Loon `policy=` / Egern `rule_set.policy` / QX `force-policy`），同一份产物可被任何人以自己的策略复用。Quantumult X 行尾的 `policy` 是占位符，实际策略由引用行的 `force-policy` 覆盖。
