@@ -44,16 +44,31 @@
 
 ## 规则集快速开始
 
+| 客户端 | 配置段 | 引用方式 | 分发目录 |
+| --- | --- | --- | --- |
+| Surge | `[Rule]` | `RULE-SET,<URL>,<策略>` | `Surge/` |
+| Shadowrocket | `[Rule]` | `RULE-SET,<URL>,<策略>` | `Shadowrocket/` |
+| Loon | `[Remote Rule]` | `URL, policy=<策略>, tag=<App>, enabled=true` | `Loon/` |
+| Stash | `rule-providers` + `rules` | `RULE-SET,<App>,<策略>` | `Stash/` |
+| Clash（Mihomo） | `rule-providers` + `rules` | `RULE-SET,<App>,<策略>` | `Clash/`（已去 USER-AGENT） |
+| Egern | `rules` | `rule_set: {match: <URL>, policy: <策略>}` | `Egern/` |
+| Quantumult X | `[filter_remote]` | `URL, tag=<App>, force-policy=<策略>, …` | `QuantumultX/` |
+
+其中 `Surge/`、`Loon/`、`Shadowrocket/`、`Stash/` 四份内容**逐字节相同**，按需取自己客户端的目录即可。以下按客户端给出完整示例。
+
 每个 App 默认提供完整 `.list`；需要 domain-first / IP-last 时另有**语义分段**视图：
 
 - `<App>-domainset.conf` — 纯域名段（`DOMAIN` / `DOMAIN-SUFFIX`，**不触发 DNS**）；
 - `<App>-nonip.conf` — 非 IP 段（含 `DOMAIN-KEYWORD` / `USER-AGENT` / `PROCESS-NAME`，**不触发 DNS**）；
 - `<App>-ip.conf` — IP 段（`IP-CIDR` / `IP-CIDR6`，**触发 DNS**，需置于规则末尾）。
 
-> 顺序借鉴 [SukkaW 用法](https://github.com/SukkaW/Surge)：把所有 `domainset` / `non_ip` 及你自己加的
-> `DOMAIN` / `DOMAIN-SUFFIX` / `DOMAIN-KEYWORD` 规则放在所有 `ip` 段、`IP-CIDR` / `IP-CIDR6` /
-> `IP-ASN` / `GEOIP` 规则**之前，没有例外**。自上而下匹配的客户端只在做 IP 类规则匹配、命中
-> `FINAL` 或 direct 策略时才触发 DNS 解析；顺序颠倒会让待代理域名被提前解析，失去 DNS 防污染保护。
+> **设计理念**：规则类型即 DNS 语义 —— `domainset` / `non_ip` 段命中时不触发本地解析，只有走到
+> `ip` 段（或 `FINAL` / direct）才解析域名；因此所有域名段必须置于所有 IP 段**之前，没有例外**
+> （domain-first / IP-last），否则待代理域名会被本地提前解析，失去 DNS 防污染保护。
+> 这个分类与不变式借鉴自 [SukkaW / Surge](https://github.com/SukkaW/Surge) 及其博客：
+> [I have my unique Surge setup](https://blog.skk.moe/post/i-have-my-unique-surge-setup/) ·
+> [DNS 泄漏、CDN 访问优化与 Fake IP](https://blog.skk.moe/post/lets-talk-about-dns-cdn-fake-ip/) ·
+> [生活在字典树上](https://blog.skk.moe/post/how-to-store-way-too-many-domains-and-ips-101/)。
 
 规则文件**不带策略名**，policy 由引用处指定。各客户端引用写法如下。
 
