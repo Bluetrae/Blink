@@ -200,17 +200,23 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 ## 常见问题
 
-**Q1：为什么规则文件里没有策略名？**
+**Q1：这是什么？**
+一个把"分流规则"做成数据管道的仓库：同一份 canonical 规则，每天自动渲染成 Surge / Shadowrocket / Loon / Stash / Clash / Egern / Quantumult X 七份产物。它**不是**代理客户端，**不是**完整配置模板，也**不负责你的策略**——你只负责取走产物，并决定"谁走哪个策略"。
+
+**Q2：为什么规则文件里没有策略名？**
 规则集只描述"命中什么"，策略由**引用处**指定（Surge `RULE-SET,URL,policy` / Loon `policy=` / Egern `rule_set.policy` / QX `force-policy`），同一份产物可被任何人以自己的策略复用。Quantumult X 行尾的 `policy` 是占位符，实际策略由引用行的 `force-policy` 覆盖。
 
-**Q2：为什么我的客户端比其他端少几条规则？**
+**Q3：为什么我的客户端比其他端少几条规则？**
 这是**显式降级**，不是缺漏：Egern / Quantumult X 丢弃 `PROCESS-NAME`、Clash 丢弃 `USER-AGENT`（内核无此类型），每端的丢弃数量会展示在门户卡片与构建报告；Surge / Loon / Shadowrocket / Stash 四端逐字节相同。
 
-**Q3：规则多久更新？为什么我这边是旧版？**
+**Q4：规则多久更新？为什么我这边是旧版？**
 每日自动更新（北京时间约 00:01），有变化才提交；客户端侧刷新节奏由引用行决定——Stash / Clash 1 天、Quantumult X 2 天、Surge / Loon / Shadowrocket 由 App 自动更新（jsDelivr 镜像缓存最长 12 小时）。
 
-**Q4：有 App 漏网 / 想加规则怎么办？**
-先区分两类：基础设施类（Reject / Domestic / CDN / China IP / LAN）**有意不收录**，直接引用成熟上游；App 专项缺口经日志确认、与上游比较后补入 `engine/sources/supplement/`。仓库不追求规则数量最大化，取舍记录在 `engine/SOURCE_AUDITS.md`。
+**Q5：我用了你的规则，出问题了，怎么反馈？**
+先划责任边界：**策略与顺序**（请自查，这是你的地盘）、**仓库范围外**（Reject / Domestic / CDN / China IP / LAN 等基础设施有意不收录）、**App 漏网**（这才是仓库的事——请附上：客户端、代理日志确认的域名、该域名与选定上游的比较结果）。这是个人仓库，不承诺响应时效，但**带证据的反馈会得到最快修复**；只有一句"不行"的话，我和你的定位流程都会很漫长。
+
+**Q6：我能参与维护 / 修复问题吗？**
+欢迎，但请走正确姿势：① 只改 `engine/sources/` 下的源定义与补充规则（生成产物由构建器产出）——手工修改生成文件会被人下一次构建悄悄覆盖，那不是贡献，是无效劳动；② 新增 App 先完成 source audit，并在 `apps.yaml` 写明选择理由；③ 提交前通过测试与门禁（`build.py --app <App>` 定向预检 + 全量验证）。
 
 ---
 
