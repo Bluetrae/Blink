@@ -202,27 +202,27 @@ https://raw.githubusercontent.com/Bluetrae/Blink/main/QuantumultX/<App>.list, ta
 
 **这是什么？**
 
-一个把"分流规则"做成数据管道的仓库：同一份 canonical 规则，每天自动渲染成七种客户端格式的规则集，另有一层人工维护的完整配置文件（`Profiles/`）。它**不是**代理客户端，也**不负责你的策略**——你取走产物，自己决定"谁走哪个策略"。
+一份 canonical 规则自动渲染成七种客户端格式的规则集；另有人工维护的完整配置文件（`Profiles/`）。不是代理客户端，不负责你的策略。
 
 **为什么规则文件里没有策略名？**
 
-策略由引用处指定（`RULE-SET,URL,policy` / Loon `policy=` / Egern `rule_set.policy` / QX `force-policy`），规则集本身只描述"命中什么"。QX 行尾的 `policy` 是占位符，实际策略由引用行 `force-policy` 覆盖。
+策略由引用处指定（`RULE-SET,URL,policy` / Loon `policy=` / Egern `rule_set.policy` / QX `force-policy`），规则集只描述"命中什么"。QX 行尾 `policy` 是占位符。
 
 **为什么我的客户端比其他端少几条规则？**
 
-显式降级，不是缺漏：Egern / Quantumult X 丢弃 `PROCESS-NAME`，Clash 丢弃 `USER-AGENT`（内核无此类型），丢弃数量在门户卡片与构建报告可见；Surge / Loon / Shadowrocket / Stash 四端逐字节相同。
+显式降级，不是缺漏：Egern / Quantumult X 丢弃 `PROCESS-NAME`，Clash 丢弃 `USER-AGENT`（内核无此类型），数量见门户卡片与构建报告。
 
 **规则多久更新？**
 
-每日自动更新（北京时间约 00:01），有变化才提交。刷新节奏由引用行决定：Stash / Clash 1 天，Quantumult X 2 天，Surge / Loon / Shadowrocket 由 App 自动更新（jsDelivr 镜像缓存最长 12 小时）。
+每日自动更新（约 00:01，北京时间），有变化才提交。刷新节奏由引用行的 `interval` 决定：Stash / Clash 1 天、Quantumult X 2 天、其余由 App 自动更新。
 
 **出问题了，怎么反馈？**
 
-先自检：① 策略与顺序设置；② 目标是否属于 Reject / Domestic / CDN / China IP / LAN 等基础设施（有意不收录）。确认为 App 漏网时，请附上：客户端、日志确认的域名、与选定上游的比较结果（也可直接按 [规则反馈模板](.github/ISSUE_TEMPLATE/rule-feedback.md) 填写）。个人仓库不承诺响应时长，但**带证据的反馈会最快修复**。
+先自检：① 策略与顺序；② 目标是否属基建类（Reject / Domestic / CDN / China IP / LAN，有意不收录）。确属漏网请附：客户端 + 日志确认的域名 + 与上游比较结果（或直接按 [规则反馈模板](.github/ISSUE_TEMPLATE/rule-feedback.md) 提交）。个人仓库无响应承诺——带证据的反馈最快修复。
 
 **我能参与维护吗？**
 
-规则内容由作者本人维护，修改权不在别处——建议与反馈永远欢迎（证据越好，采纳越快）。若你直接提交 Pull Request，被我在通知里看到的话，我会 Review——是否采纳、何时响应，由我决定。
+规则由作者本人维护，修改权不在别处——建议与反馈永远欢迎。若你提交 Pull Request，被我看到的话我会 Review——是否采纳、何时响应，由我决定。
 
 ---
 
